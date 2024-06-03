@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="settings_text_size">16dp</dimen>
     <dimen name="schedule_text_size">18dp</dimen>
     <dimen name="choices_text_size">24sp</dimen>
 </resources>

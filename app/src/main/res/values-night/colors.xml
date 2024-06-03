@@ -5,6 +5,5 @@
     <color name="colorPrimaryDark">@color/dark_grey</color>
     <color name="colorAccent">#4169E1</color>
     <color name="colorText">#FFF</color>
-    <color name="colorButton">#777</color>
     <color name="navigationBarColor">@color/dark_grey</color>
 </resources>

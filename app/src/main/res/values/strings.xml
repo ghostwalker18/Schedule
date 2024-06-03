@@ -8,15 +8,10 @@
     <string name="view_settings">Внешний вид</string>
     <string name="option_theme">Тема</string>
     <string name="option_add_teacher_search">Добавить поиск по преподавателю</string>
-    <string name="monday">Понедельник</string>
-    <string name="tuesday">Вторник</string>
-    <string name="wednesday">Среда</string>
-    <string name="thursday">Четверг</string>
-    <string name="friday">Пятница</string>
     <string name="number">Пара</string>
     <string name="room">Каб</string>
     <string name="priority">Приоритет</string>
     <string name="subject">Предмет</string>
     <string name="group_choice_text">Выберите группу:</string>
-    <string name="teacher_choice_text">Выберите преподавателя:</string>
+    <string name="share">Поделиться</string>
 </resources>
