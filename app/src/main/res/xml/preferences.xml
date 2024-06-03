@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/app_settings">
+        <CheckBoxPreference
+            app:key="addTeacherSearch"
+            app:title="@string/option_add_teacher_search"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/view_settings">
+        <ListPreference
+            app:key="theme"
+            app:title="@string/option_theme"
+            app:entryValues="@array/theme_values"
+            app:entries="@array/theme_entries"
+            app:defaultValue="system"/>
+    </PreferenceCategory>
+</PreferenceScreen>

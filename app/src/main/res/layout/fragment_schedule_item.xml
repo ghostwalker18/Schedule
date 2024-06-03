@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".10"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/schedule_text_size"
+            android:textAlignment="center"
+            android:text="@string/number"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.45"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/schedule_text_size"
+            android:textAlignment="center"
+            android:text="@string/subject"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.15"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/schedule_text_size"
+            android:textAlignment="center"
+            android:text="@string/room"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.20"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/schedule_text_size"
+            android:textAlignment="center"
+            android:text="@string/priority"/>
+    </TableRow>
+</TableLayout>

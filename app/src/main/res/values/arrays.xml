@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="theme_entries">
+        <item>Системная</item>
+        <item>Темная</item>
+        <item>Светлая</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>system</item>
+        <item>night</item>
+        <item>day</item>
+    </string-array>
+</resources>
