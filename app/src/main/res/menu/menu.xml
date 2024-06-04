@@ -5,6 +5,7 @@
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
+        android:icon="@drawable/baseline_settings_48"
         android:orderInCategory="2"
         app:showAsAction="ifRoom"/>
     <item

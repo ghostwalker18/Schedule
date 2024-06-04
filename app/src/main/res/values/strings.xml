@@ -13,5 +13,9 @@
     <string name="priority">Приоритет</string>
     <string name="subject">Предмет</string>
     <string name="group_choice_text">Выберите группу:</string>
+    <string name="teacher_choice_text">Выберите преподавателя:</string>
     <string name="share">Поделиться</string>
+    <string name="back">Назад</string>
+    <string name="forward">Вперед</string>
+    <string name="teacher">Препод.</string>
 </resources>
