@@ -4,6 +4,11 @@
     <string name="days_tab">Расписание занятий</string>
     <string name="times_tab">Расписание звонков</string>
     <string name="day_table">Расписание на день</string>
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
     <string name="app_settings">Приложение</string>
     <string name="view_settings">Внешний вид</string>
     <string name="option_theme">Тема</string>
