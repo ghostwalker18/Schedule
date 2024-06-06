@@ -24,4 +24,5 @@
     <string name="forward">Вперед</string>
     <string name="teacher">Препод.</string>
     <string name="schedule_style">Режим отображения расписания</string>
+    <string name="do_not_update_times">Не обновлять звонки</string>
 </resources>

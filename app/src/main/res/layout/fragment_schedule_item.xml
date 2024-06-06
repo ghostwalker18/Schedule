@@ -9,6 +9,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
         android:id="@+id/button"/>
 
     <TableLayout

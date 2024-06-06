@@ -76,12 +76,7 @@ public class ScheduleItemFragment extends Fragment implements Observer,
       button.setText(generateTitle(date, dayOfWeekID));
       button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
-      if(isOpened){
-         table.setVisibility(View.VISIBLE);
-      }
-      else{
-         table.setVisibility(View.GONE);
-      }
+      showTable();
       setUpMode();
    }
    private void setUpMode(){
@@ -98,16 +93,28 @@ public class ScheduleItemFragment extends Fragment implements Observer,
 
    private void showSchedule(View view){
       isOpened = !isOpened;
-      if(isOpened){
-         table.setVisibility(View.VISIBLE);
-      }
-      else{
-         table.setVisibility(View.GONE);
-      }
+      showTable();
    }
 
    private void openScheduleInActivity(View view){
       startActivity(new Intent(this.getActivity(), ScheduleItemActivity.class));
+   }
+
+   private void showTable(){
+      if(isOpened){
+         button.setCompoundDrawablesWithIntrinsicBounds(null,
+                 null,
+                 getResources().getDrawable(R.drawable.baseline_keyboard_arrow_up_24),
+                 null);
+         table.setVisibility(View.VISIBLE);
+      }
+      else{
+         button.setCompoundDrawablesWithIntrinsicBounds(null,
+                 null,
+                 getResources().getDrawable(R.drawable.baseline_keyboard_arrow_down_24),
+                 null);
+         table.setVisibility(View.GONE);
+      }
    }
 
    private String generateTitle(Calendar date,  int dayOfWeekId){
