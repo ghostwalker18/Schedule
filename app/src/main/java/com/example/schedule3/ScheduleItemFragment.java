@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Observable;
@@ -17,8 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
-
-import org.json.JSONObject;
 
 public class ScheduleItemFragment extends Fragment implements Observer,
         SharedPreferences.OnSharedPreferenceChangeListener {

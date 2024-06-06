@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.Date;
 import java.util.Observer;
 import java.util.Vector;
@@ -64,11 +63,13 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       setUpTeacherSearch(this.view, prefs);
       view.findViewById(R.id.forward_button).setOnClickListener(v -> {state.goNextWeek();});
       view.findViewById(R.id.back_button).setOnClickListener(v -> {state.goPreviousWeek();});
-      for(ScheduleItemFragment day: days){
-         getParentFragmentManager()
-                 .beginTransaction()
-                 .add(R.id.days_container, day)
-                 .commit();
+      if(savedInstanceState == null){
+         for(ScheduleItemFragment day: days){
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.days_container, day)
+                    .commit();
+         }
       }
    }
 
