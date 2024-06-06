@@ -1,9 +1,13 @@
 package com.example.schedule3;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Observable;
@@ -16,7 +20,8 @@ import android.widget.TableLayout;
 
 import org.json.JSONObject;
 
-public class ScheduleItemFragment extends Fragment implements Observer {
+public class ScheduleItemFragment extends Fragment implements Observer,
+        SharedPreferences.OnSharedPreferenceChangeListener {
    private static HashMap<Integer, Integer> weekdaysNumbers = new HashMap<>();
    static {
       weekdaysNumbers.put(R.string.monday, Calendar.MONDAY);
@@ -25,7 +30,9 @@ public class ScheduleItemFragment extends Fragment implements Observer {
       weekdaysNumbers.put(R.string.thursday, Calendar.THURSDAY);
       weekdaysNumbers.put(R.string.friday, Calendar.FRIDAY);
    }
+   private SharedPreferences preferences;
    private View view;
+   private Button button;
    private TableLayout table;
    private Calendar date;
    private int year;
@@ -52,6 +59,7 @@ public class ScheduleItemFragment extends Fragment implements Observer {
       if(isDateToday(date)){
          isOpened = true;
       };
+      preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
    }
 
    @Override
@@ -64,7 +72,7 @@ public class ScheduleItemFragment extends Fragment implements Observer {
    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
       super.onViewCreated(view, savedInstanceState);
       this.view = view;
-      Button button = view.findViewById(R.id.button);
+      button = view.findViewById(R.id.button);
       button.setText(generateTitle(date, dayOfWeekID));
       button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
@@ -74,6 +82,32 @@ public class ScheduleItemFragment extends Fragment implements Observer {
       else{
          table.setVisibility(View.GONE);
       }
+      setUpMode();
+   }
+   private void setUpMode(){
+      String mode = preferences.getString("scheduleStyle", "");
+      switch (mode){
+         case "in_fragment":
+            button.setOnClickListener(this::showSchedule);
+            break;
+         case "in_activity":
+            button.setOnClickListener(this::openScheduleInActivity);
+            break;
+      }
+   }
+
+   private void showSchedule(View view){
+      isOpened = !isOpened;
+      if(isOpened){
+         table.setVisibility(View.VISIBLE);
+      }
+      else{
+         table.setVisibility(View.GONE);
+      }
+   }
+
+   private void openScheduleInActivity(View view){
+      startActivity(new Intent(this.getActivity(), ScheduleItemActivity.class));
    }
 
    private String generateTitle(Calendar date,  int dayOfWeekId){
@@ -110,6 +144,17 @@ public class ScheduleItemFragment extends Fragment implements Observer {
 
    @Override
    public void update(Observable observable, Object o) {
+      ScheduleState state = (ScheduleState)observable;
+      date = new Calendar.Builder().setWeekDate(state.getYear(),state.getWeek(), weekdaysNumbers.get(dayOfWeekID)).build();
+      button.setText(generateTitle(date, this.dayOfWeekID));
+   }
 
+   @Override
+   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String s) {
+      switch (s){
+         case "scheduleStyle":
+            setUpMode();
+            break;
+      }
    }
 }
