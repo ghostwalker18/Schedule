@@ -36,6 +36,7 @@ public class ScheduleItemFragment extends Fragment implements Observer,
    private int week;
    private int dayOfWeekID;
    private boolean isOpened = false;
+   private String mode;
 
    public static ScheduleItemFragment newInstance(int year, int week, int dayOfWeekId) {
       Bundle args = new Bundle();
@@ -73,11 +74,11 @@ public class ScheduleItemFragment extends Fragment implements Observer,
       button.setText(generateTitle(date, dayOfWeekID));
       button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
-      showTable();
       setUpMode();
+      showTable();
    }
    private void setUpMode(){
-      String mode = preferences.getString("scheduleStyle", "");
+      mode = preferences.getString("scheduleStyle", "");
       switch (mode){
          case "in_fragment":
             button.setOnClickListener(this::showSchedule);
@@ -98,7 +99,7 @@ public class ScheduleItemFragment extends Fragment implements Observer,
    }
 
    private void showTable(){
-      if(isOpened){
+      if(isOpened && mode.equals("in_fragment")){
          button.setCompoundDrawablesWithIntrinsicBounds(null,
                  null,
                  getResources().getDrawable(R.drawable.baseline_keyboard_arrow_up_24),
