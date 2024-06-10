@@ -6,8 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -17,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 
-public class ScheduleItemFragment extends Fragment implements Observer,
+public class ScheduleItemFragment extends Fragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
    private static HashMap<Integer, Integer> weekdaysNumbers = new HashMap<>();
    static {
@@ -31,33 +34,34 @@ public class ScheduleItemFragment extends Fragment implements Observer,
    private View view;
    private Button button;
    private TableLayout table;
+   private ScheduleState state;
    private Calendar date;
+   private String group = null;
+   private String teacher = null;
    private int year;
    private int week;
+   private LiveData<Lesson[]> lessons;
    private int dayOfWeekID;
    private boolean isOpened = false;
    private String mode;
 
-   public static ScheduleItemFragment newInstance(int year, int week, int dayOfWeekId) {
+
+
+   public static ScheduleItemFragment newInstance(int dayOfWeekId) {
       Bundle args = new Bundle();
-      args.putInt("year", year);
-      args.putInt("week", week);
       args.putInt("dayOfWeek", dayOfWeekId);
       ScheduleItemFragment fragment = new ScheduleItemFragment();
       fragment.setArguments(args);
       return fragment;
    }
+
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {
+      state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
       super.onCreate(savedInstanceState);
       dayOfWeekID = getArguments().getInt("dayOfWeek");
-      week = getArguments().getInt("week");
-      year = getArguments().getInt("year");
-      date = new Calendar.Builder().setWeekDate(year, week, weekdaysNumbers.get(dayOfWeekID)).build();
-      if(isDateToday(date)){
-         isOpened = true;
-      };
       preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
    }
 
    @Override
@@ -71,12 +75,26 @@ public class ScheduleItemFragment extends Fragment implements Observer,
       super.onViewCreated(view, savedInstanceState);
       this.view = view;
       button = view.findViewById(R.id.button);
-      button.setText(generateTitle(date, dayOfWeekID));
       button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
+      state.getCalendar().observe(getViewLifecycleOwner(), calendar ->{
+         date = new Calendar.Builder()
+                 .setWeekDate(state.getYear(), state.getWeek(), weekdaysNumbers.get(dayOfWeekID))
+                 .build();
+         if(isDateToday(date)){
+            isOpened = true;
+         };
+         button.setText(generateTitle(date, dayOfWeekID));
+         showTable();
+      });
       setUpMode();
-      showTable();
    }
+
+   @Override
+   public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+      super.onViewStateRestored(savedInstanceState);
+   }
+
    private void setUpMode(){
       mode = preferences.getString("scheduleStyle", "");
       switch (mode){
@@ -145,13 +163,6 @@ public class ScheduleItemFragment extends Fragment implements Observer,
          return true;
       }
       return false;
-   }
-
-   @Override
-   public void update(Observable observable, Object o) {
-      ScheduleState state = (ScheduleState)observable;
-      date = new Calendar.Builder().setWeekDate(state.getYear(),state.getWeek(), weekdaysNumbers.get(dayOfWeekID)).build();
-      button.setText(generateTitle(date, this.dayOfWeekID));
    }
 
    @Override

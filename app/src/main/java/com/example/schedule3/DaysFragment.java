@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 public class DaysFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -34,30 +36,18 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       db = ScheduleApp.getInstance().getDatabase();
       prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
       prefs.registerOnSharedPreferenceChangeListener(this);
-      state = new ScheduleState(new Date());
+      state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
+      state.setCalendar(new Date());
       days.add(ScheduleItemFragment.newInstance(
-              state.getYear(),
-              state.getWeek(),
-              R.string.monday));
+                 R.string.monday));
       days.add(ScheduleItemFragment.newInstance(
-              state.getYear(),
-              state.getWeek(),
-              R.string.tuesday));
+                 R.string.tuesday));
       days.add(ScheduleItemFragment.newInstance(
-              state.getYear(),
-              state.getWeek(),
-              R.string.wednesday));
+                 R.string.wednesday));
       days.add(ScheduleItemFragment.newInstance(
-              state.getYear(),
-              state.getWeek(),
-              R.string.thursday));
+                 R.string.thursday));
       days.add(ScheduleItemFragment.newInstance(
-              state.getYear(),
-              state.getWeek(),
-              R.string.friday));
-      for (ScheduleItemFragment day:days) {
-         state.addObserver((Observer)day);
-      }
+                 R.string.friday));
    }
 
    @Nullable
@@ -72,8 +62,8 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       this.view = view;
       setUpTeacherSearch(this.view, prefs);
       setUpGroupSearch(this.view);
-      view.findViewById(R.id.forward_button).setOnClickListener(v -> {state.goNextWeek();});
-      view.findViewById(R.id.back_button).setOnClickListener(v -> {state.goPreviousWeek();});
+      view.findViewById(R.id.forward_button).setOnClickListener(v -> state.goNextWeek());
+      view.findViewById(R.id.back_button).setOnClickListener(v -> state.goPreviousWeek());
       if(savedInstanceState == null){
          for(ScheduleItemFragment day: days){
             getParentFragmentManager()
