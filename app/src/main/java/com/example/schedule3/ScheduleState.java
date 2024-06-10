@@ -1,11 +1,8 @@
 package com.example.schedule3;
 
-import android.os.Build;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Observable;
-
-import androidx.annotation.RequiresApi;
 
 public class ScheduleState extends Observable {
    private String group;
@@ -13,7 +10,6 @@ public class ScheduleState extends Observable {
    private int year;
    private int week;
    private Calendar calendar;
-   @RequiresApi(api = Build.VERSION_CODES.O)
    public ScheduleState(Date currentDate){
       calendar = new Calendar.Builder().setInstant(currentDate).build();
       year = calendar.get(Calendar.YEAR);

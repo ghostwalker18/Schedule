@@ -1,22 +1,47 @@
 package com.example.schedule3;
 
+import java.util.Calendar;
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.TypeConverters;
 
-@Entity(primaryKeys = {"date", "number", "room"})
+@Entity(tableName = "tblSchedule", primaryKeys = {"lessonDate", "roomNumber", "lessonNumber"})
 public class Lesson {
-    @ColumnInfo(name="date")
-    public String date;
-    @ColumnInfo(name="number")
-    public int number;
-    @ColumnInfo(name="room")
-    public int room;
-    @ColumnInfo(name="times")
+    @TypeConverters({DateConverters.class})
+    @ColumnInfo(name="lessonDate")
+    @NonNull
+    public Calendar date;
+    @ColumnInfo(name="lessonNumber")
+    @NonNull
+    public String lessonNumber;
+    @ColumnInfo(name="roomNumber")
+    @NonNull
+    public int roomNumber;
+    @ColumnInfo(name="lessonTimes")
+    @NonNull
     public String times;
-    @ColumnInfo(name="group")
+    @ColumnInfo(name="groupName")
+    @NonNull
     public String group;
-    @ColumnInfo(name="subject")
+    @ColumnInfo(name="subjectName")
+    @NonNull
     public String subject;
-    @ColumnInfo(name="teacher")
+    @ColumnInfo(name="teacherName")
     public String teacher;
+
+    public Lesson() {
+        date = Calendar.getInstance();
+    }
+
+    public Lesson(Calendar date, String lessonNumber, int roomNumber, String times,
+                  String group, String subject, String teacher){
+        this.date = date;
+        this.lessonNumber = lessonNumber;
+        this.roomNumber = roomNumber;
+        this.times = times;
+        this.group = group;
+        this.subject = subject;
+        this.teacher = teacher;
+    }
 }

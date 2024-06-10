@@ -5,23 +5,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import java.util.Date;
 import java.util.Observer;
 import java.util.Vector;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.preference.PreferenceManager;
 
 public class DaysFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
+   private AppDatabase db;
    private View view;
    private ScheduleState state;
+   private Spinner groupSpinner;
+   private LiveData<String[]> groups;
+   private Spinner teacherSpinner;
+   private LiveData<String[]> teachers;
+
    private Vector<ScheduleItemFragment> days = new Vector<>();
 
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
+      db = ScheduleApp.getInstance().getDatabase();
       prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
       prefs.registerOnSharedPreferenceChangeListener(this);
       state = new ScheduleState(new Date());
@@ -61,6 +71,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       super.onViewCreated(view, savedInstanceState);
       this.view = view;
       setUpTeacherSearch(this.view, prefs);
+      setUpGroupSearch(this.view);
       view.findViewById(R.id.forward_button).setOnClickListener(v -> {state.goNextWeek();});
       view.findViewById(R.id.back_button).setOnClickListener(v -> {state.goPreviousWeek();});
       if(savedInstanceState == null){
@@ -81,15 +92,36 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       }
    }
 
+   private void setUpGroupSearch(View view){
+      groupSpinner = view.findViewById(R.id.group);
+      groups = db.lessonDao().getGroups();
+      groups.observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<String[]>() {
+         @Override
+         public void onChanged(String[] strings) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
+            groupSpinner.setAdapter(adapter);
+         }
+      });
+   }
+
    private void setUpTeacherSearch(View view, SharedPreferences prefs){
       boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
+      teacherSpinner = view.findViewById(R.id.teacher);
+      teachers = db.lessonDao().getTeachers();
+      teachers.observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<String[]>() {
+         @Override
+         public void onChanged(String[] strings) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
+            teacherSpinner.setAdapter(adapter);
+         }
+      });
       if(addTeacherSearch){
          view.findViewById(R.id.teacherLabel).setVisibility(View.VISIBLE);
-         view.findViewById(R.id.teacher).setVisibility(View.VISIBLE);
+         teacherSpinner.setVisibility(View.VISIBLE);
       }
       else{
          view.findViewById(R.id.teacherLabel).setVisibility(View.GONE);
-         view.findViewById(R.id.teacher).setVisibility(View.GONE);
+         teacherSpinner.setVisibility(View.GONE);
       }
    }
 }
