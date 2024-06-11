@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="0.10"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:id="@+id/number"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="0.45"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:id="@+id/subject"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="0.20"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:id="@+id/teacher"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="0.15"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:id="@+id/room"/>
+</TableRow>

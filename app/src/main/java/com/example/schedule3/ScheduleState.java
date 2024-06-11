@@ -22,6 +22,7 @@ public class ScheduleState extends ViewModel{
    public LiveData<Calendar> getCalendar(){
       return calendar;
    }
+
    public void goNextWeek(){
       Calendar date = calendar.getValue();
       date.add(Calendar.WEEK_OF_YEAR, 1);
@@ -59,12 +60,12 @@ public class ScheduleState extends ViewModel{
    }
 
    public LiveData<Lesson[]>getLessons(Calendar date){
-      if(teacher != null && group != null)
+      if(teacher.getValue() != null && group.getValue() != null)
          return db.lessonDao().getLessonsForGroupWithTeacher(date, group.getValue(), teacher.getValue());
-      else if(teacher != null)
+      else if(teacher.getValue() != null)
             return db.lessonDao().getLessonsForTeacher(date, teacher.getValue());
-         else if (group != null)
+         else if (group.getValue() != null)
             return db.lessonDao().getLessonsForGroup(date, group.getValue());
-               else return null;
+               else return new MutableLiveData<>(new Lesson[]{});
    }
 }

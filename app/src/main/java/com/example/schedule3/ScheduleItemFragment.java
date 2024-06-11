@@ -1,5 +1,6 @@
 package com.example.schedule3;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,18 +8,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class ScheduleItemFragment extends Fragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -35,12 +38,8 @@ public class ScheduleItemFragment extends Fragment implements
    private Button button;
    private TableLayout table;
    private ScheduleState state;
-   private Calendar date;
-   private String group = null;
-   private String teacher = null;
-   private int year;
-   private int week;
-   private LiveData<Lesson[]> lessons;
+   private MutableLiveData<Calendar> date = new MutableLiveData<>();
+   private LiveData<Lesson[]> lessons = new MutableLiveData<>();
    private int dayOfWeekID;
    private boolean isOpened = false;
    private String mode;
@@ -57,11 +56,10 @@ public class ScheduleItemFragment extends Fragment implements
 
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {
-      state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
       super.onCreate(savedInstanceState);
+      state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
       dayOfWeekID = getArguments().getInt("dayOfWeek");
       preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
    }
 
    @Override
@@ -77,22 +75,29 @@ public class ScheduleItemFragment extends Fragment implements
       button = view.findViewById(R.id.button);
       button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
-      state.getCalendar().observe(getViewLifecycleOwner(), calendar ->{
-         date = new Calendar.Builder()
+      state.getCalendar().observe(getViewLifecycleOwner(), calendar -> {
+         date.setValue(new Calendar.Builder()
                  .setWeekDate(state.getYear(), state.getWeek(), weekdaysNumbers.get(dayOfWeekID))
-                 .build();
+                 .build());
+      });
+      state.getGroup().observe(getViewLifecycleOwner(), group -> {
+         lessons = state.getLessons(date.getValue());
+         lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
+      });
+      state.getTeacher().observe(getViewLifecycleOwner(), teacher -> {
+         lessons = state.getLessons(date.getValue());
+         lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
+      });
+      date.observe(getViewLifecycleOwner(), date -> {
          if(isDateToday(date)){
             isOpened = true;
          };
          button.setText(generateTitle(date, dayOfWeekID));
+         lessons = state.getLessons(date);
+         lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
          showTable();
       });
       setUpMode();
-   }
-
-   @Override
-   public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-      super.onViewStateRestored(savedInstanceState);
    }
 
    private void setUpMode(){
@@ -163,6 +168,22 @@ public class ScheduleItemFragment extends Fragment implements
          return true;
       }
       return false;
+   }
+
+   private void populateTable(TableLayout table, Lesson[] lessons){
+      table.removeViews(1, table.getChildCount() - 1);
+      for(Lesson lesson : lessons){
+         addLesson(table, lesson);
+      }
+   }
+   private void addLesson(TableLayout table, Lesson lesson){
+      LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
+      ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber.toString());
+      ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
+      ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
+      ((TextView)tr.findViewById(R.id.room)).setText(Integer.toString(lesson.roomNumber));
+      table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
    }
 
    @Override
