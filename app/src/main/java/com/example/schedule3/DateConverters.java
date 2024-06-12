@@ -2,7 +2,6 @@ package com.example.schedule3;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import androidx.room.TypeConverter;
 
 public class DateConverters {

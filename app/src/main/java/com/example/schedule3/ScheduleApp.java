@@ -12,6 +12,7 @@ public class ScheduleApp extends Application implements SharedPreferences
     private static ScheduleApp instance;
     private SharedPreferences preferences;
     private AppDatabase database;
+    private ScheduleRepository repository;
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
         switch (key){
@@ -30,6 +31,7 @@ public class ScheduleApp extends Application implements SharedPreferences
                 .createFromAsset("testDB1")
                 .build();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        repository = new ScheduleRepository(this);
         String theme = preferences.getString("theme", "");
         setTheme(theme);
         preferences.registerOnSharedPreferenceChangeListener(this);
@@ -41,6 +43,10 @@ public class ScheduleApp extends Application implements SharedPreferences
 
     public AppDatabase getDatabase(){
         return database;
+    }
+
+    public ScheduleRepository getRepository(){
+        return repository;
     }
 
     private void setTheme(String theme){

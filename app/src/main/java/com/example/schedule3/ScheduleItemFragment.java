@@ -21,8 +21,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 public class ScheduleItemFragment extends Fragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
    private static HashMap<Integer, Integer> weekdaysNumbers = new HashMap<>();

@@ -19,10 +19,6 @@ public class ScheduleState extends ViewModel{
       calendar.setValue(date);
    }
 
-   public LiveData<Calendar> getCalendar(){
-      return calendar;
-   }
-
    public void goNextWeek(){
       Calendar date = calendar.getValue();
       date.add(Calendar.WEEK_OF_YEAR, 1);
@@ -33,6 +29,10 @@ public class ScheduleState extends ViewModel{
       Calendar date = calendar.getValue();
       date.add(Calendar.WEEK_OF_YEAR, -1);
       calendar.setValue(date);
+   }
+
+   public LiveData<Calendar> getCalendar(){
+      return calendar;
    }
 
    public int getYear(){

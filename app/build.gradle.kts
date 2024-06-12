@@ -37,6 +37,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.preference:preference:1.2.1")
     implementation("com.google.guava:listenablefuture:1.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("androidx.room:room-guava:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
