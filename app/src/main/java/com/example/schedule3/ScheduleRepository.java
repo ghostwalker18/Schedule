@@ -3,33 +3,112 @@ package com.example.schedule3;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 class ScheduleRepository {
    private AppDatabase db;
    private SharedPreferences preferences;
-   private Retrofit api;
-   private String mondayTimesURL = "https://ptgh.onego.ru/9006/#gallery-1";
+   private ScheduleNetworkAPI api;
+   private String baseUri = "https://ptgh.onego.ru/";
    private String mondayTimesPath = "images/mondayTimes.jpg";
-   private String otherTimesURL = "https://ptgh.onego.ru/9006/#gallery-2";
    private String otherTimesPath = "images/otherTimes.jpg";
+
+   private MutableLiveData<Bitmap> mondayTimes;
+   private MutableLiveData<Bitmap> otherTimes;
 
    public ScheduleRepository(Application app){
       db = ScheduleApp.getInstance().getDatabase();
+      api = new Retrofit.Builder()
+              .baseUrl(baseUri)
+              .build()
+              .create(ScheduleNetworkAPI.class);
       preferences = PreferenceManager.getDefaultSharedPreferences(app);
    }
 
    public void update(){
-      File mondayTimes = new File(mondayTimesPath);
-      File otherTimes = new File(otherTimesPath);
-      if(!preferences.getBoolean("doNotUpdateTimes", true || !mondayTimes.exists() || !otherTimes.exists())){
+      File mondayTimesFile = new File(mondayTimesPath);
+      File otherTimesFile = new File(otherTimesPath);
+      if(!preferences.getBoolean("doNotUpdateTimes", true || !mondayTimesFile.exists() || !otherTimesFile.exists())){
+         Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
+         mondayTimesResponse.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+               new Thread(
+                       () -> {
+                          Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                          response.body().close();
+                          mondayTimes.setValue(bitmap);
+                          try {
+                             new FileOutputStream(mondayTimesFile).write(bitmap.getRowBytes());
+                          } catch (IOException e) {
+                             throw new RuntimeException(e);
+                          }
+                       }
+               ).start();
+            }
 
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+         });
+         Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
+         otherTimesResponse.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+               new Thread(
+                       () -> {
+                          Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                          response.body().close();
+                          otherTimes.setValue(bitmap);
+                          try {
+                             new FileOutputStream(otherTimesFile).write(bitmap.getRowBytes());
+                          } catch (IOException e) {
+                             throw new RuntimeException(e);
+                          }
+                       }
+               ).start();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+         });
       }
+      else{
+            new Thread(() -> {
+               try {
+                  Bitmap bitmap1 = BitmapFactory.decodeStream(new FileInputStream(mondayTimesFile));
+                  mondayTimes.setValue(bitmap1);
+                  Bitmap bitmap2 = BitmapFactory.decodeStream(new FileInputStream(mondayTimesFile));
+                  otherTimes.setValue(bitmap2);
+               } catch (IOException e) {
+                  throw new RuntimeException(e);
+               }
+            }).start();
+      }
+   }
+
+   public LiveData<String[]> getGroups(){
+      return db.lessonDao().getGroups();
+   }
+
+   public LiveData<String[]> getTeachers(){
+      return db.lessonDao().getTeachers();
    }
 
    public LiveData<Lesson[]> getLessons(String group, String teacher, Calendar date) {
@@ -43,10 +122,10 @@ class ScheduleRepository {
    }
 
    public LiveData<Bitmap> getMondayTimes(){
-         return null;
+         return mondayTimes;
    }
 
    public LiveData<Bitmap> getOtherTimes(){
-         return null;
+         return otherTimes;
    }
 }

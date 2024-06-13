@@ -20,6 +20,7 @@ import androidx.preference.PreferenceManager;
 public class DaysFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
    private AppDatabase db;
+   private ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private View view;
    private ScheduleState state;
    private Spinner groupSpinner;
@@ -95,7 +96,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
 
          }
       });
-      groups = db.lessonDao().getGroups();
+      groups = repository.getGroups();
       groups.observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
          groupSpinner.setAdapter(adapter);
@@ -117,7 +118,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
 
          }
       });
-      teachers = db.lessonDao().getTeachers();
+      teachers = repository.getTeachers();
       teachers.observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
          teacherSpinner.setAdapter(adapter);
