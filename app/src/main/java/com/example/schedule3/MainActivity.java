@@ -1,12 +1,9 @@
 package com.example.schedule3;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
-import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.appcompat.widget.ShareActionProvider;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    private SectionsPagerAdapter pagerAdapter;
-    private ShareActionProvider shareActionProvider;
+    private ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +22,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        ViewPager pager = (ViewPager)findViewById(R.id.pager);
-        pager.setAdapter(pagerAdapter);
+        pager = (ViewPager)findViewById(R.id.pager);
+        pager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(pager);
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_share);
-        shareActionProvider = (ShareActionProvider)MenuItemCompat.getActionProvider(menuItem);
-        setShareActionIntent("Schedule stub");
         return super.onCreateOptionsMenu(menu);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if (item.getItemId() == R.id.action_settings) {
@@ -49,14 +40,20 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+        if(item.getItemId() == R.id.action_share){
+            switch (pager.getCurrentItem()){
+                case 0:
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, "schedule_stub");
+                    Intent shareIntent = Intent.createChooser(intent, null);
+                    startActivity(shareIntent);
+                    return true;
+                default:
+                    return true;
+            }
+        }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setShareActionIntent(String text){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/*");
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        shareActionProvider.setShareIntent(intent);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
