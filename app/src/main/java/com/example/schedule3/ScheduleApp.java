@@ -32,6 +32,7 @@ public class ScheduleApp extends Application implements SharedPreferences
                 .build();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         repository = new ScheduleRepository(this);
+        repository.update();
         String theme = preferences.getString("theme", "");
         setTheme(theme);
         preferences.registerOnSharedPreferenceChangeListener(this);

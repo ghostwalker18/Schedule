@@ -25,11 +25,13 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:id="@+id/monday_times"/>
 
             <ProgressBar
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/monday_times_stub"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -41,11 +43,13 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:id="@+id/other_times"/>
 
             <ProgressBar
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:id="@+id/other_times_stub"/>
         </RelativeLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
