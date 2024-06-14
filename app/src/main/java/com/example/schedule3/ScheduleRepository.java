@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
@@ -54,8 +53,9 @@ class ScheduleRepository{
                               Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                               response.body().close();
                               mondayTimes.postValue(bitmap);
-                              try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath, Context.MODE_PRIVATE)){
-                                  outputStream.write(bitmap.getRowBytes());
+                              try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
+                                      Context.MODE_PRIVATE)){
+                                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                               } catch (IOException e) {
                                   throw new RuntimeException(e);
                               }
@@ -77,10 +77,11 @@ class ScheduleRepository{
                        () -> {
                           if(response.body() != null){
                               Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                              response.body().close();
                               otherTimes.postValue(bitmap);
-                              try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath, Context.MODE_PRIVATE)) {
-                                  outputStream.write(bitmap.getRowBytes());
+                              response.body().close();
+                              try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
+                                      Context.MODE_PRIVATE)) {
+                                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                               } catch (IOException e) {
                                   throw new RuntimeException(e);
                               }
@@ -97,14 +98,10 @@ class ScheduleRepository{
       }
       else{
             new Thread(() -> {
-               try {
-                  Bitmap bitmap1 = BitmapFactory.decodeStream(context.openFileInput(mondayTimesPath));
+                  Bitmap bitmap1 = BitmapFactory.decodeFile(mondayTimesFile.getAbsolutePath());
                   mondayTimes.postValue(bitmap1);
-                  Bitmap bitmap2 = BitmapFactory.decodeStream(context.openFileInput(otherTimesPath));
+                  Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
                   otherTimes.postValue(bitmap2);
-               } catch (IOException e) {
-                  throw new RuntimeException(e);
-               }
             }).start();
       }
    }
