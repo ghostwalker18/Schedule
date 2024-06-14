@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:padding="10dp"
         tools:context="com.example.schedule3.TimesFragment"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="fill_vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -21,6 +21,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
                 android:visibility="gone"
                 android:id="@+id/monday_times"/>
 
@@ -39,6 +40,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
                 android:visibility="gone"
                 android:id="@+id/other_times"/>
 

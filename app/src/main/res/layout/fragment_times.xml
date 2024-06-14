@@ -9,16 +9,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="10dp"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="fill_vertical"
         tools:context="com.shinsetsunaoni.shedule.TimesFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
             android:paddingVertical="10dp">
@@ -26,6 +26,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:visibility="gone"
                 android:id="@+id/monday_times"/>
 
@@ -45,6 +47,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
                 android:visibility="gone"
                 android:id="@+id/other_times"/>
 
