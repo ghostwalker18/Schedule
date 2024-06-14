@@ -14,15 +14,11 @@ import androidx.lifecycle.LiveData;
 
 public class TimesFragment extends Fragment {
     private ScheduleRepository repository;
-    private LiveData<Bitmap> mondayTimes;
-    private LiveData<Bitmap> otherTimes;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         repository = ScheduleApp.getInstance().getRepository();
-        mondayTimes = repository.getMondayTimes();
-        otherTimes = repository.getOtherTimes();
     }
 
     @Override
@@ -34,11 +30,10 @@ public class TimesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mondayTimes.observe(getViewLifecycleOwner(), bitmap -> {
+        repository.getMondayTimes().observe(getViewLifecycleOwner(), bitmap -> {
             if(bitmap != null){
-                ImageView mondayTimesView = view.findViewById(R.id.monday_times);
-                mondayTimesView.setImageBitmap(bitmap);
-                mondayTimesView.setVisibility(View.VISIBLE);
+                ((ImageView)view.findViewById(R.id.monday_times)).setImageBitmap(bitmap);
+                view.findViewById(R.id.monday_times).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.monday_times_stub).setVisibility(View.GONE);
             }
             else{
@@ -46,11 +41,10 @@ public class TimesFragment extends Fragment {
                 view.findViewById(R.id.monday_times_stub).setVisibility(View.VISIBLE);
             }
         });
-        otherTimes.observe(getViewLifecycleOwner(), bitmap -> {
+        repository.getOtherTimes().observe(getViewLifecycleOwner(), bitmap -> {
             if(bitmap != null){
-                ImageView otherTimesView = view.findViewById(R.id.other_times);
-                otherTimesView.setImageBitmap(bitmap);
-                otherTimesView.setVisibility(View.VISIBLE);
+                ((ImageView)view.findViewById(R.id.other_times)).setImageBitmap(bitmap);
+                view.findViewById(R.id.other_times).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.other_times_stub).setVisibility(View.GONE);
             }
             else{

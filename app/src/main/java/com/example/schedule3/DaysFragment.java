@@ -19,7 +19,6 @@ import androidx.preference.PreferenceManager;
 
 public class DaysFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
-   private AppDatabase db;
    private ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private View view;
    private ScheduleState state;
@@ -33,7 +32,6 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      db = ScheduleApp.getInstance().getDatabase();
       prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
       prefs.registerOnSharedPreferenceChangeListener(this);
       state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
