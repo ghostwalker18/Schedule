@@ -98,6 +98,35 @@ public class ScheduleItemFragment extends Fragment implements
       setUpMode();
    }
 
+   public String getSchedule(){
+      String schedule = getString(R.string.date) + ": ";
+      schedule = schedule + DateConverters.toString(date.getValue()) + "\n";
+      schedule += "\n";
+
+      for(Lesson lesson : lessons.getValue()){
+         schedule = schedule + getString(R.string.number) + ": ";
+         schedule = schedule + lesson.lessonNumber + "\n";
+
+         schedule = schedule + getString(R.string.subject) + ": ";
+         schedule = schedule + lesson.subject + "\n";
+
+         schedule = schedule + getString(R.string.teacher) + ": ";
+         schedule = schedule + lesson.teacher + "\n";
+
+         schedule = schedule + getString(R.string.room) + ": ";
+         schedule = schedule + lesson.roomNumber + "\n";
+
+         schedule += "\n";
+      }
+      schedule += "\n";
+
+      return schedule;
+   }
+
+   public boolean isOpened(){
+      return isOpened;
+   }
+
    private void setUpMode(){
       mode = preferences.getString("scheduleStyle", "");
       switch (mode){

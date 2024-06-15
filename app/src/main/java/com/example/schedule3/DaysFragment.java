@@ -101,6 +101,9 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       });
    }
 
+   public Vector<ScheduleItemFragment> getDays(){
+      return days;
+   }
    private void setUpTeacherSearch(View view, SharedPreferences prefs){
       boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
       teacherSpinner = view.findViewById(R.id.teacher);

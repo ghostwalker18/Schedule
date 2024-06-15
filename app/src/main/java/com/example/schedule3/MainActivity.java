@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.io.File;
 import java.net.URI;
@@ -63,7 +64,14 @@ public class MainActivity extends AppCompatActivity {
     private boolean shareSchedule(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "schedule_stub");
+        String schedule = "";
+        DaysFragment daysFragment = (DaysFragment)((SectionsPagerAdapter)pager.getAdapter()).getItem(0);
+        for(ScheduleItemFragment day : daysFragment.getDays()){
+            if(day.isOpened()){
+                schedule += day.getSchedule();
+            }
+        }
+        intent.putExtra(Intent.EXTRA_TEXT, schedule);
         Intent shareIntent = Intent.createChooser(intent, null);
         startActivity(shareIntent);
         return true;
@@ -86,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
             shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
             shareIntent.setType("image/*");
             startActivity(Intent.createChooser(shareIntent, null));
+        }
+        else{
+            Toast toast = Toast.makeText(this, R.string.nothing_to_share, Toast.LENGTH_SHORT);
+            toast.show();
         }
         return true;
     }

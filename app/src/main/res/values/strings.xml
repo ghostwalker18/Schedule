@@ -13,6 +13,7 @@
     <string name="view_settings">Внешний вид</string>
     <string name="option_theme">Тема</string>
     <string name="option_add_teacher_search">Поиск по преподавателю</string>
+    <string name="date">Дата</string>
     <string name="number">Пара</string>
     <string name="room">Каб</string>
     <string name="priority">Приоритет</string>
@@ -20,6 +21,7 @@
     <string name="group_choice_text">Выберите группу:</string>
     <string name="teacher_choice_text">Выберите преподавателя:</string>
     <string name="share">Поделиться</string>
+    <string name="nothing_to_share">Пока нечем делиться</string>
     <string name="back">Назад</string>
     <string name="forward">Вперед</string>
     <string name="teacher">Препод.</string>
