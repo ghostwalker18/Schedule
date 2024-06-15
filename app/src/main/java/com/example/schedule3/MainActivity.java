@@ -1,12 +1,21 @@
 package com.example.schedule3;
 
+import android.content.Context;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+
+import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.ViewPager;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -48,6 +57,20 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(Intent.EXTRA_TEXT, "schedule_stub");
                     Intent shareIntent = Intent.createChooser(intent, null);
                     startActivity(shareIntent);
+                    return true;
+                case 1:
+                    ArrayList<Uri> imageUris = new ArrayList<Uri>();
+                    File mondayTimes = new File(getApplication().getFilesDir(), "mondayTimes.jpg");
+                    Uri mondayTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", mondayTimes);
+                    imageUris.add(mondayTimesURI);
+                    File otherTimes = new File(getApplication().getFilesDir(), "otherTimes.jpg");
+                    Uri otherTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", otherTimes);
+                    imageUris.add(otherTimesURI);
+
+                    Intent shareIntent2 = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    shareIntent2.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+                    shareIntent2.setType("image/*");
+                    startActivity(Intent.createChooser(shareIntent2, null));
                     return true;
                 default:
                     return true;
