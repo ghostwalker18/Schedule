@@ -52,31 +52,42 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.action_share){
             switch (pager.getCurrentItem()){
                 case 0:
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_TEXT, "schedule_stub");
-                    Intent shareIntent = Intent.createChooser(intent, null);
-                    startActivity(shareIntent);
-                    return true;
+                    return shareSchedule();
                 case 1:
-                    ArrayList<Uri> imageUris = new ArrayList<Uri>();
-                    File mondayTimes = new File(getApplication().getFilesDir(), "mondayTimes.jpg");
-                    Uri mondayTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", mondayTimes);
-                    imageUris.add(mondayTimesURI);
-                    File otherTimes = new File(getApplication().getFilesDir(), "otherTimes.jpg");
-                    Uri otherTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", otherTimes);
-                    imageUris.add(otherTimesURI);
-
-                    Intent shareIntent2 = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                    shareIntent2.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
-                    shareIntent2.setType("image/*");
-                    startActivity(Intent.createChooser(shareIntent2, null));
-                    return true;
-                default:
-                    return true;
+                    return shareTimes();
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean shareSchedule(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "schedule_stub");
+        Intent shareIntent = Intent.createChooser(intent, null);
+        startActivity(shareIntent);
+        return true;
+    }
+
+    private  boolean shareTimes(){
+        File mondayTimes = new File(getApplication().getFilesDir(), "mondayTimes.jpg");
+        File otherTimes = new File(getApplication().getFilesDir(), "otherTimes.jpg");
+
+        if(mondayTimes.exists() && otherTimes.exists()){
+            ArrayList<Uri> imageUris = new ArrayList<Uri>();
+
+            Uri mondayTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", mondayTimes);
+            imageUris.add(mondayTimesURI);
+
+            Uri otherTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", otherTimes);
+            imageUris.add(otherTimesURI);
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+            shareIntent.setType("image/*");
+            startActivity(Intent.createChooser(shareIntent, null));
+        }
+        return true;
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
