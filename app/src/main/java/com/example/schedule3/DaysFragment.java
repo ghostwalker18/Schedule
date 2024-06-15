@@ -98,12 +98,14 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       groups.observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
          groupSpinner.setAdapter(adapter);
+         state.setGroup(groupSpinner.getSelectedItem().toString());
       });
    }
 
    public Vector<ScheduleItemFragment> getDays(){
       return days;
    }
+
    private void setUpTeacherSearch(View view, SharedPreferences prefs){
       boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
       teacherSpinner = view.findViewById(R.id.teacher);

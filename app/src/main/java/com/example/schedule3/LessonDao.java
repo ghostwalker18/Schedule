@@ -29,10 +29,10 @@ public interface LessonDao {
     @Query("SELECT * FROM tblSchedule WHERE lessonDate = :date AND teacherName= :teacher")
     LiveData<Lesson[]> getLessonsForTeacher(Calendar date, String teacher);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     ListenableFuture<Long> insert(Lesson lesson);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     ListenableFuture<List<Long>> insertMany(Lesson... lessons);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
