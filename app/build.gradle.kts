@@ -41,6 +41,8 @@ dependencies {
     implementation("org.jsoup:jsoup:1.12.2")
     implementation("org.apache.poi:poi-ooxml:3.17")
     implementation("org.apache.xmlbeans:xmlbeans:3.1.0")
+    implementation("javax.xml.stream:stax-api:1.0")
+    implementation("com.fasterxml:aalto-xml:1.2.2")
     implementation("androidx.room:room-guava:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
