@@ -36,6 +36,7 @@ public class ScheduleItemFragment extends Fragment implements
    private Button button;
    private TableLayout table;
    private ScheduleState state;
+   private ScheduleRepository repository;
    private MutableLiveData<Calendar> date = new MutableLiveData<>();
    private LiveData<Lesson[]> lessons = new MutableLiveData<>();
    private int dayOfWeekID;
@@ -56,6 +57,7 @@ public class ScheduleItemFragment extends Fragment implements
    public void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
+      repository = ScheduleApp.getInstance().getRepository();
       dayOfWeekID = getArguments().getInt("dayOfWeek");
       preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
    }
@@ -79,11 +81,11 @@ public class ScheduleItemFragment extends Fragment implements
                  .build());
       });
       state.getGroup().observe(getViewLifecycleOwner(), group -> {
-         lessons = state.getLessons(date.getValue());
+         lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date.getValue());
          lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
       });
       state.getTeacher().observe(getViewLifecycleOwner(), teacher -> {
-         lessons = state.getLessons(date.getValue());
+         lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date.getValue());
          lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
       });
       date.observe(getViewLifecycleOwner(), date -> {
@@ -91,7 +93,7 @@ public class ScheduleItemFragment extends Fragment implements
             isOpened = true;
          };
          button.setText(generateTitle(date, dayOfWeekID));
-         lessons = state.getLessons(date);
+         lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date);
          lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
          showTable();
       });

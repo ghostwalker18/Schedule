@@ -5,10 +5,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
@@ -40,6 +45,7 @@ class ScheduleRepository{
    }
 
    public void update(){
+      //updating times files
       File mondayTimesFile = new File(context.getFilesDir(), mondayTimesPath);
       File otherTimesFile = new File(context.getFilesDir(), otherTimesPath);
       if(!preferences.getBoolean("doNotUpdateTimes", true) || !mondayTimesFile.exists() || !otherTimesFile.exists()){
@@ -103,7 +109,33 @@ class ScheduleRepository{
                   Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
                   otherTimes.postValue(bitmap2);
             }).start();
-      }
+      };
+      //updating schedule database
+      new Thread(() -> {
+            String[] scheduleLinks = getLinksForSchedule();
+            for(String link : scheduleLinks){
+                api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.body() != null){
+                            try(XSSFWorkbook excelFile = new XSSFWorkbook(response.body().byteStream())){
+                                List<Lesson> lessons = XMLStoLessonsConverter.convert(excelFile);
+                                db.lessonDao().insertMany(lessons);
+                            }
+                            catch (IOException e){
+                                throw new RuntimeException();
+                            }
+                            response.body().close();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+            }
+      }).start();
    }
 
    public LiveData<String[]> getGroups(){
@@ -130,5 +162,9 @@ class ScheduleRepository{
 
    public LiveData<Bitmap> getOtherTimes(){
          return otherTimes;
+   }
+
+   private String[] getLinksForSchedule(){
+       return new String[]{};
    }
 }

@@ -7,13 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class ScheduleState extends ViewModel{
-   private AppDatabase db;
    private MutableLiveData<String> group = new MutableLiveData<>();
    private MutableLiveData<String> teacher = new MutableLiveData<>();
    private MutableLiveData<Calendar> calendar = new MutableLiveData<>();
-   public ScheduleState(){
-      db = ScheduleApp.getInstance().getDatabase();
-   }
+
    public void setCalendar(Date currentDate){
       Calendar date = new Calendar.Builder().setInstant(currentDate).build();
       calendar.setValue(date);
@@ -57,15 +54,5 @@ public class ScheduleState extends ViewModel{
 
    public LiveData<String> getTeacher(){
       return teacher;
-   }
-
-   public LiveData<Lesson[]>getLessons(Calendar date){
-      if(teacher.getValue() != null && group.getValue() != null)
-         return db.lessonDao().getLessonsForGroupWithTeacher(date, group.getValue(), teacher.getValue());
-      else if(teacher.getValue() != null)
-            return db.lessonDao().getLessonsForTeacher(date, teacher.getValue());
-         else if (group.getValue() != null)
-            return db.lessonDao().getLessonsForGroup(date, group.getValue());
-               else return new MutableLiveData<>(new Lesson[]{});
    }
 }
