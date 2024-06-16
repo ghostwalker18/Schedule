@@ -7,10 +7,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -28,7 +33,8 @@ class ScheduleRepository{
    private final SharedPreferences preferences;
    private final ScheduleNetworkAPI api;
    private final Context context;
-   private final String baseUri = "https://ptgh.onego.ru/";
+   private final String baseUri = "https://ptgh.onego.ru/9006/";
+   private final String mainSelector = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
    private final String mondayTimesPath = "mondayTimes.jpg";
    private final String otherTimesPath = "otherTimes.jpg";
    private MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
@@ -112,7 +118,7 @@ class ScheduleRepository{
       };
       //updating schedule database
       new Thread(() -> {
-            String[] scheduleLinks = getLinksForSchedule();
+            List<String> scheduleLinks = getLinksForSchedule();
             for(String link : scheduleLinks){
                 api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -164,7 +170,21 @@ class ScheduleRepository{
          return otherTimes;
    }
 
-   private String[] getLinksForSchedule(){
-       return new String[]{};
+   private List<String> getLinksForSchedule(){
+       List<String> links = new ArrayList<>();
+       try{
+           Document doc = Jsoup.connect(baseUri).get();
+           Elements linkElements = doc.select(mainSelector).get(0)
+                   .select("tr").get(1)
+                   .select("td").get(1)
+                   .select("p > strong > span > a");
+           for(Element linkElement : linkElements){
+               links.add(linkElement.attr("href"));
+           }
+           return links;
+       }
+       catch (IOException e){
+           return links;
+       }
    }
 }
