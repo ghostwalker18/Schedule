@@ -1,21 +1,16 @@
 package com.example.schedule3;
 
-import android.content.Context;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
-
 import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.ViewPager;
 import androidx.fragment.app.Fragment;
@@ -24,6 +19,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager pager;
+    private DaysFragment daysFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(pager);
+        if(savedInstanceState == null){
+            daysFragment = (DaysFragment)((SectionsPagerAdapter)pager.getAdapter()).getItem(0);
+        }
+        else{
+            for(Fragment fragment : getSupportFragmentManager().getFragments()){
+                if(fragment instanceof DaysFragment)
+                    daysFragment = (DaysFragment)fragment;
+            }
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -65,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         String schedule = "";
-        DaysFragment daysFragment = (DaysFragment)((SectionsPagerAdapter)pager.getAdapter()).getItem(0);
         for(ScheduleItemFragment day : daysFragment.getDays()){
             if(day.isOpened()){
                 schedule += day.getSchedule();

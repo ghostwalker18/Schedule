@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
+import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,7 +28,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    private Spinner teacherSpinner;
    private LiveData<String[]> teachers;
 
-   private Vector<ScheduleItemFragment> days = new Vector<>();
+   private List<ScheduleItemFragment> days = new ArrayList<>();
 
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,16 +37,23 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       prefs.registerOnSharedPreferenceChangeListener(this);
       state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
       state.setCalendar(new Date());
-      days.add(ScheduleItemFragment.newInstance(
+      if(savedInstanceState == null){
+         days.add(ScheduleItemFragment.newInstance(
                  R.string.monday));
-      days.add(ScheduleItemFragment.newInstance(
+         days.add(ScheduleItemFragment.newInstance(
                  R.string.tuesday));
-      days.add(ScheduleItemFragment.newInstance(
+         days.add(ScheduleItemFragment.newInstance(
                  R.string.wednesday));
-      days.add(ScheduleItemFragment.newInstance(
+         days.add(ScheduleItemFragment.newInstance(
                  R.string.thursday));
-      days.add(ScheduleItemFragment.newInstance(
+         days.add(ScheduleItemFragment.newInstance(
                  R.string.friday));
+      }
+      else{
+         getChildFragmentManager()
+                 .getFragments()
+                 .forEach((item)->days.add((ScheduleItemFragment)item));
+      }
    }
 
    @Nullable
@@ -64,7 +72,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       view.findViewById(R.id.back_button).setOnClickListener(v -> state.goPreviousWeek());
       if(savedInstanceState == null){
          for(ScheduleItemFragment day: days){
-            getParentFragmentManager()
+            getChildFragmentManager()
                     .beginTransaction()
                     .add(R.id.days_container, day)
                     .commit();
@@ -102,7 +110,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       });
    }
 
-   public Vector<ScheduleItemFragment> getDays(){
+   public List<ScheduleItemFragment> getDays(){
       return days;
    }
 
