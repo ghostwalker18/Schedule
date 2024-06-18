@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScheduleItemActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+    </androidx.appcompat.widget.Toolbar>
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/schedule">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".10"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/schedule_text_size"
+                android:textAlignment="center"
+                android:text="@string/number"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".20"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/schedule_text_size"
+                android:textAlignment="center"
+                android:text="@string/times"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.45"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/schedule_text_size"
+                android:textAlignment="center"
+                android:text="@string/subject"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.20"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/schedule_text_size"
+                android:textAlignment="center"
+                android:text="@string/teacher"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.15"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/schedule_text_size"
+                android:textAlignment="center"
+                android:text="@string/room"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

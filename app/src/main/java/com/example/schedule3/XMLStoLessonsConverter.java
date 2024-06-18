@@ -27,7 +27,7 @@ public class XMLStoLessonsConverter {
             XSSFCell groupRowCell = groupsRow.getCell(j);
             if(groupRowCell == null )
                continue;
-            if(groupRowCell.getStringCellValue() != "")
+            if(!groupRowCell.getStringCellValue().equals(""))
                groups.put(j, groupRowCell.getStringCellValue());
          }
 
@@ -35,7 +35,7 @@ public class XMLStoLessonsConverter {
             NavigableSet<Integer> groupBounds = groups.navigableKeySet();
             for(int j = sheet.getFirstRowNum() + 5; j < sheet.getLastRowNum(); j +=2){
                for(int k : groupBounds){
-                  if(sheet.getRow(j).getCell(k).getStringCellValue() == groups.get(k))
+                  if(sheet.getRow(j).getCell(k).getStringCellValue().equals(groups.get(k)))
                      break scheduleFilling;
                   Lesson lesson = new Lesson();
                   lesson.date = DateConverters.fromString(date);
@@ -49,21 +49,22 @@ public class XMLStoLessonsConverter {
                   lesson.subject = sheet.getRow(j)
                           .getCell(k)
                           .getStringCellValue();
+                  lesson.teacher = sheet.getRow(j+1)
+                          .getCell(k)
+                          .getStringCellValue();
                   Integer nextGroupBound = groupBounds.higher(k);
                   if(nextGroupBound != null){
                      lesson.roomNumber = getCellContentsAsString(sheet, j, nextGroupBound - 1);
                   }
                   else{
                      String roomNumber = getCellContentsAsString(sheet, j, k + 2);
-                     if(roomNumber != "")
+                     if(!roomNumber.equals(""))
                         lesson.roomNumber = roomNumber;
                      else
                         lesson.roomNumber = getCellContentsAsString(sheet, j, k + 3);
                   }
-                  lesson.teacher = sheet.getRow(j+1)
-                          .getCell(k)
-                          .getStringCellValue();
-                  if(lesson.subject != "")
+                  //Required for primary key
+                  if(!lesson.subject.equals(""))
                      lessons.add(lesson);
                }
             }

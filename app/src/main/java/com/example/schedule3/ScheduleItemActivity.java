@@ -1,16 +1,99 @@
 package com.example.schedule3;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import java.util.Calendar;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;;
 
 public class ScheduleItemActivity extends AppCompatActivity {
+    private ScheduleRepository repository;
+    private String teacher;
+    private String group;
+    private Calendar date;
+    private TableLayout table;
+
+    private LiveData<Lesson[]> lessons = new MutableLiveData<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_item);
+        Bundle bundle = getIntent().getExtras();
+        if(bundle == null){
+            bundle = savedInstanceState;
+        }
+        teacher = bundle.getString("teacher");
+        group = bundle.getString("group");
+        date = DateConverters.fromString(bundle.getString("date"));
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle(generateTitle(date));
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        };
+        table = findViewById(R.id.schedule);
+        repository = ScheduleApp.getInstance().getRepository();
+        lessons = repository.getLessons(group, teacher, date);
+        lessons.observe(this, lessons -> {
+            populateTable(table, lessons);
+        });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString("teacher", teacher);
+        outState.putString("group", group);
+        outState.putString("date", DateConverters.toString(date));
+        super.onSaveInstanceState(outState);
+    }
+
+    private String generateTitle(Calendar date){
+        String title = getString(R.string.day_table);
+        int month = date.get(Calendar.MONTH) + 1;
+        //Formatting month number with leading zero
+        String monthString = String.valueOf(month);
+        if(month < 10){
+            monthString = "0" + monthString;
+        }
+        int day = date.get(Calendar.DAY_OF_MONTH);
+        String dayString = String.valueOf(day);
+        //Formatting day number with leading zero
+        if(day < 10){
+            dayString = "0" + dayString;
+        }
+        return title + " " + monthString + "/" + dayString;
+    }
+
+    private void populateTable(TableLayout table, Lesson[] lessons){
+        int tableRowLayout = R.layout.schedule_row;
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            tableRowLayout = R.layout.schedule_row_with_times;
+        for(Lesson lesson : lessons){
+            addLesson(table, tableRowLayout, lesson);
+        }
+    }
+
+    private void addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);
+        ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber.toString());
+        ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
+        ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
+        ((TextView)tr.findViewById(R.id.room)).setText(lesson.roomNumber);
+        TextView timesView = tr.findViewById(R.id.times);
+        if(timesView != null)
+            timesView.setText(lesson.times);
+        table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
     }
 }

@@ -3,7 +3,7 @@
     <string name="settings">Настройки</string>
     <string name="days_tab">Расписание занятий</string>
     <string name="times_tab">Расписание звонков</string>
-    <string name="day_table">Расписание на день</string>
+    <string name="day_table">Расписание на</string>
     <string name="monday">Понедельник</string>
     <string name="tuesday">Вторник</string>
     <string name="wednesday">Среда</string>
@@ -16,7 +16,7 @@
     <string name="date">Дата</string>
     <string name="number">Пара</string>
     <string name="room">Каб</string>
-    <string name="priority">Приоритет</string>
+    <string name="times">Время</string>
     <string name="subject">Предмет</string>
     <string name="group_choice_text">Выберите группу:</string>
     <string name="teacher_choice_text">Выберите преподавателя:</string>

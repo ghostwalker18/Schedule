@@ -11,6 +11,13 @@
 
     <TextView
         android:layout_width="0dp"
+        android:layout_weight="0.20"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:id="@+id/times"/>
+
+    <TextView
+        android:layout_width="0dp"
         android:layout_weight="0.45"
         android:layout_height="wrap_content"
         android:textAlignment="center"

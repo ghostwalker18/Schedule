@@ -147,7 +147,13 @@ public class ScheduleItemFragment extends Fragment implements
    }
 
    private void openScheduleInActivity(View view){
-      startActivity(new Intent(this.getActivity(), ScheduleItemActivity.class));
+      Bundle bundle = new Bundle();
+      bundle.putString("group", state.getGroup().getValue());
+      bundle.putString("teacher", state.getTeacher().getValue());
+      bundle.putString("date", DateConverters.toString(state.getCalendar().getValue()));
+      Intent intent = new Intent(this.getActivity(), ScheduleItemActivity.class);
+      intent.putExtras(bundle);
+      startActivity(intent);
    }
 
    private void showTable(){
