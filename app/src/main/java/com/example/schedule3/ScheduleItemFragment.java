@@ -112,11 +112,17 @@ public class ScheduleItemFragment extends Fragment implements
          schedule = schedule + getString(R.string.subject) + ": ";
          schedule = schedule + lesson.subject + "\n";
 
-         schedule = schedule + getString(R.string.teacher) + ": ";
-         schedule = schedule + lesson.teacher + "\n";
+         if(!lesson.teacher.equals(""))
+         {
+            schedule = schedule + getString(R.string.teacher) + ": ";
+            schedule = schedule + lesson.teacher + "\n";
+         }
 
-         schedule = schedule + getString(R.string.room) + ": ";
-         schedule = schedule + lesson.roomNumber + "\n";
+         if(!lesson.roomNumber.equals(""))
+         {
+            schedule = schedule + getString(R.string.room) + ": ";
+            schedule = schedule + lesson.roomNumber + "\n";
+         }
 
          schedule += "\n";
       }
