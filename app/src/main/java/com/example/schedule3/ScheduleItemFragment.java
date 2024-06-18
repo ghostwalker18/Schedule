@@ -211,7 +211,7 @@ public class ScheduleItemFragment extends Fragment implements
       ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber.toString());
       ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
       ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
-      ((TextView)tr.findViewById(R.id.room)).setText(Integer.toString(lesson.roomNumber));
+      ((TextView)tr.findViewById(R.id.room)).setText(lesson.roomNumber);
       table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
    }
 

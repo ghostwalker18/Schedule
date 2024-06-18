@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.TypeConverters;
 
-@Entity(tableName = "tblSchedule", primaryKeys = {"lessonDate", "roomNumber", "lessonNumber"})
+@Entity(tableName = "tblSchedule", primaryKeys = {"lessonDate", "lessonNumber", "groupName", "subjectName"})
 public class Lesson {
     @TypeConverters({DateConverters.class})
     @ColumnInfo(name="lessonDate")
@@ -17,7 +17,7 @@ public class Lesson {
     public String lessonNumber;
     @ColumnInfo(name="roomNumber")
     @NonNull
-    public int roomNumber;
+    public String roomNumber;
     @ColumnInfo(name="lessonTimes")
     @NonNull
     public String times;
@@ -34,8 +34,8 @@ public class Lesson {
         date = Calendar.getInstance();
     }
 
-    public Lesson(Calendar date, String lessonNumber, int roomNumber, String times,
-                  String group, String subject, String teacher){
+    public Lesson(Calendar date, String lessonNumber, String roomNumber, String times,
+                  String group, String subject, String teacher) {
         this.date = date;
         this.lessonNumber = lessonNumber;
         this.roomNumber = roomNumber;
