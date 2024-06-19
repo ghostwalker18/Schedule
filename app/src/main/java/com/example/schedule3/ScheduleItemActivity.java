@@ -1,9 +1,12 @@
 package com.example.schedule3;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -48,6 +51,19 @@ public class ScheduleItemActivity extends AppCompatActivity {
         lessons.observe(this, lessons -> {
             populateTable(table, lessons);
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_schedule_item_activity, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.action_share){
+            return shareSchedule();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -95,5 +111,43 @@ public class ScheduleItemActivity extends AppCompatActivity {
         if(timesView != null)
             timesView.setText(lesson.times);
         table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private boolean shareSchedule(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+
+        String schedule = getString(R.string.date) + ": ";
+        schedule = schedule + DateConverters.toString(date) + "\n";
+        schedule += "\n";
+
+        for(Lesson lesson : lessons.getValue()){
+            schedule = schedule + getString(R.string.number) + ": ";
+            schedule = schedule + lesson.lessonNumber + "\n";
+
+            schedule = schedule + getString(R.string.subject) + ": ";
+            schedule = schedule + lesson.subject + "\n";
+
+            if(!lesson.teacher.equals(""))
+            {
+                schedule = schedule + getString(R.string.teacher) + ": ";
+                schedule = schedule + lesson.teacher + "\n";
+            }
+
+            if(!lesson.roomNumber.equals(""))
+            {
+                schedule = schedule + getString(R.string.room) + ": ";
+                schedule = schedule + lesson.roomNumber + "\n";
+            }
+
+            schedule += "\n";
+        }
+
+        schedule += "\n";
+
+        intent.putExtra(Intent.EXTRA_TEXT, schedule);
+        Intent shareIntent = Intent.createChooser(intent, null);
+        startActivity(shareIntent);
+        return true;
     }
 }
