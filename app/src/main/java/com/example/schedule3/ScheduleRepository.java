@@ -37,8 +37,8 @@ class ScheduleRepository{
    private final String mainSelector = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
    private final String mondayTimesPath = "mondayTimes.jpg";
    private final String otherTimesPath = "otherTimes.jpg";
-   private MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
-   private MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
+   private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
+   private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
 
    public ScheduleRepository(Application app){
       db = ScheduleApp.getInstance().getDatabase();
@@ -170,7 +170,7 @@ class ScheduleRepository{
          return otherTimes;
    }
 
-   private List<String> getLinksForSchedule(){
+   public  List<String> getLinksForSchedule(){
        List<String> links = new ArrayList<>();
        try{
            Document doc = Jsoup.connect(baseUri).get();

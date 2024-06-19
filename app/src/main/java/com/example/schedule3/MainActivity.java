@@ -1,16 +1,19 @@
 package com.example.schedule3;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.ViewPager;
 import androidx.fragment.app.Fragment;
@@ -63,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
                     return shareTimes();
             }
         }
+        if(item.getItemId() == R.id.action_download){
+            switch (pager.getCurrentItem()){
+                case 0:
+                    return downloadScheduleFile();
+                case 1:
+                    return downloadTimesFiles();
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -103,6 +114,27 @@ public class MainActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, R.string.nothing_to_share, Toast.LENGTH_SHORT);
             toast.show();
         }
+        return true;
+    }
+
+    private boolean downloadScheduleFile(){
+        new Thread(() -> {
+            List<String> links = ScheduleApp.getInstance().getRepository().getLinksForSchedule();
+            DownloadManager downloadManager = getApplication().getSystemService(DownloadManager.class);
+            for(String link : links){
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link))
+                        .setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                        .setTitle(getString(R.string.app_name))
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name));
+                downloadManager.enqueue(request);
+            }
+
+        }).start();
+        return true;
+    };
+
+    private boolean downloadTimesFiles(){
         return true;
     }
 

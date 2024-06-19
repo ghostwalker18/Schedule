@@ -27,4 +27,5 @@
     <string name="teacher">Препод.</string>
     <string name="schedule_style">Режим отображения расписания</string>
     <string name="do_not_update_times">Не обновлять звонки</string>
+    <string name="download_schedule">Скачать файл расписания</string>
 </resources>
