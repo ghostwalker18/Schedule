@@ -9,6 +9,8 @@ import androidx.room.Room;
 
 public class ScheduleApp extends Application implements SharedPreferences
         .OnSharedPreferenceChangeListener{
+    public static final String mondayTimesURL = "https://r1.nubex.ru/s1748-17b/47698615b7_fit-in~1280x800~filters:no_upscale()__f44488_08.jpg";
+    public static final String otherTimesURL = "https://r1.nubex.ru/s1748-17b/320e9d2d69_fit-in~1280x800~filters:no_upscale()__f44489_bb.jpg";
     private static ScheduleApp instance;
     private SharedPreferences preferences;
     private AppDatabase database;

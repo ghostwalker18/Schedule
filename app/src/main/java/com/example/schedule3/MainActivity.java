@@ -129,12 +129,23 @@ public class MainActivity extends AppCompatActivity {
                         .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name));
                 downloadManager.enqueue(request);
             }
-
         }).start();
         return true;
     };
 
     private boolean downloadTimesFiles(){
+        String[] links = new String[]{ScheduleApp.mondayTimesURL, ScheduleApp.otherTimesURL};
+        new Thread(() -> {
+            DownloadManager downloadManager = getApplication().getSystemService(DownloadManager.class);
+            for(String link : links){
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link))
+                        .setMimeType("image/jpg")
+                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                        .setTitle(getString(R.string.times_tab))
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.times_tab));
+                downloadManager.enqueue(request);
+            }
+        }).start();
         return true;
     }
 
