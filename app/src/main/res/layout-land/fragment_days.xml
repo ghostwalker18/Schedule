@@ -19,7 +19,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_weight="6"
         android:orientation="vertical">
 
         <LinearLayout
