@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="theme_entries">
+        <item>Жүйелік</item>
+        <item>Қараңғы</item>
+        <item>Жарық</item>
+    </string-array>
+
+    <string-array name="language_entries">
+        <item>Жүйе</item>
+        <item>Орыс тілі</item>
+        <item>Беларусь тілі</item>
+        <item>Украин тілі</item>
+        <item>Қазақ тілі</item>
+        <item>Ағылшын тілі</item>
+    </string-array>
+
+    <string-array name="schedule_style_entries">
+        <item>Бірге</item>
+        <item>Бөлек терезеде</item>
+    </string-array>
+</resources>

@@ -10,7 +10,6 @@
     <string name="thursday">Четверг</string>
     <string name="friday">Пятница</string>
     <string name="app_settings">Приложение</string>
-    <string name="view_settings">Внешний вид</string>
     <string name="option_theme">Тема</string>
     <string name="option_add_teacher_search">Поиск по преподавателю</string>
     <string name="date">Дата</string>
@@ -26,6 +25,8 @@
     <string name="forward">Вперед</string>
     <string name="teacher">Препод.</string>
     <string name="schedule_style">Режим отображения расписания</string>
-    <string name="do_not_update_times">Не обновлять звонки</string>
+    <string name="option_do_not_update_times">Не обновлять звонки</string>
     <string name="download_schedule">Скачать файл расписания</string>
+    <string name="schedule_settings">Расписание</string>
+    <string name="option_language">Язык</string>
 </resources>

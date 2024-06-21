@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Расклад</string>
+    <string name="settings">Настройкі</string>
+    <string name="days_tab">Расклад заняткаў</string>
+    <string name="times_tab">Расклад званкоў</string>
+    <string name="day_table">Расклад на</string>
+    <string name="monday">Панядзелак</string>
+    <string name="tuesday">Аўторак</string>
+    <string name="wednesday">Серада</string>
+    <string name="thursday">Чацвер</string>
+    <string name="friday">Пятніца</string>
+    <string name="app_settings">Прыкладанне</string>
+    <string name="option_theme">Тэма</string>
+    <string name="option_add_teacher_search">Пошук па выкладчыку</string>
+    <string name="date">Дата</string>
+    <string name="number">Пара</string>
+    <string name="room">Каб</string>
+    <string name="times">Час</string>
+    <string name="subject">Прадмет</string>
+    <string name="group_choice_text">Выберыце групу:</string>
+    <string name="teacher_choice_text">Выберыце настаўніка:</string>
+    <string name="share">Падзяліцца</string>
+    <string name="nothing_to_share">Пакуль няма чым дзяліцца</string>
+    <string name="back">Назад</string>
+    <string name="forward">Наперад</string>
+    <string name="teacher">Выклад.</string>
+    <string name="schedule_style">Рэжым адлюстравання раскладу</string>
+    <string name="option_do_not_update_times">Ня абнаўляць званкі</string>
+    <string name="download_schedule">Спампаваць файл раскладу</string>
+    <string name="schedule_settings">Расклад</string>
+    <string name="option_language">Мова</string>
+</resources>

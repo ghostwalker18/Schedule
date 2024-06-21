@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="theme_entries">
+        <item>Сістэмная</item>
+        <item>Цёмная</item>
+        <item>Светлая</item>
+    </string-array>
+
+    <string-array name="language_entries">
+        <item>Сістэмны</item>
+        <item>Рускі</item>
+        <item>Беларускі</item>
+        <item>Украінскі</item>
+        <item>Казахскі</item>
+        <item>Англійскі</item>
+    </string-array>
+
+    <string-array name="schedule_style_entries">
+        <item>Разам</item>
+        <item>У асобным акне</item>
+    </string-array>
+</resources>

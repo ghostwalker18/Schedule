@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="theme_entries">
+        <item>System</item>
+        <item>Dark</item>
+        <item>Light</item>
+    </string-array>
+
+    <string-array name="language_entries">
+        <item>System</item>
+        <item>Russian</item>
+        <item>Belorussian</item>
+        <item>Ukrainian</item>
+        <item>Kazakh</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="schedule_style_entries">
+        <item>Together</item>
+        <item>In window</item>
+    </string-array>
+</resources>

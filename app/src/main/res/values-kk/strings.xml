@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Кесте</string>
+    <string name="settings">Параметрлер</string>
+    <string name="days_tab">Сабақ кестесі</string>
+    <string name="times_tab">Қоңырау кестесі</string>
+    <string name="day_table">Кесте</string>
+    <string name="monday">Дүйсенбі</string>
+    <string name="tuesday">Сейсенбі</string>
+    <string name="wednesday">Сәрсенбі</string>
+    <string name="thursday">Бейсенбі</string>
+    <string name="friday">Жұма</string>
+    <string name="app_settings">Қолдану</string>
+    <string name="option_theme">Тақырып</string>
+    <string name="option_add_teacher_search">Мұғалім бойынша іздеу</string>
+    <string name="date">Күні</string>
+    <string name="number">Нөмірі</string>
+    <string name="room">Каб</string>
+    <string name="times">Уақыт</string>
+    <string name="subject">Тақырып</string>
+    <string name="group_choice_text">Топты таңдаңыз:</string>
+    <string name="teacher_choice_text">Мұғалімді таңдаңыз:</string>
+    <string name="share">Бөлісу</string>
+    <string name="nothing_to_share">Бөлісетін ештеңе жоқ</string>
+    <string name="back">Артқа</string>
+    <string name="forward">Алға</string>
+    <string name="teacher">Мұғалім</string>
+    <string name="schedule_style">Кестені көрсету режимі</string>
+    <string name="option_do_not_update_times">Қоңырауларды жаңартпаңыз</string>
+    <string name="download_schedule">Кесте файлын жүктеп алыңыз</string>
+    <string name="schedule_settings">Кесте</string>
+    <string name="option_language">Тіл</string>
+</resources>

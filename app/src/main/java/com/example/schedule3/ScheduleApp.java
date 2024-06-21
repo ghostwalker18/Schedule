@@ -2,8 +2,12 @@ package com.example.schedule3;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+
+import java.util.Locale;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 import androidx.room.Room;
 
@@ -21,6 +25,10 @@ public class ScheduleApp extends Application implements SharedPreferences
             case "theme":
                 String theme = sharedPreferences.getString(key, "");
                 setTheme(theme);
+                break;
+            case "language":
+                String localeCode = sharedPreferences.getString(key, "en");
+                setLocale(localeCode);
                 break;
         }
     }
@@ -64,5 +72,15 @@ public class ScheduleApp extends Application implements SharedPreferences
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 break;
         }
+    }
+
+    private void setLocale(String localeCode){
+        LocaleListCompat localeListCompat;
+        if(localeCode.equals("system")){
+            localeListCompat = LocaleListCompat.getEmptyLocaleList();
+        }
+        else
+            localeListCompat = LocaleListCompat.create(new Locale(localeCode));
+        AppCompatDelegate.setApplicationLocales(localeListCompat);
     }
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="theme_entries">
+        <item>Системна</item>
+        <item>Темна тема</item>
+        <item>Світла тема</item>
+    </string-array>
+
+    <string-array name="language_entries">
+        <item>Системна</item>
+        <item>Російська</item>
+        <item>Білоруська</item>
+        <item>Українська</item>
+        <item>Казахська</item>
+        <item>Англійська</item>
+    </string-array>
+
+    <string-array name="schedule_style_entries">
+        <item>Разом</item>
+        <item>В окремому вікні</item>
+    </string-array>
+</resources>

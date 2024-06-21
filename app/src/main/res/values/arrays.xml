@@ -13,6 +13,24 @@
         <item>day</item>
     </string-array>
 
+    <string-array name="language_entries">
+        <item>Системный</item>
+        <item>Русский</item>
+        <item>Белорусский</item>
+        <item>Украинский</item>
+        <item>Казахстанский</item>
+        <item>Английский</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>system</item>
+        <item>ru</item>
+        <item>be</item>
+        <item>uk</item>
+        <item>kk</item>
+        <item>en</item>
+    </string-array>
+
     <string-array name="schedule_style_entries">
         <item>Вместе</item>
         <item>В отдельном окне</item>

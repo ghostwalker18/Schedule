@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Розклад</string>
+    <string name="settings">Налаштування</string>
+    <string name="days_tab">Розклад занять</string>
+    <string name="times_tab">Розклад дзвінків</string>
+    <string name="day_table">Розклад на</string>
+    <string name="monday">Понеділок</string>
+    <string name="tuesday">Вівторок</string>
+    <string name="wednesday">Середа</string>
+    <string name="thursday">Четвер</string>
+    <string name="friday">П\'ятниця</string>
+    <string name="app_settings">Додаток</string>
+    <string name="option_theme">Тема</string>
+    <string name="option_add_teacher_search">Пошук за викладачем</string>
+    <string name="date">Дата</string>
+    <string name="number">Пара</string>
+    <string name="room">Каб</string>
+    <string name="times">Час</string>
+    <string name="subject">Предмет</string>
+    <string name="group_choice_text">Виберіть групу:</string>
+    <string name="teacher_choice_text">Виберіть викладача:</string>
+    <string name="share">Поділитися</string>
+    <string name="nothing_to_share">Поки що нема чим ділитися</string>
+    <string name="back">Назад</string>
+    <string name="forward">Уперед</string>
+    <string name="teacher">Викладач.</string>
+    <string name="schedule_style">Режим відображення розкладу</string>
+    <string name="option_do_not_update_times">Не оновлювати дзвінки</string>
+    <string name="download_schedule">Завантажити файл розкладу</string>
+    <string name="schedule_settings">Розклад</string>
+    <string name="option_language">Мова</string>
+</resources>
