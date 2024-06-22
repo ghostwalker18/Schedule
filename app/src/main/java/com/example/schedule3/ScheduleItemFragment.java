@@ -157,6 +157,7 @@ public class ScheduleItemFragment extends Fragment implements
       bundle.putString("group", state.getGroup().getValue());
       bundle.putString("teacher", state.getTeacher().getValue());
       bundle.putString("date", DateConverters.toString(state.getCalendar().getValue()));
+      bundle.putInt("dayOfWeek", weekdaysNumbers.get(dayOfWeekID));
       Intent intent = new Intent(this.getActivity(), ScheduleItemActivity.class);
       intent.putExtras(bundle);
       startActivity(intent);
@@ -213,11 +214,16 @@ public class ScheduleItemFragment extends Fragment implements
 
    private void populateTable(TableLayout table, Lesson[] lessons){
       table.removeViews(1, table.getChildCount() - 1);
+      int counter = 0;
       for(Lesson lesson : lessons){
-         addLesson(table, lesson);
+         counter++;
+         TableRow tr = addLesson(table, lesson);
+         if(counter % 2 == 1)
+            tr.setBackgroundColor(getResources().getColor(R.color.gray_500));
       }
    }
-   private void addLesson(TableLayout table, Lesson lesson){
+
+   private TableRow addLesson(TableLayout table, Lesson lesson){
       LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
       ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber.toString());
@@ -225,6 +231,7 @@ public class ScheduleItemFragment extends Fragment implements
       ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
       ((TextView)tr.findViewById(R.id.room)).setText(lesson.roomNumber);
       table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+      return tr;
    }
 
    @Override

@@ -37,7 +37,9 @@ public class ScheduleItemActivity extends AppCompatActivity {
         }
         teacher = bundle.getString("teacher");
         group = bundle.getString("group");
-        date = DateConverters.fromString(bundle.getString("date"));
+        date = DateConverters
+                .fromString(bundle.getString("date"));
+        date.set(Calendar.DAY_OF_WEEK, bundle.getInt("dayOfWeek"));
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle(generateTitle(date));
         setSupportActionBar(toolbar);
@@ -95,12 +97,16 @@ public class ScheduleItemActivity extends AppCompatActivity {
         int tableRowLayout = R.layout.schedule_row;
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             tableRowLayout = R.layout.schedule_row_with_times;
+        int counter = 0;
         for(Lesson lesson : lessons){
-            addLesson(table, tableRowLayout, lesson);
+            counter++;
+            TableRow tr = addLesson(table, tableRowLayout, lesson);
+            if(counter % 2 == 1)
+                tr.setBackgroundColor(getResources().getColor(R.color.gray_500));
         }
     }
 
-    private void addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
+    private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);
         ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber.toString());
@@ -111,6 +117,7 @@ public class ScheduleItemActivity extends AppCompatActivity {
         if(timesView != null)
             timesView.setText(lesson.times);
         table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        return tr;
     }
 
     private boolean shareSchedule(){

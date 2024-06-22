@@ -7,4 +7,5 @@
     <color name="colorText">#000</color>
     <color name="navigationBarColor">#DDD</color>
     <color name="dark_grey">#121212</color>
+    <color name="gray_500">#9E9E9E</color>
 </resources>
