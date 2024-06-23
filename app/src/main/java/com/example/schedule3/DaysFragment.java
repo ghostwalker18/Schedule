@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
@@ -20,8 +23,10 @@ import androidx.preference.PreferenceManager;
 public class DaysFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
    private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
-   private View view;
    private ScheduleState state;
+   private View view;
+   private ProgressBar updateScheduleProgress;
+   private TextView updateScheduleStatus;
    private Spinner groupSpinner;
    private LiveData<String[]> groups;
    private Spinner teacherSpinner;
@@ -68,6 +73,12 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       setUpGroupSearch(this.view);
       view.findViewById(R.id.forward_button).setOnClickListener(v -> state.goNextWeek());
       view.findViewById(R.id.back_button).setOnClickListener(v -> state.goPreviousWeek());
+      updateScheduleProgress = view.findViewById(R.id.updateScheduleProgress);
+      updateScheduleStatus = view.findViewById(R.id.updateScheduleStatus);
+      repository.getStatus().observe(getViewLifecycleOwner(), status -> {
+         updateScheduleProgress.setProgress(status.progress);
+         updateScheduleStatus.setText(status.text);
+      });
       if(savedInstanceState == null){
          for(ScheduleItemFragment day: days){
             getChildFragmentManager()

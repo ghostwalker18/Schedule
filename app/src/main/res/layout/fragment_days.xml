@@ -56,6 +56,19 @@
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:id="@+id/updateScheduleStatus"/>
+
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="50"
+        android:id="@+id/updateScheduleProgress"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

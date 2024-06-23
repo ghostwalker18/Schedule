@@ -29,7 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-class ScheduleRepository{
+public class ScheduleRepository{
    private final AppDatabase db;
    private final SharedPreferences preferences;
    private final ScheduleNetworkAPI api;
@@ -40,6 +40,17 @@ class ScheduleRepository{
    private final String otherTimesPath = "otherTimes.jpg";
    private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
    private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
+   private final MutableLiveData<Status> status = new MutableLiveData<>();
+
+   public static class Status{
+       public String text;
+       public int progress;
+
+       public Status(String text, int progress){
+           this.text = text;
+           this.progress = progress;
+       }
+   }
 
    public ScheduleRepository(Application app){
       db = ScheduleApp.getInstance().getDatabase();
@@ -98,7 +109,7 @@ class ScheduleRepository{
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                status.postValue(new Status(t.toString(), 0));
             }
          });
       }
@@ -113,17 +124,22 @@ class ScheduleRepository{
       //updating schedule database
       new Thread(() -> {
             List<String> scheduleLinks = getLinksForSchedule();
+            if(scheduleLinks.size() == 0)
+                status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
             for(String link : scheduleLinks){
+                status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
                 api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.body() != null){
+                            status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
                             try(XSSFWorkbook excelFile = new XSSFWorkbook(response.body().byteStream())){
                                 List<Lesson> lessons = XMLStoLessonsConverter.convert(excelFile);
                                 db.lessonDao().insertMany(lessons);
+                                status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
                             }
                             catch (IOException e){
-                                throw new RuntimeException();
+                                status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
                             }
                             response.body().close();
                         }
@@ -131,11 +147,15 @@ class ScheduleRepository{
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                        status.postValue(new Status(t.toString(), 0));
                     }
                 });
             }
       }).start();
+   }
+
+   public LiveData<Status> getStatus(){
+       return status;
    }
 
    public LiveData<String[]> getGroups(){
