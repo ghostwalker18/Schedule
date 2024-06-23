@@ -60,6 +60,7 @@ public class ScheduleItemFragment extends Fragment implements
       repository = ScheduleApp.getInstance().getRepository();
       dayOfWeekID = getArguments().getInt("dayOfWeek");
       preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+      preferences.registerOnSharedPreferenceChangeListener(this);
    }
 
    @Override
@@ -136,7 +137,7 @@ public class ScheduleItemFragment extends Fragment implements
    }
 
    private void setUpMode(){
-      mode = preferences.getString("scheduleStyle", "");
+      mode = preferences.getString("scheduleStyle", "in_fragment");
       switch (mode){
          case "in_fragment":
             button.setOnClickListener(this::showSchedule);
