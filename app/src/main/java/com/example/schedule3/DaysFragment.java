@@ -36,7 +36,6 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
       prefs.registerOnSharedPreferenceChangeListener(this);
       state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
-      state.setCalendar(new Date());
       if(savedInstanceState == null){
          days.add(ScheduleItemFragment.newInstance(
                  R.string.monday));

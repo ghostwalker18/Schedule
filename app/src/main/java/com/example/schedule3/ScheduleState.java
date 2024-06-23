@@ -9,12 +9,10 @@ import androidx.lifecycle.ViewModel;
 public class ScheduleState extends ViewModel{
    private MutableLiveData<String> group = new MutableLiveData<>();
    private MutableLiveData<String> teacher = new MutableLiveData<>();
-   private MutableLiveData<Calendar> calendar = new MutableLiveData<>();
-
-   public void setCalendar(Date currentDate){
-      Calendar date = new Calendar.Builder().setInstant(currentDate).build();
-      calendar.setValue(date);
-   }
+   private MutableLiveData<Calendar> calendar = new MutableLiveData<>(
+           new Calendar.Builder()
+                   .setInstant(new Date())
+                   .build());
 
    public void goNextWeek(){
       Calendar date = calendar.getValue();
@@ -54,5 +52,10 @@ public class ScheduleState extends ViewModel{
 
    public LiveData<String> getTeacher(){
       return teacher;
+   }
+
+   @Override
+   protected void onCleared() {
+      super.onCleared();
    }
 }
