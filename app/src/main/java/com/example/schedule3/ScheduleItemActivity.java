@@ -90,7 +90,7 @@ public class ScheduleItemActivity extends AppCompatActivity {
         if(day < 10){
             dayString = "0" + dayString;
         }
-        return title + " " + monthString + "/" + dayString;
+        return title + " " + dayString + "/" + monthString;
     }
 
     private void populateTable(TableLayout table, Lesson[] lessons){
