@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -45,6 +46,7 @@ class ScheduleRepository{
       context = ScheduleApp.getInstance();
       api = new Retrofit.Builder()
               .baseUrl(baseUri)
+              .callbackExecutor(Executors.newSingleThreadExecutor())
               .build()
               .create(ScheduleNetworkAPI.class);
       preferences = PreferenceManager.getDefaultSharedPreferences(app);
@@ -59,21 +61,17 @@ class ScheduleRepository{
          mondayTimesResponse.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-               new Thread(
-                       () -> {
-                          if(response.body() != null){
-                              Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                              response.body().close();
-                              mondayTimes.postValue(bitmap);
-                              try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
-                                      Context.MODE_PRIVATE)){
-                                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                              } catch (IOException e) {
-                                  throw new RuntimeException(e);
-                              }
-                          }
-                       }
-               ).start();
+                if(response.body() != null){
+                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    response.body().close();
+                    mondayTimes.postValue(bitmap);
+                    try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
+                            Context.MODE_PRIVATE)){
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
 
             @Override
@@ -85,21 +83,17 @@ class ScheduleRepository{
          otherTimesResponse.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-               new Thread(
-                       () -> {
-                          if(response.body() != null){
-                              Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                              otherTimes.postValue(bitmap);
-                              response.body().close();
-                              try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
-                                      Context.MODE_PRIVATE)) {
-                                  bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                              } catch (IOException e) {
-                                  throw new RuntimeException(e);
-                              }
-                          }
-                       }
-               ).start();
+                if(response.body() != null){
+                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    otherTimes.postValue(bitmap);
+                    response.body().close();
+                    try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
+                            Context.MODE_PRIVATE)) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
 
             @Override

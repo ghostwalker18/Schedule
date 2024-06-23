@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +19,7 @@ import androidx.preference.PreferenceManager;
 
 public class DaysFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
-   private ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private View view;
    private ScheduleState state;
    private Spinner groupSpinner;
