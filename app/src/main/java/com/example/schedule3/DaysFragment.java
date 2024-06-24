@@ -1,14 +1,15 @@
 package com.example.schedule3;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,9 +28,9 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    private View view;
    private ProgressBar updateScheduleProgress;
    private TextView updateScheduleStatus;
-   private Spinner groupSpinner;
+   private AutoCompleteTextView groupSearch;
    private LiveData<String[]> groups;
-   private Spinner teacherSpinner;
+   private AutoCompleteTextView teacherSearch;
    private LiveData<String[]> teachers;
 
    private List<ScheduleItemFragment> days = new ArrayList<>();
@@ -98,24 +99,18 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    }
 
    private void setUpGroupSearch(View view){
-      groupSpinner = view.findViewById(R.id.group);
-      groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-         @Override
-         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            String group = groupSpinner.getSelectedItem().toString();
-            state.setGroup(group);
-         }
-
-         @Override
-         public void onNothingSelected(AdapterView<?> adapterView) {
-
-         }
+      groupSearch = view.findViewById(R.id.group);
+      groupSearch.setOnItemClickListener((adapterView, view1, i, l) -> {
+         String group = adapterView.getItemAtPosition(i).toString();
+         state.setGroup(group);
+         InputMethodManager in = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+         in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
       groups = repository.getGroups();
       groups.observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
-         groupSpinner.setAdapter(adapter);
-         state.setGroup(groupSpinner.getSelectedItem().toString());
+         groupSearch.setAdapter(adapter);
+         state.setGroup(groupSearch.getText().toString());
       });
    }
 
@@ -125,31 +120,25 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
 
    private void setUpTeacherSearch(View view, SharedPreferences prefs){
       boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
-      teacherSpinner = view.findViewById(R.id.teacher);
-      teacherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-         @Override
-         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            String teacher = teacherSpinner.getSelectedItem().toString();
-            state.setTeacher(teacher);
-         }
-
-         @Override
-         public void onNothingSelected(AdapterView<?> adapterView) {
-
-         }
+      teacherSearch = view.findViewById(R.id.teacher);
+      teacherSearch.setOnItemClickListener((adapterView, view1, i, l) -> {
+         String teacher = adapterView.getItemAtPosition(i).toString();
+         state.setTeacher(teacher);
+         InputMethodManager in = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+         in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
       teachers = repository.getTeachers();
       teachers.observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
-         teacherSpinner.setAdapter(adapter);
+         teacherSearch.setAdapter(adapter);
       });
       if(addTeacherSearch){
          view.findViewById(R.id.teacherLabel).setVisibility(View.VISIBLE);
-         teacherSpinner.setVisibility(View.VISIBLE);
+         teacherSearch.setVisibility(View.VISIBLE);
       }
       else{
          view.findViewById(R.id.teacherLabel).setVisibility(View.GONE);
-         teacherSpinner.setVisibility(View.GONE);
+         teacherSearch.setVisibility(View.GONE);
       }
    }
 }

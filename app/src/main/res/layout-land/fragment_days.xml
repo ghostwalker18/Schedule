@@ -40,9 +40,10 @@
                     android:textSize="@dimen/choices_text_size"
                     android:text="@string/group_choice_text"/>
 
-                <Spinner
+                <AutoCompleteTextView
                     android:id="@+id/group"
-                    android:layout_width="wrap_content"
+                    android:completionThreshold="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <TextView
@@ -53,9 +54,10 @@
                     android:textSize="@dimen/choices_text_size"
                     android:text="@string/teacher_choice_text"/>
 
-                <Spinner
+                <AutoCompleteTextView
                     android:id="@+id/teacher"
-                    android:layout_width="wrap_content"
+                    android:completionThreshold="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <LinearLayout
@@ -76,7 +78,6 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:progress="50"
             android:id="@+id/updateScheduleProgress"/>
     </LinearLayout>
 
