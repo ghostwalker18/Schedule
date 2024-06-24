@@ -42,7 +42,8 @@ public class ScheduleRepository{
    private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
    private final MutableLiveData<Status> status = new MutableLiveData<>();
 
-   public static class Status{
+
+    public static class Status{
        public String text;
        public int progress;
 
@@ -201,4 +202,14 @@ public class ScheduleRepository{
            return links;
        }
    }
+
+    public void saveGroup(String group) {
+        preferences.edit()
+                .putString("savedGroup", group)
+                .commit();
+    }
+
+    public String getSavedGroup(){
+        return preferences.getString("savedGroup", null);
+    }
 }

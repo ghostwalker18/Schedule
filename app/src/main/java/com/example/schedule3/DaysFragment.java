@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
@@ -91,6 +90,12 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    }
 
    @Override
+   public void onStop() {
+      super.onStop();
+      repository.saveGroup(state.getGroup().getValue());
+   }
+
+   @Override
    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String s) {
       switch (s){
          case "addTeacherSearch":
@@ -107,6 +112,9 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
       groups = repository.getGroups();
+      String savedGroup = repository.getSavedGroup();
+      groupSearch.setText(savedGroup);
+      state.setGroup(savedGroup);
       groups.observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
          groupSearch.setAdapter(adapter);
