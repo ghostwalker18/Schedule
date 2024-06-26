@@ -1,4 +1,4 @@
-package com.example.schedule3;
+package com.ghostwalker18.schedule;
 
 import org.junit.Test;
 

@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.schedule3"
+    namespace = "com.ghostwalker18.schedule"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.schedule3"
+        applicationId = "com.ghostwalker18.schedule"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
