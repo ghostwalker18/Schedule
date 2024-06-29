@@ -46,7 +46,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    private AutoCompleteTextView teacherSearch;
    private LiveData<String[]> teachers;
 
-   private List<ScheduleItemFragment> days = new ArrayList<>();
+   private final List<ScheduleItemFragment> days = new ArrayList<>();
 
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {

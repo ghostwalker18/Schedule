@@ -13,6 +13,6 @@
   ~ limitations under the License.
   -->
 <resources>
-    <dimen name="schedule_text_size">18dp</dimen>
+    <dimen name="schedule_text_size">18sp</dimen>
     <dimen name="choices_text_size">24sp</dimen>
 </resources>

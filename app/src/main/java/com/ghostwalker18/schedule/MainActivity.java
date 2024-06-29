@@ -17,6 +17,8 @@ package com.ghostwalker18.schedule;
 import android.app.DownloadManager;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        pager = (ViewPager)findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
         pager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(pager);
         if(savedInstanceState == null){
             daysFragment = (DaysFragment)((SectionsPagerAdapter)pager.getAdapter()).getItem(0);
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         File otherTimes = new File(getApplication().getFilesDir(), "otherTimes.jpg");
 
         if(mondayTimes.exists() && otherTimes.exists()){
-            ArrayList<Uri> imageUris = new ArrayList<Uri>();
+            ArrayList<Uri> imageUris = new ArrayList<>();
 
             Uri mondayTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", mondayTimes);
             imageUris.add(mondayTimesURI);
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
         return true;
-    };
+    }
 
     private boolean downloadTimesFiles(){
         String[] links = new String[]{ScheduleApp.mondayTimesURL, ScheduleApp.otherTimesURL};
@@ -177,14 +179,16 @@ public class MainActivity extends AppCompatActivity {
             return 2;
         }
 
+        @NonNull
         public Fragment getItem(int position){
             switch(position){
                 case 0:
                     return daysFragment;
                 case 1:
                     return timesFragment;
+                default:
+                    return new Fragment();
             }
-            return null;
         }
 
         @Override

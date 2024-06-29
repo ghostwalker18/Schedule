@@ -21,9 +21,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class ScheduleState extends ViewModel{
-   private MutableLiveData<String> group = new MutableLiveData<>();
-   private MutableLiveData<String> teacher = new MutableLiveData<>();
-   private MutableLiveData<Calendar> calendar = new MutableLiveData<>(
+   private final MutableLiveData<String> group = new MutableLiveData<>();
+   private final MutableLiveData<String> teacher = new MutableLiveData<>();
+   private final MutableLiveData<Calendar> calendar = new MutableLiveData<>(
            new Calendar.Builder()
                    .setInstant(new Date())
                    .build());
@@ -54,7 +54,7 @@ public class ScheduleState extends ViewModel{
 
    public void setGroup(String group){
       this.group.setValue(group);
-   };
+   }
 
    public LiveData<String> getGroup(){
       return group;

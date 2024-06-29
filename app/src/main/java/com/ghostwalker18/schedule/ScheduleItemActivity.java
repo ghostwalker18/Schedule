@@ -31,7 +31,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;;
+import androidx.lifecycle.MutableLiveData;
 
 public class ScheduleItemActivity extends AppCompatActivity {
     private ScheduleRepository repository;
@@ -54,19 +54,17 @@ public class ScheduleItemActivity extends AppCompatActivity {
         date = DateConverters
                 .fromString(bundle.getString("date"));
         date.set(Calendar.DAY_OF_WEEK, bundle.getInt("dayOfWeek"));
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(generateTitle(date));
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-        };
+        }
         table = findViewById(R.id.schedule);
         repository = ScheduleApp.getInstance().getRepository();
         lessons = repository.getLessons(group, teacher, date);
-        lessons.observe(this, lessons -> {
-            populateTable(table, lessons);
-        });
+        lessons.observe(this, lessons -> populateTable(table, lessons));
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -123,7 +121,7 @@ public class ScheduleItemActivity extends AppCompatActivity {
     private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);
-        ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber.toString());
+        ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber);
         ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
         ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
         ((TextView)tr.findViewById(R.id.room)).setText(lesson.roomNumber);

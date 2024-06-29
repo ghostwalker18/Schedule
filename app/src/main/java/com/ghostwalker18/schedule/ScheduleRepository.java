@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
@@ -83,7 +85,7 @@ public class ScheduleRepository{
          Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
          mondayTimesResponse.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if(response.body() != null){
                     Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                     response.body().close();
@@ -98,14 +100,14 @@ public class ScheduleRepository{
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
 
             }
          });
          Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
          otherTimesResponse.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if(response.body() != null){
                     Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                     otherTimes.postValue(bitmap);
@@ -120,7 +122,7 @@ public class ScheduleRepository{
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 status.postValue(new Status(t.toString(), 0));
             }
          });
@@ -132,7 +134,7 @@ public class ScheduleRepository{
                   Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
                   otherTimes.postValue(bitmap2);
             }).start();
-      };
+      }
       //updating schedule database
       new Thread(() -> {
             List<String> scheduleLinks = getLinksForSchedule();
@@ -142,7 +144,7 @@ public class ScheduleRepository{
                 status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
                 api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                         if(response.body() != null){
                             status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
                             try(XSSFWorkbook excelFile = new XSSFWorkbook(response.body().byteStream())){
@@ -158,7 +160,7 @@ public class ScheduleRepository{
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                         status.postValue(new Status(t.toString(), 0));
                     }
                 });

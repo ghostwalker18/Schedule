@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class XMLStoLessonsConverter {
@@ -53,7 +54,7 @@ public class XMLStoLessonsConverter {
                      break scheduleFilling;
                   Lesson lesson = new Lesson();
                   lesson.date = DateConverters.fromString(date);
-                  lesson.group = groups.get(k);
+                  lesson.group = Objects.requireNonNull(groups.get(k));
                   lesson.lessonNumber = sheet.getRow(j)
                           .getCell(1)
                           .getStringCellValue();

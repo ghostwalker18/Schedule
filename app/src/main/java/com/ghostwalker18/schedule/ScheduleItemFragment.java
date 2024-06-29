@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -37,7 +38,7 @@ import android.widget.TextView;
 
 public class ScheduleItemFragment extends Fragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
-   private static HashMap<Integer, Integer> weekdaysNumbers = new HashMap<>();
+   private static final HashMap<Integer, Integer> weekdaysNumbers = new HashMap<>();
    static {
       weekdaysNumbers.put(R.string.monday, Calendar.MONDAY);
       weekdaysNumbers.put(R.string.tuesday, Calendar.TUESDAY);
@@ -46,12 +47,11 @@ public class ScheduleItemFragment extends Fragment implements
       weekdaysNumbers.put(R.string.friday, Calendar.FRIDAY);
    }
    private SharedPreferences preferences;
-   private View view;
    private Button button;
    private TableLayout table;
    private ScheduleState state;
    private ScheduleRepository repository;
-   private MutableLiveData<Calendar> date = new MutableLiveData<>();
+   private final MutableLiveData<Calendar> date = new MutableLiveData<>();
    private LiveData<Lesson[]> lessons = new MutableLiveData<>();
    private int dayOfWeekID;
    private boolean isOpened = false;
@@ -86,7 +86,6 @@ public class ScheduleItemFragment extends Fragment implements
    @Override
    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
       super.onViewCreated(view, savedInstanceState);
-      this.view = view;
       button = view.findViewById(R.id.button);
       button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
@@ -97,19 +96,19 @@ public class ScheduleItemFragment extends Fragment implements
       });
       state.getGroup().observe(getViewLifecycleOwner(), group -> {
          lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date.getValue());
-         lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
+         lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
       });
       state.getTeacher().observe(getViewLifecycleOwner(), teacher -> {
          lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date.getValue());
-         lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
+         lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
       });
       date.observe(getViewLifecycleOwner(), date -> {
          if(isDateToday(date)){
             isOpened = true;
-         };
+         }
          button.setText(generateTitle(date, dayOfWeekID));
          lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date);
-         lessons.observe(getViewLifecycleOwner(), lessons -> {populateTable(table, lessons);});
+         lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
          showTable();
       });
       setUpMode();
@@ -219,12 +218,9 @@ public class ScheduleItemFragment extends Fragment implements
 
    private boolean isDateToday(Calendar date){
       Calendar rightNow = Calendar.getInstance();
-      if(rightNow.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+      return rightNow.get(Calendar.YEAR) == date.get(Calendar.YEAR)
               && rightNow.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-              && rightNow.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)){
-         return true;
-      }
-      return false;
+              && rightNow.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
    }
 
    private void populateTable(TableLayout table, Lesson[] lessons){
@@ -241,7 +237,7 @@ public class ScheduleItemFragment extends Fragment implements
    private TableRow addLesson(TableLayout table, Lesson lesson){
       LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
-      ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber.toString());
+      ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber);
       ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
       ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
       ((TextView)tr.findViewById(R.id.room)).setText(lesson.roomNumber);

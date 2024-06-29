@@ -30,10 +30,8 @@ public class Lesson {
     @NonNull
     public String lessonNumber;
     @ColumnInfo(name="roomNumber")
-    @NonNull
     public String roomNumber;
     @ColumnInfo(name="lessonTimes")
-    @NonNull
     public String times;
     @ColumnInfo(name="groupName")
     @NonNull
@@ -48,8 +46,8 @@ public class Lesson {
         date = Calendar.getInstance();
     }
 
-    public Lesson(Calendar date, String lessonNumber, String roomNumber, String times,
-                  String group, String subject, String teacher) {
+    public Lesson(@NonNull Calendar date, @NonNull String lessonNumber, @NonNull String roomNumber, String times,
+                  @NonNull String group, @NonNull String subject, String teacher) {
         this.date = date;
         this.lessonNumber = lessonNumber;
         this.roomNumber = roomNumber;
