@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Розклад</string>
+    <string name="app_name">Розклад ПАБТ (неофіційний)</string>
     <string name="settings">Налаштування</string>
     <string name="days_tab">Розклад занять</string>
     <string name="times_tab">Розклад дзвінків</string>
@@ -48,4 +48,5 @@
     <string name="schedule_parsing_status">Обробка розкладу</string>
     <string name="processing_completed_status">Розклад успішно оновлено</string>
     <string name="schedule_download_status">Скачування розкладу</string>
+    <string name="schedule">Розклад</string>
 </resources>

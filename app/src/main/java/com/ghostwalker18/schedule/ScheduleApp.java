@@ -50,7 +50,6 @@ public class ScheduleApp extends Application implements SharedPreferences
         super.onCreate();
         instance = this;
         database = Room.databaseBuilder(this, AppDatabase.class, "database")
-                .createFromAsset("testDB1")
                 .build();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         repository = new ScheduleRepository(this);

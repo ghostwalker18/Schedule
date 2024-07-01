@@ -17,6 +17,9 @@ package com.ghostwalker18.schedule;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,6 +128,24 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
          InputMethodManager in = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
+      groupSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
+         if(groupSearch.getEditableText().toString().equals(""))
+            state.setGroup(null);
+         return false;
+      });
+      groupSearch.addTextChangedListener(new TextWatcher() {
+         @Override
+         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+         @Override
+         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+         @Override
+         public void afterTextChanged(Editable editable) {
+            if(editable.toString().equals(""))
+               state.setGroup(null);
+         }
+      });
       groups = repository.getGroups();
       String savedGroup = repository.getSavedGroup();
       groupSearch.setText(savedGroup);
@@ -148,6 +169,19 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
          state.setTeacher(teacher);
          InputMethodManager in = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
+      });
+      teacherSearch.addTextChangedListener(new TextWatcher() {
+         @Override
+         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+         @Override
+         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+         @Override
+         public void afterTextChanged(Editable editable) {
+            if(editable.toString().equals(""))
+               state.setTeacher(null);
+         }
       });
       teachers = repository.getTeachers();
       teachers.observe(getViewLifecycleOwner(), strings -> {

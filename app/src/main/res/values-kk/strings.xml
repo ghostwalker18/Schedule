@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Кесте</string>
+    <string name="app_name">Кесте ПСҚК (бейресми)</string>
     <string name="settings">Параметрлер</string>
     <string name="days_tab">Сабақ кестесі</string>
     <string name="times_tab">Қоңырау кестесі</string>
@@ -48,4 +48,5 @@
     <string name="schedule_parsing_status">Кестені өңдеу</string>
     <string name="processing_completed_status">Кесте сәтті жаңартылды</string>
     <string name="schedule_download_status">Кестені жүктеу</string>
+    <string name="schedule">Кесте</string>
 </resources>
