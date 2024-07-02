@@ -93,16 +93,12 @@ public class ScheduleRepository{
                     try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
                             Context.MODE_PRIVATE)){
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    } catch (IOException e) {}
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
-            }
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
          });
          Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
          otherTimesResponse.enqueue(new Callback<ResponseBody>() {
@@ -115,16 +111,12 @@ public class ScheduleRepository{
                     try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
                             Context.MODE_PRIVATE)) {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    } catch (IOException e) {}
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                status.postValue(new Status(t.toString(), 0));
-            }
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
          });
       }
       else{
@@ -161,7 +153,7 @@ public class ScheduleRepository{
 
                     @Override
                     public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                        status.postValue(new Status(t.toString(), 0));
+                        status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
                     }
                 });
             }
@@ -219,7 +211,7 @@ public class ScheduleRepository{
     public void saveGroup(String group) {
         preferences.edit()
                 .putString("savedGroup", group)
-                .commit();
+                .apply();
     }
 
     public String getSavedGroup(){

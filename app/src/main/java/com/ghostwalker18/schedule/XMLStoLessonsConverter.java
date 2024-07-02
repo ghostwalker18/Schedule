@@ -27,6 +27,8 @@ import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import androidx.annotation.NonNull;
+
 public class XMLStoLessonsConverter {
    public static List<Lesson> convert(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
@@ -88,7 +90,7 @@ public class XMLStoLessonsConverter {
       return lessons;
    }
 
-   private static String getCellContentsAsString(XSSFSheet sheet, int row, int column){
+   private static String getCellContentsAsString(@NonNull XSSFSheet sheet, int row, int column){
       CellType cellType = sheet.getRow(row)
               .getCell(column)
               .getCellTypeEnum();

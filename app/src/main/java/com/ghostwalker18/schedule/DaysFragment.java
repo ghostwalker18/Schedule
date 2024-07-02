@@ -19,7 +19,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,11 +127,6 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
          InputMethodManager in = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
-      groupSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
-         if(groupSearch.getEditableText().toString().equals(""))
-            state.setGroup(null);
-         return false;
-      });
       groupSearch.addTextChangedListener(new TextWatcher() {
          @Override
          public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -146,11 +140,10 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
                state.setGroup(null);
          }
       });
-      groups = repository.getGroups();
       String savedGroup = repository.getSavedGroup();
       groupSearch.setText(savedGroup);
       state.setGroup(savedGroup);
-      groups.observe(getViewLifecycleOwner(), strings -> {
+      repository.getGroups().observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
          groupSearch.setAdapter(adapter);
          state.setGroup(groupSearch.getText().toString());
@@ -183,8 +176,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
                state.setTeacher(null);
          }
       });
-      teachers = repository.getTeachers();
-      teachers.observe(getViewLifecycleOwner(), strings -> {
+      repository.getTeachers().observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
          teacherSearch.setAdapter(adapter);
       });

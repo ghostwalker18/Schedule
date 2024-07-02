@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -89,11 +88,9 @@ public class ScheduleItemFragment extends Fragment implements
       button = view.findViewById(R.id.button);
       button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
-      state.getCalendar().observe(getViewLifecycleOwner(), calendar -> {
-         date.setValue(new Calendar.Builder()
-                 .setWeekDate(state.getYear(), state.getWeek(), weekdaysNumbers.get(dayOfWeekID))
-                 .build());
-      });
+      state.getCalendar().observe(getViewLifecycleOwner(), calendar -> date.setValue(new Calendar.Builder()
+              .setWeekDate(state.getYear(), state.getWeek(), weekdaysNumbers.get(dayOfWeekID))
+              .build()));
       state.getGroup().observe(getViewLifecycleOwner(), group -> {
          lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date.getValue());
          lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));

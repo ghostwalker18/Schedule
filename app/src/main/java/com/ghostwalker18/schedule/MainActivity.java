@@ -17,7 +17,6 @@ package com.ghostwalker18.schedule;
 import android.app.DownloadManager;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;

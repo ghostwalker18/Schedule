@@ -67,9 +67,4 @@ public class ScheduleState extends ViewModel{
    public LiveData<String> getTeacher(){
       return teacher;
    }
-
-   @Override
-   protected void onCleared() {
-      super.onCleared();
-   }
 }
