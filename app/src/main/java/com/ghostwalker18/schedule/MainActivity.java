@@ -140,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link))
                         .setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                        .setTitle(getString(R.string.app_name))
-                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name));
+                        .setTitle(getString(R.string.schedule))
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.schedule));
                 downloadManager.enqueue(request);
             }
         }).start();
