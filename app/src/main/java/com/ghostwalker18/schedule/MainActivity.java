@@ -101,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
                 schedule += day.getSchedule();
             }
         }
+        if(schedule.equals("")){
+            Toast.makeText(this, R.string.nothing_to_share, Toast.LENGTH_SHORT).show();
+            return true;
+        }
         intent.putExtra(Intent.EXTRA_TEXT, schedule);
         Intent shareIntent = Intent.createChooser(intent, null);
         startActivity(shareIntent);
