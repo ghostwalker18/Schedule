@@ -114,10 +114,10 @@ public class MainActivity extends AppCompatActivity {
         if(mondayTimes.exists() && otherTimes.exists()){
             ArrayList<Uri> imageUris = new ArrayList<>();
 
-            Uri mondayTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", mondayTimes);
+            Uri mondayTimesURI = FileProvider.getUriForFile(this, "com.ghostwalker18.schedule.timefilesprovider", mondayTimes);
             imageUris.add(mondayTimesURI);
 
-            Uri otherTimesURI = FileProvider.getUriForFile(this, "com.example.schedule3.timefilesprovider", otherTimes);
+            Uri otherTimesURI = FileProvider.getUriForFile(this, "com.ghostwalker18.schedule.timefilesprovider", otherTimes);
             imageUris.add(otherTimesURI);
 
             Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
