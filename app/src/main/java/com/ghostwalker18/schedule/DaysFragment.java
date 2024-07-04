@@ -44,9 +44,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    private ProgressBar updateScheduleProgress;
    private TextView updateScheduleStatus;
    private AutoCompleteTextView groupSearch;
-   private LiveData<String[]> groups;
    private AutoCompleteTextView teacherSearch;
-   private LiveData<String[]> teachers;
 
    private final List<ScheduleItemFragment> days = new ArrayList<>();
 
@@ -85,8 +83,9 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
       super.onViewCreated(view, savedInstanceState);
       this.view = view;
-      setUpTeacherSearch(this.view, prefs);
-      setUpGroupSearch(this.view);
+      setUpGroupSearch();
+      setUpTeacherSearch();
+      enableTeacherSearch();
       view.findViewById(R.id.forward_button).setOnClickListener(v -> state.goNextWeek());
       view.findViewById(R.id.back_button).setOnClickListener(v -> state.goPreviousWeek());
       updateScheduleProgress = view.findViewById(R.id.updateScheduleProgress);
@@ -115,11 +114,11 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String s) {
       switch (s){
          case "addTeacherSearch":
-            setUpTeacherSearch(view, prefs);
+            enableTeacherSearch();
       }
    }
 
-   private void setUpGroupSearch(View view){
+   private void setUpGroupSearch(){
       groupSearch = view.findViewById(R.id.group);
       groupSearch.setOnItemClickListener((adapterView, view1, i, l) -> {
          String group = adapterView.getItemAtPosition(i).toString();
@@ -150,11 +149,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       });
    }
 
-   public List<ScheduleItemFragment> getDays(){
-      return days;
-   }
-
-   private void setUpTeacherSearch(View view, SharedPreferences prefs){
+   private void setUpTeacherSearch(){
       boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
       teacherSearch = view.findViewById(R.id.teacher);
       teacherSearch.setOnItemClickListener((adapterView, view1, i, l) -> {
@@ -180,13 +175,22 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
          teacherSearch.setAdapter(adapter);
       });
+   }
+   private void enableTeacherSearch(){
+      boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
       if(addTeacherSearch){
          view.findViewById(R.id.teacherLabel).setVisibility(View.VISIBLE);
          teacherSearch.setVisibility(View.VISIBLE);
       }
       else{
          view.findViewById(R.id.teacherLabel).setVisibility(View.GONE);
+         state.setTeacher(null);
+         teacherSearch.setText("");
          teacherSearch.setVisibility(View.GONE);
       }
+   }
+
+   public List<ScheduleItemFragment> getDays(){
+      return days;
    }
 }
