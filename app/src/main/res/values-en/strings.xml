@@ -23,6 +23,7 @@
     <string name="wednesday">Wednesday</string>
     <string name="thursday">Thursday</string>
     <string name="friday">Friday</string>
+    <string name="today">Today</string>
     <string name="app_settings">App</string>
     <string name="option_theme">Theme</string>
     <string name="option_add_teacher_search">Teacher search</string>

@@ -1,29 +1,53 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
 }
 
+val keystorePropertiesFile = rootProject.file("/signing.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 android {
+
     namespace = "com.ghostwalker18.schedule"
     compileSdk = 34
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(keystoreProperties["keystore"].toString())
+            storePassword = keystoreProperties["keystorePassword"].toString()
+            keyAlias = keystoreProperties["keyAlias"].toString()
+            keyPassword = keystoreProperties["keyPassword"].toString()
+        }
+    }
 
     defaultConfig {
         applicationId = "com.ghostwalker18.schedule"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             isDebuggable = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
 
         debug{

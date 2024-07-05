@@ -23,6 +23,7 @@
     <string name="wednesday">Сәрсенбі</string>
     <string name="thursday">Бейсенбі</string>
     <string name="friday">Жұма</string>
+    <string name="today">Бүгін</string>
     <string name="app_settings">Қолдану</string>
     <string name="option_theme">Тақырып</string>
     <string name="option_add_teacher_search">Мұғалім бойынша іздеу</string>

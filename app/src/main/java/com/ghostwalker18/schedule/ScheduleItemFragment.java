@@ -208,7 +208,7 @@ public class ScheduleItemFragment extends Fragment implements
       }
       String label = dayOfWeek + " (" + dayString  + "/" + monthString + ")";
       if(isDateToday(date)){
-         label += " - Сегодня";
+         label = label + " - " + getResources().getString(R.string.today);
       }
       return label;
    }
