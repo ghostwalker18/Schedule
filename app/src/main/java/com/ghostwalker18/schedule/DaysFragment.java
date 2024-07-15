@@ -143,7 +143,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       groupSearch.setText(savedGroup);
       state.setGroup(savedGroup);
       repository.getGroups().observe(getViewLifecycleOwner(), strings -> {
-         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.autocomplete_item_layout, strings);
          groupSearch.setAdapter(adapter);
          state.setGroup(groupSearch.getText().toString());
       });
@@ -172,7 +172,7 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
          }
       });
       repository.getTeachers().observe(getViewLifecycleOwner(), strings -> {
-         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, strings);
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.autocomplete_item_layout, strings);
          teacherSearch.setAdapter(adapter);
       });
    }

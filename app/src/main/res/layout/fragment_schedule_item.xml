@@ -38,7 +38,7 @@
                 android:layout_weight=".10"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/schedule_text_size"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:text="@string/number"/>
 
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_weight="0.45"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/schedule_text_size"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:text="@string/subject"/>
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_weight="0.20"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/schedule_text_size"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:text="@string/teacher"/>
 
             <TextView
@@ -62,7 +62,7 @@
                 android:layout_weight="0.15"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/schedule_text_size"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:text="@string/room"/>
         </TableRow>
     </TableLayout>
