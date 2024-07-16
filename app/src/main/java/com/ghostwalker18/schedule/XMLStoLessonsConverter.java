@@ -14,6 +14,7 @@
 
 package com.ghostwalker18.schedule;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -29,7 +30,7 @@ import java.util.TreeMap;
 import androidx.annotation.NonNull;
 
 public class XMLStoLessonsConverter {
-   public static List<Lesson> convert(XSSFWorkbook excelFile){
+   public static List<Lesson> convertFirstCorpus(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
 
       for(int i = 0; i < excelFile.getNumberOfSheets(); i++){
@@ -89,19 +90,25 @@ public class XMLStoLessonsConverter {
       return lessons;
    }
 
+   public static List<Lesson> convertSecondCorpusMain(XSSFWorkbook excelFile){
+      List<Lesson> lessons = new ArrayList<>();
+      return lessons;
+   }
+
+   public static List<Lesson> convertSecondCorpusAdditional(XSSFWorkbook excelFile){
+      List<Lesson> lessons = new ArrayList<>();
+      return lessons;
+   }
+
    private static String getCellContentsAsString(@NonNull XSSFSheet sheet, int row, int column){
-      CellType cellType = sheet.getRow(row)
-              .getCell(column)
-              .getCellTypeEnum();
+      Cell cell = sheet.getRow(row)
+              .getCell(column);
+      CellType cellType = cell.getCellTypeEnum();
       switch (cellType){
          case STRING:
-            return sheet.getRow(row)
-                    .getCell(column)
-                    .getStringCellValue();
+            return cell.getStringCellValue();
          case NUMERIC:
-            return String.valueOf((int)sheet.getRow(row)
-                    .getCell(column)
-                    .getNumericCellValue());
+            return String.valueOf((int)cell.getNumericCellValue());
          default:
             return "";
       }

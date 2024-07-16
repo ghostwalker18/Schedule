@@ -140,7 +140,7 @@ public class ScheduleRepository{
                         if(response.body() != null){
                             status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
                             try(XSSFWorkbook excelFile = new XSSFWorkbook(response.body().byteStream())){
-                                List<Lesson> lessons = XMLStoLessonsConverter.convert(excelFile);
+                                List<Lesson> lessons = XMLStoLessonsConverter.convertFirstCorpus(excelFile);
                                 db.lessonDao().insertMany(lessons);
                                 status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
                             }
