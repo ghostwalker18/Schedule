@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean downloadScheduleFile(){
         new Thread(() -> {
-            List<String> links = ScheduleApp.getInstance().getRepository().getLinksForSchedule();
+            List<String> links = ScheduleApp.getInstance().getRepository().getLinksForScheduleFirstCorpus();
             DownloadManager downloadManager = getApplication().getSystemService(DownloadManager.class);
             for(String link : links){
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link))

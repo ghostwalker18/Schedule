@@ -127,9 +127,9 @@ public class ScheduleRepository{
                   otherTimes.postValue(bitmap2);
             }).start();
       }
-      //updating schedule database
+      //updating schedule database for first corpus
       new Thread(() -> {
-            List<String> scheduleLinks = getLinksForSchedule();
+            List<String> scheduleLinks = getLinksForScheduleFirstCorpus();
             if(scheduleLinks.size() == 0)
                 status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
             for(String link : scheduleLinks){
@@ -157,6 +157,11 @@ public class ScheduleRepository{
                     }
                 });
             }
+      }).start();
+      //updating schedule database for second corpus
+      new Thread(()->{
+          String link = getLinkForScheduleSecondCorpusMain();
+
       }).start();
    }
 
@@ -190,7 +195,7 @@ public class ScheduleRepository{
          return otherTimes;
    }
 
-   public  List<String> getLinksForSchedule(){
+   public  List<String> getLinksForScheduleFirstCorpus(){
        List<String> links = new ArrayList<>();
        try{
            Document doc = Jsoup.connect(baseUri).get();
@@ -206,6 +211,39 @@ public class ScheduleRepository{
        catch (IOException e){
            return links;
        }
+   }
+
+   public String getLinkForScheduleSecondCorpusMain(){
+        try{
+            Document doc = Jsoup.connect(baseUri).get();
+            Element linkElement = doc.select(mainSelector).get(0)
+                    .select("tr").get(1)
+                    .select("td").get(0)
+                    .select("p > a").get(0);
+            String link = linkElement.attr("href");
+            return link;
+        }
+        catch (IOException e){
+            return null;
+        }
+   }
+
+   public List<String> getLinksForScheduleSecondCorpusAdditional(){
+        List<String> links = new ArrayList<>();
+        try{
+            Document doc = Jsoup.connect(baseUri).get();
+            Elements linkElements = doc.select(mainSelector).get(0)
+                    .select("tr").get(1)
+                    .select("td").get(0)
+                    .select("p > strong > span > a");
+            for(Element linkElement : linkElements){
+                links.add(linkElement.attr("href"));
+            }
+            return links;
+        }
+        catch(IOException r){
+            return links;
+        }
    }
 
     public void saveGroup(String group) {
