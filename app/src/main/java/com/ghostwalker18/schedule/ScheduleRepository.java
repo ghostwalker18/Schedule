@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -42,6 +41,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+/**
+ * Этот класс представляет собой репозиторий данных приложения.
+ */
 public class ScheduleRepository{
    private final AppDatabase db;
    private final SharedPreferences preferences;
@@ -77,6 +79,11 @@ public class ScheduleRepository{
       preferences = PreferenceManager.getDefaultSharedPreferences(app);
    }
 
+    /**
+     * Этот метод обновляет репозиторий приложения.
+     * Метод использует многопоточность и может вызывать исключения в других потоках.
+     * Требуется интернет соединение.
+     */
    public void update(){
       //updating times files
       File mondayTimesFile = new File(context.getFilesDir(), mondayTimesPath);
@@ -165,10 +172,21 @@ public class ScheduleRepository{
       }).start();
    }
 
+    /**
+     * Этот метод используется для получения состояния,
+     * в котором находится процесс обновления репозитория.
+     *
+     * @return статус состояния
+     */
    public LiveData<Status> getStatus(){
        return status;
    }
 
+    /**
+     * Этот метод возвращает все группы, упоминаемые в расписании.
+     *
+     * @return список групп
+     */
    public LiveData<String[]> getGroups(){
       return db.lessonDao().getGroups();
    }
@@ -177,6 +195,16 @@ public class ScheduleRepository{
       return db.lessonDao().getTeachers();
    }
 
+    /**
+     * Этот метод возращает список занятий в этот день у группы у данного преподавателя.
+     * Если группа не указана, то возвращается список занятий у преподавателя в этот день.
+     * Если учитель не указан, то возвращается список занятй у группы в этот день.
+     *
+     * @param date день
+     * @param teacher преподаватель
+     * @param group группа
+     * @return
+     */
    public LiveData<Lesson[]> getLessons(String group, String teacher, Calendar date) {
       if (teacher != null && group != null)
          return db.lessonDao().getLessonsForGroupWithTeacher(date, group, teacher);
@@ -187,14 +215,32 @@ public class ScheduleRepository{
       else return new MutableLiveData<>(new Lesson[]{});
    }
 
+    /**
+     * Этот метод используется для получения буфферизированого файла изображения
+     * расписания звонков на понедельник.
+     *
+     * @return фото расписания звонков на понедельник
+     */
    public LiveData<Bitmap> getMondayTimes(){
          return mondayTimes;
    }
 
+    /**
+     * Этот метод используется для получения буфферизированого файла изображения
+     * расписания звонков со вторника по пятницу.
+     *
+     * @return фото расписания звонков со вторника по пятницу
+     */
    public LiveData<Bitmap> getOtherTimes(){
          return otherTimes;
    }
 
+    /**
+     * Этот метод получает ссылки с сайта ПАСТ,
+     * по которым доступно расписание для корпуса на Первомайском проспекте.
+     *
+     * @return список ссылок
+     */
    public  List<String> getLinksForScheduleFirstCorpus(){
        List<String> links = new ArrayList<>();
        try{
@@ -213,6 +259,12 @@ public class ScheduleRepository{
        }
    }
 
+    /**
+     * Этот метод получает ссылки с сайта ПАСТ,
+     * по которым доступно основное расписание для корпуса на Мурманской улице.
+     *
+     * @return список ссылок
+     */
    public String getLinkForScheduleSecondCorpusMain(){
         try{
             Document doc = Jsoup.connect(baseUri).get();
@@ -228,6 +280,12 @@ public class ScheduleRepository{
         }
    }
 
+    /**
+     * Этот метод получает ссылки с сайта ПАСТ,
+     * по которым доступны изменения расписания для корпуса на Мурманской улице.
+     *
+     * @return список ссылок
+     */
    public List<String> getLinksForScheduleSecondCorpusAdditional(){
         List<String> links = new ArrayList<>();
         try{

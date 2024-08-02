@@ -18,13 +18,29 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import androidx.room.TypeConverter;
 
+/**
+ * Этот класс используется для ORM.
+ * Содержит методы для преобразования Calendar в String для БД и наоборот
+ */
 public class DateConverters {
    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+   /**
+    * Этот метод преобразует Calendar сущнисти в String для БД.
+    * @param date  the entity attribute value to be converted
+    * @return
+    */
    @TypeConverter
    static public String toString(Calendar date){
       return date == null ? null : dateFormat.format(date.getTime());
    }
 
+   /**
+    * Этот метод преобразует String из БД в Calendar сущности.
+    * @param date  the data from the database column to be
+    *                converted
+    * @return
+    */
    @TypeConverter
    static public Calendar fromString(String date){
       if(date == null){

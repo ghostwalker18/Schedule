@@ -29,7 +29,16 @@ import java.util.Objects;
 import java.util.TreeMap;
 import androidx.annotation.NonNull;
 
+/**
+ * Этот класс содержит в себе статические методы для работы с файлами расписания ПАСТ.
+ */
 public class XMLStoLessonsConverter {
+   /**
+    * Этот метод используется для обработки файла расписания первого корпуса.
+    *
+    * @param excelFile эксель файл расписания для первого корпуса
+    * @return лист объектов класса Lesson
+    */
    public static List<Lesson> convertFirstCorpus(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
 
@@ -90,6 +99,12 @@ public class XMLStoLessonsConverter {
       return lessons;
    }
 
+   /**
+    * Этот метод используется для обработки файла основного расписания второго корпуса.
+    *
+    * @param excelFile эксель файл расписания для второго корпуса
+    * @return лист объектов класса Lesson
+    */
    public static List<Lesson> convertSecondCorpusMain(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
 
@@ -98,6 +113,12 @@ public class XMLStoLessonsConverter {
       return lessons;
    }
 
+   /**
+    * Этот метод используется для обработки файла измениня расписания второго корпуса.
+    *
+    * @param excelFile эксель файл изменений расписания для второго корпуса
+    * @return лист объектов класса Lesson
+    */
    public static List<Lesson> convertSecondCorpusAdditional(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
 
@@ -106,6 +127,14 @@ public class XMLStoLessonsConverter {
       return lessons;
    }
 
+   /**
+    * Этот метод используется для получения содержимого ячейки в виде строки.
+    *
+    * @param sheet лист эксель
+    * @param row номер ряда ячейки
+    * @param column номер столбца ячейки
+    * @return содержимое ячейки в виде строки
+    */
    private static String getCellContentsAsString(@NonNull XSSFSheet sheet, int row, int column){
       Cell cell = sheet.getRow(row)
               .getCell(column);
