@@ -33,6 +33,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+/**
+ * Этот класс представляет собой экран приложения для отображения расписания на день.
+ *
+ * @author  Ипатов Никита
+ */
 public class ScheduleItemActivity extends AppCompatActivity {
     private ScheduleRepository repository;
     private String teacher;
@@ -88,6 +93,11 @@ public class ScheduleItemActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Этот метод используется для создания заголовка экрана
+     * @param date дата
+     * @return заголовок в строковом формате
+     */
     private String generateTitle(Calendar date){
         String title = getString(R.string.day_table);
         int month = date.get(Calendar.MONTH) + 1;
@@ -105,6 +115,11 @@ public class ScheduleItemActivity extends AppCompatActivity {
         return title + " " + dayString + "/" + monthString;
     }
 
+    /**
+     * Этот метод используется для наполнения таблицы расписания данными.
+     * @param table таблица для заполнения
+     * @param lessons данные для заполнения
+     */
     private void populateTable(TableLayout table, Lesson[] lessons){
         int tableRowLayout = R.layout.schedule_row;
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -118,6 +133,14 @@ public class ScheduleItemActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Этот метод используется для формирования и заполнения одного ряда
+     * таблицы данными занятия.
+     * @param table таблица для добавления ряда
+     * @param tableRowLayout id макета ряда
+     * @param lesson занятие
+     * @return
+     */
     private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);

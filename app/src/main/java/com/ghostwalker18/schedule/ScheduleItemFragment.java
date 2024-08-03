@@ -35,6 +35,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/**
+ * Этот класс предсавляет собой кастомный элемент GUI,
+ * используемый для отображения расписания на день.
+ *
+ * @author Ипатов Никита
+ */
 public class ScheduleItemFragment extends Fragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
    private static final HashMap<Integer, Integer> weekdaysNumbers = new HashMap<>();
@@ -88,15 +94,20 @@ public class ScheduleItemFragment extends Fragment implements
       button = view.findViewById(R.id.button);
       button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
-      state.getCalendar().observe(getViewLifecycleOwner(), calendar -> date.setValue(new Calendar.Builder()
+      state.getCalendar().observe(getViewLifecycleOwner(),
+              calendar -> date.setValue(new Calendar.Builder()
               .setWeekDate(state.getYear(), state.getWeek(), weekdaysNumbers.get(dayOfWeekID))
               .build()));
       state.getGroup().observe(getViewLifecycleOwner(), group -> {
-         lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date.getValue());
+         lessons = repository.getLessons(state.getGroup().getValue(),
+                 state.getTeacher().getValue(),
+                 date.getValue());
          lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
       });
       state.getTeacher().observe(getViewLifecycleOwner(), teacher -> {
-         lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date.getValue());
+         lessons = repository.getLessons(state.getGroup().getValue(),
+                 state.getTeacher().getValue(),
+                 date.getValue());
          lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
       });
       date.observe(getViewLifecycleOwner(), date -> {
@@ -104,13 +115,21 @@ public class ScheduleItemFragment extends Fragment implements
             isOpened = true;
          }
          button.setText(generateTitle(date, dayOfWeekID));
-         lessons = repository.getLessons(state.getGroup().getValue(), state.getTeacher().getValue(),  date);
+         lessons = repository.getLessons(state.getGroup().getValue(),
+                 state.getTeacher().getValue(),
+                 date);
          lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
          showTable();
       });
       setUpMode();
    }
 
+   /**
+    * Этот метод позвоволяет получить расписание для этого элемента в виде
+    * форматированной строки.
+    *
+    * @return расписание на этот день
+    */
    public String getSchedule(){
       String schedule = getString(R.string.date) + ": ";
       schedule = schedule + DateConverters.toString(date.getValue()) + "\n";
@@ -142,10 +161,18 @@ public class ScheduleItemFragment extends Fragment implements
       return schedule;
    }
 
+   /**
+    * Этот метод позволяет узнать, открыто ли расписание для промотра.
+    * @return
+    */
    public boolean isOpened(){
       return isOpened;
    }
 
+   /**
+    * Этот метод устанавливает режим отображения расписания:
+    * в отдельном окне или в таблице в элементе.
+    */
    private void setUpMode(){
       mode = preferences.getString("scheduleStyle", "in_fragment");
       switch (mode){
@@ -163,6 +190,10 @@ public class ScheduleItemFragment extends Fragment implements
       showTable();
    }
 
+   /**
+    * Этот метод открывает отдельное окно для отображения расписания.
+    * @param view
+    */
    private void openScheduleInActivity(View view){
       Bundle bundle = new Bundle();
       bundle.putString("group", state.getGroup().getValue());
@@ -174,6 +205,9 @@ public class ScheduleItemFragment extends Fragment implements
       startActivity(intent);
    }
 
+   /**
+    * Этот метод используется для настройки визуального отображения таблицы расписания
+    */
    private void showTable(){
       if(isOpened && mode.equals("in_fragment")){
          button.setCompoundDrawablesWithIntrinsicBounds(null,
@@ -191,6 +225,12 @@ public class ScheduleItemFragment extends Fragment implements
       }
    }
 
+   /**
+    * Этот метод генерирует заголовок для этого элемента
+    * @param date дата расписания
+    * @param dayOfWeekId id строкового ресурса соответствующего дня недели
+    * @return заголовок
+    */
    private String generateTitle(Calendar date,  int dayOfWeekId){
       String dayOfWeek = getResources().getString(dayOfWeekId);
       //Month is a number in 0 - 11

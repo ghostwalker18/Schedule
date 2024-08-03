@@ -20,6 +20,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+/**
+ * Этот класс используется для отслеживания изменения состояния расписания.
+ *
+ * @author  Ипатов Никита
+ */
 public class ScheduleState extends ViewModel{
    private final MutableLiveData<String> group = new MutableLiveData<>();
    private final MutableLiveData<String> teacher = new MutableLiveData<>();
@@ -28,12 +33,18 @@ public class ScheduleState extends ViewModel{
                    .setInstant(new Date())
                    .build());
 
+   /**
+    * Этот метод позволяет передвинуть состояние расписания на следующую неделю.
+    */
    public void goNextWeek(){
       Calendar date = calendar.getValue();
       date.add(Calendar.WEEK_OF_YEAR, 1);
       calendar.setValue(date);
    }
 
+   /**
+    * Этот метод позволяет передвинуть состояние расписания на предыдущую неделю.
+    */
    public void goPreviousWeek(){
       Calendar date = calendar.getValue();
       date.add(Calendar.WEEK_OF_YEAR, -1);

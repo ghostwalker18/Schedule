@@ -21,12 +21,15 @@ import androidx.room.TypeConverter;
 /**
  * Этот класс используется для ORM.
  * Содержит методы для преобразования Calendar в String для БД и наоборот
+ *
+ * @author  Ипатов Никита
  */
 public class DateConverters {
    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
    /**
     * Этот метод преобразует Calendar сущнисти в String для БД.
+    *
     * @param date  the entity attribute value to be converted
     * @return
     */
@@ -37,6 +40,7 @@ public class DateConverters {
 
    /**
     * Этот метод преобразует String из БД в Calendar сущности.
+    *
     * @param date  the data from the database column to be
     *                converted
     * @return

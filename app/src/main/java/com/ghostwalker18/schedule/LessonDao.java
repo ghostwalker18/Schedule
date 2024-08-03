@@ -25,6 +25,12 @@ import androidx.room.Query;
 import androidx.room.TypeConverters;
 import androidx.room.Update;
 
+/**
+ * Интерфейс DAO для работы с таблицой БД, содержащей сведения о занятиях.
+ * Используется Room для генерации.
+ *
+ * @author  Ипатов Никита
+ */
 @Dao
 @TypeConverters({DateConverters.class})
 public interface LessonDao {

@@ -43,6 +43,8 @@ import retrofit2.Retrofit;
 
 /**
  * Этот класс представляет собой репозиторий данных приложения.
+ *
+ * @author  Ипатов Никита
  */
 public class ScheduleRepository{
    private final AppDatabase db;

@@ -36,7 +36,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
-public class DaysFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+/**
+ * Этот класс представляет собой элемент интерфейса, используемый для
+ * отображения расписания занятий.
+ *
+ * @author  Ипатов Никита
+ */
+public class DaysFragment extends Fragment
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
    private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private ScheduleState state;
@@ -45,7 +52,6 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
    private TextView updateScheduleStatus;
    private AutoCompleteTextView groupSearch;
    private AutoCompleteTextView teacherSearch;
-
    private final List<ScheduleItemFragment> days = new ArrayList<>();
 
    @Override
@@ -75,7 +81,8 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
 
    @Nullable
    @Override
-   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                            @Nullable Bundle savedInstanceState) {
       return inflater.inflate(R.layout.fragment_days, container, false);
    }
 
@@ -118,12 +125,16 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       }
    }
 
+   /**
+    * Этот метод используется для настройки элемента поиска по группе.
+    */
    private void setUpGroupSearch(){
       groupSearch = view.findViewById(R.id.group);
       groupSearch.setOnItemClickListener((adapterView, view1, i, l) -> {
          String group = adapterView.getItemAtPosition(i).toString();
          state.setGroup(group);
-         InputMethodManager in = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+         InputMethodManager in = (InputMethodManager)getContext()
+                 .getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
       groupSearch.addTextChangedListener(new TextWatcher() {
@@ -143,19 +154,23 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       groupSearch.setText(savedGroup);
       state.setGroup(savedGroup);
       repository.getGroups().observe(getViewLifecycleOwner(), strings -> {
-         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.autocomplete_item_layout, strings);
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                 R.layout.autocomplete_item_layout, strings);
          groupSearch.setAdapter(adapter);
          state.setGroup(groupSearch.getText().toString());
       });
    }
 
+   /**
+    * Этот метод используется для настройки элемента поиска по преподавателю.
+    */
    private void setUpTeacherSearch(){
-      boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
       teacherSearch = view.findViewById(R.id.teacher);
       teacherSearch.setOnItemClickListener((adapterView, view1, i, l) -> {
          String teacher = adapterView.getItemAtPosition(i).toString();
          state.setTeacher(teacher);
-         InputMethodManager in = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+         InputMethodManager in = (InputMethodManager)getContext()
+                 .getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
       teacherSearch.addTextChangedListener(new TextWatcher() {
@@ -172,10 +187,16 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
          }
       });
       repository.getTeachers().observe(getViewLifecycleOwner(), strings -> {
-         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.autocomplete_item_layout, strings);
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                 R.layout.autocomplete_item_layout, strings);
          teacherSearch.setAdapter(adapter);
       });
    }
+
+   /**
+    * Этот метод используется для отображения элемента поиска по преподавателю
+    * согласно настройкам приложения.
+    */
    private void enableTeacherSearch(){
       boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
       if(addTeacherSearch){
@@ -190,6 +211,10 @@ public class DaysFragment extends Fragment implements SharedPreferences.OnShared
       }
    }
 
+   /**
+    * Этот метод используется для получения доступа к элементам расписания.
+    * @return список отдельных элементов расписания
+    */
    public List<ScheduleItemFragment> getDays(){
       return days;
    }

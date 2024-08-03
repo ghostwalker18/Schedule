@@ -20,6 +20,14 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.TypeConverters;
 
+/**
+ * Этот класс используется для описания единичной сущности расписания - урока.
+ * Используется в ORM.
+ * Содержит поля для даты, порядкового номера, номера(названия) кабинета,
+ * времени проведения, группы, преподавателя, предмета.
+ *
+ * @author  Ипатов Никита
+ */
 @Entity(tableName = "tblSchedule", primaryKeys = {"lessonDate", "lessonNumber", "groupName", "subjectName"})
 public class Lesson {
     @TypeConverters({DateConverters.class})

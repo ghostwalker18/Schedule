@@ -19,13 +19,34 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
 
+/**
+ * Интерфейс для создания Retrofit2 API,
+ * используемого при скачивании файлов расписания и звонков.
+ *
+ * @author  Ипатов Никита
+ */
 public interface ScheduleNetworkAPI {
+   /**
+    * Получение файла расписания звонков на понедельник
+    *
+    * @return асинхронный ответ сервера
+    */
    @GET(ScheduleApp.mondayTimesURL)
    Call<ResponseBody> getMondayTimes();
 
+   /**
+    * Получение файла расписания звонков со вторника по пятницу
+    *
+    * @return асинхронный ответ сервера
+    */
    @GET(ScheduleApp.otherTimesURL)
    Call<ResponseBody> getOtherTimes();
 
+   /**
+    * Получение файла расписания по заданному URL
+    *
+    * @return асинхронный ответ сервера
+    */
    @GET
    Call<ResponseBody> getScheduleFile(@Url String url);
 }

@@ -35,6 +35,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+/**
+ * Этот класс представляет собой основной экран приложения.
+ *
+ * @author  Ипатов Никита
+ */
 public class MainActivity extends AppCompatActivity {
     private ViewPager pager;
     private DaysFragment daysFragment;
@@ -92,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Этот метод используется для того, чтобы поделиться расписанием из открытых элементов
+     * в доступных приложениях.
+     */
     private boolean shareSchedule(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -111,6 +120,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Этот метод используется для того, чтобы поделиться файлами расписания
+     * звонков в доступных приложениях.
+     */
     private  boolean shareTimes(){
         File mondayTimes = new File(getApplication().getFilesDir(), "mondayTimes.jpg");
         File otherTimes = new File(getApplication().getFilesDir(), "otherTimes.jpg");
@@ -118,10 +131,12 @@ public class MainActivity extends AppCompatActivity {
         if(mondayTimes.exists() && otherTimes.exists()){
             ArrayList<Uri> imageUris = new ArrayList<>();
 
-            Uri mondayTimesURI = FileProvider.getUriForFile(this, "com.ghostwalker18.schedule.timefilesprovider", mondayTimes);
+            Uri mondayTimesURI = FileProvider.getUriForFile(this,
+                    "com.ghostwalker18.schedule.timefilesprovider", mondayTimes);
             imageUris.add(mondayTimesURI);
 
-            Uri otherTimesURI = FileProvider.getUriForFile(this, "com.ghostwalker18.schedule.timefilesprovider", otherTimes);
+            Uri otherTimesURI = FileProvider.getUriForFile(this,
+                    "com.ghostwalker18.schedule.timefilesprovider", otherTimes);
             imageUris.add(otherTimesURI);
 
             Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
@@ -136,6 +151,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Этот метод используется для скачивания файлов расписания и помещения их в
+     * папку загрузок.
+     */
     private boolean downloadScheduleFile(){
         new Thread(() -> {
             List<String> links = ScheduleApp.getInstance().getRepository().getLinksForScheduleFirstCorpus();
@@ -152,6 +171,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Этот метод используется для скачивания файлов расписания звонков и помещения
+     * их в папку загрузок.
+     */
     private boolean downloadTimesFiles(){
         String[] links = new String[]{ScheduleApp.mondayTimesURL, ScheduleApp.otherTimesURL};
         new Thread(() -> {

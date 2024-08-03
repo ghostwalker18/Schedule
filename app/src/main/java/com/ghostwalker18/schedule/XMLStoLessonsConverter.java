@@ -31,6 +31,8 @@ import androidx.annotation.NonNull;
 
 /**
  * Этот класс содержит в себе статические методы для работы с файлами расписания ПАСТ.
+ *
+ * @author  Ипатов Никита
  */
 public class XMLStoLessonsConverter {
    /**

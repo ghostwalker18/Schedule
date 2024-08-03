@@ -21,6 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceFragmentCompat;
 
+/**
+ * Этот класс представляет собой экран настроек приложения
+ *
+ * @author  Ипатов Никита
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
