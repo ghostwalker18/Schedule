@@ -59,7 +59,9 @@ public class ScheduleRepository{
    private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
    private final MutableLiveData<Status> status = new MutableLiveData<>();
 
-
+    /**
+     * Этот класс используетс для отображения статуса обновления репозитория.
+     */
     public static class Status{
        public String text;
        public int progress;
@@ -170,7 +172,6 @@ public class ScheduleRepository{
       //updating schedule database for second corpus
       new Thread(()->{
           String link = getLinkForScheduleSecondCorpusMain();
-
       }).start();
    }
 
@@ -250,7 +251,7 @@ public class ScheduleRepository{
            Elements linkElements = doc.select(mainSelector).get(0)
                    .select("tr").get(1)
                    .select("td").get(1)
-                   .select("p > strong > span > a");
+                   .select("p > a");
            for(Element linkElement : linkElements){
                links.add(linkElement.attr("href"));
            }
@@ -295,23 +296,31 @@ public class ScheduleRepository{
             Elements linkElements = doc.select(mainSelector).get(0)
                     .select("tr").get(1)
                     .select("td").get(0)
-                    .select("p > strong > span > a");
+                    .select("p > a");
             for(Element linkElement : linkElements){
                 links.add(linkElement.attr("href"));
             }
             return links;
         }
-        catch(IOException r){
+        catch(IOException e){
             return links;
         }
    }
 
+    /**
+     * Этот метод предназначен для сохранения последней выбранной группы перед закрытием приложения.
+     * @param group группа для сохранения
+     */
     public void saveGroup(String group) {
         preferences.edit()
                 .putString("savedGroup", group)
                 .apply();
     }
 
+    /**
+     * Этот метод возвращает сохраненную группу.
+     * @return группа
+     */
     public String getSavedGroup(){
         return preferences.getString("savedGroup", null);
     }
