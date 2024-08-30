@@ -58,8 +58,7 @@ public class ScheduleApp extends Application implements SharedPreferences
     public void onCreate() {
         super.onCreate();
         instance = this;
-        database = Room.databaseBuilder(this, AppDatabase.class, "database")
-                .build();
+        database = AppDatabase.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         repository = new ScheduleRepository(this);
         repository.update();
