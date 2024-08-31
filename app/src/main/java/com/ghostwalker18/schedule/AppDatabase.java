@@ -15,7 +15,6 @@
 package com.ghostwalker18.schedule;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -39,6 +38,10 @@ public abstract class AppDatabase extends RoomDatabase {
      */
     public static AppDatabase getInstance(Context context){
         Callback callback =  new RoomDatabase.Callback(){
+            /**
+             * Этот метод создает триггер при создании бд.
+             * @param db создаваемая бд
+             */
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
@@ -57,7 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static final String updateDayTrigger =
-            "CREATE TRIGGER update_day " +
+            "CREATE TRIGGER IF NOT EXISTS update_day " +
             "BEFORE INSERT ON tblSchedule " +
             "BEGIN " +
             "DELETE FROM tblSchedule WHERE groupName = NEW.groupName AND " +
