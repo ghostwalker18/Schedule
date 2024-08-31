@@ -40,13 +40,15 @@ public interface LessonDao {
     @Query("SELECT DISTINCT groupName FROM tblSchedule ORDER BY groupName ASC")
     LiveData<String[]> getGroups();
 
-    @Query("SELECT * FROM tblSchedule WHERE lessonDate = :date AND groupName= :group AND teacherName = :teacher")
+    @Query("SELECT * FROM tblSchedule " +
+            "WHERE lessonDate = :date AND groupName= :group AND teacherName LIKE :teacher || '%'")
     LiveData<Lesson[]> getLessonsForGroupWithTeacher(Calendar date, String group, String teacher);
 
     @Query("SELECT * FROM tblSchedule WHERE lessonDate = :date AND groupName= :group")
     LiveData<Lesson[]> getLessonsForGroup(Calendar date, String group);
 
-    @Query("SELECT * FROM tblSchedule WHERE lessonDate = :date AND teacherName LIKE :teacher")
+    @Query("SELECT * FROM tblSchedule " +
+            "WHERE lessonDate = :date AND teacherName LIKE :teacher || '%'")
     LiveData<Lesson[]> getLessonsForTeacher(Calendar date, String teacher);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
