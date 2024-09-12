@@ -48,6 +48,7 @@ import retrofit2.Retrofit;
  */
 public class ScheduleRepository{
    private final AppDatabase db;
+   private IConverter converter = new XMLStoLessonsConverter();
    private final SharedPreferences preferences;
    private final ScheduleNetworkAPI api;
    private final Context context;
@@ -151,7 +152,7 @@ public class ScheduleRepository{
                         if(response.body() != null){
                             status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
                             try(XSSFWorkbook excelFile = new XSSFWorkbook(response.body().byteStream())){
-                                List<Lesson> lessons = XMLStoLessonsConverter.convertFirstCorpus(excelFile);
+                                List<Lesson> lessons = converter.convertFirstCorpus(excelFile);
                                 db.lessonDao().insertMany(lessons);
                                 status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
                             }
@@ -171,7 +172,34 @@ public class ScheduleRepository{
       }).start();
       //updating schedule database for second corpus
       new Thread(()->{
-          List<String> links = getLinksForScheduleSecondCorpus();
+          List<String> scheduleLinks = getLinksForScheduleSecondCorpus();
+          if(scheduleLinks.size() == 0)
+              status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+          for(String link : scheduleLinks){
+              status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
+              api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
+                  @Override
+                  public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                      if(response.body() != null){
+                          status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                          try(XSSFWorkbook excelFile = new XSSFWorkbook(response.body().byteStream())){
+                              List<Lesson> lessons = converter.convertSecondCorpus(excelFile);
+                              db.lessonDao().insertMany(lessons);
+                              status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
+                          }
+                          catch (IOException e){
+                              status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
+                          }
+                          response.body().close();
+                      }
+                  }
+
+                  @Override
+                  public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                      status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+                  }
+              });
+          }
       }).start();
    }
 

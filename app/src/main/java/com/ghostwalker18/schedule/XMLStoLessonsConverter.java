@@ -30,18 +30,19 @@ import java.util.TreeMap;
 import androidx.annotation.NonNull;
 
 /**
- * Этот класс содержит в себе статические методы для работы с файлами расписания ПАСТ.
+ * Этот класс содержит в себе методы для работы с файлами расписания ПТГХ.
  *
  * @author  Ипатов Никита
  */
-public class XMLStoLessonsConverter {
+public class XMLStoLessonsConverter
+   implements IConverter {
    /**
     * Этот метод используется для обработки файла расписания первого корпуса.
     *
     * @param excelFile эксель файл расписания для первого корпуса
     * @return лист объектов класса Lesson
     */
-   public static List<Lesson> convertFirstCorpus(XSSFWorkbook excelFile){
+   public List<Lesson> convertFirstCorpus(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
 
       for(int i = 0; i < excelFile.getNumberOfSheets(); i++){
@@ -107,25 +108,8 @@ public class XMLStoLessonsConverter {
     * @param excelFile эксель файл расписания для второго корпуса
     * @return лист объектов класса Lesson
     */
-   public static List<Lesson> convertSecondCorpusMain(XSSFWorkbook excelFile){
+   public List<Lesson> convertSecondCorpus(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
-
-
-
-      return lessons;
-   }
-
-   /**
-    * Этот метод используется для обработки файла измениня расписания второго корпуса.
-    *
-    * @param excelFile эксель файл изменений расписания для второго корпуса
-    * @return лист объектов класса Lesson
-    */
-   public static List<Lesson> convertSecondCorpusAdditional(XSSFWorkbook excelFile){
-      List<Lesson> lessons = new ArrayList<>();
-
-
-
       return lessons;
    }
 
