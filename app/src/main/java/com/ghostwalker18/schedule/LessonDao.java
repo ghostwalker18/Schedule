@@ -41,14 +41,14 @@ public interface LessonDao {
     LiveData<String[]> getGroups();
 
     @Query("SELECT * FROM tblSchedule " +
-            "WHERE lessonDate = :date AND groupName= :group AND teacherName LIKE :teacher || '%'")
+            "WHERE lessonDate = :date AND groupName= :group AND teacherName LIKE '%' || :teacher || '%'")
     LiveData<Lesson[]> getLessonsForGroupWithTeacher(Calendar date, String group, String teacher);
 
     @Query("SELECT * FROM tblSchedule WHERE lessonDate = :date AND groupName= :group")
     LiveData<Lesson[]> getLessonsForGroup(Calendar date, String group);
 
     @Query("SELECT * FROM tblSchedule " +
-            "WHERE lessonDate = :date AND teacherName LIKE :teacher || '%'")
+            "WHERE lessonDate = :date AND teacherName LIKE '%' || :teacher || '%'")
     LiveData<Lesson[]> getLessonsForTeacher(Calendar date, String teacher);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
