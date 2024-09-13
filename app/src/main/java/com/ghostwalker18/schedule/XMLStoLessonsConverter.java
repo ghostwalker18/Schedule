@@ -14,8 +14,6 @@
 
 package com.ghostwalker18.schedule;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -27,71 +25,69 @@ import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.TreeMap;
-import androidx.annotation.NonNull;
 
-/**
- * Этот класс содержит в себе методы для работы с файлами расписания ПТГХ.
- *
- * @author  Ипатов Никита
- */
 public class XMLStoLessonsConverter
-   implements IConverter {
-   /**
-    * Этот метод используется для обработки файла расписания первого корпуса.
-    *
-    * @param excelFile эксель файл расписания для первого корпуса
-    * @return лист объектов класса Lesson
-    */
+        implements IConverter{
+
+   private static final int FIRST_ROW_GAP_1 = 5;
+   private static final int FIST_ROW_GAP_2 = 105;
+   private static final int SCHEDULE_CELL_HEIGHT_1 = 2;
+   private static final int SCHEDULE_CELL_HEIGHT_2 = 4;
+
    public List<Lesson> convertFirstCorpus(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
+      DateConverters dateConverters = new DateConverters();
 
       for(int i = 0; i < excelFile.getNumberOfSheets(); i++){
          XSSFSheet sheet = excelFile.getSheetAt(i);
          String date = sheet.getSheetName() + "." + Calendar.getInstance().get(Calendar.YEAR);
          NavigableMap<Integer, String> groups = new TreeMap<>();
          XSSFRow groupsRow = sheet.getRow(3);
+         //checking if there is a schedule at the list
          if(groupsRow == null)
             break;
+         //getting groups` names
          for(int j = groupsRow.getFirstCellNum() + 2; j < groupsRow.getLastCellNum(); j++){
             XSSFCell groupRowCell = groupsRow.getCell(j);
+            //if cells are united, only first cell in union is not null
             if(groupRowCell == null )
                continue;
-            if(!groupRowCell.getStringCellValue().equals(""))
-               groups.put(j, groupRowCell.getStringCellValue());
+            if(!groupRowCell.getStringCellValue().trim().equals("")){
+               String group = groupRowCell.getStringCellValue().trim();
+               //mistake protection
+               groups.put(j, group.replaceAll("\\s+", ""));
+            }
+            groups.put(j, groupRowCell.getStringCellValue());
          }
 
+         //start filling schedule from top to bottom and from left to right
          scheduleFilling : {
             NavigableSet<Integer> groupBounds = groups.navigableKeySet();
-            for(int j = sheet.getFirstRowNum() + 5; j < sheet.getLastRowNum(); j +=2){
+            for(int j = sheet.getFirstRowNum() + FIRST_ROW_GAP_1;
+                j < sheet.getLastRowNum();
+                j += SCHEDULE_CELL_HEIGHT_1){
                for(int k : groupBounds){
+                  //bottom of schedule are group names, breaking here
                   if(sheet.getRow(j).getCell(k).getStringCellValue().equals(groups.get(k)))
                      break scheduleFilling;
                   Lesson lesson = new Lesson();
-                  lesson.date = DateConverters.fromString(date);
+                  lesson.date = dateConverters.convertFirstCorpusDate(date);
                   lesson.group = Objects.requireNonNull(groups.get(k));
-                  lesson.lessonNumber = sheet.getRow(j)
-                          .getCell(1)
-                          .getStringCellValue();
-                  lesson.times = sheet.getRow(j+1)
-                          .getCell(1)
-                          .getStringCellValue();
-                  lesson.subject = sheet.getRow(j)
-                          .getCell(k)
-                          .getStringCellValue();
-                  lesson.teacher = sheet.getRow(j+1)
-                          .getCell(k)
-                          .getStringCellValue();
+                  lesson.lessonNumber = getCellContentsAsString(sheet, j, 1).trim();
+                  lesson.times = getCellContentsAsString(sheet, j + 1, 1).trim();
+                  lesson.subject = getCellContentsAsString(sheet, j, k).trim();
+                  lesson.teacher = getCellContentsAsString(sheet, j + 1, k).trim();
                   Integer nextGroupBound = groupBounds.higher(k);
+                  String roomNumber;
                   if(nextGroupBound != null){
-                     lesson.roomNumber = getCellContentsAsString(sheet, j, nextGroupBound - 1);
+                     roomNumber = getCellContentsAsString(sheet, j, nextGroupBound - 1).trim();
                   }
                   else{
-                     String roomNumber = getCellContentsAsString(sheet, j, k + 2);
-                     if(!roomNumber.equals(""))
-                        lesson.roomNumber = roomNumber;
-                     else
-                        lesson.roomNumber = getCellContentsAsString(sheet, j, k + 3);
+                     roomNumber = getCellContentsAsString(sheet, j, k + 2).trim();
+                     if(roomNumber.equals(""))
+                        roomNumber = getCellContentsAsString(sheet, j, k + 3).trim();
                   }
+                  lesson.roomNumber = (roomNumber);
                   //Required for primary key
                   if(!lesson.subject.equals(""))
                      lessons.add(lesson);
@@ -99,17 +95,78 @@ public class XMLStoLessonsConverter
             }
          }
       }
+
       return lessons;
    }
 
-   /**
-    * Этот метод используется для обработки файла основного расписания второго корпуса.
-    *
-    * @param excelFile эксель файл расписания для второго корпуса
-    * @return лист объектов класса Lesson
-    */
    public List<Lesson> convertSecondCorpus(XSSFWorkbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
+      DateConverters dateConverters = new DateConverters();
+
+      for(int i = 0; i < excelFile.getNumberOfSheets(); i++) {
+         XSSFSheet sheet = excelFile.getSheetAt(i);
+         String date = sheet.getSheetName().trim();
+         NavigableMap<Integer, String> groups = new TreeMap<>();
+         XSSFRow groupsRow = sheet.getRow(3);
+         //checking if there is a schedule at the list
+         if (groupsRow == null)
+            break;
+         //getting groups` names
+         for (int j = groupsRow.getFirstCellNum() + 2; j < groupsRow.getLastCellNum(); j++) {
+            XSSFCell groupRowCell = groupsRow.getCell(j);
+            //if cells are united, only first cell in union is not null
+            if (groupRowCell == null)
+               continue;
+            if (!groupRowCell.getStringCellValue().trim().equals("") &&
+                    !groupRowCell.getStringCellValue().trim().equals("Группа") &&
+                    !groupRowCell.getStringCellValue().trim().equals("День недели")
+            ){
+               String group = groupRowCell.getStringCellValue().trim();
+               //mistake protection
+               groups.put(j, group.replaceAll("\\s+", "").trim());
+            }
+         }
+
+         //start filling schedule from top to bottom and from left to right
+         scheduleFilling : {
+            NavigableSet<Integer> groupBounds = groups.navigableKeySet();
+            for(int j = sheet.getFirstRowNum() + FIST_ROW_GAP_2;
+                j < sheet.getLastRowNum();
+                j += SCHEDULE_CELL_HEIGHT_2){
+               for(int k : groupBounds){
+                  //bottom of schedule are group names, breaking here
+                  if(sheet.getRow(j).getCell(k).getStringCellValue().equals(groups.get(k)))
+                     break scheduleFilling;
+                  Lesson lesson = new Lesson();
+                  lesson.date = dateConverters.convertSecondCorpusDate(date);
+                  lesson.group = (Objects.requireNonNull(groups.get(k)));
+                  lesson.lessonNumber = getCellContentsAsString(sheet, j, 1).trim();
+                  lesson.times = getCellContentsAsString(sheet, j + 1, 1).trim();
+                  String lessonSubject = getCellContentsAsString(sheet, j, k) + " " +
+                          getCellContentsAsString(sheet, j + 1, k);
+                  lesson.subject = lessonSubject.trim();
+                  lesson.teacher = getCellContentsAsString(sheet, j + 2, k).trim();
+                  Integer nextGroupBound = groupBounds.higher(k);
+                  String roomNumber;
+                  if(nextGroupBound != null){
+                     roomNumber = getCellContentsAsString(sheet, j, nextGroupBound - 1) + " "
+                             + getCellContentsAsString(sheet, j + 1, nextGroupBound - 1) + " "
+                             + getCellContentsAsString(sheet, j + 2, nextGroupBound - 1);
+                  }
+                  else{
+                     roomNumber = getCellContentsAsString(sheet, j, k + 3) + " " +
+                             getCellContentsAsString(sheet, j + 1, k + 3) + " " +
+                             getCellContentsAsString(sheet, j + 2, k + 3);
+                  }
+                  lesson.roomNumber = roomNumber.trim();
+                  //Required for primary key
+                  if(!lesson.subject.equals(""))
+                     lessons.add(lesson);
+               }
+            }
+         }
+      }
+
       return lessons;
    }
 
@@ -121,15 +178,20 @@ public class XMLStoLessonsConverter
     * @param column номер столбца ячейки
     * @return содержимое ячейки в виде строки
     */
-   private static String getCellContentsAsString(@NonNull XSSFSheet sheet, int row, int column){
-      Cell cell = sheet.getRow(row)
+   private static String getCellContentsAsString(XSSFSheet sheet, int row, int column){
+      XSSFCell cell = sheet.getRow(row)
               .getCell(column);
-      CellType cellType = cell.getCellTypeEnum();
-      switch (cellType){
+      if(cell == null)
+         return "";
+      switch (cell.getCellTypeEnum()){
          case STRING:
-            return cell.getStringCellValue();
+            return sheet.getRow(row)
+                    .getCell(column)
+                    .getStringCellValue();
          case NUMERIC:
-            return String.valueOf((int)cell.getNumericCellValue());
+            return String.valueOf((int)sheet.getRow(row)
+                    .getCell(column)
+                    .getNumericCellValue());
          default:
             return "";
       }

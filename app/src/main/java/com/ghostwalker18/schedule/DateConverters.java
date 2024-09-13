@@ -14,8 +14,11 @@
 
 package com.ghostwalker18.schedule;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
+
 import androidx.room.TypeConverter;
 
 /**
@@ -25,7 +28,9 @@ import androidx.room.TypeConverter;
  * @author  Ипатов Никита
  */
 public class DateConverters {
-   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+   private static final SimpleDateFormat dateFormatDB = new SimpleDateFormat("dd.MM.yyyy");
+   private static final SimpleDateFormat dateFormatFirstCorpus = new SimpleDateFormat("dd.MM.yyyy");
+   private static final SimpleDateFormat dateFormatSecondCorpus = new SimpleDateFormat("d MMMM yyyy");
 
    /**
     * Этот метод преобразует Calendar сущнисти в String для БД.
@@ -35,7 +40,7 @@ public class DateConverters {
     */
    @TypeConverter
    static public String toString(Calendar date){
-      return date == null ? null : dateFormat.format(date.getTime());
+      return date == null ? null : dateFormatDB.format(date.getTime());
    }
 
    /**
@@ -47,16 +52,44 @@ public class DateConverters {
     */
    @TypeConverter
    static public Calendar fromString(String date){
+      return stringToCal(date, dateFormatDB);
+   }
+
+   /**
+    * Этот метод преобразует String из расписания первого корпуса на Первомайском пр. в Calendar сущности.
+    * @param date дата из расписания первого корпуса
+    * @return преобразованная дата в формате Calendar
+    */
+   public Calendar convertFirstCorpusDate(String date){
+      return stringToCal(date, dateFormatFirstCorpus);
+   }
+
+   /**
+    * Этот метод преобразует String из расписания второго корпуса на Мурманской ул. в Calendar сущности.
+    * @param date дата из расписания второго корпуса
+    * @return преобразованная дата в формате Calendar
+    */
+   public Calendar convertSecondCorpusDate(String date){
+      return stringToCal(date, dateFormatSecondCorpus);
+   }
+
+   /**
+    * Этот метод используется для преобразования строки в дату согласно заданному формату.
+    * @param date строка даты
+    * @param format формат даты
+    * @return дата
+    */
+   private static synchronized Calendar stringToCal(String date, SimpleDateFormat format){
       if(date == null){
          return null;
       }
       else{
          try{
             Calendar cal = Calendar.getInstance();
-            cal.setTime(dateFormat.parse(date));
+            cal.setTime(Objects.requireNonNull(format.parse(date)));
             return cal;
          }
-         catch (java.text.ParseException e){
+         catch (ParseException e){
             return null;
          }
       }

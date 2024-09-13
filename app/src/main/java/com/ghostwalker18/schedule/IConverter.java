@@ -23,14 +23,14 @@ import java.util.List;
  *
  * @author Ипатов Никита
  */
-interface IConverter {
+public interface IConverter {
  /**
   * Этот метод используется для обработки файла расписания первого корпуса на Первомайском пр.
   *
   * @param excelFile эксель файл расписания для первого корпуса
   * @return лист объектов класса Lesson
   */
- public List<Lesson> convertFirstCorpus(XSSFWorkbook excelFile);
+  List<Lesson> convertFirstCorpus(XSSFWorkbook excelFile);
 
  /**
   * Этот метод используется для обработки файла основного расписания второго корпуса на ул.Мурманская.
@@ -38,5 +38,5 @@ interface IConverter {
   * @param excelFile эксель файл расписания для второго корпуса
   * @return лист объектов класса Lesson
   */
- public List<Lesson> convertSecondCorpus(XSSFWorkbook excelFile);
+  List<Lesson> convertSecondCorpus(XSSFWorkbook excelFile);
 }
