@@ -64,9 +64,7 @@ public class ScheduleState extends ViewModel{
    }
 
    public void setGroup(String group){
-      if(group != null && group.trim().equals(""))
-         group = null;
-      this.group.setValue(group.trim());
+      this.group.setValue(group);
    }
 
    public LiveData<String> getGroup(){
@@ -74,9 +72,7 @@ public class ScheduleState extends ViewModel{
    }
 
    public void setTeacher(String teacher){
-      if(teacher != null && teacher.trim().equals(""))
-         teacher = null;
-      this.teacher.setValue(teacher.trim());
+      this.teacher.setValue(teacher);
    }
 
    public LiveData<String> getTeacher(){
