@@ -14,7 +14,7 @@
 
 package com.ghostwalker18.schedule;
 
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import java.util.List;
 
 /**
@@ -30,7 +30,7 @@ public interface IConverter {
   * @param excelFile эксель файл расписания для первого корпуса
   * @return лист объектов класса Lesson
   */
-  List<Lesson> convertFirstCorpus(XSSFWorkbook excelFile);
+  List<Lesson> convertFirstCorpus(Workbook excelFile);
 
  /**
   * Этот метод используется для обработки файла основного расписания второго корпуса на ул.Мурманская.
@@ -38,5 +38,5 @@ public interface IConverter {
   * @param excelFile эксель файл расписания для второго корпуса
   * @return лист объектов класса Lesson
   */
-  List<Lesson> convertSecondCorpus(XSSFWorkbook excelFile);
+  List<Lesson> convertSecondCorpus(Workbook excelFile);
 }

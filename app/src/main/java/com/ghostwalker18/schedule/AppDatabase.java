@@ -30,7 +30,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 public abstract class AppDatabase extends RoomDatabase {
     public abstract LessonDao lessonDao();
 
-
     /**
      * Этот метод позволяет получить сконфигурированную базу данных приложения.
      * @param context контекс приложения

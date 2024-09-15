@@ -69,7 +69,7 @@ dependencies {
     implementation("com.google.guava:listenablefuture:1.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("org.jsoup:jsoup:1.12.2")
-    implementation("org.apache.poi:poi-ooxml:3.17")
+    implementation("com.github.pjfanning:excel-streaming-reader:5.0.2")
     implementation("org.apache.xmlbeans:xmlbeans:3.1.0")
     implementation("javax.xml.stream:stax-api:1.0")
     implementation("com.fasterxml:aalto-xml:1.2.2")
