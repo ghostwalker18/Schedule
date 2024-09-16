@@ -25,18 +25,18 @@ import java.util.List;
  */
 public interface IConverter {
  /**
-  * Этот метод используется для обработки файла расписания первого корпуса на Первомайском пр.
+  * Этот метод используется для обработки файла расписания первого корпуса на ул.Мурманская.
   *
-  * @param excelFile эксель файл расписания для первого корпуса
+  * @param excelFile эксель файл расписания для второго корпуса
   * @return лист объектов класса Lesson
   */
   List<Lesson> convertFirstCorpus(Workbook excelFile);
 
  /**
-  * Этот метод используется для обработки файла основного расписания второго корпуса на ул.Мурманская.
+  * Этот метод используется для обработки файла расписания второго корпуса на Первомайском пр.
   *
-  * @param excelFile эксель файл расписания для второго корпуса
+  * @param excelFile эксель файл расписания для первого корпуса
   * @return лист объектов класса Lesson
   */
-  List<Lesson> convertSecondCorpus(Workbook excelFile);
+ List<Lesson> convertSecondCorpus(Workbook excelFile);
 }
