@@ -55,6 +55,7 @@ public class RowCache {
      * @throws IndexOutOfBoundsException
      */
     public Row getRow(int row) throws IndexOutOfBoundsException {
+        Row cachedRow = null;
         if(row <= lowBoundary - size)
             throw new IndexOutOfBoundsException();
         if(row < lowBoundary + size){
@@ -64,7 +65,7 @@ public class RowCache {
                 return rows[row - lowBoundary];
         }
         else{
-            lowBoundary = row;
+            lowBoundary += size;
             load();
             return getRow(row);
         }

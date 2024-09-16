@@ -18,9 +18,12 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.Objects;
@@ -28,11 +31,11 @@ import java.util.TreeMap;
 
 public class XMLStoLessonsConverter
         implements IConverter{
-
-   private static final int FIRST_ROW_GAP_1 = 5;
-   private static final int FIST_ROW_GAP_2 = 105;
-   private static final int ROW_END_2 = 34;
+   private static  int FIRST_ROW_GAP_1;
+   private static final int GROUPS_ROW_1 = 3;
+   private static final int SCHEDULE_HEIGHT_1 = 24;
    private static final int SCHEDULE_CELL_HEIGHT_1 = 2;
+   private static final int FIRST_ROW_GAP_2 = 5;
    private static final int SCHEDULE_CELL_HEIGHT_2 = 4;
 
    public List<Lesson> convertFirstCorpus(Workbook excelFile){
@@ -45,9 +48,13 @@ public class XMLStoLessonsConverter
                  .setSheet(sheet)
                  .setSize(10)
                  .build();
-         String date = sheet.getSheetName().trim();
+
+         String dateString = sheet.getSheetName().trim();
+         Calendar date = dateConverters.convertFirstCorpusDate(dateString);
+         String dayOfWeek = new SimpleDateFormat("EEEE", new Locale("ru")).format(date.getTime());
+
          NavigableMap<Integer, String> groups = new TreeMap<>();
-         Row groupsRow = cache.getRow(3);
+         Row groupsRow = cache.getRow(GROUPS_ROW_1);
          //checking if there is a schedule at the list
          if (groupsRow == null)
             break;
@@ -67,18 +74,26 @@ public class XMLStoLessonsConverter
             }
          }
 
+         //searching for first row gap where schedule starts
+         for(int j = sheet.getFirstRowNum(); j < sheet.getLastRowNum(); j++){
+            if(getCellContentsAsString(cache, j, 0).toLowerCase().equals(dayOfWeek)){
+               FIRST_ROW_GAP_1 = j;
+               break;
+            }
+         }
+
          //start filling schedule from top to bottom and from left to right
          scheduleFilling : {
             NavigableSet<Integer> groupBounds = groups.navigableKeySet();
-            for(int j = sheet.getFirstRowNum() + FIST_ROW_GAP_2;
-                j < ROW_END_2;
+            for(int j = sheet.getFirstRowNum() + FIRST_ROW_GAP_1;
+                j < FIRST_ROW_GAP_1 + SCHEDULE_HEIGHT_1;
                 j += SCHEDULE_CELL_HEIGHT_2){
                for(int k : groupBounds){
                   //bottom of schedule are group names, breaking here
                   if(cache.getRow(j).getCell(k).getStringCellValue().equals(groups.get(k)))
                      break scheduleFilling;
                   Lesson lesson = new Lesson();
-                  lesson.date = dateConverters.convertSecondCorpusDate(date);
+                  lesson.date = date;
                   lesson.group = Objects.requireNonNull(groups.get(k));
                   lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
                   lesson.times = getCellContentsAsString(cache, j + 1, 1).trim();
@@ -143,15 +158,15 @@ public class XMLStoLessonsConverter
          //start filling schedule from top to bottom and from left to right
          scheduleFilling : {
             NavigableSet<Integer> groupBounds = groups.navigableKeySet();
-            for(int j = sheet.getFirstRowNum() + FIRST_ROW_GAP_1;
-                j < ROW_END_2;
+            for(int j = sheet.getFirstRowNum() + FIRST_ROW_GAP_2;
+                j < sheet.getLastRowNum();
                 j += SCHEDULE_CELL_HEIGHT_1){
                for(int k : groupBounds){
                   //bottom of schedule are group names, breaking here
                   if(cache.getRow(j).getCell(k).getStringCellValue().equals(groups.get(k)))
                      break scheduleFilling;
                   Lesson lesson = new Lesson();
-                  lesson.date = dateConverters.convertFirstCorpusDate(date);
+                  lesson.date = dateConverters.convertSecondCorpusDate(date);
                   lesson.group = (Objects.requireNonNull(groups.get(k)));
                   lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
                   lesson.times = getCellContentsAsString(cache, j + 1, 1).trim();

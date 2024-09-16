@@ -17,6 +17,7 @@ package com.ghostwalker18.schedule;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 import androidx.room.TypeConverter;
@@ -28,9 +29,12 @@ import androidx.room.TypeConverter;
  * @author  Ипатов Никита
  */
 public class DateConverters {
-   private static final SimpleDateFormat dateFormatDB = new SimpleDateFormat("dd.MM.yyyy");
-   private static final SimpleDateFormat dateFormatFirstCorpus = new SimpleDateFormat("dd.MM.yyyy");
-   private static final SimpleDateFormat dateFormatSecondCorpus = new SimpleDateFormat("d MMMM yyyy");
+   private static final SimpleDateFormat dateFormatDB = new SimpleDateFormat("dd.MM.yyyy",
+           new Locale("ru"));
+   private static final SimpleDateFormat dateFormatFirstCorpus = new SimpleDateFormat("d MMMM yyyy",
+           new Locale("ru"));
+   private static final SimpleDateFormat dateFormatSecondCorpus = new SimpleDateFormat("dd.MM.yyyy",
+           new Locale("ru"));
 
    /**
     * Этот метод преобразует Calendar сущнисти в String для БД.
@@ -56,21 +60,21 @@ public class DateConverters {
    }
 
    /**
-    * Этот метод преобразует String из расписания первого корпуса на Первомайском пр. в Calendar сущности.
-    * @param date дата из расписания первого корпуса
-    * @return преобразованная дата в формате Calendar
-    */
-   public Calendar convertFirstCorpusDate(String date){
-      return stringToCal(date, dateFormatFirstCorpus);
-   }
-
-   /**
-    * Этот метод преобразует String из расписания второго корпуса на Мурманской ул. в Calendar сущности.
+    * Этот метод преобразует String из расписания второго корпуса на Первомайском пр. в Calendar сущности.
     * @param date дата из расписания второго корпуса
     * @return преобразованная дата в формате Calendar
     */
    public Calendar convertSecondCorpusDate(String date){
       return stringToCal(date, dateFormatSecondCorpus);
+   }
+
+   /**
+    * Этот метод преобразует String из расписания первого корпуса на Мурманской ул. в Calendar сущности.
+    * @param date дата из расписания первого корпуса
+    * @return преобразованная дата в формате Calendar
+    */
+   public Calendar convertFirstCorpusDate(String date){
+      return stringToCal(date, dateFormatFirstCorpus);
    }
 
    /**
