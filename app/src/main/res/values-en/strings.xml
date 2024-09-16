@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">PACC Schedule (unofficial)</string>
+    <string name="app_name">PCME Schedule (unofficial)</string>
     <string name="settings">Settings</string>
     <string name="days_tab">Lessons</string>
     <string name="times_tab">Times</string>

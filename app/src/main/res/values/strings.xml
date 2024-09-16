@@ -12,7 +12,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Расписание ПАСТ (неофициальное)</string>
+    <string name="app_name">Расписание ПТГХ (неофициальное)</string>
     <string name="schedule">Расписание</string>
     <string name="settings">Настройки</string>
     <string name="days_tab">Расписание занятий</string>

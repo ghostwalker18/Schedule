@@ -18,7 +18,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,10 +33,11 @@ public class XMLStoLessonsConverter
    private static  int FIRST_ROW_GAP_1;
    private static final int GROUPS_ROW_1 = 3;
    private static final int SCHEDULE_HEIGHT_1 = 24;
-   private static final int SCHEDULE_CELL_HEIGHT_1 = 2;
-   private static final int FIRST_ROW_GAP_2 = 5;
-   private static final int SCHEDULE_CELL_HEIGHT_2 = 4;
+   private static final int SCHEDULE_CELL_HEIGHT_1 = 4;
 
+   private static final int FIRST_ROW_GAP_2 = 5;
+   private static final int GROUPS_ROW_2 = 3;
+   private static final int SCHEDULE_CELL_HEIGHT_2 = 2;
    public List<Lesson> convertFirstCorpus(Workbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
       DateConverters dateConverters = new DateConverters();
@@ -87,11 +87,8 @@ public class XMLStoLessonsConverter
             NavigableSet<Integer> groupBounds = groups.navigableKeySet();
             for(int j = sheet.getFirstRowNum() + FIRST_ROW_GAP_1;
                 j < FIRST_ROW_GAP_1 + SCHEDULE_HEIGHT_1;
-                j += SCHEDULE_CELL_HEIGHT_2){
+                j += SCHEDULE_CELL_HEIGHT_1){
                for(int k : groupBounds){
-                  //bottom of schedule are group names, breaking here
-                  if(cache.getRow(j).getCell(k).getStringCellValue().equals(groups.get(k)))
-                     break scheduleFilling;
                   Lesson lesson = new Lesson();
                   lesson.date = date;
                   lesson.group = Objects.requireNonNull(groups.get(k));
@@ -136,9 +133,10 @@ public class XMLStoLessonsConverter
                  .setSheet(sheet)
                  .setSize(5)
                  .build();
-         String date = sheet.getSheetName() + "." + Calendar.getInstance().get(Calendar.YEAR);
+         String dateString = sheet.getSheetName() + "." + Calendar.getInstance().get(Calendar.YEAR);
+         Calendar date = dateConverters.convertSecondCorpusDate(dateString);
          NavigableMap<Integer, String> groups = new TreeMap<>();
-         Row groupsRow = cache.getRow(3);
+         Row groupsRow = cache.getRow(GROUPS_ROW_2);
          //checking if there is a schedule at the list
          if(groupsRow == null)
             break;
@@ -160,13 +158,13 @@ public class XMLStoLessonsConverter
             NavigableSet<Integer> groupBounds = groups.navigableKeySet();
             for(int j = sheet.getFirstRowNum() + FIRST_ROW_GAP_2;
                 j < sheet.getLastRowNum();
-                j += SCHEDULE_CELL_HEIGHT_1){
+                j += SCHEDULE_CELL_HEIGHT_2){
                for(int k : groupBounds){
                   //bottom of schedule are group names, breaking here
                   if(cache.getRow(j).getCell(k).getStringCellValue().equals(groups.get(k)))
                      break scheduleFilling;
                   Lesson lesson = new Lesson();
-                  lesson.date = dateConverters.convertSecondCorpusDate(date);
+                  lesson.date = date;
                   lesson.group = (Objects.requireNonNull(groups.get(k)));
                   lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
                   lesson.times = getCellContentsAsString(cache, j + 1, 1).trim();
