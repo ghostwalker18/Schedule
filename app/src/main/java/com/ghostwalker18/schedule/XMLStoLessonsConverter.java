@@ -93,7 +93,8 @@ public class XMLStoLessonsConverter
                   lesson.date = date;
                   lesson.group = Objects.requireNonNull(groups.get(k));
                   lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
-                  lesson.times = getCellContentsAsString(cache, j + 1, 1).trim();
+                  lesson.times = transformTimeTo_XX_XXFormat(
+                          getCellContentsAsString(cache, j + 1, 1).trim());
                   String lessonSubject = getCellContentsAsString(cache, j, k) + " " +
                           getCellContentsAsString(cache, j + 1, k);
                   lesson.subject = lessonSubject.trim();
@@ -167,7 +168,8 @@ public class XMLStoLessonsConverter
                   lesson.date = date;
                   lesson.group = (Objects.requireNonNull(groups.get(k)));
                   lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
-                  lesson.times = getCellContentsAsString(cache, j + 1, 1).trim();
+                  lesson.times = transformTimeTo_XX_XXFormat(
+                          getCellContentsAsString(cache, j + 1, 1).trim());
                   lesson.subject = getCellContentsAsString(cache, j, k).trim();
                   lesson.teacher = getCellContentsAsString(cache, j + 1, k).trim();
                   Integer nextGroupBound = groupBounds.higher(k);
@@ -217,5 +219,16 @@ public class XMLStoLessonsConverter
          default:
             return "";
       }
+   }
+
+   /**
+    * Этот метод используется для преобразования строки с временем к формату ХХ.ХХ
+    * @param time время
+    * @return время
+    */
+   private static String transformTimeTo_XX_XXFormat(String time){
+      if(time.startsWith("0") || time.startsWith("1") || time.startsWith("2") || time.equals(""))
+         return time;
+      return "0" + time;
    }
 }
