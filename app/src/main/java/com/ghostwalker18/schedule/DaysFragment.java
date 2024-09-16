@@ -94,6 +94,7 @@ public class DaysFragment extends Fragment
       enableTeacherSearch();
       view.findViewById(R.id.forward_button).setOnClickListener(v -> state.goNextWeek());
       view.findViewById(R.id.back_button).setOnClickListener(v -> state.goPreviousWeek());
+      view.findViewById(R.id.refresh_button).setOnClickListener(v -> repository.update());
       updateScheduleProgress = view.findViewById(R.id.updateScheduleProgress);
       updateScheduleStatus = view.findViewById(R.id.updateScheduleStatus);
       repository.getStatus().observe(getViewLifecycleOwner(), status -> {
