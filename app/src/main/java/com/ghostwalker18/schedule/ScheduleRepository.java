@@ -23,7 +23,6 @@ import android.graphics.BitmapFactory;
 import com.github.pjfanning.xlsx.StreamingReader;
 
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -143,9 +142,10 @@ public class ScheduleRepository{
                   otherTimes.postValue(bitmap2);
             }).start();
       }
-      //updating schedule database for first corpus
+
+      //updating schedule database for second corpus
       new Thread(() -> {
-            List<String> scheduleLinks = getLinksForScheduleFirstCorpus();
+            List<String> scheduleLinks = getLinksForSecondCorpusSchedule();
             if(scheduleLinks.size() == 0)
                 status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
             for(String link : scheduleLinks){
@@ -159,7 +159,7 @@ public class ScheduleRepository{
                                     .rowCacheSize(10)
                                     .bufferSize(4096)
                                     .open(response.body().byteStream())){
-                                List<Lesson> lessons = converter.convertFirstCorpus(excelFile);
+                                List<Lesson> lessons = converter.convertSecondCorpus(excelFile);
                                 db.lessonDao().insertMany(lessons);
                                 status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
                             }
@@ -178,9 +178,9 @@ public class ScheduleRepository{
             }
       }).start();
 
-      //updating schedule database for second corpus
+      //updating schedule database for first corpus
       new Thread(()->{
-          List<String> scheduleLinks = getLinksForScheduleSecondCorpus();
+          List<String> scheduleLinks = getLinksForFirstCorpusSchedule();
           if(scheduleLinks.size() == 0)
               status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
           for(String link : scheduleLinks){
@@ -194,7 +194,7 @@ public class ScheduleRepository{
                                   .rowCacheSize(10)
                                   .bufferSize(4096)
                                   .open(response.body().byteStream())){
-                              List<Lesson> lessons = converter.convertSecondCorpus(excelFile);
+                              List<Lesson> lessons = converter.convertFirstCorpus(excelFile);
                               db.lessonDao().insertMany(lessons);
                               status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
                           }
@@ -279,35 +279,11 @@ public class ScheduleRepository{
 
     /**
      * Этот метод получает ссылки с сайта ПАСТ,
-     * по которым доступно расписание для корпуса на Первомайском проспекте.
-     *
-     * @return список ссылок
-     */
-   public  List<String> getLinksForScheduleFirstCorpus(){
-       List<String> links = new ArrayList<>();
-       try{
-           Document doc = Jsoup.connect(baseUri).get();
-           Elements linkElements = doc.select(mainSelector).get(0)
-                   .select("tr").get(1)
-                   .select("td").get(1)
-                   .select("p > a");
-           for(Element linkElement : linkElements){
-               links.add(linkElement.attr("href"));
-           }
-           return links;
-       }
-       catch (IOException e){
-           return links;
-       }
-   }
-
-    /**
-     * Этот метод получает ссылки с сайта ПАСТ,
      * по которым доступно расписание для корпуса на Мурманской улице.
      *
      * @return список ссылок
      */
-   public List<String> getLinksForScheduleSecondCorpus(){
+   public List<String> getLinksForFirstCorpusSchedule(){
         List<String> links = new ArrayList<>();
         try{
             Document doc = Jsoup.connect(baseUri).get();
@@ -326,6 +302,30 @@ public class ScheduleRepository{
    }
 
     /**
+     * Этот метод получает ссылки с сайта ПАСТ,
+     * по которым доступно расписание для корпуса на Первомайском проспекте.
+     *
+     * @return список ссылок
+     */
+    public  List<String> getLinksForSecondCorpusSchedule(){
+        List<String> links = new ArrayList<>();
+        try{
+            Document doc = Jsoup.connect(baseUri).get();
+            Elements linkElements = doc.select(mainSelector).get(0)
+                    .select("tr").get(1)
+                    .select("td").get(1)
+                    .select("p > a");
+            for(Element linkElement : linkElements){
+                links.add(linkElement.attr("href"));
+            }
+            return links;
+        }
+        catch (IOException e){
+            return links;
+        }
+    }
+
+    /**
      * Этот метод предназначен для сохранения последней выбранной группы перед закрытием приложения.
      * @param group группа для сохранения
      */
@@ -341,5 +341,15 @@ public class ScheduleRepository{
      */
     public String getSavedGroup(){
         return preferences.getString("savedGroup", null);
+    }
+
+    /**
+     * Этот метод позволяет получить имя скачиваемого файла из ссылки на него.
+     * @param link ссылка на файл
+     * @return имя файла
+     */
+    public static String getNameFromLink(String link){
+        String[] parts = link.split("/");
+        return parts[parts.length - 1];
     }
 }

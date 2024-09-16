@@ -157,14 +157,23 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean downloadScheduleFile(){
         new Thread(() -> {
-            List<String> links = ScheduleApp.getInstance().getRepository().getLinksForScheduleFirstCorpus();
+            List<String> linksForFirstCorpusSchedule = ScheduleApp.getInstance()
+                    .getRepository()
+                    .getLinksForFirstCorpusSchedule();
+            List<String> linksForSecondCorpusSchedule = ScheduleApp.getInstance()
+                    .getRepository()
+                    .getLinksForSecondCorpusSchedule();
+            List<String> links = new ArrayList<>();
+            links.addAll(linksForFirstCorpusSchedule);
+            links.addAll(linksForSecondCorpusSchedule);
             DownloadManager downloadManager = getApplication().getSystemService(DownloadManager.class);
             for(String link : links){
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link))
                         .setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                         .setTitle(getString(R.string.schedule))
-                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.schedule));
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                ScheduleRepository.getNameFromLink(link));
                 downloadManager.enqueue(request);
             }
         }).start();
