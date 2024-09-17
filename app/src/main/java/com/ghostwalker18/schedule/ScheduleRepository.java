@@ -163,7 +163,7 @@ public class ScheduleRepository{
                                 db.lessonDao().insertMany(lessons);
                                 status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
                             }
-                            catch (IOException e){
+                            catch (Exception e){
                                 status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
                             }
                             response.body().close();
@@ -198,7 +198,7 @@ public class ScheduleRepository{
                               db.lessonDao().insertMany(lessons);
                               status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
                           }
-                          catch (IOException e){
+                          catch (Exception e){
                               status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
                           }
                           response.body().close();

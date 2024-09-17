@@ -44,6 +44,10 @@
 -keep class org.xml.sax.** { *; }
 -keep class schemaorg_apache_xmlbeans.** { *; }
 
+#Excel streaming reader
+-dontwarn com.github.pjfanning.**
+-keep class com.github.pjfanning.** { *; }
+
 
 # Retrofit does reflection on method and parameter annotations.
 -keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
