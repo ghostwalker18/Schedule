@@ -51,7 +51,6 @@ public class XMLStoLessonsConverter
 
          String dateString = sheet.getSheetName().trim();
          Calendar date = dateConverters.convertFirstCorpusDate(dateString);
-         String dayOfWeek = new SimpleDateFormat("EEEE", new Locale("ru")).format(date.getTime());
 
          NavigableMap<Integer, String> groups = new TreeMap<>();
          Row groupsRow = cache.getRow(GROUPS_ROW_1);
@@ -93,11 +92,11 @@ public class XMLStoLessonsConverter
                   lesson.date = date;
                   lesson.group = Objects.requireNonNull(groups.get(k));
                   lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
-                  lesson.times = transformTimeTo_XX_XXFormat(
+                  lesson.times = prepareTimes(
                           getCellContentsAsString(cache, j + 1, 1).trim());
                   String lessonSubject = getCellContentsAsString(cache, j, k) + " " +
                           getCellContentsAsString(cache, j + 1, k);
-                  lesson.subject = lessonSubject.trim();
+                  lesson.subject = prepareSubject(lessonSubject.trim());
                   lesson.teacher = getCellContentsAsString(cache, j + 2, k).trim();
                   Integer nextGroupBound = groupBounds.higher(k);
                   String roomNumber;
@@ -111,7 +110,7 @@ public class XMLStoLessonsConverter
                              getCellContentsAsString(cache, j + 1, k + 3) + " " +
                              getCellContentsAsString(cache, j + 2, k + 3);
                   }
-                  lesson.roomNumber = roomNumber.trim();
+                  lesson.roomNumber = prepareRoomNumber(roomNumber.trim());
                   //Required for primary key
                   if(!lesson.subject.equals(""))
                      lessons.add(lesson);
@@ -134,8 +133,10 @@ public class XMLStoLessonsConverter
                  .setSheet(sheet)
                  .setSize(5)
                  .build();
+
          String dateString = sheet.getSheetName() + "." + Calendar.getInstance().get(Calendar.YEAR);
          Calendar date = dateConverters.convertSecondCorpusDate(dateString);
+
          NavigableMap<Integer, String> groups = new TreeMap<>();
          Row groupsRow = cache.getRow(GROUPS_ROW_2);
          //checking if there is a schedule at the list
@@ -168,9 +169,9 @@ public class XMLStoLessonsConverter
                   lesson.date = date;
                   lesson.group = (Objects.requireNonNull(groups.get(k)));
                   lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
-                  lesson.times = transformTimeTo_XX_XXFormat(
+                  lesson.times = prepareTimes(
                           getCellContentsAsString(cache, j + 1, 1).trim());
-                  lesson.subject = getCellContentsAsString(cache, j, k).trim();
+                  lesson.subject = prepareSubject(getCellContentsAsString(cache, j, k).trim());
                   lesson.teacher = getCellContentsAsString(cache, j + 1, k).trim();
                   Integer nextGroupBound = groupBounds.higher(k);
                   String roomNumber;
@@ -182,7 +183,7 @@ public class XMLStoLessonsConverter
                      if(roomNumber.equals(""))
                         roomNumber = getCellContentsAsString(cache, j, k + 3).trim();
                   }
-                  lesson.roomNumber = roomNumber;
+                  lesson.roomNumber = prepareRoomNumber(roomNumber);
                   //Required for primary key
                   if(!lesson.subject.equals(""))
                      lessons.add(lesson);
@@ -223,12 +224,32 @@ public class XMLStoLessonsConverter
 
    /**
     * Этот метод используется для преобразования строки с временем к формату ХХ.ХХ
-    * @param time время
+    *
+    * @param times время
     * @return время
     */
-   private static String transformTimeTo_XX_XXFormat(String time){
-      if(time.startsWith("0") || time.startsWith("1") || time.startsWith("2") || time.equals(""))
-         return time;
-      return "0" + time;
+   private static String prepareTimes(String times){
+      if(times.startsWith("0") || times.startsWith("1") || times.startsWith("2") || times.equals(""))
+         return times;
+      return "0" + times;
+   }
+
+   /**
+    * Этот метод используется для приведения строки с номером кабинета к удобочитаемому виду.
+    * @param roomNumber номер кабинета
+    * @return обработанный номер кабинета
+    */
+   private static String prepareRoomNumber(String roomNumber){
+      return roomNumber.replaceAll("/\\s+", "/")
+              .replaceAll("\\s+", " ");
+   }
+
+   /**
+    * Этот метод используется для приведения строки с названием предмета к удобочитаемому виду.
+    * @param subject название предмета
+    * @return обработанное название предмета
+    */
+   private static String prepareSubject(String subject){
+      return subject.replaceAll("\\s+", " ");
    }
 }
