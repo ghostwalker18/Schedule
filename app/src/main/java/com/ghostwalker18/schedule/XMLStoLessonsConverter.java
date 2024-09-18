@@ -97,7 +97,7 @@ public class XMLStoLessonsConverter
                   String lessonSubject = getCellContentsAsString(cache, j, k) + " " +
                           getCellContentsAsString(cache, j + 1, k);
                   lesson.subject = prepareSubject(lessonSubject.trim());
-                  lesson.teacher = getCellContentsAsString(cache, j + 2, k).trim();
+                  lesson.teacher = prepareTeacher(getCellContentsAsString(cache, j + 2, k).trim());
                   Integer nextGroupBound = groupBounds.higher(k);
                   String roomNumber;
                   if(nextGroupBound != null){
@@ -172,7 +172,7 @@ public class XMLStoLessonsConverter
                   lesson.times = prepareTimes(
                           getCellContentsAsString(cache, j + 1, 1).trim());
                   lesson.subject = prepareSubject(getCellContentsAsString(cache, j, k).trim());
-                  lesson.teacher = getCellContentsAsString(cache, j + 1, k).trim();
+                  lesson.teacher = prepareTeacher(getCellContentsAsString(cache, j + 1, k).trim());
                   Integer nextGroupBound = groupBounds.higher(k);
                   String roomNumber;
                   if(nextGroupBound != null){
@@ -232,6 +232,16 @@ public class XMLStoLessonsConverter
       if(times.startsWith("0") || times.startsWith("1") || times.startsWith("2") || times.equals(""))
          return times;
       return "0" + times;
+   }
+
+   /**
+    * Этот метод используется для приведения строки с именем преподавателя к удобочитаемому виду.
+    * @param teacher имя преподавателя
+    * @return обработанное имя преподавателя
+    */
+   private static String prepareTeacher(String teacher){
+      return teacher.replaceAll("\\s+", " ")
+              .replaceAll("/", "");
    }
 
    /**
