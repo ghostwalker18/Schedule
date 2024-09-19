@@ -43,7 +43,7 @@ public class Lesson {
     public String times;
     @ColumnInfo(name="groupName")
     @NonNull
-    public String group;
+    public String groupName;
     @ColumnInfo(name="subjectName")
     @NonNull
     public String subject;
@@ -55,13 +55,69 @@ public class Lesson {
     }
 
     public Lesson(@NonNull Calendar date, @NonNull String lessonNumber, @NonNull String roomNumber, String times,
-                  @NonNull String group, @NonNull String subject, String teacher) {
+                  @NonNull String groupName, @NonNull String subject, String teacher) {
         this.date = date;
         this.lessonNumber = lessonNumber;
         this.roomNumber = roomNumber;
         this.times = times;
-        this.group = group;
+        this.groupName = groupName;
         this.subject = subject;
+        this.teacher = teacher;
+    }
+
+    public Calendar getDate() {
+        return date;
+    }
+
+    public String getLessonNumber() {
+        return lessonNumber;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public String getTimes() {
+        return times;
+    }
+
+    public String getGroup() {
+        return groupName;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
+
+    public void setLessonNumber(String lessonNumber) {
+        this.lessonNumber = lessonNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public void setTimes(String times) {
+        this.times = times;
+    }
+
+    public void setGroup(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setTeacher(String teacher) {
         this.teacher = teacher;
     }
 }

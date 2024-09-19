@@ -18,16 +18,19 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.TreeMap;
 
+/**
+ * Этот класс содержит в себе методы для работы с файлами расписания ПТГХ.
+ *
+ * @author  Ипатов Никита
+ */
 public class XMLStoLessonsConverter
         implements IConverter{
    private static  int FIRST_ROW_GAP_1;
@@ -38,6 +41,7 @@ public class XMLStoLessonsConverter
    private static final int FIRST_ROW_GAP_2 = 5;
    private static final int GROUPS_ROW_2 = 3;
    private static final int SCHEDULE_CELL_HEIGHT_2 = 2;
+
    public List<Lesson> convertFirstCorpus(Workbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
       DateConverters dateConverters = new DateConverters();
@@ -74,7 +78,7 @@ public class XMLStoLessonsConverter
          }
 
          //searching for first row gap where schedule starts
-         for(int j = sheet.getFirstRowNum(); j < sheet.getLastRowNum(); j++){
+         for(int j = GROUPS_ROW_1 + 2; j < sheet.getLastRowNum(); j++){
             if(!cache.getRow(j).getZeroHeight()){
                FIRST_ROW_GAP_1 = j;
                break;
@@ -89,30 +93,30 @@ public class XMLStoLessonsConverter
                 j += SCHEDULE_CELL_HEIGHT_1){
                for(int k : groupBounds){
                   Lesson lesson = new Lesson();
-                  lesson.date = date;
-                  lesson.group = Objects.requireNonNull(groups.get(k));
-                  lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
-                  lesson.times = prepareTimes(
-                          getCellContentsAsString(cache, j + 1, 1).trim());
+                  lesson.setDate(date);
+                  lesson.setGroup(Objects.requireNonNull(groups.get(k)));
+                  lesson.setLessonNumber(getCellContentsAsString(cache, j, 1).trim());
+                  lesson.setTimes(prepareTimes(
+                          getCellContentsAsString(cache, j + 1, 1).trim()));
                   String lessonSubject = getCellContentsAsString(cache, j, k) + " " +
                           getCellContentsAsString(cache, j + 1, k);
-                  lesson.subject = prepareSubject(lessonSubject.trim());
-                  lesson.teacher = prepareTeacher(getCellContentsAsString(cache, j + 2, k).trim());
+                  lesson.setSubject(prepareSubject(lessonSubject.trim()));
+                  lesson.setTeacher(prepareTeacher(getCellContentsAsString(cache, j + 2, k).trim()));
                   Integer nextGroupBound = groupBounds.higher(k);
                   String roomNumber;
                   if(nextGroupBound != null){
-                     roomNumber = getCellContentsAsString(cache, j, nextGroupBound - 1) + " "
-                             + getCellContentsAsString(cache, j + 1, nextGroupBound - 1) + " "
-                             + getCellContentsAsString(cache, j + 2, nextGroupBound - 1);
+                     roomNumber = getCellContentsAsString(cache, j, nextGroupBound - 1).trim() + " "
+                             + getCellContentsAsString(cache, j + 1, nextGroupBound - 1).trim() + " "
+                             + getCellContentsAsString(cache, j + 2, nextGroupBound - 1).trim();
                   }
                   else{
-                     roomNumber = getCellContentsAsString(cache, j, k + 3) + " " +
-                             getCellContentsAsString(cache, j + 1, k + 3) + " " +
-                             getCellContentsAsString(cache, j + 2, k + 3);
+                     roomNumber = getCellContentsAsString(cache, j, k + 3).trim() + " "
+                             + getCellContentsAsString(cache, j + 1, k + 3).trim() + " "
+                             + getCellContentsAsString(cache, j + 2, k + 3).trim();
                   }
-                  lesson.roomNumber = prepareRoomNumber(roomNumber.trim());
+                  lesson.setRoomNumber(prepareRoomNumber(roomNumber));
                   //Required for primary key
-                  if(!lesson.subject.equals(""))
+                  if(!lesson.getSubject().equals(""))
                      lessons.add(lesson);
                }
             }
@@ -125,7 +129,6 @@ public class XMLStoLessonsConverter
    public List<Lesson> convertSecondCorpus(Workbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
       DateConverters dateConverters = new DateConverters();
-
 
       for(int i = 0; i < excelFile.getNumberOfSheets(); i++){
          Sheet sheet = excelFile.getSheetAt(i);
@@ -166,13 +169,13 @@ public class XMLStoLessonsConverter
                   if(cache.getRow(j).getCell(k).getStringCellValue().equals(groups.get(k)))
                      break scheduleFilling;
                   Lesson lesson = new Lesson();
-                  lesson.date = date;
-                  lesson.group = (Objects.requireNonNull(groups.get(k)));
-                  lesson.lessonNumber = getCellContentsAsString(cache, j, 1).trim();
-                  lesson.times = prepareTimes(
-                          getCellContentsAsString(cache, j + 1, 1).trim());
-                  lesson.subject = prepareSubject(getCellContentsAsString(cache, j, k).trim());
-                  lesson.teacher = prepareTeacher(getCellContentsAsString(cache, j + 1, k).trim());
+                  lesson.setDate(date);
+                  lesson.setGroup(Objects.requireNonNull(groups.get(k)));
+                  lesson.setLessonNumber(getCellContentsAsString(cache, j, 1).trim());
+                  lesson.setTimes(prepareTimes(
+                          getCellContentsAsString(cache, j + 1, 1).trim()));
+                  lesson.setSubject(prepareSubject(getCellContentsAsString(cache, j, k).trim()));
+                  lesson.setTeacher(prepareTeacher(getCellContentsAsString(cache, j + 1, k).trim()));
                   Integer nextGroupBound = groupBounds.higher(k);
                   String roomNumber;
                   if(nextGroupBound != null){
@@ -183,9 +186,9 @@ public class XMLStoLessonsConverter
                      if(roomNumber.equals(""))
                         roomNumber = getCellContentsAsString(cache, j, k + 3).trim();
                   }
-                  lesson.roomNumber = prepareRoomNumber(roomNumber);
+                  lesson.setRoomNumber(prepareRoomNumber(roomNumber));
                   //Required for primary key
-                  if(!lesson.subject.equals(""))
+                  if(!lesson.getSubject().equals(""))
                      lessons.add(lesson);
                }
             }
@@ -223,8 +226,7 @@ public class XMLStoLessonsConverter
    }
 
    /**
-    * Этот метод используется для преобразования строки с временем к формату ХХ.ХХ
-    *
+    * Этот метод используется для преобразования строки с временем занятия к формату ХХ.ХХ
     * @param times время
     * @return время
     */
@@ -250,7 +252,7 @@ public class XMLStoLessonsConverter
     * @return обработанный номер кабинета
     */
    private static String prepareRoomNumber(String roomNumber){
-      return roomNumber.replaceAll("/\\s+", "/")
+      return roomNumber.replaceAll("\\s*/\\s*", "/")
               .replaceAll("\\s+", " ");
    }
 
