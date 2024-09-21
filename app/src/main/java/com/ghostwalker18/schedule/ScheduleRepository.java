@@ -290,7 +290,7 @@ public class ScheduleRepository{
             Elements linkElements = doc.select(mainSelector).get(0)
                     .select("tr").get(1)
                     .select("td").get(0)
-                    .select("span a");
+                    .select("a");
             for(Element linkElement : linkElements){
                 links.add(linkElement.attr("href"));
             }
@@ -314,7 +314,7 @@ public class ScheduleRepository{
             Elements linkElements = doc.select(mainSelector).get(0)
                     .select("tr").get(1)
                     .select("td").get(1)
-                    .select("p > a");
+                    .select("a");
             for(Element linkElement : linkElements){
                 links.add(linkElement.attr("href"));
             }
