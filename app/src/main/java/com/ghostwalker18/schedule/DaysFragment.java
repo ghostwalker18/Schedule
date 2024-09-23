@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -153,6 +154,13 @@ public class DaysFragment extends Fragment
       String savedGroup = repository.getSavedGroup();
       groupSearch.setText(savedGroup);
       state.setGroup(savedGroup);
+
+      ImageButton groupClear = view.findViewById(R.id.group_clear);
+      groupClear.setOnClickListener((v)->{
+         state.setGroup(null);
+         groupSearch.setText("");
+      });
+
       repository.getGroups().observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                  R.layout.autocomplete_item_layout, strings);
@@ -186,6 +194,13 @@ public class DaysFragment extends Fragment
                state.setTeacher(null);
          }
       });
+
+      ImageButton teacherClear = view.findViewById(R.id.clear_teacher);
+      teacherClear.setOnClickListener((v)->{
+         state.setTeacher(null);
+         teacherSearch.setText("");
+      });
+
       repository.getTeachers().observe(getViewLifecycleOwner(), strings -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                  R.layout.autocomplete_item_layout, strings);
@@ -201,10 +216,12 @@ public class DaysFragment extends Fragment
       boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
       if(addTeacherSearch){
          view.findViewById(R.id.teacherLabel).setVisibility(View.VISIBLE);
+         view.findViewById(R.id.clear_teacher).setVisibility(View.VISIBLE);
          teacherSearch.setVisibility(View.VISIBLE);
       }
       else{
          view.findViewById(R.id.teacherLabel).setVisibility(View.GONE);
+         view.findViewById(R.id.clear_teacher).setVisibility(View.GONE);
          state.setTeacher(null);
          teacherSearch.setText("");
          teacherSearch.setVisibility(View.GONE);

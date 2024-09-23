@@ -106,8 +106,7 @@ public class ScheduleWidget extends AppWidgetProvider {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, ScheduleWidget.class));
-        for(int i = 0; i<ids.length; i++)
-            //important! partially, or it breaks when theme changes
-            appWidgetManager.partiallyUpdateAppWidget(ids[i], views);
+        //important! partially, or it breaks when theme changes
+        for (int id : ids) appWidgetManager.partiallyUpdateAppWidget(id, views);
     }
 }
