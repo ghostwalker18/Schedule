@@ -62,8 +62,6 @@ public class ScheduleItemFragment extends Fragment implements
    private boolean isOpened = false;
    private String mode;
 
-
-
    public static ScheduleItemFragment newInstance(int dayOfWeekId) {
       Bundle args = new Bundle();
       args.putInt("dayOfWeek", dayOfWeekId);
@@ -177,7 +175,7 @@ public class ScheduleItemFragment extends Fragment implements
       mode = preferences.getString("scheduleStyle", "in_fragment");
       switch (mode){
          case "in_fragment":
-            button.setOnClickListener(this::showSchedule);
+            button.setOnClickListener(this::toggleSchedule);
             break;
          case "in_activity":
             button.setOnClickListener(this::openScheduleInActivity);
@@ -185,14 +183,18 @@ public class ScheduleItemFragment extends Fragment implements
       }
    }
 
-   private void showSchedule(View view){
+   /**
+    * Этот метод используется для переключения состояния таблицы между скрыта/видима.
+    * @param view этот параметр требуется для соответствия сигнатуре Listener
+    */
+   private void toggleSchedule(View view){
       isOpened = !isOpened;
       showTable();
    }
 
    /**
     * Этот метод открывает отдельное окно для отображения расписания.
-    * @param view
+    * @param view этот параметр требуется для соответствия сигнатуре Listener
     */
    private void openScheduleInActivity(View view){
       Bundle bundle = new Bundle();
@@ -253,6 +255,11 @@ public class ScheduleItemFragment extends Fragment implements
       return label;
    }
 
+   /**
+    * Этот метод используется для проверки, является ли заданная дата сегодняшним днем.
+    * @param date дата для проверки
+    * @return
+    */
    private boolean isDateToday(Calendar date){
       Calendar rightNow = Calendar.getInstance();
       return rightNow.get(Calendar.YEAR) == date.get(Calendar.YEAR)
@@ -260,6 +267,11 @@ public class ScheduleItemFragment extends Fragment implements
               && rightNow.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
    }
 
+   /**
+    * Этот метод используется для заполнения таблицы занятиями и задания ее стиля.
+    * @param table таблица для заполнения
+    * @param lessons занятия
+    */
    private void populateTable(TableLayout table, Lesson[] lessons){
       table.removeViews(1, table.getChildCount() - 1);
       int counter = 0;
@@ -271,6 +283,12 @@ public class ScheduleItemFragment extends Fragment implements
       }
    }
 
+   /**
+    * Этот метод используется для добавления занятия в таблицу
+    * @param table таблица для добавления
+    * @param lesson занятие
+    * @return ряд таблицы, куда было добавлено занятие
+    */
    private TableRow addLesson(TableLayout table, Lesson lesson){
       LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
@@ -286,6 +304,8 @@ public class ScheduleItemFragment extends Fragment implements
    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String s) {
       switch (s){
          case "scheduleStyle":
+            if(this.isOpened)
+               toggleSchedule(getView());
             setUpMode();
             break;
       }
