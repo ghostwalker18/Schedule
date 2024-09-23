@@ -13,12 +13,8 @@
   ~ limitations under the License.
   -->
 <resources>
-    <color name="colorPrimary">#00574B</color>
-    <color name="colorSecondary">#06713B</color>
-    <color name="colorPrimaryDark">#121212</color>
-    <color name="colorAccent">#4169E1</color>
-    <color name="colorText">#FFF</color>
-    <color name="colorBackground">#303030</color>
-    <color name="navigationBarColor">#121212</color>
-    <color name="gray_500">#9E9E9E</color>
+    <string name="for_group">Для группы:</string>
+    <string name="updated">Обновлено:</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Расписание ПТГХ на сегодня</string>
 </resources>

@@ -18,7 +18,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#080c73</color>
     <color name="colorText">#000</color>
+    <color name="colorBackground">#FAFAFA</color>
     <color name="navigationBarColor">#DDD</color>
-    <color name="dark_grey">#121212</color>
     <color name="gray_500">#9E9E9E</color>
 </resources>

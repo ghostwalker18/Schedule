@@ -292,7 +292,8 @@ public class ScheduleRepository{
                     .select("td").get(0)
                     .select("a");
             for(Element linkElement : linkElements){
-                links.add(linkElement.attr("href"));
+                if(linkElement.attr("href").endsWith(".xlsx"))
+                    links.add(linkElement.attr("href"));
             }
             return links;
         }
@@ -316,7 +317,8 @@ public class ScheduleRepository{
                     .select("td").get(1)
                     .select("a");
             for(Element linkElement : linkElements){
-                links.add(linkElement.attr("href"));
+                if(linkElement.attr("href").endsWith(".xlsx"))
+                    links.add(linkElement.attr("href"));
             }
             return links;
         }

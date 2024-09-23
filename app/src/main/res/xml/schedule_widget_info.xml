@@ -12,13 +12,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
-    <color name="colorPrimary">#00574B</color>
-    <color name="colorSecondary">#06713B</color>
-    <color name="colorPrimaryDark">#121212</color>
-    <color name="colorAccent">#4169E1</color>
-    <color name="colorText">#FFF</color>
-    <color name="colorBackground">#303030</color>
-    <color name="navigationBarColor">#121212</color>
-    <color name="gray_500">#9E9E9E</color>
-</resources>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/app_widget_description"
+    android:initialKeyguardLayout="@layout/schedule_widget"
+    android:initialLayout="@layout/schedule_widget"
+    android:minWidth="250dp"
+    android:minHeight="250dp"
+    android:previewImage="@drawable/schedulewidget_preview"
+    android:previewLayout="@layout/schedule_widget"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellWidth="4"
+    android:targetCellHeight="4"
+    android:updatePeriodMillis="10800000"
+    android:widgetCategory="home_screen" />
