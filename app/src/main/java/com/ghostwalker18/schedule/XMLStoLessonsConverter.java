@@ -115,9 +115,7 @@ public class XMLStoLessonsConverter
                              + getCellContentsAsString(cache, j + 2, k + 3).trim();
                   }
                   lesson.setRoomNumber(prepareRoomNumber(roomNumber));
-                  //Required for primary key
-                  if(!lesson.getSubject().equals(""))
-                     lessons.add(lesson);
+                  lessons.add(lesson);
                }
             }
          }
@@ -187,9 +185,7 @@ public class XMLStoLessonsConverter
                         roomNumber = getCellContentsAsString(cache, j, k + 3).trim();
                   }
                   lesson.setRoomNumber(prepareRoomNumber(roomNumber));
-                  //Required for primary key
-                  if(!lesson.getSubject().equals(""))
-                     lessons.add(lesson);
+                  lessons.add(lesson);
                }
             }
          }

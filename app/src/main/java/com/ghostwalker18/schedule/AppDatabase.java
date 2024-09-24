@@ -44,12 +44,8 @@ public abstract class AppDatabase extends RoomDatabase {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
-                db.execSQL(updateDayTrigger);
-            }
-
-            @Override
-            public void onOpen(@NonNull SupportSQLiteDatabase db) {
-                super.onOpen(db);
+                db.execSQL(updateDayTrigger1);
+                db.execSQL(updateDayTrigger2);
             }
         };
 
@@ -58,8 +54,8 @@ public abstract class AppDatabase extends RoomDatabase {
                 .build();
     }
 
-    private static final String updateDayTrigger =
-            "CREATE TRIGGER IF NOT EXISTS update_day " +
+    private static final String updateDayTrigger1 =
+            "CREATE TRIGGER IF NOT EXISTS update_day_stage1 " +
             "BEFORE INSERT ON tblSchedule " +
             "BEGIN " +
             "DELETE FROM tblSchedule WHERE groupName = NEW.groupName AND " +
@@ -67,4 +63,11 @@ public abstract class AppDatabase extends RoomDatabase {
             "                lessonNumber = NEW.lessonNumber AND " +
             "                lessonTimes = NEW.lessonTimes; "+
             "END;";
+
+    private static final String updateDayTrigger2 =
+            "CREATE TRIGGER IF NOT EXISTS update_day_stage2 " +
+                    "AFTER INSERT ON tblSchedule " +
+                    "BEGIN " +
+                    "DELETE FROM tblSchedule WHERE subjectName = '';"+
+                    "END;";
 }
