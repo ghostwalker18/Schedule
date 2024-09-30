@@ -45,6 +45,8 @@ public class ScheduleWidget
 
         repository.update();
         String group = repository.getSavedGroup();
+        if(group == null)
+            group = context.getString(R.string.not_mentioned);
         Calendar date = Calendar.getInstance();
 
         lessons = repository.getLessons(group, null, date);
@@ -90,6 +92,11 @@ public class ScheduleWidget
         Context context = ScheduleApp.getInstance().getApplicationContext();
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget);
         views.removeAllViews(R.id.schedule);
+        if(lessons.length == 0) {
+            RemoteViews placeholder = new RemoteViews(context.getPackageName(),
+                    R.layout.schedule_widget_row_placeholder);
+            views.addView(R.id.schedule, placeholder);
+        }
         int counter = 0;
         for(Lesson lesson : lessons){
             counter++;

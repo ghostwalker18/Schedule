@@ -14,7 +14,9 @@
   -->
 <resources>
     <string name="for_group">Для группы:</string>
+    <string name="not_mentioned">Не указано</string>
     <string name="updated">Обновлено:</string>
+    <string name="schedule_missing">Список занятий отсутствует</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Расписание ПТГХ на сегодня</string>
 </resources>

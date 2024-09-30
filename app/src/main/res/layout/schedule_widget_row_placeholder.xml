@@ -12,11 +12,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
-    <string name="for_group">For group:</string>
-    <string name="not_mentioned">Not mentioned</string>
-    <string name="updated">Updated:</string>
-    <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">PCME schedule for today</string>
-    <string name="schedule_missing">There is no list of classes</string>
-</resources>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:textAlignment="center"
+    android:textColor="@color/colorText"
+    android:text="@string/schedule_missing"/>
