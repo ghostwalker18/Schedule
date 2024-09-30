@@ -26,7 +26,8 @@ import androidx.preference.PreferenceFragmentCompat;
  *
  * @author  Ипатов Никита
  */
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity
+        extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -32,7 +32,7 @@ import java.util.TreeMap;
  * @author  Ипатов Никита
  */
 public class XMLStoLessonsConverter
-        implements IConverter{
+        implements IConverter {
    private static  int FIRST_ROW_GAP_1;
    private static final int GROUPS_ROW_1 = 3;
    private static final int SCHEDULE_HEIGHT_1 = 24;

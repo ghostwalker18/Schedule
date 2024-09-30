@@ -41,8 +41,9 @@ import android.widget.TextView;
  *
  * @author Ипатов Никита
  */
-public class ScheduleItemFragment extends Fragment implements
-        SharedPreferences.OnSharedPreferenceChangeListener {
+public class ScheduleItemFragment
+        extends Fragment
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
    private static final HashMap<Integer, Integer> weekdaysNumbers = new HashMap<>();
    static {
       weekdaysNumbers.put(R.string.monday, Calendar.MONDAY);

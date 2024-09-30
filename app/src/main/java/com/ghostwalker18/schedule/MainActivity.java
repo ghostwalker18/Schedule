@@ -40,7 +40,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
  *
  * @author  Ипатов Никита
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity {
     private ViewPager pager;
     private DaysFragment daysFragment;
 

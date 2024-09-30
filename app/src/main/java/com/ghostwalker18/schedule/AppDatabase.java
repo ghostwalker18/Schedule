@@ -27,7 +27,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  * @author  Ипатов Никита
  */
 @Database(entities = {Lesson.class}, version = 1, exportSchema = false)
-public abstract class AppDatabase extends RoomDatabase {
+public abstract class AppDatabase
+        extends RoomDatabase {
     public abstract LessonDao lessonDao();
 
     /**

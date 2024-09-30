@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
-
 import androidx.room.TypeConverter;
 
 /**

@@ -42,7 +42,8 @@ import androidx.preference.PreferenceManager;
  *
  * @author  Ипатов Никита
  */
-public class DaysFragment extends Fragment
+public class DaysFragment
+        extends Fragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
    private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();

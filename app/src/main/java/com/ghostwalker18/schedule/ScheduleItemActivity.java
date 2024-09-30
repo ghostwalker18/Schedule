@@ -38,7 +38,8 @@ import androidx.lifecycle.MutableLiveData;
  *
  * @author  Ипатов Никита
  */
-public class ScheduleItemActivity extends AppCompatActivity {
+public class ScheduleItemActivity
+        extends AppCompatActivity {
     private ScheduleRepository repository;
     private String teacher;
     private String group;

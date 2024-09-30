@@ -31,7 +31,8 @@ import androidx.lifecycle.Observer;
  *
  * @author Ипатов Никита
  */
-public class ScheduleWidget extends AppWidgetProvider {
+public class ScheduleWidget
+        extends AppWidgetProvider {
     static final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
     static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
     static LiveData<Lesson[]> lessons;
@@ -46,7 +47,6 @@ public class ScheduleWidget extends AppWidgetProvider {
         String group = repository.getSavedGroup();
         Calendar date = Calendar.getInstance();
 
-        //repository.update();
         lessons = repository.getLessons(group, null, date);
         lessons.observeForever(lessonsObserver);
 
@@ -93,7 +93,8 @@ public class ScheduleWidget extends AppWidgetProvider {
         int counter = 0;
         for(Lesson lesson : lessons){
             counter++;
-            RemoteViews lessonItem = new RemoteViews(context.getPackageName(), R.layout.schedule_widget_row_item);
+            RemoteViews lessonItem = new RemoteViews(context.getPackageName(),
+                    R.layout.schedule_widget_row_item);
             if(counter % 2 == 1)
                 lessonItem.setInt(R.id.row, "setBackgroundColor",
                         context.getResources().getColor(R.color.gray_500));

@@ -51,7 +51,7 @@ import retrofit2.Retrofit;
  */
 public class ScheduleRepository{
    private final AppDatabase db;
-   private IConverter converter = new XMLStoLessonsConverter();
+   private final IConverter converter = new XMLStoLessonsConverter();
    private final SharedPreferences preferences;
    private final ScheduleNetworkAPI api;
    private final Context context;
@@ -134,7 +134,7 @@ public class ScheduleRepository{
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
          });
       }
-      else{
+      else {
             new Thread(() -> {
                   Bitmap bitmap1 = BitmapFactory.decodeFile(mondayTimesFile.getAbsolutePath());
                   mondayTimes.postValue(bitmap1);
@@ -245,7 +245,7 @@ public class ScheduleRepository{
      * @param date день
      * @param teacher преподаватель
      * @param group группа
-     * @return
+     * @return список занятий
      */
    public LiveData<Lesson[]> getLessons(String group, String teacher, Calendar date) {
       if (teacher != null && group != null)

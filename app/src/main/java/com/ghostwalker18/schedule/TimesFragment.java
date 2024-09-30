@@ -29,7 +29,8 @@ import androidx.fragment.app.Fragment;
  *
  * @author  Ипатов Никита
  */
-public class TimesFragment extends Fragment {
+public class TimesFragment
+        extends Fragment {
     private ScheduleRepository repository;
 
     @Override

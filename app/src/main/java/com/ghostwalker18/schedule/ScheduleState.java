@@ -25,7 +25,8 @@ import androidx.lifecycle.ViewModel;
  *
  * @author  Ипатов Никита
  */
-public class ScheduleState extends ViewModel{
+public class ScheduleState
+        extends ViewModel {
    private final MutableLiveData<String> group = new MutableLiveData<>();
    private final MutableLiveData<String> teacher = new MutableLiveData<>();
    private final MutableLiveData<Calendar> calendar = new MutableLiveData<>(

@@ -65,10 +65,12 @@ public class Lesson {
         this.teacher = teacher;
     }
 
+    @NonNull
     public Calendar getDate() {
         return date;
     }
 
+    @NonNull
     public String getLessonNumber() {
         return lessonNumber;
     }
@@ -85,6 +87,7 @@ public class Lesson {
         return groupName;
     }
 
+    @NonNull
     public String getSubject() {
         return subject;
     }
@@ -93,11 +96,11 @@ public class Lesson {
         return teacher;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(@NonNull Calendar date) {
         this.date = date;
     }
 
-    public void setLessonNumber(String lessonNumber) {
+    public void setLessonNumber(@NonNull String lessonNumber) {
         this.lessonNumber = lessonNumber;
     }
 
@@ -113,7 +116,7 @@ public class Lesson {
         this.groupName = groupName;
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(@NonNull String subject) {
         this.subject = subject;
     }
 
