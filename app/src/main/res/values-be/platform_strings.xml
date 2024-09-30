@@ -19,4 +19,8 @@
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Расклад ПТГХ на сёння</string>
     <string name="schedule_missing">Спіс заняткаў адсутнічае</string>
+    <string name="tomorrow">Заўтра</string>
+    <string name="rounded_corners">Скругленыя вуглы</string>
+    <string name="appearance">Пастава</string>
+    <string name="day">Дзень</string>
 </resources>

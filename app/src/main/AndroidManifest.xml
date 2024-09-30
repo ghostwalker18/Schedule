@@ -57,6 +57,15 @@
         </activity>
 
         <activity
+            android:name=".WidgetSettingsActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".ScheduleItemActivity"
             android:exported="false"
             android:label="@string/day_table"

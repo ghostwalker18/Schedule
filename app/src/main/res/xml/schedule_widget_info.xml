@@ -14,6 +14,8 @@
   -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/app_widget_description"
+    android:configure="com.ghostwalker18.schedule.WidgetSettingsActivity"
+    android:widgetFeatures="reconfigurable|configuration_optional"
     android:initialKeyguardLayout="@layout/schedule_widget"
     android:initialLayout="@layout/schedule_widget"
     android:minWidth="250dp"

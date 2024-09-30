@@ -13,14 +13,13 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="for_group">For group:</string>
-    <string name="not_mentioned">Not mentioned</string>
-    <string name="updated">Updated:</string>
-    <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">PCME schedule for today</string>
-    <string name="schedule_missing">There is no list of classes</string>
-    <string name="tomorrow">Tomorrow</string>
-    <string name="rounded_corners">Rounded corners</string>
-    <string name="appearance">Appearance</string>
-    <string name="day">Day</string>
+    <string-array name="widget_day_values">
+        <item>today</item>
+        <item>tomorrow</item>
+    </string-array>
+
+    <string-array name="widget_day_entries">
+        <item>Бүгін</item>
+        <item>Ертең</item>
+    </string-array>
 </resources>

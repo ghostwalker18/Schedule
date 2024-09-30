@@ -54,6 +54,7 @@ public class ScheduleWidget
 
         views.setTextViewText(R.id.group, context.getString(R.string.for_group) + " " + group);
         views.setTextViewText(R.id.updated,context.getString(R.string.updated) + " " + timeFormat.format(date.getTime()));
+
         //setting action for refresh button: refresh schedule
         Intent intentRefresh = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE,
                 null, context.getApplicationContext(), ScheduleWidget.class);
@@ -61,6 +62,7 @@ public class ScheduleWidget
         PendingIntent pendingRefresh = PendingIntent.getBroadcast(context, appWidgetId,
                 intentRefresh, PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.updateButton, pendingRefresh);
+
         //setting action for schedule tap: open app
         Intent intentOpenApp = new Intent(context, MainActivity.class);
         PendingIntent pendingOpenApp = PendingIntent.getActivity(context, appWidgetId,

@@ -20,6 +20,14 @@
     android:orientation="vertical"
     android:background="@color/colorBackground">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
+        android:background="@color/colorBackground"
+        android:textAlignment="center"
+        android:id="@+id/day"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
