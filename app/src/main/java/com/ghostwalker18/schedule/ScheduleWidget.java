@@ -20,9 +20,13 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
@@ -42,18 +46,26 @@ public class ScheduleWidget
                                 int appWidgetId) {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget);
+        SharedPreferences prefs = context.getSharedPreferences("WIDGET_" + appWidgetId,
+                Context.MODE_PRIVATE);
 
         repository.update();
         String group = repository.getSavedGroup();
         if(group == null)
             group = context.getString(R.string.not_mentioned);
         Calendar date = Calendar.getInstance();
+        switch (prefs.getString("day", "")){
+            case "tomorrow":
+                date.add(Calendar.DAY_OF_YEAR,  1);
+                break;
+        }
 
         lessons = repository.getLessons(group, null, date);
         lessons.observeForever(lessonsObserver);
 
         views.setTextViewText(R.id.group, context.getString(R.string.for_group) + " " + group);
-        views.setTextViewText(R.id.updated,context.getString(R.string.updated) + " " + timeFormat.format(date.getTime()));
+        views.setTextViewText(R.id.updated,context.getString(R.string.updated) + " " +
+                timeFormat.format(date.getTime()));
 
         //setting action for refresh button: refresh schedule
         Intent intentRefresh = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE,
@@ -83,7 +95,8 @@ public class ScheduleWidget
 
     @Override
     public void onDisabled(Context context) {
-        lessons.removeObserver(lessonsObserver);
+        if(lessons != null && lessons.hasObservers())
+                lessons.removeObserver(lessonsObserver);
     }
 
     /**

@@ -15,10 +15,13 @@
 package com.ghostwalker18.schedule;
 
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +35,7 @@ import androidx.preference.PreferenceFragmentCompat;
 public class WidgetSettingsActivity
         extends AppCompatActivity
         implements View.OnClickListener {
+   private SettingsFragment fragment;
    private int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
    private Intent resultValue;
 
@@ -41,12 +45,6 @@ public class WidgetSettingsActivity
       setContentView(R.layout.activity_widget_settings);
       Button addButton = findViewById(R.id.add);
       addButton.setOnClickListener(this);
-      if (savedInstanceState == null) {
-         getSupportFragmentManager()
-                 .beginTransaction()
-                 .replace(R.id.settings, new WidgetSettingsActivity.SettingsFragment())
-                 .commit();
-      }
 
       Intent intent = getIntent();
       Bundle extras = intent.getExtras();
@@ -58,6 +56,14 @@ public class WidgetSettingsActivity
          finish();
       }
 
+      fragment = new SettingsFragment(widgetID);
+      if (savedInstanceState == null) {
+         getSupportFragmentManager()
+                 .beginTransaction()
+                 .replace(R.id.settings, fragment)
+                 .commit();
+      }
+
       resultValue = new Intent();
       resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
       setResult(RESULT_CANCELED, resultValue);
@@ -66,13 +72,34 @@ public class WidgetSettingsActivity
    @Override
    public void onClick(View view) {
       setResult(RESULT_OK, resultValue);
+      SharedPreferences prefs = getSharedPreferences("WIDGET_" + widgetID,
+              Context.MODE_PRIVATE);
+      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+      RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.schedule_widget);
+      String day = prefs.getString("day", "");
+      switch (day){
+         case "today":
+            views.setTextViewText(R.id.day, getString(R.string.today));
+            break;
+         case "tomorrow":
+            views.setTextViewText(R.id.day, getString(R.string.tomorrow));
+            break;
+      }
+      appWidgetManager.partiallyUpdateAppWidget(widgetID, views);
       finish();
    }
 
    public static class SettingsFragment extends PreferenceFragmentCompat {
+      public int widgetId;
+
+      public SettingsFragment(int widgetId){
+         super();
+         this.widgetId = widgetId;
+      }
       @Override
       public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
          setPreferencesFromResource(R.xml.widget_preferences, rootKey);
+         getPreferenceManager().setSharedPreferencesName("WIDGET_" + widgetId);
       }
    }
 }

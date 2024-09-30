@@ -24,6 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorText"
+        android:textSize="@dimen/widget_header_text_size"
+        android:text="@string/today"
         android:background="@color/colorBackground"
         android:textAlignment="center"
         android:id="@+id/day"/>
