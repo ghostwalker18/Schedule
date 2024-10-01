@@ -18,14 +18,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?android:colorBackground">
+    android:background="?attr/colorPrimaryContainer">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/widget_header_text_size"
         android:text="@string/today"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?attr/colorOnPrimaryContainer"
         android:textAlignment="center"
         android:id="@+id/day"/>
 
@@ -43,8 +43,8 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:layout_weight="2"
+            android:textColor="?attr/colorOnPrimary"
             android:id="@+id/group"
-            android:textColor="?android:attr/textColorPrimary"
             android:text="@string/for_group"/>
 
         <TextView
@@ -52,8 +52,8 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:layout_weight="1"
+            android:textColor="?attr/colorOnPrimary"
             android:id="@+id/updated"
-            android:textColor="?android:attr/textColorPrimary"
             android:text="@string/updated"/>
 
         <ImageButton

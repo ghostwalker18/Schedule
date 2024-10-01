@@ -16,6 +16,9 @@ package com.ghostwalker18.schedule;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+
+import com.google.android.material.color.DynamicColors;
+
 import java.util.Locale;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -59,6 +62,7 @@ public class ScheduleApp
     @Override
     public void onCreate() {
         super.onCreate();
+        DynamicColors.applyToActivitiesIfAvailable(this);
         instance = this;
         database = AppDatabase.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);

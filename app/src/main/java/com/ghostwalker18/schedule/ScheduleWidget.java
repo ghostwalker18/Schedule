@@ -24,9 +24,6 @@ import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
@@ -44,15 +41,18 @@ public class ScheduleWidget
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
+        repository.update();
+
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget_wrapper);
+
         SharedPreferences prefs = context.getSharedPreferences("WIDGET_" + appWidgetId,
                 Context.MODE_PRIVATE);
 
-        repository.update();
         String group = repository.getSavedGroup();
         if(group == null)
             group = context.getString(R.string.not_mentioned);
+
         Calendar date = Calendar.getInstance();
         switch (prefs.getString("day", "")){
             case "tomorrow":
@@ -63,9 +63,28 @@ public class ScheduleWidget
         lessons = repository.getLessons(group, null, date);
         lessons.observeForever(lessonsObserver);
 
-        views.setTextViewText(R.id.group, context.getString(R.string.for_group) + " " + group);
-        views.setTextViewText(R.id.updated,context.getString(R.string.updated) + " " +
+        views.removeAllViews(R.id.widget_wrapper);
+
+        boolean isDynamicColorsEnabled = prefs.getBoolean("dynamic_colors", false);
+        String theme = prefs.getString("theme", "system");
+        int widgetLayoutId = getRequiredLayout(theme, isDynamicColorsEnabled);
+        RemoteViews scheduleView = new RemoteViews(context.getPackageName(), widgetLayoutId);
+
+        String day = prefs.getString("day", "today");
+        switch (day){
+            case "today":
+                scheduleView.setTextViewText(R.id.day, context.getString(R.string.today));
+                break;
+            case "tomorrow":
+                scheduleView.setTextViewText(R.id.day, context.getString(R.string.tomorrow));
+                break;
+        }
+
+        scheduleView.setTextViewText(R.id.group, context.getString(R.string.for_group) + " " + group);
+        scheduleView.setTextViewText(R.id.updated,context.getString(R.string.updated) + " " +
                 timeFormat.format(date.getTime()));
+
+        views.addView(R.id.widget_wrapper, scheduleView);
 
         //setting action for refresh button: refresh schedule
         Intent intentRefresh = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE,
@@ -99,13 +118,20 @@ public class ScheduleWidget
                 lessons.removeObserver(lessonsObserver);
     }
 
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        for(int id : appWidgetIds){
+            context.deleteSharedPreferences("WIDGET_" + id);
+        }
+    }
+
     /**
      * Этот метод служит для обновления View виджета новыми занятиями.
      * @param lessons занятия
      */
     private static void updateLessons(Lesson[] lessons){
         Context context = ScheduleApp.getInstance().getApplicationContext();
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget_wrapper);
         views.removeAllViews(R.id.schedule);
         if(lessons.length == 0) {
             RemoteViews placeholder = new RemoteViews(context.getPackageName(),
@@ -131,5 +157,29 @@ public class ScheduleWidget
         int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, ScheduleWidget.class));
         //important! partially, or it breaks when theme changes
         for (int id : ids) appWidgetManager.partiallyUpdateAppWidget(id, views);
+    }
+
+    private static int getRequiredLayout(String theme, boolean isDynamicColorsEnabled){
+        if(isDynamicColorsEnabled){
+            switch (theme){
+                case "system":
+                    return R.layout.schedule_widget_dynamic_daynight;
+                case "night":
+                    return R.layout.schedule_widget_dynamic_night;
+                case "day":
+                    return R.layout.schedule_widget_dynamic_day;
+            }
+        }
+        else {
+            switch (theme){
+                case "system":
+                    return R.layout.schedule_widget_daynight;
+                case "night":
+                    return R.layout.schedule_widget_night;
+                case "day":
+                    return R.layout.schedule_widget_day;
+            }
+        }
+        return R.layout.schedule_widget_daynight;
     }
 }

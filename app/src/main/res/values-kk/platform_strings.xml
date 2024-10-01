@@ -23,4 +23,5 @@
     <string name="rounded_corners">Дөңгеленген бұрыштар</string>
     <string name="appearance">Сыртқы түрі</string>
     <string name="day">Күн</string>
+    <string name="dynamic_colors">Динамикалық түстерді қолданыңыз</string>
 </resources>

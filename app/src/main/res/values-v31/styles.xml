@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ScheduleWidgetThemeDynamic" parent="Theme.Material3.DynamicColors.DayNight"/>
+    <style name="ScheduleWidgetThemeDynamicDark" parent="Theme.Material3.DynamicColors.Dark"/>
+    <style name="ScheduleWidgetThemeDynamicLight" parent="Theme.Material3.DynamicColors.Light"/>
+</resources>

@@ -20,6 +20,7 @@
     <string name="day">День</string>
     <string name="tomorrow">Завтра</string>
     <string name="appearance">Внешний вид</string>
+    <string name="dynamic_colors">Использовать динамические цвета</string>
     <string name="rounded_corners">Скругленные углы</string>
     <string name="add_widget">Добавить виджет</string>
     <string name="app_widget_description">Расписание ПТГХ на сегодня</string>
