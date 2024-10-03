@@ -21,8 +21,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RemoteViews;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -36,6 +34,7 @@ public class WidgetSettingsActivity
         extends AppCompatActivity
         implements View.OnClickListener {
    private SettingsFragment fragment;
+   private SharedPreferences preferences;
    private int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
    private Intent resultValue;
 
@@ -63,7 +62,7 @@ public class WidgetSettingsActivity
                  .replace(R.id.settings, fragment)
                  .commit();
       }
-
+      preferences = getSharedPreferences("WIDGET_" + widgetID, Context.MODE_PRIVATE);
       resultValue = new Intent();
       resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
       setResult(RESULT_CANCELED, resultValue);
@@ -73,6 +72,9 @@ public class WidgetSettingsActivity
    public void onClick(View view) {
       setResult(RESULT_OK, resultValue);
       AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+      preferences.edit()
+              .putBoolean("isEdited", true)
+              .commit();
       ScheduleWidget.updateAppWidget(this, appWidgetManager, widgetID);
       finish();
    }

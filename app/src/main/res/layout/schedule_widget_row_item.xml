@@ -16,7 +16,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackground"
+    android:background="?android:colorBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingHorizontal="10dp"
@@ -27,7 +27,7 @@
         android:layout_width="0.dp"
         android:layout_height="wrap_content"
         android:id="@+id/lessonNumber"
-        android:textColor="@color/colorText"
+        android:textColor="?android:textColorPrimary"
         android:textAlignment="center"/>
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_width="0.dp"
         android:layout_height="wrap_content"
         android:id="@+id/subjectName"
-        android:textColor="@color/colorText"
+        android:textColor="?android:textColorPrimary"
         android:textAlignment="center"/>
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_width="0.dp"
         android:layout_height="wrap_content"
         android:id="@+id/teacherName"
-        android:textColor="@color/colorText"
+        android:textColor="?android:textColorPrimary"
         android:textAlignment="center"/>
 
     <TextView
@@ -51,6 +51,6 @@
         android:layout_width="0.dp"
         android:layout_height="wrap_content"
         android:id="@+id/roomNumber"
-        android:textColor="@color/colorText"
+        android:textColor="?android:textColorPrimary"
         android:textAlignment="center"/>
 </LinearLayout>

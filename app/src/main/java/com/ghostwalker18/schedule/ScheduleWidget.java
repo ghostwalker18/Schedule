@@ -63,28 +63,34 @@ public class ScheduleWidget
         lessons = repository.getLessons(group, null, date);
         lessons.observeForever(lessonsObserver);
 
-        views.removeAllViews(R.id.widget_wrapper);
+        boolean isEdited = prefs.getBoolean("isEdited", false);
+        if(isEdited){
+            views.removeAllViews(R.id.widget_wrapper);
 
-        boolean isDynamicColorsEnabled = prefs.getBoolean("dynamic_colors", false);
-        String theme = prefs.getString("theme", "system");
-        int widgetLayoutId = getRequiredLayout(theme, isDynamicColorsEnabled);
-        RemoteViews scheduleView = new RemoteViews(context.getPackageName(), widgetLayoutId);
+            boolean isDynamicColorsEnabled = prefs.getBoolean("dynamic_colors", false);
+            String theme = prefs.getString("theme", "system");
+            int widgetLayoutId = getRequiredLayout(theme, isDynamicColorsEnabled);
+            RemoteViews scheduleView = new RemoteViews(context.getPackageName(), widgetLayoutId);
 
-        String day = prefs.getString("day", "today");
-        switch (day){
-            case "today":
-                scheduleView.setTextViewText(R.id.day, context.getString(R.string.today));
-                break;
-            case "tomorrow":
-                scheduleView.setTextViewText(R.id.day, context.getString(R.string.tomorrow));
-                break;
+            String day = prefs.getString("day", "today");
+            switch (day){
+                case "today":
+                    scheduleView.setTextViewText(R.id.day, context.getString(R.string.today));
+                    break;
+                case "tomorrow":
+                    scheduleView.setTextViewText(R.id.day, context.getString(R.string.tomorrow));
+                    break;
+            }
+
+            views.addView(R.id.widget_wrapper, scheduleView);
         }
 
-        scheduleView.setTextViewText(R.id.group, context.getString(R.string.for_group) + " " + group);
-        scheduleView.setTextViewText(R.id.updated,context.getString(R.string.updated) + " " +
+
+        views.setTextViewText(R.id.group, context.getString(R.string.for_group) + " " + group);
+        views.setTextViewText(R.id.updated,context.getString(R.string.updated) + " " +
                 timeFormat.format(date.getTime()));
 
-        views.addView(R.id.widget_wrapper, scheduleView);
+
 
         //setting action for refresh button: refresh schedule
         Intent intentRefresh = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE,

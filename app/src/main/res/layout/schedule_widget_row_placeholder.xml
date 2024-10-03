@@ -18,5 +18,5 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:textAlignment="center"
-    android:textColor="@color/colorText"
+    android:textColor="?android:textColorPrimary"
     android:text="@string/schedule_missing"/>
