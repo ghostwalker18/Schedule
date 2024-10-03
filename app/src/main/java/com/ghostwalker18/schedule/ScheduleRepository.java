@@ -22,6 +22,7 @@ import android.graphics.BitmapFactory;
 
 import com.github.pjfanning.xlsx.StreamingReader;
 
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -155,6 +156,7 @@ public class ScheduleRepository{
                     public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                         if(response.body() != null){
                             status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                            ZipSecureFile.setMinInflateRatio(0.0075);
                             try(Workbook excelFile = StreamingReader.builder()
                                     .rowCacheSize(10)
                                     .bufferSize(4096)
@@ -190,6 +192,7 @@ public class ScheduleRepository{
                   public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                       if(response.body() != null){
                           status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                          ZipSecureFile.setMinInflateRatio(0.0075);
                           try(Workbook excelFile = StreamingReader.builder()
                                   .rowCacheSize(10)
                                   .bufferSize(4096)
