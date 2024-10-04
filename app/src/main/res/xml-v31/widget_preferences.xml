@@ -36,10 +36,5 @@
             app:key="dynamic_colors"
             app:title="@string/dynamic_colors"
             app:defaultValue="false"/>
-
-        <SwitchPreference
-            app:key="roundedCorners"
-            app:title="@string/rounded_corners"
-            app:defaultValue="false"/>
     </PreferenceCategory>
 </PreferenceScreen>
