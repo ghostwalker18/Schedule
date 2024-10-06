@@ -14,15 +14,20 @@
 
 package com.ghostwalker18.schedule;
 
+import android.app.UiModeManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceFragmentCompat;
 
 /**
@@ -32,9 +37,11 @@ import androidx.preference.PreferenceFragmentCompat;
  */
 public class WidgetSettingsActivity
         extends AppCompatActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
    private SettingsFragment fragment;
    private SharedPreferences preferences;
+   private ImageView preview;
    private int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
    private Intent resultValue;
 
@@ -63,6 +70,10 @@ public class WidgetSettingsActivity
                  .commit();
       }
       preferences = getSharedPreferences("WIDGET_" + widgetID, Context.MODE_PRIVATE);
+      preferences.registerOnSharedPreferenceChangeListener(this);
+
+      preview = findViewById(R.id.widget_preview);
+
       resultValue = new Intent();
       resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
       setResult(RESULT_CANCELED, resultValue);
@@ -77,6 +88,50 @@ public class WidgetSettingsActivity
               .commit();
       ScheduleWidget.updateAppWidget(this, appWidgetManager, widgetID);
       finish();
+   }
+
+   @Override
+   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String s) {
+      String previewName= "widget";
+
+      boolean isDynamicColors = preferences.getBoolean("dynamic_colors", false);
+      if(isDynamicColors)
+         previewName += "_dynamic";
+
+      String theme = preferences.getString("theme", "system");
+      switch (theme){
+         case "night":
+            previewName += "_dark";
+            break;
+         case "day":
+            previewName += "_light";
+            break;
+         case "system":
+            UiModeManager uiModeManager = (UiModeManager)getSystemService(Context.UI_MODE_SERVICE);
+            int currentNightMode = uiModeManager.getNightMode();
+            switch (currentNightMode) {
+               case UiModeManager.MODE_NIGHT_NO:
+                  previewName += "_light";
+                  break;
+               case UiModeManager.MODE_NIGHT_YES:
+                  previewName += "_dark";
+                  break;
+            }
+            break;
+      }
+
+      String day = preferences.getString("day", "today");
+      switch (day){
+         case "today":
+            previewName += "_today";
+            break;
+         case "tomorrow":
+            previewName += "_tomorrow";
+            break;
+      }
+
+      int imageId = getResources().getIdentifier(previewName, "drawable", getPackageName());
+      preview.setImageResource(imageId);
    }
 
    public static class SettingsFragment extends PreferenceFragmentCompat {
