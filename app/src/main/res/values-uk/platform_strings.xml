@@ -14,6 +14,7 @@
   -->
 <resources>
     <string name="for_group">For group:</string>
+    <string name="last_chosen">Остання обрана</string>
     <string name="not_mentioned">Не вказано</string>
     <string name="updated">Updated:</string>
     <string name="add_widget">Add widget</string>

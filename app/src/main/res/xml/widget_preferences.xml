@@ -22,6 +22,11 @@
         app:entries="@array/widget_day_entries"
         app:defaultValue="today"/>
 
+    <ListPreference
+        app:key="group"
+        app:title="@string/for_group"
+        app:defaultValue="last"/>
+
     <PreferenceCategory
         app:title="@string/appearance">
 

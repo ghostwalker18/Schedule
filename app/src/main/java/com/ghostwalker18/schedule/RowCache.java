@@ -25,6 +25,7 @@ import java.util.Iterator;
  * <b>Важное ограничение: нельзя возвращаться назад.
  *
  * @author Ипатов Никита
+ * @since 2.0
  */
 public class RowCache {
     private final Iterator<Row> iterator;

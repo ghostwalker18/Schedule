@@ -25,15 +25,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 /**
  * Этот класс представляет собой экран настроек виджета приложения
  *
  * @author  Ипатов Никита
+ * @since 2.3
  */
 public class WidgetSettingsActivity
         extends AppCompatActivity
@@ -134,17 +143,80 @@ public class WidgetSettingsActivity
       preview.setImageResource(imageId);
    }
 
-   public static class SettingsFragment extends PreferenceFragmentCompat {
+   public static class SettingsFragment
+           extends PreferenceFragmentCompat
+           implements SharedPreferences.OnSharedPreferenceChangeListener{
+      private static SettingsFragment f = null;
       public int widgetId;
+      private SharedPreferences preferences;
+      private ListPreference groupChoicePreference;
+      private ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
 
       public SettingsFragment(int widgetId){
          super();
          this.widgetId = widgetId;
       }
+
+      public SettingsFragment(){super();}
+
+      @Override
+      public void onCreate(@Nullable Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         if(savedInstanceState != null)
+            widgetId = savedInstanceState.getInt("id");
+      }
+
+      @Override
+      public void onSaveInstanceState(@NonNull Bundle outState) {
+         outState.putInt("id", widgetId);
+         super.onSaveInstanceState(outState);
+      }
+
       @Override
       public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+         repository.update();
+
          setPreferencesFromResource(R.xml.widget_preferences, rootKey);
          getPreferenceManager().setSharedPreferencesName("WIDGET_" + widgetId);
+         preferences = getPreferenceManager().getSharedPreferences();
+         preferences.registerOnSharedPreferenceChangeListener(this);
+
+         ListPreference dayChoicePreference = getPreferenceScreen().findPreference("day");
+         dayChoicePreference.setValue("today");
+         dayChoicePreference.setSummary(dayChoicePreference.getEntry());
+
+         ListPreference themeChoicePreference = getPreferenceScreen().findPreference("theme");
+         themeChoicePreference.setValue("system");
+         themeChoicePreference.setSummary(themeChoicePreference.getEntry());
+
+         groupChoicePreference = getPreferenceScreen().findPreference("group");
+         repository.getGroups().observe(this, groups ->{
+            List<String> groupsNew = new ArrayList<>(Arrays.asList(groups));
+            groupsNew.sort(Comparator.naturalOrder());
+
+            groupsNew.add(0, getString(R.string.last_chosen));
+            String[] arrayEntries = new String[groupsNew.size()];
+            groupsNew.toArray(arrayEntries);
+            groupChoicePreference.setEntries(arrayEntries);
+
+            groupsNew.remove(0);
+
+            groupsNew.add(0, "last");
+            String[] arrayEntryValues = new String[groupsNew.size()];
+            groupsNew.toArray(arrayEntryValues);
+            groupChoicePreference.setEntryValues(arrayEntryValues);
+
+            groupChoicePreference.setSummary(groupChoicePreference.getEntry());
+         });
+      }
+
+      @Override
+      public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String s) {
+         Preference preference = getPreferenceScreen().findPreference(s);
+         if(preference instanceof ListPreference){
+            ListPreference listPreference = (ListPreference) preference;
+            listPreference.setSummary(listPreference.getEntry());
+         }
       }
    }
 }

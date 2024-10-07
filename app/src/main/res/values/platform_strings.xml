@@ -14,6 +14,7 @@
   -->
 <resources>
     <string name="for_group">Для группы:</string>
+    <string name="last_chosen">Последняя выбранная</string>
     <string name="not_mentioned">Не указано</string>
     <string name="updated">Обновлено:</string>
     <string name="schedule_missing">Список занятий отсутствует</string>

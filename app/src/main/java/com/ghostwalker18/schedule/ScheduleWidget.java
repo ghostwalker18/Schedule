@@ -31,6 +31,7 @@ import androidx.lifecycle.Observer;
  * Этот класс реализует функциональность виджета приложения по показу расписания на текущий день.
  *
  * @author Ипатов Никита
+ * @since 2.2
  */
 public class ScheduleWidget
         extends AppWidgetProvider {
@@ -49,9 +50,12 @@ public class ScheduleWidget
         SharedPreferences prefs = context.getSharedPreferences("WIDGET_" + appWidgetId,
                 Context.MODE_PRIVATE);
 
-        String group = repository.getSavedGroup();
-        if(group == null)
-            group = context.getString(R.string.not_mentioned);
+        String group = prefs.getString("group", "last");
+        if(group.equals("last")) {
+            group = repository.getSavedGroup();
+            if(group == null)
+                group = context.getString(R.string.not_mentioned);
+        };
 
         Calendar date = Calendar.getInstance();
         switch (prefs.getString("day", "")){
