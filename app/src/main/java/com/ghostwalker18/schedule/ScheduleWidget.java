@@ -17,7 +17,6 @@ package com.ghostwalker18.schedule;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,8 +36,6 @@ public class ScheduleWidget
         extends AppWidgetProvider {
     static final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
     static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-    static LiveData<Lesson[]> lessons;
-    static Observer<Lesson[]> lessonsObserver = ScheduleWidget::updateLessons;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -64,8 +61,8 @@ public class ScheduleWidget
                 break;
         }
 
-        lessons = repository.getLessons(group, null, date);
-        lessons.observeForever(lessonsObserver);
+        LiveData<Lesson[]> lessons = repository.getLessons(group, null, date);
+        lessons.observeForever(new ScheduleObserver(appWidgetId));
 
         boolean isEdited = prefs.getBoolean("isEdited", false);
         if(isEdited){
@@ -89,12 +86,9 @@ public class ScheduleWidget
             views.addView(R.id.widget_wrapper, scheduleView);
         }
 
-
         views.setTextViewText(R.id.group, context.getString(R.string.for_group) + " " + group);
         views.setTextViewText(R.id.updated,context.getString(R.string.updated) + " " +
                 timeFormat.format(date.getTime()));
-
-
 
         //setting action for refresh button: refresh schedule
         Intent intentRefresh = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE,
@@ -123,50 +117,10 @@ public class ScheduleWidget
     }
 
     @Override
-    public void onDisabled(Context context) {
-        if(lessons != null && lessons.hasObservers())
-                lessons.removeObserver(lessonsObserver);
-    }
-
-    @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         for(int id : appWidgetIds){
             context.deleteSharedPreferences("WIDGET_" + id);
         }
-    }
-
-    /**
-     * Этот метод служит для обновления View виджета новыми занятиями.
-     * @param lessons занятия
-     */
-    private static void updateLessons(Lesson[] lessons){
-        Context context = ScheduleApp.getInstance().getApplicationContext();
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget_wrapper);
-        views.removeAllViews(R.id.schedule);
-        if(lessons.length == 0) {
-            RemoteViews placeholder = new RemoteViews(context.getPackageName(),
-                    R.layout.schedule_widget_row_placeholder);
-            views.addView(R.id.schedule, placeholder);
-        }
-        int counter = 0;
-        for(Lesson lesson : lessons){
-            counter++;
-            RemoteViews lessonItem = new RemoteViews(context.getPackageName(),
-                    R.layout.schedule_widget_row_item);
-            if(counter % 2 == 1)
-                lessonItem.setInt(R.id.row, "setBackgroundColor",
-                        context.getResources().getColor(R.color.gray_500));
-            lessonItem.setTextViewText(R.id.lessonNumber, lesson.lessonNumber);
-            lessonItem.setTextViewText(R.id.subjectName, lesson.subject);
-            lessonItem.setTextViewText(R.id.teacherName, lesson.teacher);
-            lessonItem.setTextViewText(R.id.roomNumber, lesson.roomNumber);
-            views.addView(R.id.schedule, lessonItem);
-        }
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, ScheduleWidget.class));
-        //important! partially, or it breaks when theme changes
-        for (int id : ids) appWidgetManager.partiallyUpdateAppWidget(id, views);
     }
 
     private static int getRequiredLayout(String theme, boolean isDynamicColorsEnabled){
@@ -191,5 +145,48 @@ public class ScheduleWidget
             }
         }
         return R.layout.schedule_widget_daynight;
+    }
+
+    /**
+     * Этот класс служит для обновления View виджета новыми занятиями.
+     *
+     * @author Ипатов Никита
+     * @since 2.3
+     */
+    private static class ScheduleObserver implements Observer<Lesson[]> {
+        private int id;
+
+        public ScheduleObserver(int widgetId){
+            id = widgetId;
+        }
+
+        @Override
+        public void onChanged(Lesson[] lessons) {
+            Context context = ScheduleApp.getInstance().getApplicationContext();
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget_wrapper);
+            views.removeAllViews(R.id.schedule);
+            if(lessons.length == 0) {
+                RemoteViews placeholder = new RemoteViews(context.getPackageName(),
+                        R.layout.schedule_widget_row_placeholder);
+                views.addView(R.id.schedule, placeholder);
+            }
+            int counter = 0;
+            for(Lesson lesson : lessons){
+                counter++;
+                RemoteViews lessonItem = new RemoteViews(context.getPackageName(),
+                        R.layout.schedule_widget_row_item);
+                if(counter % 2 == 1)
+                    lessonItem.setInt(R.id.row, "setBackgroundColor",
+                            context.getResources().getColor(R.color.gray_500));
+                lessonItem.setTextViewText(R.id.lessonNumber, lesson.lessonNumber);
+                lessonItem.setTextViewText(R.id.subjectName, lesson.subject);
+                lessonItem.setTextViewText(R.id.teacherName, lesson.teacher);
+                lessonItem.setTextViewText(R.id.roomNumber, lesson.roomNumber);
+                views.addView(R.id.schedule, lessonItem);
+            }
+
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            appWidgetManager.partiallyUpdateAppWidget(id, views);
+        }
     }
 }

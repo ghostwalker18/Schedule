@@ -18,7 +18,7 @@
     <string name="not_mentioned">Not mentioned</string>
     <string name="updated">Updated:</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">PCME schedule for today</string>
+    <string name="app_widget_description">PCME schedule for group on day</string>
     <string name="schedule_missing">There is no list of classes</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="rounded_corners">Rounded corners</string>
