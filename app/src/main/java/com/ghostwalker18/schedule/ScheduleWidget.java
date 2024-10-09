@@ -123,6 +123,12 @@ public class ScheduleWidget
         }
     }
 
+    /**
+     * Этот метод используется для получения id нужного лэйаута.
+     * @param theme сохраненная тема
+     * @param isDynamicColorsEnabled выбрано ли использование динамических цветов
+     * @return id лэйаута
+     */
     private static int getRequiredLayout(String theme, boolean isDynamicColorsEnabled){
         if(isDynamicColorsEnabled){
             switch (theme){
@@ -153,8 +159,9 @@ public class ScheduleWidget
      * @author Ипатов Никита
      * @since 2.3
      */
-    private static class ScheduleObserver implements Observer<Lesson[]> {
-        private int id;
+    private static class ScheduleObserver
+            implements Observer<Lesson[]> {
+        private final int id;
 
         public ScheduleObserver(int widgetId){
             id = widgetId;

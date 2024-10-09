@@ -19,9 +19,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import com.github.pjfanning.xlsx.StreamingReader;
-
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jsoup.Jsoup;
@@ -63,6 +61,8 @@ public class ScheduleRepository{
    private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
    private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
    private final MutableLiveData<Status> status = new MutableLiveData<>();
+   private volatile int updateStageCounter = 0;
+   private static final int UPDATE_STAGES_COUNT = 3;
 
     /**
      * Этот класс используетс для отображения статуса обновления репозитория.
@@ -94,8 +94,11 @@ public class ScheduleRepository{
      * Требуется интернет соединение.
      */
    public void update(){
+      if(updateStageCounter != 0)
+          return;
       //updating times files
       File mondayTimesFile = new File(context.getFilesDir(), mondayTimesPath);
+
       File otherTimesFile = new File(context.getFilesDir(), otherTimesPath);
       if(!preferences.getBoolean("doNotUpdateTimes", true) || !mondayTimesFile.exists() || !otherTimesFile.exists()){
          Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
@@ -109,7 +112,7 @@ public class ScheduleRepository{
                     try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
                             Context.MODE_PRIVATE)){
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    } catch (IOException e) {}
+                    } catch (IOException ignored) {}
                 }
             }
 
@@ -127,13 +130,14 @@ public class ScheduleRepository{
                     try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
                             Context.MODE_PRIVATE)) {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    } catch (IOException e) {}
+                    } catch (IOException ignored) {}
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
          });
+         checkForUpdateCompleted();
       }
       else {
             new Thread(() -> {
@@ -141,6 +145,7 @@ public class ScheduleRepository{
                   mondayTimes.postValue(bitmap1);
                   Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
                   otherTimes.postValue(bitmap2);
+                  checkForUpdateCompleted();
             }).start();
       }
 
@@ -167,6 +172,9 @@ public class ScheduleRepository{
                             }
                             catch (Exception e){
                                 status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
+                            }
+                            finally {
+                                checkForUpdateCompleted();
                             }
                             response.body().close();
                         }
@@ -203,6 +211,9 @@ public class ScheduleRepository{
                           }
                           catch (Exception e){
                               status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
+                          }
+                          finally {
+                              checkForUpdateCompleted();
                           }
                           response.body().close();
                       }
@@ -356,5 +367,13 @@ public class ScheduleRepository{
     public static String getNameFromLink(String link){
         String[] parts = link.split("/");
         return parts[parts.length - 1];
+    }
+
+    private void checkForUpdateCompleted(){
+        synchronized((Object)updateStageCounter){
+            updateStageCounter++;
+            if(updateStageCounter == UPDATE_STAGES_COUNT)
+                updateStageCounter = 0;
+        }
     }
 }
