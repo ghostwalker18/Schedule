@@ -177,9 +177,13 @@ public class ScheduleItemFragment
       switch (mode){
          case "in_fragment":
             button.setOnClickListener(this::toggleSchedule);
+            button.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                    getResources().getDrawable(R.drawable.baseline_keyboard_arrow_down_24), null);
             break;
          case "in_activity":
             button.setOnClickListener(this::openScheduleInActivity);
+            button.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                    null, null);
             break;
       }
    }
