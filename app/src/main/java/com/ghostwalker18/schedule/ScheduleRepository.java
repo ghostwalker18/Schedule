@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -61,8 +62,7 @@ public class ScheduleRepository{
    private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
    private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
    private final MutableLiveData<Status> status = new MutableLiveData<>();
-   private volatile int updateStageCounter = 0;
-   private static final int UPDATE_STAGES_COUNT = 3;
+   private ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     /**
      * Этот класс используетс для отображения статуса обновления репозитория.
@@ -82,7 +82,7 @@ public class ScheduleRepository{
       context = ScheduleApp.getInstance();
       api = new Retrofit.Builder()
               .baseUrl(baseUri)
-              .callbackExecutor(Executors.newSingleThreadExecutor())
+              .callbackExecutor(Executors.newFixedThreadPool(4))
               .build()
               .create(ScheduleNetworkAPI.class);
       preferences = PreferenceManager.getDefaultSharedPreferences(app);
@@ -94,138 +94,9 @@ public class ScheduleRepository{
      * Требуется интернет соединение.
      */
    public void update(){
-      if(updateStageCounter != 0)
-          return;
-      //updating times files
-      File mondayTimesFile = new File(context.getFilesDir(), mondayTimesPath);
-
-      File otherTimesFile = new File(context.getFilesDir(), otherTimesPath);
-      if(!preferences.getBoolean("doNotUpdateTimes", true) || !mondayTimesFile.exists() || !otherTimesFile.exists()){
-         Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
-         mondayTimesResponse.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if(response.body() != null){
-                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                    response.body().close();
-                    mondayTimes.postValue(bitmap);
-                    try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
-                            Context.MODE_PRIVATE)){
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    } catch (IOException ignored) {}
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
-         });
-         Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
-         otherTimesResponse.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if(response.body() != null){
-                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                    otherTimes.postValue(bitmap);
-                    response.body().close();
-                    try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
-                            Context.MODE_PRIVATE)) {
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    } catch (IOException ignored) {}
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
-         });
-         checkForUpdateCompleted();
-      }
-      else {
-            new Thread(() -> {
-                  Bitmap bitmap1 = BitmapFactory.decodeFile(mondayTimesFile.getAbsolutePath());
-                  mondayTimes.postValue(bitmap1);
-                  Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
-                  otherTimes.postValue(bitmap2);
-                  checkForUpdateCompleted();
-            }).start();
-      }
-
-      //updating schedule database for second corpus
-      new Thread(() -> {
-            List<String> scheduleLinks = getLinksForSecondCorpusSchedule();
-            if(scheduleLinks.size() == 0)
-                status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-            for(String link : scheduleLinks){
-                status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
-                api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                        if(response.body() != null){
-                            status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
-                            ZipSecureFile.setMinInflateRatio(0.0075);
-                            try(Workbook excelFile = StreamingReader.builder()
-                                    .rowCacheSize(10)
-                                    .bufferSize(4096)
-                                    .open(response.body().byteStream())){
-                                List<Lesson> lessons = converter.convertSecondCorpus(excelFile);
-                                db.lessonDao().insertMany(lessons);
-                                status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
-                            }
-                            catch (Exception e){
-                                status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
-                            }
-                            finally {
-                                checkForUpdateCompleted();
-                            }
-                            response.body().close();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                        status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-                    }
-                });
-            }
-      }).start();
-
-      //updating schedule database for first corpus
-      new Thread(()->{
-          List<String> scheduleLinks = getLinksForFirstCorpusSchedule();
-          if(scheduleLinks.size() == 0)
-              status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-          for(String link : scheduleLinks){
-              status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
-              api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
-                  @Override
-                  public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                      if(response.body() != null){
-                          status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
-                          ZipSecureFile.setMinInflateRatio(0.0075);
-                          try(Workbook excelFile = StreamingReader.builder()
-                                  .rowCacheSize(10)
-                                  .bufferSize(4096)
-                                  .open(response.body().byteStream())){
-                              List<Lesson> lessons = converter.convertFirstCorpus(excelFile);
-                              db.lessonDao().insertMany(lessons);
-                              status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
-                          }
-                          catch (Exception e){
-                              status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
-                          }
-                          finally {
-                              checkForUpdateCompleted();
-                          }
-                          response.body().close();
-                      }
-                  }
-
-                  @Override
-                  public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                      status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-                  }
-              });
-          }
-      }).start();
+      executorService.execute(this::updateFirstCorpus);
+      executorService.execute(this::updateSecondCorpus);
+      executorService.execute(this::updateTimes);
    }
 
     /**
@@ -369,11 +240,132 @@ public class ScheduleRepository{
         return parts[parts.length - 1];
     }
 
-    private void checkForUpdateCompleted(){
-        synchronized((Object)updateStageCounter){
-            updateStageCounter++;
-            if(updateStageCounter == UPDATE_STAGES_COUNT)
-                updateStageCounter = 0;
+    /**
+     * Этот метод используется для обновления изображений расписания звонков
+     */
+    private void updateTimes(){
+        File mondayTimesFile = new File(context.getFilesDir(), mondayTimesPath);
+        File otherTimesFile = new File(context.getFilesDir(), otherTimesPath);
+        if(!preferences.getBoolean("doNotUpdateTimes", true) ||
+                !mondayTimesFile.exists() || !otherTimesFile.exists()){
+            Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
+            mondayTimesResponse.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if(response.body() != null){
+                        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                        response.body().close();
+                        mondayTimes.postValue(bitmap);
+                        try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
+                                Context.MODE_PRIVATE)){
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                        } catch (IOException ignored) {}
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
+            });
+            Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
+            otherTimesResponse.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if(response.body() != null){
+                        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                        otherTimes.postValue(bitmap);
+                        response.body().close();
+                        try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
+                                Context.MODE_PRIVATE)) {
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                        } catch (IOException ignored) {}
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
+            });
+        }
+        else {
+            Bitmap bitmap1 = BitmapFactory.decodeFile(mondayTimesFile.getAbsolutePath());
+            mondayTimes.postValue(bitmap1);
+            Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
+            otherTimes.postValue(bitmap2);
+        }
+    }
+
+    /**
+     * Этот метод используется для обновления БД приложения занятиями для первого корпуса
+     */
+    private void updateFirstCorpus(){
+        List<String> scheduleLinks = getLinksForFirstCorpusSchedule();
+        if(scheduleLinks.size() == 0)
+            status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+        for(String link : scheduleLinks){
+            status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
+            api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if(response.body() != null){
+                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                        ZipSecureFile.setMinInflateRatio(0.0075);
+                        try(Workbook excelFile = StreamingReader.builder()
+                                .rowCacheSize(10)
+                                .bufferSize(4096)
+                                .open(response.body().byteStream())){
+                            List<Lesson> lessons = converter.convertFirstCorpus(excelFile);
+                            db.lessonDao().insertMany(lessons);
+                            status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
+                        }
+                        catch (Exception e){
+                            status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
+                        }
+                        response.body().close();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                    status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+                }
+            });
+        }
+    }
+
+    /**
+     * Этот метод используется для обновления БД приложения занятиями для второго корпуса
+     */
+    private void updateSecondCorpus(){
+        List<String> scheduleLinks = getLinksForSecondCorpusSchedule();
+        if(scheduleLinks.size() == 0)
+            status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+        for(String link : scheduleLinks){
+            status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
+            api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if(response.body() != null){
+                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                        ZipSecureFile.setMinInflateRatio(0.0075);
+                        try(Workbook excelFile = StreamingReader.builder()
+                                .rowCacheSize(10)
+                                .bufferSize(4096)
+                                .open(response.body().byteStream())){
+                            List<Lesson> lessons = converter.convertSecondCorpus(excelFile);
+                            db.lessonDao().insertMany(lessons);
+                            status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
+                        }
+                        catch (Exception e){
+                            status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
+                        }
+                        response.body().close();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                    status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+                }
+            });
         }
     }
 }
