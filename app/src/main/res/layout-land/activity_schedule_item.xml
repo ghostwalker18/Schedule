@@ -74,4 +74,10 @@
                 android:text="@string/room"/>
         </TableRow>
     </TableLayout>
+
+    <ImageButton
+        android:id="@+id/notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_notes_36"/>
 </LinearLayout>

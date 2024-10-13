@@ -121,6 +121,7 @@ public class ScheduleItemFragment
          showTable();
       });
       setUpMode();
+      view.findViewById(R.id.notes).setOnClickListener(view1 -> openEditNotesActivity());
    }
 
    /**
@@ -303,6 +304,11 @@ public class ScheduleItemFragment
       ((TextView)tr.findViewById(R.id.room)).setText(lesson.roomNumber);
       table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
       return tr;
+   }
+
+   private void openEditNotesActivity() {
+      Intent intent = new Intent(this.getActivity(), NotesActivity.class);
+      startActivity(intent);
    }
 
    @Override

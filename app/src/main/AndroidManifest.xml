@@ -76,6 +76,18 @@
                 android:value=".MainActivity" />
         </activity>
 
+        <activity
+            android:name=".NotesActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity
+            android:name=".EditNoteActivity"
+            android:exported="false">
+
+        </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.ghostwalker18.schedule.timefilesprovider"

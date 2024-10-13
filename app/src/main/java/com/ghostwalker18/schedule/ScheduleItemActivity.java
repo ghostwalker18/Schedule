@@ -71,6 +71,7 @@ public class ScheduleItemActivity
         repository = ScheduleApp.getInstance().getRepository();
         lessons = repository.getLessons(group, teacher, date);
         lessons.observe(this, lessons -> populateTable(table, lessons));
+        findViewById(R.id.notes).setOnClickListener(view -> openNotesActivity());
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -192,5 +193,10 @@ public class ScheduleItemActivity
         Intent shareIntent = Intent.createChooser(intent, null);
         startActivity(shareIntent);
         return true;
+    }
+
+    private void openNotesActivity() {
+        Intent intent = new Intent(this, NotesActivity.class);
+        startActivity(intent);
     }
 }
