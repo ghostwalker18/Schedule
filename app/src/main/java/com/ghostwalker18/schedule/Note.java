@@ -17,18 +17,21 @@ package com.ghostwalker18.schedule;
 import java.util.Calendar;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 /**
  * Этот класс используется для описания единичной сущности заметок.
  * Используется в ORM.
- * Содержит поля для даты, группы, темы, текста.
+ * Содержит поля для даты, группы, темы, текста, идентификатора фото.
  *
  * @author  Ипатов Никита
  * @since 3.0
  */
-@Entity(tableName = "tblNotes")
+@Entity(tableName = "tblNote")
 public class Note {
+    @PrimaryKey()
+    public long id;
     @TypeConverters({DateConverters.class})
     @ColumnInfo(name="noteDate")
     public Calendar date;
@@ -38,4 +41,6 @@ public class Note {
     public String theme;
     @ColumnInfo(name="noteText")
     public String text;
+    @ColumnInfo(name="notePhotoID")
+    public String photoID;
 }

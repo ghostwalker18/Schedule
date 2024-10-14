@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 /**
@@ -26,10 +27,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  *
  * @author  Ипатов Никита
  */
-@Database(entities = {Lesson.class}, version = 1, exportSchema = false)
+@Database(entities = {Lesson.class, Note.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase
         extends RoomDatabase {
     public abstract LessonDao lessonDao();
+    public abstract NoteDao noteDao();
 
     /**
      * Этот метод позволяет получить сконфигурированную базу данных приложения.
@@ -52,8 +54,17 @@ public abstract class AppDatabase
 
         return Room.databaseBuilder(context, AppDatabase.class, "database")
                 .addCallback(callback)
+                .addMigrations(MIGRATION_1_2)
                 .build();
     }
+
+    private static final Migration MIGRATION_1_2 = new Migration(1, 2){
+        @Override
+        public void migrate(SupportSQLiteDatabase db){
+            db.execSQL("CREATE TABLE tblNote ('id' INTEGER, 'noteDate' TEXT, 'noteGroup' TEXT, " +
+                    "'noteTheme' TEXT, 'noteText' TEXT, 'notePhotoID' TEXT, PRIMARY KEY(`id`))");
+        }
+    };
 
     private static final String updateDayTrigger1 =
             "CREATE TRIGGER IF NOT EXISTS update_day_stage1 " +
