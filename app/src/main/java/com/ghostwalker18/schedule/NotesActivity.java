@@ -14,15 +14,35 @@
 
 package com.ghostwalker18.schedule;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+/**
+ * Этот классс представляет собой экран приложения, на котором отображаются заметки к занятиям.
+ * @author Ипатов Никита
+ * @since 3.0
+ */
 public class NotesActivity
         extends AppCompatActivity {
    @Override
    protected void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_notes);
+      Toolbar toolbar = findViewById(R.id.toolbar);
+      setSupportActionBar(toolbar);
+      ActionBar actionBar = getSupportActionBar();
+      if (actionBar != null) {
+         actionBar.setDisplayHomeAsUpEnabled(true);
+      }
+      findViewById(R.id.edit_note).setOnClickListener(v->openEditNoteActivity());
+   }
+
+   private void openEditNoteActivity(){
+      Intent intent = new Intent(this, EditNoteActivity.class);
+      startActivity(intent);
    }
 }

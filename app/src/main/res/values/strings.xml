@@ -50,4 +50,7 @@
     <string name="schedule_download_status">Скачивание расписания</string>
     <string name="schedule_parsing_status">Обработка расписания</string>
     <string name="processing_completed_status">Расписание успешно обновлено</string>
+    <string name="notes_activity">Заметки</string>
+    <string name="edit_notes_activity">Добавить / редактировать заметку</string>
+    <string name="note_theme">Тема заметки</string>
 </resources>

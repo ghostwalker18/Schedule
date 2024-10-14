@@ -196,7 +196,11 @@ public class ScheduleItemActivity
     }
 
     private void openNotesActivity() {
+        Bundle bundle = new Bundle();
         Intent intent = new Intent(this, NotesActivity.class);
+        bundle.putString("group", group);
+        bundle.putString("date", DateConverters.toString(date));
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }

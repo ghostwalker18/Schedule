@@ -223,6 +223,7 @@ public class ScheduleItemFragment
                  getResources().getDrawable(R.drawable.baseline_keyboard_arrow_up_24),
                  null);
          table.setVisibility(View.VISIBLE);
+         getView().findViewById(R.id.notes).setVisibility(View.VISIBLE);
       }
       else{
          button.setCompoundDrawablesWithIntrinsicBounds(null,
@@ -230,6 +231,7 @@ public class ScheduleItemFragment
                  getResources().getDrawable(R.drawable.baseline_keyboard_arrow_down_24),
                  null);
          table.setVisibility(View.GONE);
+         getView().findViewById(R.id.notes).setVisibility(View.GONE);
       }
    }
 
@@ -307,7 +309,11 @@ public class ScheduleItemFragment
    }
 
    private void openEditNotesActivity() {
+      Bundle bundle = new Bundle();
       Intent intent = new Intent(this.getActivity(), NotesActivity.class);
+      bundle.putString("group", state.getGroup().getValue());
+      bundle.putString("date", DateConverters.toString(state.getCalendar().getValue()));
+      intent.putExtras(bundle);
       startActivity(intent);
    }
 

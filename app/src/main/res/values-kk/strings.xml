@@ -50,4 +50,7 @@
     <string name="processing_completed_status">Кесте сәтті жаңартылды</string>
     <string name="schedule_download_status">Кестені жүктеу</string>
     <string name="schedule">Кесте</string>
+    <string name="notes_activity">Ескертпелер</string>
+    <string name="edit_notes_activity">Жазбаны қосу / өңдеу</string>
+    <string name="theme">Ескерту тақырыбы</string>
 </resources>

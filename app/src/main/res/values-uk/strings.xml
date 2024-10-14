@@ -50,4 +50,7 @@
     <string name="processing_completed_status">Розклад успішно оновлено</string>
     <string name="schedule_download_status">Скачування розкладу</string>
     <string name="schedule">Розклад</string>
+    <string name="notes_activity">Нотатки</string>
+    <string name="edit_notes_activity">Додати / редагувати нотатку</string>
+    <string name="theme">Тема нотатки</string>
 </resources>

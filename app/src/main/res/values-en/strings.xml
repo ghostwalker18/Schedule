@@ -50,4 +50,7 @@
     <string name="processing_completed_status">Schedule successfully updated</string>
     <string name="schedule_download_status">Schedule download</string>
     <string name="schedule">Schedule</string>
+    <string name="notes_activity">Notes</string>
+    <string name="edit_notes_activity">Add / edit note</string>
+    <string name="theme">Note\'s theme</string>
 </resources>

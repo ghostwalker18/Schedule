@@ -78,14 +78,24 @@
 
         <activity
             android:name=".NotesActivity"
-            android:exported="false">
+            android:exported="false"
+            android:label="@string/notes_activity"
+            android:parentActivityName=".MainActivity">
 
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
 
         <activity
             android:name=".EditNoteActivity"
-            android:exported="false">
+            android:exported="false"
+            android:label="@string/edit_notes_activity"
+            android:parentActivityName=".NotesActivity">
 
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NotesActivity"/>
         </activity>
 
         <provider

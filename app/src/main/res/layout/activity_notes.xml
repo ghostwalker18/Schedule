@@ -12,7 +12,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -29,40 +29,49 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="enterAlways|scroll"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@color/colorBackground"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="0.dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/baseline_search_36"/>
+
+            <ImageButton
+                android:id="@+id/filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@null"
+                android:src="@drawable/baseline_tune_36"/>
+        </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:gravity="center">
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <EditText
-            android:id="@+id/search"
-            android:layout_width="0.dp"
+        <LinearLayout
+            android:id="@+id/notes_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/baseline_search_36"/>
-
-        <ImageButton
-            android:id="@+id/filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@null"
-            android:src="@drawable/baseline_tune_36"/>
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/notes_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            android:orientation="vertical"/>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/edit_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:src="@drawable/outline_note_add_36"
         android:layout_margin="16dp" />
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

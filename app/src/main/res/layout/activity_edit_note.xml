@@ -30,4 +30,38 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="enterAlways|scroll"/>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/note_theme"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0.dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/discard"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_clear_36"/>
+
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_check_36"/>
+    </LinearLayout>
 </LinearLayout>
