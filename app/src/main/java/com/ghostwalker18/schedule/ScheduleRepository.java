@@ -162,6 +162,10 @@ public class ScheduleRepository{
          return otherTimes;
    }
 
+   public void saveNote(Note note){
+       db.noteDao().insert(note);
+   }
+
     /**
      * Этот метод получает ссылки с сайта ПАСТ,
      * по которым доступно расписание для корпуса на Мурманской улице.

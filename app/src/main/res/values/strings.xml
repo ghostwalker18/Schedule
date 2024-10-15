@@ -53,4 +53,5 @@
     <string name="notes_activity">Заметки</string>
     <string name="edit_notes_activity">Добавить / редактировать заметку</string>
     <string name="note_theme">Тема заметки</string>
+    <string name="choose_date">Выберите дату</string>
 </resources>
