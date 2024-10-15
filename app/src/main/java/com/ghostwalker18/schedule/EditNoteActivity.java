@@ -15,7 +15,6 @@
 package com.ghostwalker18.schedule;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -25,14 +24,18 @@ import android.os.Bundle;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import java.util.Calendar;
+import java.util.Date;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -51,6 +54,22 @@ public class EditNoteActivity
    private AutoCompleteTextView theme;
    private EditText text;
    private ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+   private ActivityResultLauncher<Void> takePhotoLauncher = registerForActivityResult(
+           new ActivityResultContracts.TakePicturePreview(),
+           result -> {
+              photo = result;
+              ImageView preview = findViewById(R.id.photo_preview);
+              preview.setImageBitmap(photo);
+           });
+
+   private ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
+           new ActivityResultContracts.RequestPermission(),
+           granted ->{
+              if(granted){
+                 takePhotoLauncher.launch(null);
+              }
+           }
+   );
    @Override
    protected void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -62,8 +81,14 @@ public class EditNoteActivity
          actionBar.setDisplayHomeAsUpEnabled(true);
       };
 
+      Bundle bundle = getIntent().getExtras();
+      if(bundle != null){
+         group = bundle.getString("group");
+         date = DateConverters.fromString(bundle.getString("date"));
+      }
+
       dateTextView = findViewById(R.id.date);
-      dateTextView.setText("dick");
+      dateTextView.setText(DateConverters.toString(date));
       theme = findViewById(R.id.theme);
       text = findViewById(R.id.text);
 
@@ -95,11 +120,13 @@ public class EditNoteActivity
 
    private void takePhoto(){
       if(getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
-         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                 != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            startActivity(intent);
+         if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+            Toast toast = Toast.makeText(this,
+                    getResources().getText(R.string.permission_for_photo), Toast.LENGTH_SHORT);
+            toast.show();
+         }
+         else {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
          }
       }
    }

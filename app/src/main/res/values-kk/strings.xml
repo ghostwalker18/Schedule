@@ -52,5 +52,6 @@
     <string name="schedule">Кесте</string>
     <string name="notes_activity">Ескертпелер</string>
     <string name="edit_notes_activity">Жазбаны қосу / өңдеу</string>
-    <string name="theme">Ескерту тақырыбы</string>
+    <string name="note_theme">Ескерту тақырыбы</string>
+    <string name="choose_date">Күнді таңдаңыз</string>
 </resources>

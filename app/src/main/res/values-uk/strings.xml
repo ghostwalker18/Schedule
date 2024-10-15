@@ -52,5 +52,6 @@
     <string name="schedule">Розклад</string>
     <string name="notes_activity">Нотатки</string>
     <string name="edit_notes_activity">Додати / редагувати нотатку</string>
-    <string name="theme">Тема нотатки</string>
+    <string name="note_theme">Тема нотатки</string>
+    <string name="choose_date">Виберіть дату</string>
 </resources>

@@ -16,6 +16,9 @@ package com.ghostwalker18.schedule;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import java.util.Calendar;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +31,8 @@ import androidx.appcompat.widget.Toolbar;
  */
 public class NotesActivity
         extends AppCompatActivity {
+   private String group;
+   private Calendar date;
    @Override
    protected void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -38,11 +43,22 @@ public class NotesActivity
       if (actionBar != null) {
          actionBar.setDisplayHomeAsUpEnabled(true);
       }
+      Bundle bundle = getIntent().getExtras();
+      if(bundle != null){
+         group = bundle.getString("group");
+         date = DateConverters.fromString(bundle.getString("date"));
+      }
       findViewById(R.id.edit_note).setOnClickListener(v->openEditNoteActivity());
    }
 
    private void openEditNoteActivity(){
       Intent intent = new Intent(this, EditNoteActivity.class);
+      Bundle bundle = new Bundle();
+      bundle.putString("group", group);
+      if(date != null){
+         bundle.putString("date", DateConverters.toString(date));
+      }
+      intent.putExtras(bundle);
       startActivity(intent);
    }
 }

@@ -25,4 +25,5 @@
     <string name="appearance">Зовнішній вигляд</string>
     <string name="day">День</string>
     <string name="dynamic_colors">Використовувати динамічні кольори</string>
+    <string name="permission_for_photo">Потрібен дозвіл, щоб зробити фото</string>
 </resources>

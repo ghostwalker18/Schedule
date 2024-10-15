@@ -312,7 +312,7 @@ public class ScheduleItemFragment
       Bundle bundle = new Bundle();
       Intent intent = new Intent(this.getActivity(), NotesActivity.class);
       bundle.putString("group", state.getGroup().getValue());
-      bundle.putString("date", DateConverters.toString(state.getCalendar().getValue()));
+      bundle.putString("date", DateConverters.toString(date.getValue()));
       intent.putExtras(bundle);
       startActivity(intent);
    }

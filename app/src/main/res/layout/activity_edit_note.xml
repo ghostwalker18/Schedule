@@ -40,12 +40,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/schedule_text_size"
             android:text="@string/date"/>
 
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/schedule_text_size"
             android:paddingHorizontal="10dp"/>
 
         <Button
@@ -59,29 +61,38 @@
         android:id="@+id/theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLength="124"
         android:hint="@string/note_theme"/>
 
-    <EditText
-        android:id="@+id/text"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <ImageButton
-        android:id="@+id/take_photo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_add_a_photo_36"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/photo_preview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"/>
+            <EditText
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="255"/>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0.dp"
-        android:layout_weight="1"/>
+            <ImageButton
+                android:id="@+id/take_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_add_a_photo_36"/>
+
+            <ImageView
+                android:id="@+id/photo_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

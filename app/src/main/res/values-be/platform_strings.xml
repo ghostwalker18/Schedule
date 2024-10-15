@@ -25,4 +25,5 @@
     <string name="appearance">Пастава</string>
     <string name="day">Дзень</string>
     <string name="dynamic_colors">Выкарыстоўваць дынамічныя колеру</string>
+    <string name="permission_for_photo">Патрабуецца дазвол, каб зрабіць фота</string>
 </resources>

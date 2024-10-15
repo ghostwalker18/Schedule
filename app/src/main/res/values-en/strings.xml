@@ -52,5 +52,6 @@
     <string name="schedule">Schedule</string>
     <string name="notes_activity">Notes</string>
     <string name="edit_notes_activity">Add / edit note</string>
-    <string name="theme">Note\'s theme</string>
+    <string name="note_theme">Note\'s theme</string>
+    <string name="choose_date">Select a date</string>
 </resources>
