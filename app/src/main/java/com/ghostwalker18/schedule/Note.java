@@ -15,6 +15,8 @@
 package com.ghostwalker18.schedule;
 
 import java.util.Calendar;
+
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -30,16 +32,20 @@ import androidx.room.TypeConverters;
  */
 @Entity(tableName = "tblNote")
 public class Note {
-    @PrimaryKey()
-    public long id;
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    public Integer id;
     @TypeConverters({DateConverters.class})
     @ColumnInfo(name="noteDate")
+    @NonNull
     public Calendar date;
+    @NonNull
     @ColumnInfo(name="noteGroup")
     public String group;
     @ColumnInfo(name="noteTheme")
     public String theme;
     @ColumnInfo(name="noteText")
+    @NonNull
     public String text;
     @ColumnInfo(name="notePhotoID")
     public String photoID;

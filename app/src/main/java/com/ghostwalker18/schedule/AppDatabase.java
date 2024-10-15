@@ -61,8 +61,9 @@ public abstract class AppDatabase
     private static final Migration MIGRATION_1_2 = new Migration(1, 2){
         @Override
         public void migrate(SupportSQLiteDatabase db){
-            db.execSQL("CREATE TABLE tblNote ('id' INTEGER, 'noteDate' TEXT, 'noteGroup' TEXT, " +
-                    "'noteTheme' TEXT, 'noteText' TEXT, 'notePhotoID' TEXT, PRIMARY KEY(`id`))");
+            db.execSQL("CREATE TABLE IF NOT EXISTS tblNote ( 'noteGroup' TEXT NOT NULL, " +
+                    "'noteTheme' TEXT, 'noteText' TEXT NOT NULL, 'notePhotoID' TEXT, " +
+                    "'id' INTEGER NOT NULL, 'noteDate' TEXT NOT NULL, PRIMARY KEY(`id`))");
         }
     };
 

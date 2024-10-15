@@ -22,6 +22,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverters;
 import androidx.room.Update;
 
 /**
@@ -32,6 +33,7 @@ import androidx.room.Update;
  * @since 3.0
  */
 @Dao
+@TypeConverters({DateConverters.class})
 public interface NoteDao {
     /**
      * Этот метод позволяет получить заметки для заданной группы и дня.
@@ -65,7 +67,7 @@ public interface NoteDao {
      * @return
      */
     @Update
-    ListenableFuture<Long> update(Note note);
+    ListenableFuture<Integer> update(Note note);
 
     /**
      * Этот метод позволяет удалить заметку из БД.
@@ -73,5 +75,5 @@ public interface NoteDao {
      * @return
      */
     @Delete
-    ListenableFuture<Long> delete(Note note);
+    ListenableFuture<Integer> delete(Note note);
 }
