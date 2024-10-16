@@ -166,6 +166,10 @@ public class ScheduleRepository{
        db.noteDao().insert(note);
    }
 
+   public LiveData<Note[]> getNotes(String group, Calendar[] dates){
+       return db.noteDao().getNotesForDays(dates, group);
+   }
+
     /**
      * Этот метод получает ссылки с сайта ПАСТ,
      * по которым доступно расписание для корпуса на Мурманской улице.

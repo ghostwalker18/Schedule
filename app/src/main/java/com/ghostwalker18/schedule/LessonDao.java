@@ -83,6 +83,15 @@ public interface LessonDao {
     LiveData<Lesson[]> getLessonsForTeacher(Calendar date, String teacher);
 
     /**
+     * Этот метод позволяет получить список всех предметов у группы.
+     * @param group название группы
+     * @return список предметов
+     */
+    @Query("SELECT DISTINCT subjectName FROM tblSchedule WHERE groupName = :group " +
+            "ORDER BY subjectName ASC")
+    LiveData<String[]> getSubjectsForGroup(String group);
+
+    /**
      * Этот метод позволяет вставить элемент Lesson в БД.
      * @param lesson занятия
      */

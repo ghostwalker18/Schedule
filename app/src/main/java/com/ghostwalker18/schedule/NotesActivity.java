@@ -23,16 +23,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Этот классс представляет собой экран приложения, на котором отображаются заметки к занятиям.
+ *
  * @author Ипатов Никита
  * @since 3.0
  */
 public class NotesActivity
         extends AppCompatActivity {
+   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private String group;
-   private Calendar date;
+   private Calendar startDate;
+   private Calendar endDate;
+   private NotesModel model;
+   private RecyclerView notesListView;
    @Override
    protected void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -43,11 +50,20 @@ public class NotesActivity
       if (actionBar != null) {
          actionBar.setDisplayHomeAsUpEnabled(true);
       }
+      model = new ViewModelProvider(this).get(NotesModel.class);
       Bundle bundle = getIntent().getExtras();
       if(bundle != null){
          group = bundle.getString("group");
-         date = DateConverters.fromString(bundle.getString("date"));
+         startDate = DateConverters.fromString(bundle.getString("date"));
+         endDate = startDate;
+         model.setGroup(group);
+         model.setStartDate(startDate);
+         model.setEndDate(endDate);
       }
+      notesListView = findViewById(R.id.notes);
+      model.getNotes().observe(this, notes -> {
+         notesListView.setAdapter(new NoteAdapter(this, notes));
+      });
       findViewById(R.id.edit_note).setOnClickListener(v->openEditNoteActivity());
    }
 
@@ -55,8 +71,8 @@ public class NotesActivity
       Intent intent = new Intent(this, EditNoteActivity.class);
       Bundle bundle = new Bundle();
       bundle.putString("group", group);
-      if(date != null){
-         bundle.putString("date", DateConverters.toString(date));
+      if(startDate != null){
+         bundle.putString("date", DateConverters.toString(startDate));
       }
       intent.putExtras(bundle);
       startActivity(intent);

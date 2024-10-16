@@ -16,6 +16,8 @@ package com.ghostwalker18.schedule;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Calendar;
+
+import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -43,6 +45,15 @@ public interface NoteDao {
      */
     @Query("SELECT * FROM tblNote WHERE noteDate = :date AND noteGroup = :group")
     LiveData<Note[]> getNotes(Calendar date, String group);
+
+    /**
+     * Этот метод позволяет получить заметки для заданных группы и дней.
+     * @param dates дни
+     * @param group группа
+     * @return список заметок
+     */
+    @Query("SELECT * FROM tblNote WHERE noteDate IN (:dates) AND noteGroup = :group")
+    LiveData<Note[]> getNotesForDays(Calendar[] dates, String group);
 
     /**
      * Этот метод позволяет получить заметки, содержащие в теме или тексте заданное слова.

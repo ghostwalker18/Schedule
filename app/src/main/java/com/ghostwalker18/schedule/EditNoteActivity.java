@@ -17,10 +17,10 @@ package com.ghostwalker18.schedule;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Calendar;
-import java.util.Date;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -51,8 +50,9 @@ public class EditNoteActivity
    private Bitmap photo;
    private TextView dateTextView;
    private EditNoteModel model;
-   private AutoCompleteTextView theme;
-   private EditText text;
+   private AutoCompleteTextView groupField;
+   private AutoCompleteTextView themeField;
+   private EditText textField;
    private ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private ActivityResultLauncher<Void> takePhotoLauncher = registerForActivityResult(
            new ActivityResultContracts.TakePicturePreview(),
@@ -89,8 +89,16 @@ public class EditNoteActivity
 
       dateTextView = findViewById(R.id.date);
       dateTextView.setText(DateConverters.toString(date));
-      theme = findViewById(R.id.theme);
-      text = findViewById(R.id.text);
+      themeField = findViewById(R.id.theme);
+      textField = findViewById(R.id.text);
+      groupField = findViewById(R.id.group);
+
+      groupField.setText(group);
+      repository.getGroups().observe(this, groups ->{
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                 R.layout.autocomplete_item_layout, groups);
+         groupField.setAdapter(adapter);
+      });
 
       model = new ViewModelProvider(this).get(EditNoteModel.class);
       model.getDate().observe(this, calendar -> {
@@ -108,9 +116,10 @@ public class EditNoteActivity
       Note note = new Note();
       note.date = date;
       note.group = group;
-      note.theme = theme.toString();
-      note.text = text.toString();
+      note.theme = themeField.getText().toString();
+      note.text = textField.getText().toString();
       repository.saveNote(note);
+      finish();
    }
 
    private void showDateDialog(){
