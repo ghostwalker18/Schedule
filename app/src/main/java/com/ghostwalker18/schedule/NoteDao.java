@@ -58,9 +58,9 @@ public interface NoteDao {
      * @param keyword ключевое слово
      * @return список заметок
      */
-    @Query("SELECT * FROM tblNote WHERE noteText LIKE '%' || :keyword || '%' OR " +
-            "noteTheme LIKE '%' || :keyword || '%'")
-    LiveData<Note[]> getNotesByKeyword(String keyword);
+    @Query("SELECT * FROM tblNote WHERE (noteText LIKE '%' || :keyword || '%' OR " +
+            "noteTheme LIKE '%' || :keyword || '%') AND noteGroup = :group")
+    LiveData<Note[]> getNotesByKeyword(String keyword, String group);
 
     /**
      * Этот метод позволяет внести заметку в БД.

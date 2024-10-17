@@ -16,6 +16,10 @@ package com.ghostwalker18.schedule;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+
 import java.util.Calendar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -47,7 +51,9 @@ public class NotesActivity
       if(actionBar != null){
          actionBar.setDisplayHomeAsUpEnabled(true);
       }
+
       model = new ViewModelProvider(this).get(NotesModel.class);
+
       Bundle bundle = getIntent().getExtras();
       if(bundle != null){
          group = bundle.getString("group");
@@ -57,9 +63,31 @@ public class NotesActivity
          model.setStartDate(startDate);
          model.setEndDate(endDate);
       }
+
       notesListView = findViewById(R.id.notes);
-      model.getNotes().observe(this, notes -> notesListView.setAdapter(new NoteAdapter(notes)));
+      model.getNotes().observe(this, notes -> {
+         notesListView.setAdapter(new NoteAdapter(notes));
+      });
+
       findViewById(R.id.edit_note).setOnClickListener(v->openEditNoteActivity());
+
+      EditText search = findViewById(R.id.search);
+      search.addTextChangedListener(new TextWatcher() {
+         @Override
+         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+         }
+
+         @Override
+         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+         }
+
+         @Override
+         public void afterTextChanged(Editable editable) {
+            model.setKeyword(editable.toString());
+         }
+      });
    }
 
    /**

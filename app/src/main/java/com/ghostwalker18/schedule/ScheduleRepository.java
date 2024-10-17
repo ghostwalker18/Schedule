@@ -162,14 +162,33 @@ public class ScheduleRepository{
          return otherTimes;
    }
 
+   /**
+    * Этот метод позволяет сохранить заметку.
+    */
    public void saveNote(Note note){
        db.noteDao().insert(note);
    }
 
+    /**
+     * Этот метод позволяет получить заметки для заданных группы и временного промежутка.
+     * @param group
+     * @param dates
+     * @return
+     */
    public LiveData<Note[]> getNotes(String group, Calendar[] dates){
        if(dates.length == 1)
            return db.noteDao().getNotes(dates[0], group);
        return db.noteDao().getNotesForDays(dates, group);
+   }
+
+    /**
+     * Этот метод позволяет получить заметки для заданного ключевого слова и группы.
+     * @param group группа
+     * @param keyword ключевое слово
+     * @return список заметок
+     */
+   public LiveData<Note[]> getNotes(String group, String keyword){
+       return db.noteDao().getNotesByKeyword(keyword, group);
    }
 
     /**
