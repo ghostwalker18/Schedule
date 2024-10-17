@@ -16,9 +16,7 @@ package com.ghostwalker18.schedule;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import java.util.Calendar;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +32,6 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class NotesActivity
         extends AppCompatActivity {
-   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private String group;
    private Calendar startDate;
    private Calendar endDate;
@@ -47,7 +44,7 @@ public class NotesActivity
       Toolbar toolbar = findViewById(R.id.toolbar);
       setSupportActionBar(toolbar);
       ActionBar actionBar = getSupportActionBar();
-      if (actionBar != null) {
+      if(actionBar != null){
          actionBar.setDisplayHomeAsUpEnabled(true);
       }
       model = new ViewModelProvider(this).get(NotesModel.class);
@@ -61,12 +58,13 @@ public class NotesActivity
          model.setEndDate(endDate);
       }
       notesListView = findViewById(R.id.notes);
-      model.getNotes().observe(this, notes -> {
-         notesListView.setAdapter(new NoteAdapter(this, notes));
-      });
+      model.getNotes().observe(this, notes -> notesListView.setAdapter(new NoteAdapter(notes)));
       findViewById(R.id.edit_note).setOnClickListener(v->openEditNoteActivity());
    }
 
+   /**
+    * Этот метод открывает активность для реедактирования или добавления заметки.
+    */
    private void openEditNoteActivity(){
       Intent intent = new Intent(this, EditNoteActivity.class);
       Bundle bundle = new Bundle();

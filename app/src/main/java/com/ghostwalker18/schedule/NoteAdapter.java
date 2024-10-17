@@ -14,7 +14,6 @@
 
 package com.ghostwalker18.schedule;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,22 +24,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Этот класс служит для отображения списка заметок.
+ *
  * @author Ипатов Никита
  * @since 3.0
  */
 public class NoteAdapter
         extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
-   private final LayoutInflater inflater;
    private final Note[] notes;
 
-   public NoteAdapter(Context context, Note[] notes) {
-      this.inflater = LayoutInflater.from(context);
+   public NoteAdapter(Note[] notes) {
       this.notes = notes;
    }
 
    @NonNull
    @Override
    public NoteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+      LayoutInflater inflater = LayoutInflater.from(parent.getContext());
       View view = inflater.inflate(R.layout.fragment_note, parent, false);
       return new ViewHolder(view);
    }
@@ -57,6 +56,12 @@ public class NoteAdapter
       return notes.length;
    }
 
+   /**
+    * Этот класс служит для работы с элементом списка.
+    *
+    * @author Ипатов Никита
+    * @since 3.0
+    */
    public static class ViewHolder
            extends RecyclerView.ViewHolder {
       private final TextView theme, text;

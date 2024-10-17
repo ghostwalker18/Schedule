@@ -28,9 +28,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Calendar;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,8 +53,8 @@ public class EditNoteActivity
    private AutoCompleteTextView groupField;
    private AutoCompleteTextView themeField;
    private EditText textField;
-   private ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
-   private ActivityResultLauncher<Void> takePhotoLauncher = registerForActivityResult(
+   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+   private final ActivityResultLauncher<Void> takePhotoLauncher = registerForActivityResult(
            new ActivityResultContracts.TakePicturePreview(),
            result -> {
               photo = result;
@@ -62,7 +62,7 @@ public class EditNoteActivity
               preview.setImageBitmap(photo);
            });
 
-   private ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
+   private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
            new ActivityResultContracts.RequestPermission(),
            granted ->{
               if(granted){
@@ -112,6 +112,9 @@ public class EditNoteActivity
       findViewById(R.id.take_photo).setOnClickListener(v->takePhoto());
    }
 
+   /**
+    * Этот метод сохраняет заметку в репозитории и закрывает активность.
+    */
    private void saveNote(){
       Note note = new Note();
       note.date = date;
@@ -122,11 +125,17 @@ public class EditNoteActivity
       finish();
    }
 
+   /**
+    * Этот метод открывает окно для выбора и установки даты.
+    */
    private void showDateDialog(){
       DatePickerFragment datePickerFragment = new DatePickerFragment();
       datePickerFragment.show(getSupportFragmentManager(), "datePicker");
    }
 
+   /**
+    * Этот метод открывает камеру устройств, чтобы сделать фото для заметки.
+    */
    private void takePhoto(){
       if(getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
          if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
@@ -140,10 +149,15 @@ public class EditNoteActivity
       }
    }
 
+   /**
+    * Этот класс отвечает за окно выбора и установки даты.
+    */
    public static class DatePickerFragment
            extends DialogFragment
            implements DatePickerDialog.OnDateSetListener {
       private EditNoteModel model;
+
+      @NonNull
       @Override
       public Dialog onCreateDialog(Bundle savedInstanceState) {
          model = new ViewModelProvider(requireActivity()).get(EditNoteModel.class);

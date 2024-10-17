@@ -25,11 +25,20 @@ import androidx.lifecycle.ViewModel;
  * @since 3.0
  */
 public class EditNoteModel extends ViewModel {
-   private MutableLiveData<Calendar> date = new MutableLiveData<>();
+   private final MutableLiveData<Calendar> date = new MutableLiveData<>();
+
+   /**
+    * Этот метод позволяет получить текущую дату редактируемой заметки.
+    * @return дата
+    */
    public LiveData<Calendar> getDate(){
       return date;
    }
 
+   /**
+    * Этот метод позволяет установить дату редактируемой заметки.
+    * @param date дата
+    */
    public void setDate(Calendar date) {
       this.date.setValue(date);
    }

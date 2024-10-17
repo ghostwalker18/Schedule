@@ -167,6 +167,8 @@ public class ScheduleRepository{
    }
 
    public LiveData<Note[]> getNotes(String group, Calendar[] dates){
+       if(dates.length == 1)
+           return db.noteDao().getNotes(dates[0], group);
        return db.noteDao().getNotesForDays(dates, group);
    }
 

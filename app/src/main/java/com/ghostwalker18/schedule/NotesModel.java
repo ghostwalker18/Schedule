@@ -27,37 +27,65 @@ import androidx.lifecycle.ViewModel;
  * @author Ипатов Никита
  * @since 3.0
  */
-public class NotesModel extends ViewModel {
+public class NotesModel
+        extends ViewModel {
    private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private String group;
-   private Calendar startDate = Calendar.getInstance();
-   private Calendar endDate = Calendar.getInstance();
+   private Calendar startDate;
+   private Calendar endDate;
    private LiveData<Note[]> notes = new MutableLiveData<>();
 
+   /**
+    * Этот метод выдает заметки для заданнной группы и временного интервала.
+    * @return список заметок
+    */
    public LiveData<Note[]> getNotes(){
       return notes;
-   };
+   }
 
+   /**
+    * Этот метод задает группу для выдачи заметок.
+    * @param group группа
+    */
    public void setGroup(String group){
       this.group = group;
-      notes = repository.getNotes(group, generateDateSequence(startDate, endDate));
+      if(startDate != null && endDate != null)
+         notes = repository.getNotes(group, generateDateSequence(startDate, endDate));
    }
+
+   /**
+    * Этот метод устанавливает начальную дату временного интервала выдачи заметок.
+    * @param date начальная дата
+    */
    public void setStartDate(Calendar date){
       this.startDate = date;
-      notes = repository.getNotes(group, generateDateSequence(startDate, endDate));
-   };
+      if(startDate != null && endDate != null)
+         notes = repository.getNotes(group, generateDateSequence(startDate, endDate));
+   }
 
+   /**
+    * Этот метод устанавливает конечную дату временного интервала выдачи заметок.
+    * @param date конечная дата
+    */
    public void setEndDate(Calendar date){
       this.endDate = date;
-      notes = repository.getNotes(group, generateDateSequence(startDate, endDate));
-   };
+      if(startDate != null && endDate != null)
+         notes = repository.getNotes(group, generateDateSequence(startDate, endDate));
+   }
 
+   /**
+    * Этот метод позволяет получить последовательность дат, основываясь на начальной и конечной.
+    * @param startDate начальная дата (включается в интервал)
+    * @param endDate конечная дата (включается в интервал)
+    * @return массив дат
+    */
    private Calendar[] generateDateSequence(Calendar startDate, Calendar endDate){
-      if(startDate == endDate || endDate.before(startDate))
+      if(startDate.equals(endDate) || endDate.before(startDate))
          return new Calendar[]{startDate};
       List<Calendar> resultList = new ArrayList<>();
       while(startDate.before(endDate)){
-         resultList.add(startDate);
+         Calendar date = (Calendar) startDate.clone();
+         resultList.add(date);
          startDate.add(Calendar.DATE, 1);
       }
       Calendar[] result = new Calendar[resultList.size()];

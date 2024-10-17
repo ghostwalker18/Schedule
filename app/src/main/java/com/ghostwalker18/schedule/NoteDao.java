@@ -16,8 +16,6 @@ package com.ghostwalker18.schedule;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Calendar;
-
-import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -73,7 +71,7 @@ public interface NoteDao {
     ListenableFuture<Long> insert(Note note);
 
     /**
-     * Этот метод позволяет удалить заметку из БД.
+     * Этот метод позволяет обновить заметку из БД.
      * @param note заметка
      * @return
      */
