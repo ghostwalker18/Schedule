@@ -54,4 +54,8 @@
     <string name="edit_notes_activity">Жазбаны қосу / өңдеу</string>
     <string name="note_theme">Ескерту тақырыбы</string>
     <string name="choose_date">Күнді таңдаңыз</string>
+    <string name="filters">Сүзгілер</string>
+    <string name="start_date">Бастапқы күн:</string>
+    <string name="end_date">Соңғы күн:</string>
+    <string name="text">Мәтін*</string>
 </resources>

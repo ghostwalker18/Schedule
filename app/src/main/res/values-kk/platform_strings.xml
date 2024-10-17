@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="for_group">For group:</string>
+    <string name="for_group">Топ үшін:</string>
     <string name="last_chosen">Соңғы таңдалған</string>
     <string name="not_mentioned">Көрсетілмеген</string>
     <string name="updated">Updated:</string>

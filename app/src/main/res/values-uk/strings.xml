@@ -54,4 +54,8 @@
     <string name="edit_notes_activity">Додати / редагувати нотатку</string>
     <string name="note_theme">Тема нотатки</string>
     <string name="choose_date">Виберіть дату</string>
+    <string name="filters">Фільтри</string>
+    <string name="start_date">Початкова дата:</string>
+    <string name="end_date">Кінцева дата:</string>
+    <string name="text">Текст*</string>
 </resources>

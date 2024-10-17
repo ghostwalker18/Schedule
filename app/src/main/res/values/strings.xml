@@ -54,4 +54,8 @@
     <string name="edit_notes_activity">Добавить / редактировать заметку</string>
     <string name="note_theme">Тема заметки</string>
     <string name="choose_date">Выберите дату</string>
+    <string name="filters">Фильтры</string>
+    <string name="start_date">Начальная дата:</string>
+    <string name="end_date">Конечная дата:</string>
+    <string name="text">Текст*</string>
 </resources>

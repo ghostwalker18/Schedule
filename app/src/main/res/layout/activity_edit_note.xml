@@ -34,7 +34,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -50,13 +51,11 @@
             android:textSize="@dimen/schedule_text_size"
             android:paddingHorizontal="10dp"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/set_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:paddingHorizontal="10dp"
-            android:text="@string/choose_date"/>
+            android:src="@drawable/baseline_keyboard_arrow_down_24"/>
     </LinearLayout>
 
     <AutoCompleteTextView
@@ -86,13 +85,29 @@
                 android:id="@+id/text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="255"/>
+                android:maxLength="255"
+                android:hint="@string/text"/>
 
-            <ImageButton
-                android:id="@+id/take_photo"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_add_a_photo_36"/>
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/choose_photo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/outline_image_search_36"/>
+
+                <ImageButton
+                    android:id="@+id/take_photo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/baseline_add_a_photo_36"/>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/photo_preview"

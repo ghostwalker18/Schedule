@@ -47,6 +47,7 @@ public class NoteAdapter
    @Override
    public void onBindViewHolder(@NonNull NoteAdapter.ViewHolder holder, int position) {
       Note note = notes[position];
+      holder.date.setText(DateConverters.toString(note.date));
       holder.theme.setText(note.theme);
       holder.text.setText(note.text);
    }
@@ -64,11 +65,12 @@ public class NoteAdapter
     */
    public static class ViewHolder
            extends RecyclerView.ViewHolder {
-      private final TextView theme, text;
+      private final TextView theme, text, date;
       private final ImageView photo;
 
       public ViewHolder(@NonNull View itemView) {
          super(itemView);
+         date = itemView.findViewById(R.id.date);
          theme = itemView.findViewById(R.id.theme);
          text = itemView.findViewById(R.id.text);
          photo = itemView.findViewById(R.id.image);
