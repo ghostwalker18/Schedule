@@ -32,10 +32,10 @@ public class NotesModel
         extends ViewModel {
    private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private final MediatorLiveData<Note[]> notes = new MediatorLiveData<>();
+   private final MutableLiveData<Calendar> startDate = new MutableLiveData<>();
+   private final MutableLiveData<Calendar> endDate = new MutableLiveData<>();
    private String group;
    private String keyword;
-   private Calendar startDate;
-   private Calendar endDate;
    private LiveData<Note[]> notesMediator = new MutableLiveData<>();
 
 
@@ -48,6 +48,22 @@ public class NotesModel
    }
 
    /**
+    * Этот метод позволяет получить стартовую дату временного интервала для выдачи заметок.
+    * @return стратовая дата
+    */
+   public LiveData<Calendar> getStartDate(){
+      return startDate;
+   }
+
+   /**
+    * Этот метод позволяет получить конечную дату временного интервала для выдачи заметок.
+    * @return конечная дата
+    */
+   public LiveData<Calendar> getEndDate(){
+      return endDate;
+   }
+
+   /**
     * Этот метод задает группу для выдачи заметок.
     * @param group группа
     */
@@ -57,8 +73,9 @@ public class NotesModel
       if(group != null){
          if(keyword != null)
             notesMediator = repository.getNotes(group, keyword);
-         if(startDate != null && endDate != null)
-            notesMediator = repository.getNotes(group, generateDateSequence(startDate, endDate));
+         if(startDate.getValue() != null && endDate.getValue() != null)
+            notesMediator = repository.getNotes(group,
+                    generateDateSequence(startDate.getValue(), endDate.getValue()));
       }
       notes.addSource(notesMediator, x -> notes.setValue(x));
    }
@@ -80,10 +97,11 @@ public class NotesModel
     * @param date начальная дата
     */
    public void setStartDate(Calendar date){
-      this.startDate = date;
+      this.startDate.setValue(date);
       notes.removeSource(notesMediator);
-      if(startDate != null && endDate != null && group != null)
-         notesMediator = repository.getNotes(group, generateDateSequence(startDate, endDate));
+      if(startDate.getValue() != null && endDate.getValue() != null && group != null)
+         notesMediator = repository.getNotes(group,
+                 generateDateSequence(startDate.getValue(), endDate.getValue()));
       notes.addSource(notesMediator, x -> notes.setValue(x));
    }
 
@@ -92,10 +110,11 @@ public class NotesModel
     * @param date конечная дата
     */
    public void setEndDate(Calendar date){
-      this.endDate = date;
+      this.endDate.setValue(date);
       notes.removeSource(notesMediator);
-      if(startDate != null && endDate != null && group != null)
-         notesMediator = repository.getNotes(group, generateDateSequence(startDate, endDate));
+      if(startDate.getValue() != null && endDate.getValue() != null && group != null)
+         notesMediator = repository.getNotes(group,
+                 generateDateSequence(startDate.getValue(), endDate.getValue()));
       notes.addSource(notesMediator, x -> notes.setValue(x));
    }
 

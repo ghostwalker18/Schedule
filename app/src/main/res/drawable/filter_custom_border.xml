@@ -12,14 +12,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
-    <color name="colorPrimary">#00574B</color>
-    <color name="colorSecondary">#06713B</color>
-    <color name="colorPrimaryDark">#121212</color>
-    <color name="colorAccent">#4169E1</color>
-    <color name="colorText">#FFF</color>
-    <color name="colorBackground">#303030</color>
-    <color name="navigationBarColor">#121212</color>
-    <color name="gray_500">#9E9E9E</color>
-    <color name="filterBorder">#FAFAFA</color>
-</resources>
+<inset
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetTop="-2dp"
+    android:insetRight="-2dp">
+
+    <shape
+        android:shape="rectangle">
+
+        <solid android:color="@color/colorBackground"/>
+        <stroke android:width="2dp" android:color="@color/filterBorder"/>
+    </shape>
+</inset>

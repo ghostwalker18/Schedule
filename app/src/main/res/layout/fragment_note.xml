@@ -18,7 +18,7 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:layout_margin="5dp"
-    android:background="@drawable/customborder"
+    android:background="@drawable/note_custom_border"
     android:orientation="vertical">
 
     <TextView
@@ -32,7 +32,7 @@
         android:id="@+id/theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/customborder"
+        android:background="@drawable/note_custom_border"
         android:textAlignment="center"/>
 
     <TextView

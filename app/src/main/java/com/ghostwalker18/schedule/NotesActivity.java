@@ -40,6 +40,7 @@ public class NotesActivity
    private Calendar endDate;
    private NotesModel model;
    private RecyclerView notesListView;
+   private NotesFilterFragment filter;
    @Override
    protected void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -68,6 +69,9 @@ public class NotesActivity
          notesListView.setAdapter(new NoteAdapter(notes));
       });
 
+      filter = new NotesFilterFragment();
+      findViewById(R.id.filter).setOnClickListener(v->openFilterFragment());
+
       findViewById(R.id.edit_note).setOnClickListener(v->openEditNoteActivity());
 
       EditText search = findViewById(R.id.search);
@@ -86,7 +90,7 @@ public class NotesActivity
    }
 
    /**
-    * Этот метод открывает активность для реедактирования или добавления заметки.
+    * Этот метод открывает активность для редактирования или добавления заметки.
     */
    private void openEditNoteActivity(){
       Intent intent = new Intent(this, EditNoteActivity.class);
@@ -97,5 +101,16 @@ public class NotesActivity
       }
       intent.putExtras(bundle);
       startActivity(intent);
+   }
+
+   /**
+    * Этот метод окрывает панель фильтра.
+    */
+   private void openFilterFragment(){
+      getSupportFragmentManager()
+              .beginTransaction()
+              .setCustomAnimations(R.anim.slide_in, R.anim.slide_out)
+              .replace(R.id.notes_container, filter)
+              .commit();
    }
 }
