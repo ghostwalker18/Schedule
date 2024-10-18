@@ -58,4 +58,5 @@
     <string name="start_date">Пачатковая дата:</string>
     <string name="end_date">Канчатковая дата:</string>
     <string name="text">Тэкст*</string>
+    <string name="photo_error">Не атрымалася загрузіць фатаграфію</string>
 </resources>

@@ -17,8 +17,10 @@ package com.ghostwalker18.schedule;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -48,6 +50,7 @@ public class EditNoteActivity
    private Calendar date = Calendar.getInstance();
    private String group;
    private Bitmap photo;
+   private Uri photoID;
    private TextView dateTextView;
    private EditNoteModel model;
    private AutoCompleteTextView groupField;
@@ -60,8 +63,16 @@ public class EditNoteActivity
               photo = result;
               ImageView preview = findViewById(R.id.photo_preview);
               preview.setImageBitmap(photo);
-           });
-
+           }
+   );
+   private final ActivityResultLauncher<String> galleryPickLauncher = registerForActivityResult(
+           new ActivityResultContracts.GetContent(),
+           uri -> {
+               photoID = uri;
+               ImageView preview = findViewById(R.id.photo_preview);
+               preview.setImageURI(uri);
+           }
+   );
    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
            new ActivityResultContracts.RequestPermission(),
            granted ->{
@@ -70,6 +81,7 @@ public class EditNoteActivity
               }
            }
    );
+
    @Override
    protected void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -110,6 +122,7 @@ public class EditNoteActivity
       findViewById(R.id.save).setOnClickListener(v->saveNote());
       findViewById(R.id.set_date).setOnClickListener(v->showDateDialog());
       findViewById(R.id.take_photo).setOnClickListener(v->takePhoto());
+      findViewById(R.id.choose_photo).setOnClickListener(v->galleryPickLauncher.launch("image/*"));
    }
 
    /**
@@ -121,6 +134,11 @@ public class EditNoteActivity
       note.group = group;
       note.theme = themeField.getText().toString();
       note.text = textField.getText().toString();
+      if(photoID != null){
+         note.photoID = photoID.toString();
+         this.getContentResolver().takePersistableUriPermission(photoID,
+                 Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      }
       repository.saveNote(note);
       finish();
    }

@@ -58,4 +58,5 @@
     <string name="start_date">Start date:</string>
     <string name="end_date">End date:</string>
     <string name="text">Text*</string>
+    <string name="photo_error">Failed to upload photo</string>
 </resources>

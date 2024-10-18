@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
-
 import java.util.Calendar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -74,14 +73,10 @@ public class NotesActivity
       EditText search = findViewById(R.id.search);
       search.addTextChangedListener(new TextWatcher() {
          @Override
-         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-         }
+         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
          @Override
-         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-         }
+         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
          @Override
          public void afterTextChanged(Editable editable) {
