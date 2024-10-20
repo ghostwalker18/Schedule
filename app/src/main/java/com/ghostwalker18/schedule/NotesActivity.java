@@ -84,7 +84,10 @@ public class NotesActivity
 
          @Override
          public void afterTextChanged(Editable editable) {
-            model.setKeyword(editable.toString());
+            String keyword = editable.toString().trim();
+            if(keyword.equals(""))
+               keyword = null;
+            model.setKeyword(keyword);
          }
       });
    }

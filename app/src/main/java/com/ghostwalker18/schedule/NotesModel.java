@@ -89,6 +89,11 @@ public class NotesModel
       notes.removeSource(notesMediator);
       if(keyword != null)
          notesMediator = repository.getNotes(group, keyword);
+      else {
+         if(startDate.getValue() != null && endDate.getValue() != null && group != null)
+            notesMediator = repository.getNotes(group,
+                    generateDateSequence(startDate.getValue(), endDate.getValue()));
+      }
       notes.addSource(notesMediator, x -> notes.setValue(x));
    }
 
@@ -128,10 +133,13 @@ public class NotesModel
       if(startDate.equals(endDate) || endDate.before(startDate))
          return new Calendar[]{startDate};
       List<Calendar> resultList = new ArrayList<>();
-      while(startDate.before(endDate)){
-         Calendar date = (Calendar) startDate.clone();
+      //remember of reference nature of Java
+      Calendar counter = (Calendar) startDate.clone();
+      while(counter.before(endDate)){
+         //remember of reference nature of Java (also here)
+         Calendar date = (Calendar) counter.clone();
          resultList.add(date);
-         startDate.add(Calendar.DATE, 1);
+         counter.add(Calendar.DATE, 1);
       }
       Calendar[] result = new Calendar[resultList.size()];
       resultList.toArray(result);

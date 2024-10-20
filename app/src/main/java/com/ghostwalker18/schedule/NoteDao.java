@@ -50,7 +50,8 @@ public interface NoteDao {
      * @param group группа
      * @return список заметок
      */
-    @Query("SELECT * FROM tblNote WHERE noteDate IN (:dates) AND noteGroup = :group")
+    @Query("SELECT * FROM tblNote WHERE noteDate IN (:dates) AND noteGroup = :group " +
+            "ORDER BY noteDate")
     LiveData<Note[]> getNotesForDays(Calendar[] dates, String group);
 
     /**
@@ -59,7 +60,8 @@ public interface NoteDao {
      * @return список заметок
      */
     @Query("SELECT * FROM tblNote WHERE (noteText LIKE '%' || :keyword || '%' OR " +
-            "noteTheme LIKE '%' || :keyword || '%') AND noteGroup = :group")
+            "noteTheme LIKE '%' || :keyword || '%') AND noteGroup = :group " +
+            "ORDER BY noteDate DESC")
     LiveData<Note[]> getNotesByKeyword(String keyword, String group);
 
     /**
