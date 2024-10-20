@@ -14,6 +14,7 @@
 
 package com.ghostwalker18.schedule;
 
+import android.content.res.Resources;
 import java.util.Calendar;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -48,4 +49,15 @@ public class Note {
     public String text;
     @ColumnInfo(name="notePhotoID")
     public String photoID;
+
+    @Override
+    public String toString(){
+        String res = "";
+        Resources resources = ScheduleApp.getInstance().getResources();
+        res = res + resources.getString(R.string.date) + ": " + DateConverters.toString(date) + "\n";
+        res = res + resources.getString(R.string.group) + ": " + group + "\n";
+        res = res + resources.getString(R.string.theme) + ": " + theme + "\n";
+        res = res + resources.getString(R.string.text) + ": " + text + "\n";
+        return res;
+    }
 }

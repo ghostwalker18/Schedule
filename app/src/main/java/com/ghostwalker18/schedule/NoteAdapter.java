@@ -41,12 +41,19 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  */
 public class NoteAdapter
         extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
+   interface onNoteClickListener{
+      void onNoteSelected(Note note, int position);
+      void onNoteUnselected(Note note, int position);
+   }
+
    private final Note[] notes;
+   private final onNoteClickListener listener;
    private Context context;
    private boolean canAccessPhoto = false;
 
-   public NoteAdapter(Note[] notes) {
+   public NoteAdapter(Note[] notes, onNoteClickListener listener) {
       this.notes = notes;
+      this.listener = listener;
    }
 
    private boolean checkPhotoAccess() {
@@ -93,6 +100,19 @@ public class NoteAdapter
             holder.error.setText(context.getString(R.string.photo_error));
          }
       }
+      holder.itemView.setOnClickListener(v -> {
+         holder.isSelected = !holder.isSelected;
+         if(holder.isSelected){
+            holder.itemView.setBackground(
+                    context.getResources().getDrawable(R.drawable.note_custom_border_selected));
+            listener.onNoteSelected(note, position);
+         }
+         else{
+            holder.itemView.setBackground(
+                    context.getResources().getDrawable(R.drawable.note_custom_border));
+            listener.onNoteUnselected(note, position);
+         }
+      });
    }
 
    @Override
@@ -108,6 +128,7 @@ public class NoteAdapter
     */
    public static class ViewHolder
            extends RecyclerView.ViewHolder {
+      public boolean isSelected = false;
       private final TextView theme, text, date, error;
       private final ImageView photo;
 

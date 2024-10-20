@@ -59,4 +59,8 @@
     <string name="end_date">Канчатковая дата:</string>
     <string name="text">Тэкст*</string>
     <string name="photo_error">Не атрымалася загрузіць фатаграфію</string>
+    <string name="group">Група</string>
+    <string name="theme">Тэма</string>
+    <string name="delete">Выдаліць</string>
+    <string name="edit">Рэдагаваць</string>
 </resources>

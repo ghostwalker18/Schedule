@@ -35,6 +35,15 @@ import androidx.room.Update;
 @Dao
 @TypeConverters({DateConverters.class})
 public interface NoteDao {
+
+    /**
+     * Этот метод позволяет получить заметку из базы данных по ее ID.
+     * @param id идентификатор заметки
+     * @return заметка
+     */
+    @Query("SELECT * FROM tblNote WHERE id = :id")
+    LiveData<Note> getNote(Integer id);
+
     /**
      * Этот метод позволяет получить заметки для заданной группы и дня.
      * @param date день
