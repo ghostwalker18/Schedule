@@ -154,6 +154,7 @@ public class NotesActivity
    private void openEditNoteActivity(){
       Intent intent = new Intent(this, EditNoteActivity.class);
       Bundle bundle = new Bundle();
+      bundle.putString("mode", "add");
       bundle.putString("group", group);
       if(startDate != null){
          bundle.putString("date", DateConverters.toString(startDate));
@@ -206,6 +207,9 @@ public class NotesActivity
     * @return
     */
    private boolean editNote(){
+      Intent intent = new Intent(this, EditNoteActivity.class);
+      intent.putExtra("noteID", selectedNotes.entrySet().iterator().next().getValue().id);
+      startActivity(intent);
       return true;
    }
 }

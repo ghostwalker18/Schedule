@@ -62,12 +62,14 @@
         android:id="@+id/group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:completionThreshold="1"
         android:hint="@string/for_group"/>
 
     <AutoCompleteTextView
         android:id="@+id/theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:completionThreshold="1"
         android:maxLength="124"
         android:hint="@string/note_theme"/>
 

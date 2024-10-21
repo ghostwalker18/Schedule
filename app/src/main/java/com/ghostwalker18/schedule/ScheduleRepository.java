@@ -51,54 +51,54 @@ import retrofit2.Retrofit;
  * @author  Ипатов Никита
  */
 public class ScheduleRepository{
-   private final AppDatabase db;
-   private final IConverter converter = new XMLStoLessonsConverter();
-   private final SharedPreferences preferences;
-   private final ScheduleNetworkAPI api;
-   private final Context context;
-   private final String baseUri = "https://ptgh.onego.ru/9006/";
-   private final String mainSelector = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
-   private final String mondayTimesPath = "mondayTimes.jpg";
-   private final String otherTimesPath = "otherTimes.jpg";
-   private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
-   private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
-   private final MutableLiveData<Status> status = new MutableLiveData<>();
-   private ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private final AppDatabase db;
+    private final IConverter converter = new XMLStoLessonsConverter();
+    private final SharedPreferences preferences;
+    private final ScheduleNetworkAPI api;
+    private final Context context;
+    private final String baseUri = "https://ptgh.onego.ru/9006/";
+    private final String mainSelector = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
+    private final String mondayTimesPath = "mondayTimes.jpg";
+    private final String otherTimesPath = "otherTimes.jpg";
+    private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
+    private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
+    private final MutableLiveData<Status> status = new MutableLiveData<>();
+    private ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     /**
      * Этот класс используетс для отображения статуса обновления репозитория.
      */
     public static class Status{
-       public String text;
-       public int progress;
+        public String text;
+        public int progress;
 
-       public Status(String text, int progress){
-           this.text = text;
-           this.progress = progress;
-       }
-   }
+        public Status(String text, int progress){
+            this.text = text;
+            this.progress = progress;
+        }
+    }
 
-   public ScheduleRepository(Application app){
-      db = ScheduleApp.getInstance().getDatabase();
-      context = ScheduleApp.getInstance();
-      api = new Retrofit.Builder()
-              .baseUrl(baseUri)
-              .callbackExecutor(Executors.newFixedThreadPool(4))
-              .build()
-              .create(ScheduleNetworkAPI.class);
-      preferences = PreferenceManager.getDefaultSharedPreferences(app);
-   }
+    public ScheduleRepository(Application app){
+       db = ScheduleApp.getInstance().getDatabase();
+       context = ScheduleApp.getInstance();
+       api = new Retrofit.Builder()
+               .baseUrl(baseUri)
+               .callbackExecutor(Executors.newFixedThreadPool(4))
+               .build()
+               .create(ScheduleNetworkAPI.class);
+       preferences = PreferenceManager.getDefaultSharedPreferences(app);
+    }
 
     /**
      * Этот метод обновляет репозиторий приложения.
      * Метод использует многопоточность и может вызывать исключения в других потоках.
      * Требуется интернет соединение.
      */
-   public void update(){
-      executorService.execute(this::updateFirstCorpus);
-      executorService.execute(this::updateSecondCorpus);
-      executorService.execute(this::updateTimes);
-   }
+    public void update(){
+       executorService.execute(this::updateFirstCorpus);
+       executorService.execute(this::updateSecondCorpus);
+       executorService.execute(this::updateTimes);
+    }
 
     /**
      * Этот метод используется для получения состояния,
@@ -106,7 +106,7 @@ public class ScheduleRepository{
      *
      * @return статус состояния
      */
-   public LiveData<Status> getStatus(){
+    public LiveData<Status> getStatus(){
        return status;
    }
 
@@ -115,13 +115,28 @@ public class ScheduleRepository{
      *
      * @return список групп
      */
-   public LiveData<String[]> getGroups(){
+    public LiveData<String[]> getGroups(){
       return db.lessonDao().getGroups();
    }
 
-   public LiveData<String[]> getTeachers(){
+    /**
+     * Этот метод позволяет получить имена всех преподавателей, упоминаемых в расписании.
+     *
+     * @return список учителей
+     */
+
+    public LiveData<String[]> getTeachers(){
       return db.lessonDao().getTeachers();
-   }
+    }
+
+    /**
+     * Этот метод позволяет получить список всех предметов в расписании для заданной группы.
+     * @param group группа
+     * @return список предметов
+     */
+    public LiveData<String[]> getSubjects(String group) {
+        return db.lessonDao().getSubjectsForGroup(group);
+    }
 
     /**
      * Этот метод возращает список занятий в этот день у группы у данного преподавателя.
@@ -133,15 +148,15 @@ public class ScheduleRepository{
      * @param group группа
      * @return список занятий
      */
-   public LiveData<Lesson[]> getLessons(String group, String teacher, Calendar date) {
-      if (teacher != null && group != null)
-         return db.lessonDao().getLessonsForGroupWithTeacher(date, group, teacher);
-      else if (teacher != null)
-         return db.lessonDao().getLessonsForTeacher(date, teacher);
-      else if (group != null)
-         return db.lessonDao().getLessonsForGroup(date, group);
-      else return new MutableLiveData<>(new Lesson[]{});
-   }
+    public LiveData<Lesson[]> getLessons(String group, String teacher, Calendar date) {
+       if (teacher != null && group != null)
+          return db.lessonDao().getLessonsForGroupWithTeacher(date, group, teacher);
+       else if (teacher != null)
+          return db.lessonDao().getLessonsForTeacher(date, teacher);
+       else if (group != null)
+          return db.lessonDao().getLessonsForGroup(date, group);
+       else return new MutableLiveData<>(new Lesson[]{});
+    }
 
     /**
      * Этот метод используется для получения буфферизированого файла изображения
@@ -149,7 +164,7 @@ public class ScheduleRepository{
      *
      * @return фото расписания звонков на понедельник
      */
-   public LiveData<Bitmap> getMondayTimes(){
+    public LiveData<Bitmap> getMondayTimes(){
          return mondayTimes;
    }
 
@@ -159,41 +174,63 @@ public class ScheduleRepository{
      *
      * @return фото расписания звонков со вторника по пятницу
      */
-   public LiveData<Bitmap> getOtherTimes(){
+    public LiveData<Bitmap> getOtherTimes(){
          return otherTimes;
    }
 
-   /**
-    * Этот метод позволяет сохранить заметку.
-    */
-   public void saveNote(Note note){
+    /**
+     * Этот метод позволяет сохранить заметку.
+     */
+    public void saveNote(Note note){
        db.noteDao().insert(note);
    }
 
     /**
+     * Этот метод позволяет обновить заметку.
+     *
+     * @param note заметка
+     */
+    public void updateNote(Note note){
+       db.noteDao().update(note);
+   }
+
+    /**
+     * Этот метод позволяет получить заметку по ее ID.
+     *
+     * @param id первичный ключ
+     * @return заметка
+     */
+    public LiveData<Note> getNote(Integer id) {
+       return db.noteDao().getNote(id);
+    }
+
+    /**
      * Этот метод позволяет получить заметки для заданных группы и временного промежутка.
+     *
      * @param group
      * @param dates
      * @return
      */
-   public LiveData<Note[]> getNotes(String group, Calendar[] dates){
-       if(dates.length == 1)
-           return db.noteDao().getNotes(dates[0], group);
-       return db.noteDao().getNotesForDays(dates, group);
-   }
+    public LiveData<Note[]> getNotes(String group, Calendar[] dates){
+        if(dates.length == 1)
+            return db.noteDao().getNotes(dates[0], group);
+        return db.noteDao().getNotesForDays(dates, group);
+    }
 
     /**
      * Этот метод позволяет получить заметки для заданного ключевого слова и группы.
+     *
      * @param group группа
      * @param keyword ключевое слово
      * @return список заметок
      */
-   public LiveData<Note[]> getNotes(String group, String keyword){
-       return db.noteDao().getNotesByKeyword(keyword, group);
-   }
+    public LiveData<Note[]> getNotes(String group, String keyword){
+        return db.noteDao().getNotesByKeyword(keyword, group);
+    }
 
     /**
      * Этот метод позволяет удалить выбранные заметки из БД.
+     *
      * @param notes заметки для удаления
      */
    public void deleteNotes(@NonNull Collection<Note> notes){
@@ -253,6 +290,7 @@ public class ScheduleRepository{
 
     /**
      * Этот метод предназначен для сохранения последней выбранной группы перед закрытием приложения.
+     *
      * @param group группа для сохранения
      */
     public void saveGroup(String group) {
@@ -263,6 +301,7 @@ public class ScheduleRepository{
 
     /**
      * Этот метод возвращает сохраненную группу.
+     *
      * @return группа
      */
     public String getSavedGroup(){
@@ -271,6 +310,7 @@ public class ScheduleRepository{
 
     /**
      * Этот метод позволяет получить имя скачиваемого файла из ссылки на него.
+     *
      * @param link ссылка на файл
      * @return имя файла
      */

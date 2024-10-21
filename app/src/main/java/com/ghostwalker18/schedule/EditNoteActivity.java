@@ -17,11 +17,15 @@ package com.ghostwalker18.schedule;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -38,25 +42,24 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 /**
  * Этот класс представляет собой экран редактирования или добавления новой заметки
+ *
  * @author Ипатов Никита
  * @since 3.0
  */
 public class EditNoteActivity
         extends AppCompatActivity {
-   private Calendar date = Calendar.getInstance();
-   private String group;
    private Bitmap photo;
-   private Uri photoID;
    private TextView dateTextView;
    private EditNoteModel model;
    private AutoCompleteTextView groupField;
    private AutoCompleteTextView themeField;
    private EditText textField;
-   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+   private ImageView preview;
    private final ActivityResultLauncher<Void> takePhotoLauncher = registerForActivityResult(
            new ActivityResultContracts.TakePicturePreview(),
            result -> {
@@ -67,18 +70,13 @@ public class EditNoteActivity
    );
    private final ActivityResultLauncher<String> galleryPickLauncher = registerForActivityResult(
            new ActivityResultContracts.GetContent(),
-           uri -> {
-               photoID = uri;
-               ImageView preview = findViewById(R.id.photo_preview);
-               preview.setImageURI(uri);
-           }
+           uri -> model.setPhotoID(uri)
    );
    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
            new ActivityResultContracts.RequestPermission(),
            granted ->{
-              if(granted){
+              if(granted)
                  takePhotoLauncher.launch(null);
-              }
            }
    );
 
@@ -93,53 +91,69 @@ public class EditNoteActivity
          actionBar.setDisplayHomeAsUpEnabled(true);
       };
 
+      model = new ViewModelProvider(this).get(EditNoteModel.class);
+
       Bundle bundle = getIntent().getExtras();
       if(bundle != null){
-         group = bundle.getString("group");
-         date = DateConverters.fromString(bundle.getString("date"));
-      }
+         if(bundle.getInt("noteID") != 0)
+            model.setNoteID(bundle.getInt("id"));
+         if(bundle.getString("group") != null)
+            model.setGroup(bundle.getString("group"));
+         if(bundle.getString("date") != null)
+            model.setDate(DateConverters.fromString(bundle.getString("date")));
+      };
 
       dateTextView = findViewById(R.id.date);
-      dateTextView.setText(DateConverters.toString(date));
-      themeField = findViewById(R.id.theme);
-      textField = findViewById(R.id.text);
-      groupField = findViewById(R.id.group);
+      model.getDate().observe(this, date -> {
+         dateTextView.setText(DateConverters.toString(date));
+      });
 
-      groupField.setText(group);
-      repository.getGroups().observe(this, groups ->{
+      themeField = findViewById(R.id.theme);
+      model.getTheme().observe(this, theme -> themeField.setText(theme));
+      model.getThemes().observe(this, themes -> {
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                 R.layout.autocomplete_item_layout, themes);
+         themeField.setAdapter(adapter);
+      });
+
+      textField = findViewById(R.id.text);
+      model.getText().observe(this, text -> {
+         textField.setText(text);
+      });
+
+      groupField = findViewById(R.id.group);
+      model.getGroup().observe(this, group -> groupField.setText(group));
+      model.getGroups().observe(this, groups ->{
          ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                  R.layout.autocomplete_item_layout, groups);
          groupField.setAdapter(adapter);
       });
+      groupField.setOnItemClickListener((adapterView, view, i, l) ->
+              model.setGroup(groupField.getText().toString()));
 
-      model = new ViewModelProvider(this).get(EditNoteModel.class);
-      model.getDate().observe(this, calendar -> {
-         date = calendar;
-         dateTextView.setText(DateConverters.toString(date));
+      preview = findViewById(R.id.photo_preview);
+      model.getPhotoID().observe(this, photoID -> {
+         ContentResolver contentResolver = this.getContentResolver();
+         try {
+            preview.setImageBitmap(BitmapFactory.decodeStream(
+                    contentResolver.openInputStream(photoID)));
+         } catch (Exception ignored) {}
       });
 
-      findViewById(R.id.discard).setOnClickListener(v->finish());
-      findViewById(R.id.save).setOnClickListener(v->saveNote());
-      findViewById(R.id.set_date).setOnClickListener(v->showDateDialog());
-      findViewById(R.id.take_photo).setOnClickListener(v->takePhoto());
-      findViewById(R.id.choose_photo).setOnClickListener(v->galleryPickLauncher.launch("image/*"));
+      findViewById(R.id.discard).setOnClickListener(v -> finish());
+      findViewById(R.id.save).setOnClickListener(v -> saveNote());
+      findViewById(R.id.set_date).setOnClickListener(v -> showDateDialog());
+      findViewById(R.id.take_photo).setOnClickListener(v -> takePhoto());
+      findViewById(R.id.choose_photo).setOnClickListener(v -> galleryPickLauncher.launch("image/*"));
    }
 
    /**
     * Этот метод сохраняет заметку в репозитории и закрывает активность.
     */
    private void saveNote(){
-      Note note = new Note();
-      note.date = date;
-      note.group = group;
-      note.theme = themeField.getText().toString();
-      note.text = textField.getText().toString();
-      if(photoID != null){
-         note.photoID = photoID.toString();
-         this.getContentResolver().takePersistableUriPermission(photoID,
-                 Intent.FLAG_GRANT_READ_URI_PERMISSION);
-      }
-      repository.saveNote(note);
+      model.setTheme(themeField.getText().toString());
+      model.setText(textField.getText().toString());
+      model.saveNote();
       finish();
    }
 

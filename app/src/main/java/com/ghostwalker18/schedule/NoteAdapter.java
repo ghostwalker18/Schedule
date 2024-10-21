@@ -96,7 +96,7 @@ public class NoteAdapter
          try {
             holder.photo.setImageBitmap(BitmapFactory.decodeStream(
                     contentResolver.openInputStream(Uri.parse(note.photoID))));
-         } catch (Exception ignored) {
+         } catch (Exception e) {
             holder.error.setText(context.getString(R.string.photo_error));
          }
       }
