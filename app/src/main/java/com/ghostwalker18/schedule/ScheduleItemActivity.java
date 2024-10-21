@@ -163,30 +163,12 @@ public class ScheduleItemActivity
 
         String schedule = getString(R.string.date) + ": ";
         schedule = schedule + DateConverters.toString(date) + "\n";
+
         schedule += "\n";
-
         for(Lesson lesson : lessons.getValue()){
-            schedule = schedule + getString(R.string.number) + ": ";
-            schedule = schedule + lesson.lessonNumber + "\n";
-
-            schedule = schedule + getString(R.string.subject) + ": ";
-            schedule = schedule + lesson.subject + "\n";
-
-            if(!lesson.teacher.equals(""))
-            {
-                schedule = schedule + getString(R.string.teacher) + ": ";
-                schedule = schedule + lesson.teacher + "\n";
-            }
-
-            if(!lesson.roomNumber.equals(""))
-            {
-                schedule = schedule + getString(R.string.room) + ": ";
-                schedule = schedule + lesson.roomNumber + "\n";
-            }
-
+            schedule += lesson.toString();
             schedule += "\n";
         }
-
         schedule += "\n";
 
         intent.putExtra(Intent.EXTRA_TEXT, schedule);

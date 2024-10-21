@@ -14,6 +14,8 @@
 
 package com.ghostwalker18.schedule;
 
+import android.content.res.Resources;
+
 import java.util.Calendar;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -122,5 +124,20 @@ public class Lesson {
 
     public void setTeacher(String teacher) {
         this.teacher = teacher;
+    }
+
+
+    @NonNull
+    @Override
+    public String toString() {
+        Resources resources = ScheduleApp.getInstance().getResources();
+        String res = "";
+        res = res + resources.getString(R.string.number) + ": " + lessonNumber + "\n";
+        res = res + resources.getString(R.string.subject) + ": " + subject + "\n";
+        if(!teacher.equals(""))
+            res = res + resources.getString(R.string.teacher) + ": " + teacher + "\n";
+        if(!roomNumber.equals(""))
+            res = res + resources.getString(R.string.room) + ": " + roomNumber + "\n";
+        return res;
     }
 }
