@@ -48,6 +48,7 @@ public class NotesActivity
    private RecyclerView notesListView;
    private NotesFilterFragment filter;
    private Map<Integer, Note> selectedNotes = new HashMap<>();
+   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private final NoteAdapter.onNoteClickListener listener = new NoteAdapter.onNoteClickListener() {
       @Override
       public void onNoteSelected(Note note, int position) {
@@ -194,6 +195,7 @@ public class NotesActivity
     * @return
     */
    private boolean deleteNotes(){
+      repository.deleteNotes(selectedNotes.values());
       return true;
    }
 
