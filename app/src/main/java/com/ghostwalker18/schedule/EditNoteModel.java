@@ -28,7 +28,8 @@ import androidx.lifecycle.ViewModel;
  * @author Ипатов Никита
  * @since 3.0
  */
-public class EditNoteModel extends ViewModel {
+public class EditNoteModel
+        extends ViewModel {
    private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
    private final MediatorLiveData<Note> note = new MediatorLiveData<>(new Note());
    private final MediatorLiveData<String[]> noteThemesMediator = new MediatorLiveData<>();
@@ -42,21 +43,19 @@ public class EditNoteModel extends ViewModel {
 
    /**
     * Этот метод позволяет задать ID заметки для редактирования.
-    *
     * @param ID идентификатор
     */
    public void setNoteID(Integer ID){
       isEdited = true;
-      note.addSource(repository.getNote(ID), value -> {
-         note.setValue(value);
-      });
+      note.addSource(repository.getNote(ID), note::setValue);
       note.observeForever(note1 -> {
          if(note1 != null){
             group.setValue(note1.group);
             date.setValue(note1.date);
             text.setValue(note1.text);
             theme.setValue(note1.theme);
-            photoID.setValue(Uri.parse(note1.photoID));
+            if(note1.photoID != null)
+               photoID.setValue(Uri.parse(note1.photoID));
          }
       });
    }
@@ -171,12 +170,15 @@ public class EditNoteModel extends ViewModel {
          noteToSave.group = group.getValue();
          noteToSave.theme = theme.getValue();
          noteToSave.text = text.getValue();
-         noteToSave.photoID = photoID.getValue().toString();
-         ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID.getValue(),
-                 Intent.FLAG_GRANT_READ_URI_PERMISSION);
+         if(photoID.getValue() != null){
+            noteToSave.photoID = photoID.getValue().toString();
+            ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID.getValue(),
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+         }
          if(isEdited)
             repository.updateNote(noteToSave);
-         repository.saveNote(noteToSave);
-      };
+         else
+            repository.saveNote(noteToSave);
+      }
    }
 }

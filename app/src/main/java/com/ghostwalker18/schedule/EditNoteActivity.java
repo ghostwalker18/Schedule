@@ -18,14 +18,10 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -42,7 +38,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 /**
@@ -74,7 +69,7 @@ public class EditNoteActivity
    );
    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
            new ActivityResultContracts.RequestPermission(),
-           granted ->{
+           granted -> {
               if(granted)
                  takePhotoLauncher.launch(null);
            }
@@ -84,19 +79,19 @@ public class EditNoteActivity
    protected void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_edit_note);
+
       Toolbar toolbar = findViewById(R.id.toolbar);
       setSupportActionBar(toolbar);
       ActionBar actionBar = getSupportActionBar();
-      if (actionBar != null) {
+      if (actionBar != null)
          actionBar.setDisplayHomeAsUpEnabled(true);
-      };
 
       model = new ViewModelProvider(this).get(EditNoteModel.class);
 
       Bundle bundle = getIntent().getExtras();
       if(bundle != null){
          if(bundle.getInt("noteID") != 0)
-            model.setNoteID(bundle.getInt("id"));
+            model.setNoteID(bundle.getInt("noteID"));
          if(bundle.getString("group") != null)
             model.setGroup(bundle.getString("group"));
          if(bundle.getString("date") != null)
@@ -104,9 +99,7 @@ public class EditNoteActivity
       };
 
       dateTextView = findViewById(R.id.date);
-      model.getDate().observe(this, date -> {
-         dateTextView.setText(DateConverters.toString(date));
-      });
+      model.getDate().observe(this, date -> dateTextView.setText(DateConverters.toString(date)));
 
       themeField = findViewById(R.id.theme);
       model.getTheme().observe(this, theme -> themeField.setText(theme));
@@ -117,9 +110,7 @@ public class EditNoteActivity
       });
 
       textField = findViewById(R.id.text);
-      model.getText().observe(this, text -> {
-         textField.setText(text);
-      });
+      model.getText().observe(this, text -> textField.setText(text));
 
       groupField = findViewById(R.id.group);
       model.getGroup().observe(this, group -> groupField.setText(group));

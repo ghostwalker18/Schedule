@@ -53,19 +53,13 @@ public class NotesActivity
       @Override
       public void onNoteSelected(Note note, int position) {
          selectedNotes.put(position, note);
-         isEditAvailable = (selectedNotes.size() == 1);
-         isShareAvailable = true;
-         isDeleteAvailable = true;
-         invalidateMenu();
+         decideMenuOptions();
       }
 
       @Override
       public void onNoteUnselected(Note note, int position) {
          selectedNotes.remove(position, note);
-         isEditAvailable = (selectedNotes.size() == 1);
-         isShareAvailable = (selectedNotes.size() > 0);
-         isDeleteAvailable = (selectedNotes.size() > 0);
-         invalidateMenu();
+         decideMenuOptions();
       }
    };
 
@@ -121,9 +115,8 @@ public class NotesActivity
       }
 
       notesListView = findViewById(R.id.notes);
-      model.getNotes().observe(this, notes -> {
-         notesListView.setAdapter(new NoteAdapter(notes, listener));
-      });
+      model.getNotes().observe(this,
+              notes -> notesListView.setAdapter(new NoteAdapter(notes, listener)));
 
       filter = new NotesFilterFragment();
       findViewById(R.id.filter).setOnClickListener(v->openFilterFragment());
@@ -188,6 +181,8 @@ public class NotesActivity
       intent.putExtra(Intent.EXTRA_TEXT, notes);
       Intent shareIntent = Intent.createChooser(intent, null);
       startActivity(shareIntent);
+      selectedNotes = new HashMap<>();
+      decideMenuOptions();
       return true;
    }
 
@@ -197,6 +192,8 @@ public class NotesActivity
     */
    private boolean deleteNotes(){
       repository.deleteNotes(selectedNotes.values());
+      selectedNotes = new HashMap<>();
+      decideMenuOptions();
       return true;
    }
 
@@ -210,6 +207,18 @@ public class NotesActivity
       Intent intent = new Intent(this, EditNoteActivity.class);
       intent.putExtra("noteID", selectedNotes.entrySet().iterator().next().getValue().id);
       startActivity(intent);
+      selectedNotes = new HashMap<>();
+      decideMenuOptions();
       return true;
+   }
+
+   /**
+    * Этот метод позволяет определить, какие опции должны быть в меню.
+    */
+   private void decideMenuOptions(){
+      isEditAvailable = (selectedNotes.size() == 1);
+      isShareAvailable = (selectedNotes.size() > 0);
+      isDeleteAvailable = (selectedNotes.size() > 0);
+      invalidateMenu();
    }
 }
