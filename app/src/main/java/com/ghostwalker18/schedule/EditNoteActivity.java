@@ -17,11 +17,11 @@ package com.ghostwalker18.schedule;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -29,7 +29,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.FileProvider;
+import java.io.File;
 import java.util.Calendar;
+import java.util.Random;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -48,19 +51,19 @@ import androidx.lifecycle.ViewModelProvider;
  */
 public class EditNoteActivity
         extends AppCompatActivity {
-   private Bitmap photo;
+   private Uri photoUri;
    private TextView dateTextView;
    private EditNoteModel model;
    private AutoCompleteTextView groupField;
    private AutoCompleteTextView themeField;
    private EditText textField;
    private ImageView preview;
-   private final ActivityResultLauncher<Void> takePhotoLauncher = registerForActivityResult(
-           new ActivityResultContracts.TakePicturePreview(),
+   private final ActivityResultLauncher<Uri> takePhotoLauncher = registerForActivityResult(
+           new ActivityResultContracts.TakePicture(),
            result -> {
-              photo = result;
-              ImageView preview = findViewById(R.id.photo_preview);
-              preview.setImageBitmap(photo);
+              model.setPhotoID(photoUri);
+              MediaScannerConnection.scanFile(this,
+                      new String[]{photoUri.getEncodedPath()}, new String[]{"image/jpeg"}, null);
            }
    );
    private final ActivityResultLauncher<String> galleryPickLauncher = registerForActivityResult(
@@ -70,8 +73,19 @@ public class EditNoteActivity
    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
            new ActivityResultContracts.RequestPermission(),
            granted -> {
-              if(granted)
-                 takePhotoLauncher.launch(null);
+              if(granted){
+                 File directory = new File(Environment.getExternalStoragePublicDirectory(
+                         Environment.DIRECTORY_PICTURES).getAbsoluteFile(), "ScheduleNotes");
+                 if(!directory.exists())
+                    directory.mkdirs();
+                 File newFile = new File(directory, makeNotePhotoName());
+                 while(newFile.exists())
+                    newFile = new File(directory, makeNotePhotoName());
+                 photoUri = Uri.fromFile(newFile);
+                 Uri contentUri = FileProvider.getUriForFile(this,
+                         "com.ghostwalker18.schedule.timefilesprovider", newFile);
+                 takePhotoLauncher.launch(contentUri);
+              }
            }
    );
 
@@ -123,15 +137,9 @@ public class EditNoteActivity
               model.setGroup(groupField.getText().toString()));
 
       preview = findViewById(R.id.photo_preview);
-      model.getPhotoID().observe(this, photoID -> {
-         ContentResolver contentResolver = this.getContentResolver();
-         try {
-            preview.setImageBitmap(BitmapFactory.decodeStream(
-                    contentResolver.openInputStream(photoID)));
-         } catch (Exception ignored) {}
-      });
+      model.getPhotoID().observe(this, photoID -> preview.setImageURI(photoID));
 
-      findViewById(R.id.discard).setOnClickListener(v -> finish());
+      findViewById(R.id.discard).setOnClickListener(v -> exitActivity());
       findViewById(R.id.save).setOnClickListener(v -> saveNote());
       findViewById(R.id.set_date).setOnClickListener(v -> showDateDialog());
       findViewById(R.id.take_photo).setOnClickListener(v -> takePhoto());
@@ -145,6 +153,27 @@ public class EditNoteActivity
       model.setTheme(themeField.getText().toString());
       model.setText(textField.getText().toString());
       model.saveNote();
+      finish();
+   }
+
+   /**
+    * Этот метод позволяет сгенерировать имя для сделанного фото для заметки.
+    * @return имя файла для фото
+    */
+   private String makeNotePhotoName(){
+      String res = "";
+      res = res + DateConverters.dateFormatPhoto.format(model.getDate().getValue().getTime()) + "_";
+      res += new Random().nextInt(10000);
+      res += ".jpg";
+      return res;
+   }
+
+   /**
+    * Этот метод позволяет закрыть активность и освободить ресурсы.
+    */
+   private void exitActivity(){
+      File photoFile = new File(model.getPhotoID().getValue().getEncodedPath());
+      photoFile.delete();
       finish();
    }
 

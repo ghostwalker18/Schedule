@@ -160,6 +160,10 @@ public class EditNoteModel
       this.date.setValue(date);
    }
 
+   public Integer getNoteID(){
+      return note.getValue().id;
+   }
+
    /**
     * Этот метод позволяет сохранить заметку.
     */
@@ -172,8 +176,10 @@ public class EditNoteModel
          noteToSave.text = text.getValue();
          if(photoID.getValue() != null){
             noteToSave.photoID = photoID.getValue().toString();
-            ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID.getValue(),
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            try {
+               ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID.getValue(),
+                       Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } catch (Exception ignored){};
          }
          if(isEdited)
             repository.updateNote(noteToSave);
