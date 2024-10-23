@@ -26,10 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.TextView;
-
 import java.util.Calendar;
-import java.util.Date;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -67,11 +64,16 @@ public class NotesFilterFragment
    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
       super.onViewCreated(view, savedInstanceState);
 
-      view.findViewById(R.id.set_start_date).setOnClickListener(v-> setStartDate());
-      view.findViewById(R.id.set_end_date).setOnClickListener(v->setEndDate());
-      view.findViewById(R.id.close).setOnClickListener(v->close());
+      view.findViewById(R.id.set_start_date).setOnClickListener(v -> setStartDate());
+      view.findViewById(R.id.set_end_date).setOnClickListener(v -> setEndDate());
+      view.findViewById(R.id.close).setOnClickListener(v -> close());
+      view.findViewById(R.id.group_clear).setOnClickListener(v -> {
+         groupField.setText("");
+         model.setGroup(null);
+      });
 
       groupField = view.findViewById(R.id.group);
+      groupField.setText(model.getGroup());
       repository.getGroups().observe(getViewLifecycleOwner(), groups -> {
          ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                  R.layout.autocomplete_item_layout, groups);

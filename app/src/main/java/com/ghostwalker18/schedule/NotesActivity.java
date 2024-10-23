@@ -109,9 +109,11 @@ public class NotesActivity
          group = bundle.getString("group");
          startDate = DateConverters.fromString(bundle.getString("date"));
          endDate = startDate;
-         model.setGroup(group);
-         model.setStartDate(startDate);
-         model.setEndDate(endDate);
+         if(savedInstanceState == null){
+            model.setGroup(group);
+            model.setStartDate(startDate);
+            model.setEndDate(endDate);
+         }
       }
 
       notesListView = findViewById(R.id.notes);

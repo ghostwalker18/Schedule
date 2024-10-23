@@ -80,6 +80,9 @@ public class NotesModel
       notes.addSource(notesMediator, x -> notes.setValue(x));
    }
 
+   public String getGroup(){
+      return group;
+   }
    /**
     * Этот метод задает ключевое слова для поиска заметок по нему и выдачи их.
     * @param keyword ключевое слово
