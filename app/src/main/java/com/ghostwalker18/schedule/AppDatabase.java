@@ -27,7 +27,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  *
  * @author  Ипатов Никита
  */
-@Database(entities = {Lesson.class, Note.class}, version = 2, exportSchema = false)
+@Database(entities = {Lesson.class, Note.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase
         extends RoomDatabase {
     public abstract LessonDao lessonDao();
@@ -54,7 +54,7 @@ public abstract class AppDatabase
 
         return Room.databaseBuilder(context, AppDatabase.class, "database")
                 .addCallback(callback)
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build();
     }
 
@@ -67,14 +67,21 @@ public abstract class AppDatabase
         }
     };
 
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3){
+        @Override
+        public void migrate(SupportSQLiteDatabase db){
+            db.execSQL("DROP TRIGGER IF EXISTS update_day_stage1");
+            db.execSQL(updateDayTrigger1);
+        }
+    };
+
     private static final String updateDayTrigger1 =
             "CREATE TRIGGER IF NOT EXISTS update_day_stage1 " +
             "BEFORE INSERT ON tblSchedule " +
             "BEGIN " +
             "DELETE FROM tblSchedule WHERE groupName = NEW.groupName AND " +
             "                lessonDate = NEW.lessonDate AND " +
-            "                lessonNumber = NEW.lessonNumber AND " +
-            "                lessonTimes = NEW.lessonTimes; "+
+            "                lessonNumber = NEW.lessonNumber;" +
             "END;";
 
     private static final String updateDayTrigger2 =
