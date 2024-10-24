@@ -58,20 +58,50 @@
             android:src="@drawable/baseline_keyboard_arrow_down_24"/>
     </LinearLayout>
 
-    <AutoCompleteTextView
-        android:id="@+id/group"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:completionThreshold="1"
-        android:hint="@string/for_group"/>
+        android:orientation="horizontal">
 
-    <AutoCompleteTextView
-        android:id="@+id/theme"
+        <AutoCompleteTextView
+            android:id="@+id/group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:completionThreshold="1"
+            android:hint="@string/for_group"/>
+
+        <ImageButton
+            android:id="@+id/group_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="10dp"
+            android:background="@null"
+            android:src="@drawable/baseline_clear_24"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:completionThreshold="1"
-        android:maxLength="124"
-        android:hint="@string/note_theme"/>
+        android:orientation="horizontal">
+
+        <AutoCompleteTextView
+            android:id="@+id/theme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:completionThreshold="1"
+            android:maxLength="124"
+            android:hint="@string/note_theme"/>
+
+        <ImageButton
+            android:id="@+id/theme_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="10dp"
+            android:background="@null"
+            android:src="@drawable/baseline_clear_24"/>
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -83,12 +113,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="255"
-                android:hint="@string/text"/>
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLength="255"
+                    android:hint="@string/text"/>
+
+                <ImageButton
+                    android:id="@+id/text_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="10dp"
+                    android:background="@null"
+                    android:src="@drawable/baseline_clear_24"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,12 +156,26 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/photo_preview"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="5dp"
-                android:adjustViewBounds="true"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/photo_preview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="5dp"
+                    android:adjustViewBounds="true"/>
+
+                <ImageButton
+                    android:id="@+id/image_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:src="@drawable/baseline_clear_36"/>
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

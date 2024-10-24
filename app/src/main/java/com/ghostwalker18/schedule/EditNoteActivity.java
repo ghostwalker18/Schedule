@@ -22,10 +22,12 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +60,7 @@ public class EditNoteActivity
    private AutoCompleteTextView themeField;
    private EditText textField;
    private ImageView preview;
+   private ImageButton previewClear;
    private final ActivityResultLauncher<Uri> takePhotoLauncher = registerForActivityResult(
            new ActivityResultContracts.TakePicture(),
            result -> {
@@ -136,9 +139,21 @@ public class EditNoteActivity
       groupField.setOnItemClickListener((adapterView, view, i, l) ->
               model.setGroup(groupField.getText().toString()));
 
-      preview = findViewById(R.id.photo_preview);
-      model.getPhotoID().observe(this, photoID -> preview.setImageURI(photoID));
+      previewClear = findViewById(R.id.image_clear);
+      previewClear.setOnClickListener(v -> {
+         model.setPhotoID(null);
+         previewClear.setVisibility(View.GONE);
+      });
 
+      preview = findViewById(R.id.photo_preview);
+      model.getPhotoID().observe(this, photoID -> {
+         preview.setImageURI(photoID);
+         previewClear.setVisibility(View.VISIBLE);
+      });
+
+      findViewById(R.id.group_clear).setOnClickListener(v -> model.setGroup(""));
+      findViewById(R.id.theme_clear).setOnClickListener(v -> model.setTheme(""));
+      findViewById(R.id.text_clear).setOnClickListener(v -> model.setText(""));
       findViewById(R.id.discard).setOnClickListener(v -> exitActivity());
       findViewById(R.id.save).setOnClickListener(v -> saveNote());
       findViewById(R.id.set_date).setOnClickListener(v -> showDateDialog());
