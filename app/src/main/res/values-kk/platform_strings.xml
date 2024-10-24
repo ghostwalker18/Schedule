@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="for_group">For group:</string>
+    <string name="for_group">Топ үшін:</string>
     <string name="last_chosen">Соңғы таңдалған</string>
     <string name="not_mentioned">Көрсетілмеген</string>
     <string name="updated">Updated:</string>
@@ -25,4 +25,9 @@
     <string name="appearance">Сыртқы түрі</string>
     <string name="day">Күн</string>
     <string name="dynamic_colors">Динамикалық түстерді қолданыңыз</string>
+    <string name="permission_for_photo">Суретке түсіру үшін рұқсат қажет</string>
+    <string name="share_app">Қолданбаны бөлісу</string>
+    <string name="scan_qr_code">QR кодын сканерлеңіз</string>
+    <string name="or">Немесе</string>
+    <string name="share_link">Сілтемені бөлісіңіз</string>
 </resources>

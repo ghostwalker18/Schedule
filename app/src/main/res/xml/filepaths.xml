@@ -16,4 +16,7 @@
     <files-path
         name="images"
         path="/"/>
+    <external-path
+        name="notes_gallery"
+        path="."/>
 </paths>

@@ -121,6 +121,7 @@ public class ScheduleItemFragment
          showTable();
       });
       setUpMode();
+      view.findViewById(R.id.notes).setOnClickListener(view1 -> openEditNotesActivity());
    }
 
    /**
@@ -132,27 +133,10 @@ public class ScheduleItemFragment
    public String getSchedule(){
       String schedule = getString(R.string.date) + ": ";
       schedule = schedule + DateConverters.toString(date.getValue()) + "\n";
+
       schedule += "\n";
-
       for(Lesson lesson : lessons.getValue()){
-         schedule = schedule + getString(R.string.number) + ": ";
-         schedule = schedule + lesson.lessonNumber + "\n";
-
-         schedule = schedule + getString(R.string.subject) + ": ";
-         schedule = schedule + lesson.subject + "\n";
-
-         if(!lesson.teacher.equals(""))
-         {
-            schedule = schedule + getString(R.string.teacher) + ": ";
-            schedule = schedule + lesson.teacher + "\n";
-         }
-
-         if(!lesson.roomNumber.equals(""))
-         {
-            schedule = schedule + getString(R.string.room) + ": ";
-            schedule = schedule + lesson.roomNumber + "\n";
-         }
-
+         schedule += lesson.toString();
          schedule += "\n";
       }
       schedule += "\n";
@@ -222,6 +206,7 @@ public class ScheduleItemFragment
                  getResources().getDrawable(R.drawable.baseline_keyboard_arrow_up_24),
                  null);
          table.setVisibility(View.VISIBLE);
+         getView().findViewById(R.id.notes).setVisibility(View.VISIBLE);
       }
       else{
          button.setCompoundDrawablesWithIntrinsicBounds(null,
@@ -229,6 +214,7 @@ public class ScheduleItemFragment
                  getResources().getDrawable(R.drawable.baseline_keyboard_arrow_down_24),
                  null);
          table.setVisibility(View.GONE);
+         getView().findViewById(R.id.notes).setVisibility(View.GONE);
       }
    }
 
@@ -303,6 +289,15 @@ public class ScheduleItemFragment
       ((TextView)tr.findViewById(R.id.room)).setText(lesson.roomNumber);
       table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
       return tr;
+   }
+
+   private void openEditNotesActivity() {
+      Bundle bundle = new Bundle();
+      Intent intent = new Intent(this.getActivity(), NotesActivity.class);
+      bundle.putString("group", state.getGroup().getValue());
+      bundle.putString("date", DateConverters.toString(date.getValue()));
+      intent.putExtras(bundle);
+      startActivity(intent);
    }
 
    @Override

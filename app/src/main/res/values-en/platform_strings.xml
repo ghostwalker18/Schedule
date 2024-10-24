@@ -25,4 +25,9 @@
     <string name="appearance">Appearance</string>
     <string name="day">Day</string>
     <string name="dynamic_colors">Use dynamic colors</string>
+    <string name="permission_for_photo">Permission is required to take a photo</string>
+    <string name="share_app">Share app</string>
+    <string name="scan_qr_code">Scan QR code</string>
+    <string name="or">Or</string>
+    <string name="share_link">Share link</string>
 </resources>

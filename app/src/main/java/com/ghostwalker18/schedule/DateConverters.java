@@ -28,6 +28,9 @@ import androidx.room.TypeConverter;
  * @author  Ипатов Никита
  */
 public class DateConverters {
+
+   public static final SimpleDateFormat dateFormatPhoto = new SimpleDateFormat("dd_MM_yyyy",
+           new Locale("ru"));
    private static final SimpleDateFormat dateFormatDB = new SimpleDateFormat("dd.MM.yyyy",
            new Locale("ru"));
    private static final SimpleDateFormat dateFormatFirstCorpus = new SimpleDateFormat("d MMMM yyyy",

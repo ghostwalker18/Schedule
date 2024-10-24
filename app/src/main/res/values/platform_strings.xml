@@ -25,4 +25,12 @@
     <string name="rounded_corners">Скругленные углы</string>
     <string name="add_widget">Добавить виджет</string>
     <string name="app_widget_description">Расписание ПТГХ на день для группы</string>
+    <string name="permission_for_photo">Требуется разрешение, чтобы сделать фото</string>
+    <string name="share_app">Поделиться приложением</string>
+    <string name="scan_qr_code">Отсканируйте QR код</string>
+    <string name="or">Или</string>
+    <string name="share_link">Поделитесь ссылкой</string>
+    <string name="rustore_link" translatable="false">
+        https://www.rustore.ru/catalog/app/com.ghostwalker18.schedule
+    </string>
 </resources>

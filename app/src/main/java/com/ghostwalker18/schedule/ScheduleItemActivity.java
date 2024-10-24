@@ -71,6 +71,7 @@ public class ScheduleItemActivity
         repository = ScheduleApp.getInstance().getRepository();
         lessons = repository.getLessons(group, teacher, date);
         lessons.observe(this, lessons -> populateTable(table, lessons));
+        findViewById(R.id.notes).setOnClickListener(view -> openNotesActivity());
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -162,35 +163,26 @@ public class ScheduleItemActivity
 
         String schedule = getString(R.string.date) + ": ";
         schedule = schedule + DateConverters.toString(date) + "\n";
+
         schedule += "\n";
-
         for(Lesson lesson : lessons.getValue()){
-            schedule = schedule + getString(R.string.number) + ": ";
-            schedule = schedule + lesson.lessonNumber + "\n";
-
-            schedule = schedule + getString(R.string.subject) + ": ";
-            schedule = schedule + lesson.subject + "\n";
-
-            if(!lesson.teacher.equals(""))
-            {
-                schedule = schedule + getString(R.string.teacher) + ": ";
-                schedule = schedule + lesson.teacher + "\n";
-            }
-
-            if(!lesson.roomNumber.equals(""))
-            {
-                schedule = schedule + getString(R.string.room) + ": ";
-                schedule = schedule + lesson.roomNumber + "\n";
-            }
-
+            schedule += lesson.toString();
             schedule += "\n";
         }
-
         schedule += "\n";
 
         intent.putExtra(Intent.EXTRA_TEXT, schedule);
         Intent shareIntent = Intent.createChooser(intent, null);
         startActivity(shareIntent);
         return true;
+    }
+
+    private void openNotesActivity() {
+        Bundle bundle = new Bundle();
+        Intent intent = new Intent(this, NotesActivity.class);
+        bundle.putString("group", group);
+        bundle.putString("date", DateConverters.toString(date));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

@@ -14,6 +14,7 @@
 
 package com.ghostwalker18.schedule;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -45,6 +46,9 @@ public class SettingsActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        findViewById(R.id.share_app).setOnClickListener(v -> startActivity(
+                new Intent(this, ShareAppActivity.class)));
     }
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override

@@ -21,4 +21,5 @@
     <color name="colorBackground">#303030</color>
     <color name="navigationBarColor">#121212</color>
     <color name="gray_500">#9E9E9E</color>
+    <color name="filterBorder">#FAFAFA</color>
 </resources>

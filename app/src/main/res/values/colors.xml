@@ -21,6 +21,7 @@
     <color name="colorBackground">#FAFAFA</color>
     <color name="navigationBarColor">#DDD</color>
     <color name="gray_500">#9E9E9E</color>
+    <color name="filterBorder">#121212</color>
 
     <color name="colorPrimaryDay">#66a101</color>
     <color name="colorSecondaryDay">#067138</color>

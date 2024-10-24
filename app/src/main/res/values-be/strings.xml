@@ -50,4 +50,17 @@
     <string name="processing_completed_status">Расклад паспяхова абноўлены</string>
     <string name="schedule_download_status">Запампоўванне раскладу</string>
     <string name="schedule">Расклад</string>
+    <string name="notes_activity">Нататкі</string>
+    <string name="edit_notes_activity">Дадаць / рэдагаваць нататку</string>
+    <string name="note_theme">Тэма нататкі</string>
+    <string name="choose_date">Выберыце дату</string>
+    <string name="filters">Фільтры</string>
+    <string name="start_date">Пачатковая дата:</string>
+    <string name="end_date">Канчатковая дата:</string>
+    <string name="text">Тэкст</string>
+    <string name="photo_error">Не атрымалася загрузіць фатаграфію</string>
+    <string name="group">Група</string>
+    <string name="theme">Тэма</string>
+    <string name="delete">Выдаліць</string>
+    <string name="edit">Рэдагаваць</string>
 </resources>

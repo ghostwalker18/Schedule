@@ -31,7 +31,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -49,184 +51,54 @@ import retrofit2.Retrofit;
  * @author  Ипатов Никита
  */
 public class ScheduleRepository{
-   private final AppDatabase db;
-   private final IConverter converter = new XMLStoLessonsConverter();
-   private final SharedPreferences preferences;
-   private final ScheduleNetworkAPI api;
-   private final Context context;
-   private final String baseUri = "https://ptgh.onego.ru/9006/";
-   private final String mainSelector = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
-   private final String mondayTimesPath = "mondayTimes.jpg";
-   private final String otherTimesPath = "otherTimes.jpg";
-   private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
-   private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
-   private final MutableLiveData<Status> status = new MutableLiveData<>();
-   private volatile int updateStageCounter = 0;
-   private static final int UPDATE_STAGES_COUNT = 3;
+    private final AppDatabase db;
+    private final IConverter converter = new XMLStoLessonsConverter();
+    private final SharedPreferences preferences;
+    private final ScheduleNetworkAPI api;
+    private final Context context;
+    private final String baseUri = "https://ptgh.onego.ru/9006/";
+    private final String mainSelector = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
+    private final String mondayTimesPath = "mondayTimes.jpg";
+    private final String otherTimesPath = "otherTimes.jpg";
+    private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
+    private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
+    private final MutableLiveData<Status> status = new MutableLiveData<>();
+    private ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     /**
      * Этот класс используетс для отображения статуса обновления репозитория.
      */
     public static class Status{
-       public String text;
-       public int progress;
+        public String text;
+        public int progress;
 
-       public Status(String text, int progress){
-           this.text = text;
-           this.progress = progress;
-       }
-   }
+        public Status(String text, int progress){
+            this.text = text;
+            this.progress = progress;
+        }
+    }
 
-   public ScheduleRepository(Application app){
-      db = ScheduleApp.getInstance().getDatabase();
-      context = ScheduleApp.getInstance();
-      api = new Retrofit.Builder()
-              .baseUrl(baseUri)
-              .callbackExecutor(Executors.newSingleThreadExecutor())
-              .build()
-              .create(ScheduleNetworkAPI.class);
-      preferences = PreferenceManager.getDefaultSharedPreferences(app);
-   }
+    public ScheduleRepository(Application app){
+       db = ScheduleApp.getInstance().getDatabase();
+       context = ScheduleApp.getInstance();
+       api = new Retrofit.Builder()
+               .baseUrl(baseUri)
+               .callbackExecutor(Executors.newFixedThreadPool(4))
+               .build()
+               .create(ScheduleNetworkAPI.class);
+       preferences = PreferenceManager.getDefaultSharedPreferences(app);
+    }
 
     /**
      * Этот метод обновляет репозиторий приложения.
      * Метод использует многопоточность и может вызывать исключения в других потоках.
      * Требуется интернет соединение.
      */
-   public void update(){
-      if(updateStageCounter != 0)
-          return;
-      //updating times files
-      File mondayTimesFile = new File(context.getFilesDir(), mondayTimesPath);
-
-      File otherTimesFile = new File(context.getFilesDir(), otherTimesPath);
-      if(!preferences.getBoolean("doNotUpdateTimes", true) || !mondayTimesFile.exists() || !otherTimesFile.exists()){
-         Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
-         mondayTimesResponse.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if(response.body() != null){
-                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                    response.body().close();
-                    mondayTimes.postValue(bitmap);
-                    try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
-                            Context.MODE_PRIVATE)){
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    } catch (IOException ignored) {}
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
-         });
-         Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
-         otherTimesResponse.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if(response.body() != null){
-                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                    otherTimes.postValue(bitmap);
-                    response.body().close();
-                    try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
-                            Context.MODE_PRIVATE)) {
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    } catch (IOException ignored) {}
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
-         });
-         checkForUpdateCompleted();
-      }
-      else {
-            new Thread(() -> {
-                  Bitmap bitmap1 = BitmapFactory.decodeFile(mondayTimesFile.getAbsolutePath());
-                  mondayTimes.postValue(bitmap1);
-                  Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
-                  otherTimes.postValue(bitmap2);
-                  checkForUpdateCompleted();
-            }).start();
-      }
-
-      //updating schedule database for second corpus
-      new Thread(() -> {
-            List<String> scheduleLinks = getLinksForSecondCorpusSchedule();
-            if(scheduleLinks.size() == 0)
-                status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-            for(String link : scheduleLinks){
-                status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
-                api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                        if(response.body() != null){
-                            status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
-                            ZipSecureFile.setMinInflateRatio(0.0075);
-                            try(Workbook excelFile = StreamingReader.builder()
-                                    .rowCacheSize(10)
-                                    .bufferSize(4096)
-                                    .open(response.body().byteStream())){
-                                List<Lesson> lessons = converter.convertSecondCorpus(excelFile);
-                                db.lessonDao().insertMany(lessons);
-                                status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
-                            }
-                            catch (Exception e){
-                                status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
-                            }
-                            finally {
-                                checkForUpdateCompleted();
-                            }
-                            response.body().close();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                        status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-                    }
-                });
-            }
-      }).start();
-
-      //updating schedule database for first corpus
-      new Thread(()->{
-          List<String> scheduleLinks = getLinksForFirstCorpusSchedule();
-          if(scheduleLinks.size() == 0)
-              status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-          for(String link : scheduleLinks){
-              status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
-              api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
-                  @Override
-                  public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                      if(response.body() != null){
-                          status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
-                          ZipSecureFile.setMinInflateRatio(0.0075);
-                          try(Workbook excelFile = StreamingReader.builder()
-                                  .rowCacheSize(10)
-                                  .bufferSize(4096)
-                                  .open(response.body().byteStream())){
-                              List<Lesson> lessons = converter.convertFirstCorpus(excelFile);
-                              db.lessonDao().insertMany(lessons);
-                              status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
-                          }
-                          catch (Exception e){
-                              status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
-                          }
-                          finally {
-                              checkForUpdateCompleted();
-                          }
-                          response.body().close();
-                      }
-                  }
-
-                  @Override
-                  public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                      status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-                  }
-              });
-          }
-      }).start();
-   }
+    public void update(){
+       executorService.execute(this::updateFirstCorpus);
+       executorService.execute(this::updateSecondCorpus);
+       executorService.execute(this::updateTimes);
+    }
 
     /**
      * Этот метод используется для получения состояния,
@@ -234,7 +106,7 @@ public class ScheduleRepository{
      *
      * @return статус состояния
      */
-   public LiveData<Status> getStatus(){
+    public LiveData<Status> getStatus(){
        return status;
    }
 
@@ -243,13 +115,28 @@ public class ScheduleRepository{
      *
      * @return список групп
      */
-   public LiveData<String[]> getGroups(){
+    public LiveData<String[]> getGroups(){
       return db.lessonDao().getGroups();
    }
 
-   public LiveData<String[]> getTeachers(){
+    /**
+     * Этот метод позволяет получить имена всех преподавателей, упоминаемых в расписании.
+     *
+     * @return список учителей
+     */
+
+    public LiveData<String[]> getTeachers(){
       return db.lessonDao().getTeachers();
-   }
+    }
+
+    /**
+     * Этот метод позволяет получить список всех предметов в расписании для заданной группы.
+     * @param group группа
+     * @return список предметов
+     */
+    public LiveData<String[]> getSubjects(String group) {
+        return db.lessonDao().getSubjectsForGroup(group);
+    }
 
     /**
      * Этот метод возращает список занятий в этот день у группы у данного преподавателя.
@@ -261,15 +148,15 @@ public class ScheduleRepository{
      * @param group группа
      * @return список занятий
      */
-   public LiveData<Lesson[]> getLessons(String group, String teacher, Calendar date) {
-      if (teacher != null && group != null)
-         return db.lessonDao().getLessonsForGroupWithTeacher(date, group, teacher);
-      else if (teacher != null)
-         return db.lessonDao().getLessonsForTeacher(date, teacher);
-      else if (group != null)
-         return db.lessonDao().getLessonsForGroup(date, group);
-      else return new MutableLiveData<>(new Lesson[]{});
-   }
+    public LiveData<Lesson[]> getLessons(String group, String teacher, Calendar date) {
+       if (teacher != null && group != null)
+          return db.lessonDao().getLessonsForGroupWithTeacher(date, group, teacher);
+       else if (teacher != null)
+          return db.lessonDao().getLessonsForTeacher(date, teacher);
+       else if (group != null)
+          return db.lessonDao().getLessonsForGroup(date, group);
+       else return new MutableLiveData<>(new Lesson[]{});
+    }
 
     /**
      * Этот метод используется для получения буфферизированого файла изображения
@@ -277,7 +164,7 @@ public class ScheduleRepository{
      *
      * @return фото расписания звонков на понедельник
      */
-   public LiveData<Bitmap> getMondayTimes(){
+    public LiveData<Bitmap> getMondayTimes(){
          return mondayTimes;
    }
 
@@ -287,8 +174,68 @@ public class ScheduleRepository{
      *
      * @return фото расписания звонков со вторника по пятницу
      */
-   public LiveData<Bitmap> getOtherTimes(){
+    public LiveData<Bitmap> getOtherTimes(){
          return otherTimes;
+   }
+
+    /**
+     * Этот метод позволяет сохранить заметку.
+     */
+    public void saveNote(Note note){
+       db.noteDao().insert(note);
+   }
+
+    /**
+     * Этот метод позволяет обновить заметку.
+     *
+     * @param note заметка
+     */
+    public void updateNote(Note note){
+       db.noteDao().update(note);
+   }
+
+    /**
+     * Этот метод позволяет получить заметку по ее ID.
+     *
+     * @param id первичный ключ
+     * @return заметка
+     */
+    public LiveData<Note> getNote(Integer id) {
+       return db.noteDao().getNote(id);
+    }
+
+    /**
+     * Этот метод позволяет получить заметки для заданных группы и временного промежутка.
+     *
+     * @param group
+     * @param dates
+     * @return
+     */
+    public LiveData<Note[]> getNotes(String group, Calendar[] dates){
+        if(dates.length == 1)
+            return db.noteDao().getNotes(dates[0], group);
+        return db.noteDao().getNotesForDays(dates, group);
+    }
+
+    /**
+     * Этот метод позволяет получить заметки для заданного ключевого слова и группы.
+     *
+     * @param group группа
+     * @param keyword ключевое слово
+     * @return список заметок
+     */
+    public LiveData<Note[]> getNotes(String group, String keyword){
+        return db.noteDao().getNotesByKeyword(keyword, group);
+    }
+
+    /**
+     * Этот метод позволяет удалить выбранные заметки из БД.
+     *
+     * @param notes заметки для удаления
+     */
+   public void deleteNotes(@NonNull Collection<Note> notes){
+       for(Note note : notes)
+           db.noteDao().delete(note);
    }
 
     /**
@@ -343,6 +290,7 @@ public class ScheduleRepository{
 
     /**
      * Этот метод предназначен для сохранения последней выбранной группы перед закрытием приложения.
+     *
      * @param group группа для сохранения
      */
     public void saveGroup(String group) {
@@ -353,6 +301,7 @@ public class ScheduleRepository{
 
     /**
      * Этот метод возвращает сохраненную группу.
+     *
      * @return группа
      */
     public String getSavedGroup(){
@@ -361,6 +310,7 @@ public class ScheduleRepository{
 
     /**
      * Этот метод позволяет получить имя скачиваемого файла из ссылки на него.
+     *
      * @param link ссылка на файл
      * @return имя файла
      */
@@ -369,11 +319,132 @@ public class ScheduleRepository{
         return parts[parts.length - 1];
     }
 
-    private void checkForUpdateCompleted(){
-        synchronized((Object)updateStageCounter){
-            updateStageCounter++;
-            if(updateStageCounter == UPDATE_STAGES_COUNT)
-                updateStageCounter = 0;
+    /**
+     * Этот метод используется для обновления изображений расписания звонков
+     */
+    private void updateTimes(){
+        File mondayTimesFile = new File(context.getFilesDir(), mondayTimesPath);
+        File otherTimesFile = new File(context.getFilesDir(), otherTimesPath);
+        if(!preferences.getBoolean("doNotUpdateTimes", true) ||
+                !mondayTimesFile.exists() || !otherTimesFile.exists()){
+            Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
+            mondayTimesResponse.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if(response.body() != null){
+                        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                        response.body().close();
+                        mondayTimes.postValue(bitmap);
+                        try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
+                                Context.MODE_PRIVATE)){
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                        } catch (IOException ignored) {}
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
+            });
+            Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
+            otherTimesResponse.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if(response.body() != null){
+                        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                        otherTimes.postValue(bitmap);
+                        response.body().close();
+                        try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
+                                Context.MODE_PRIVATE)) {
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                        } catch (IOException ignored) {}
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
+            });
+        }
+        else {
+            Bitmap bitmap1 = BitmapFactory.decodeFile(mondayTimesFile.getAbsolutePath());
+            mondayTimes.postValue(bitmap1);
+            Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
+            otherTimes.postValue(bitmap2);
+        }
+    }
+
+    /**
+     * Этот метод используется для обновления БД приложения занятиями для первого корпуса
+     */
+    private void updateFirstCorpus(){
+        List<String> scheduleLinks = getLinksForFirstCorpusSchedule();
+        if(scheduleLinks.size() == 0)
+            status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+        for(String link : scheduleLinks){
+            status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
+            api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if(response.body() != null){
+                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                        ZipSecureFile.setMinInflateRatio(0.0075);
+                        try(Workbook excelFile = StreamingReader.builder()
+                                .rowCacheSize(10)
+                                .bufferSize(4096)
+                                .open(response.body().byteStream())){
+                            List<Lesson> lessons = converter.convertFirstCorpus(excelFile);
+                            db.lessonDao().insertMany(lessons);
+                            status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
+                        }
+                        catch (Exception e){
+                            status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
+                        }
+                        response.body().close();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                    status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+                }
+            });
+        }
+    }
+
+    /**
+     * Этот метод используется для обновления БД приложения занятиями для второго корпуса
+     */
+    private void updateSecondCorpus(){
+        List<String> scheduleLinks = getLinksForSecondCorpusSchedule();
+        if(scheduleLinks.size() == 0)
+            status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+        for(String link : scheduleLinks){
+            status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
+            api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if(response.body() != null){
+                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                        ZipSecureFile.setMinInflateRatio(0.0075);
+                        try(Workbook excelFile = StreamingReader.builder()
+                                .rowCacheSize(10)
+                                .bufferSize(4096)
+                                .open(response.body().byteStream())){
+                            List<Lesson> lessons = converter.convertSecondCorpus(excelFile);
+                            db.lessonDao().insertMany(lessons);
+                            status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
+                        }
+                        catch (Exception e){
+                            status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
+                        }
+                        response.body().close();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                    status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+                }
+            });
         }
     }
 }

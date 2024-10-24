@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="for_group">Для группы:</string>
+    <string name="for_group">Для групы:</string>
     <string name="last_chosen">Апошняя абраная</string>
     <string name="not_mentioned">Не пазначана</string>
     <string name="updated">Обновлено:</string>
@@ -25,4 +25,9 @@
     <string name="appearance">Пастава</string>
     <string name="day">Дзень</string>
     <string name="dynamic_colors">Выкарыстоўваць дынамічныя колеру</string>
+    <string name="permission_for_photo">Патрабуецца дазвол, каб зрабіць фота</string>
+    <string name="share_app">Падзяліцца дадаткам</string>
+    <string name="scan_qr_code">Адскануйце QR код</string>
+    <string name="or">Або</string>
+    <string name="share_link">Падзяліцеся спасылкай</string>
 </resources>

@@ -50,4 +50,17 @@
     <string name="processing_completed_status">Schedule successfully updated</string>
     <string name="schedule_download_status">Schedule download</string>
     <string name="schedule">Schedule</string>
+    <string name="notes_activity">Notes</string>
+    <string name="edit_notes_activity">Add / edit note</string>
+    <string name="note_theme">Note\'s theme</string>
+    <string name="choose_date">Select a date</string>
+    <string name="filters">Filters</string>
+    <string name="start_date">Start date:</string>
+    <string name="end_date">End date:</string>
+    <string name="text">Text</string>
+    <string name="photo_error">Failed to upload photo</string>
+    <string name="group">Group</string>
+    <string name="theme">Theme</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>
