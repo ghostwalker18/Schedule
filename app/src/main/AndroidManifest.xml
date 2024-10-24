@@ -67,6 +67,17 @@
         </activity>
 
         <activity
+            android:name=".ShareAppActivity"
+            android:exported="false"
+            android:label="@string/share_app"
+            android:parentActivityName=".SettingsActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SettingsActivity" />
+        </activity>
+
+        <activity
             android:name=".WidgetSettingsActivity"
             android:exported="true">
 

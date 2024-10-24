@@ -14,9 +14,9 @@
   -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -27,29 +27,32 @@
         android:layout_gravity="center"
         android:theme="?attr/actionBarTheme"/>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/schedule_text_size"
+        android:text="@string/scan_qr_code"
+        android:paddingVertical="10dp"/>
 
-        <FrameLayout
-            android:id="@+id/settings"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="5dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/rustore_qr"/>
 
-        <Button
-            android:id="@+id/share_app"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="@string/share_app"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:textAlignment="center"
+        android:textSize="@dimen/schedule_text_size"
+        android:text="@string/or"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:textAlignment="center"
-            android:text="2024©"/>
-    </LinearLayout>
+    <Button
+        android:id="@+id/share_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_link"/>
 </LinearLayout>
