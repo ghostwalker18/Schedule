@@ -115,6 +115,7 @@
                 android:id="@+id/photo_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="5dp"
                 android:adjustViewBounds="true"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

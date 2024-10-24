@@ -57,7 +57,7 @@
     <string name="filters">Фильтры</string>
     <string name="start_date">Начальная дата:</string>
     <string name="end_date">Конечная дата:</string>
-    <string name="text">Текст*</string>
+    <string name="text">Текст</string>
     <string name="photo_error">Не удалось загрузить фотографию</string>
     <string name="group">Группа</string>
     <string name="theme">Тема</string>

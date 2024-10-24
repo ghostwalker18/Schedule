@@ -103,13 +103,11 @@ public class NoteAdapter
       holder.itemView.setOnClickListener(v -> {
          holder.isSelected = !holder.isSelected;
          if(holder.isSelected){
-            holder.itemView.setBackground(
-                    context.getResources().getDrawable(R.drawable.note_custom_border_selected));
+            holder.checked.setVisibility(View.VISIBLE);
             listener.onNoteSelected(note, position);
          }
          else{
-            holder.itemView.setBackground(
-                    context.getResources().getDrawable(R.drawable.note_custom_border));
+            holder.checked.setVisibility(View.GONE);
             listener.onNoteUnselected(note, position);
          }
       });
@@ -130,7 +128,7 @@ public class NoteAdapter
            extends RecyclerView.ViewHolder {
       public boolean isSelected = false;
       private final TextView theme, text, date, error;
-      private final ImageView photo;
+      private final ImageView photo, checked;
 
       public ViewHolder(@NonNull View itemView) {
          super(itemView);
@@ -139,6 +137,7 @@ public class NoteAdapter
          text = itemView.findViewById(R.id.text);
          error = itemView.findViewById(R.id.error);
          photo = itemView.findViewById(R.id.image);
+         checked = itemView.findViewById(R.id.checked);
       }
    }
 }

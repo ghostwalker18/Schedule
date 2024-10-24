@@ -172,8 +172,13 @@ public class EditNoteActivity
     * Этот метод позволяет закрыть активность и освободить ресурсы.
     */
    private void exitActivity(){
-      File photoFile = new File(model.getPhotoID().getValue().getEncodedPath());
-      photoFile.delete();
+      Uri photoUri = model.getPhotoID().getValue();
+      if(photoUri != null){
+         if(photoUri.getEncodedPath() != null){
+            File photoFile = new File(photoUri.getEncodedPath());
+            photoFile.delete();
+         }
+      }
       finish();
    }
 

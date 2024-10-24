@@ -19,7 +19,7 @@
     <item
         android:id="@+id/action_edit"
         android:title="@string/edit"
-        android:icon="@drawable/baseline_edit_48"
+        android:icon="@drawable/baseline_edit_document_36"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"/>
 

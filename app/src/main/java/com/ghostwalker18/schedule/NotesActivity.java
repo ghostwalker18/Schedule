@@ -86,7 +86,7 @@ public class NotesActivity
          return deleteNotes();
       }
       if(item.getItemId() == R.id.action_edit){
-         return editNote();
+         return openEditNote();
       }
       return super.onOptionsItemSelected(item);
    }
@@ -123,7 +123,7 @@ public class NotesActivity
       filter = new NotesFilterFragment();
       findViewById(R.id.filter).setOnClickListener(v->openFilterFragment());
 
-      findViewById(R.id.edit_note).setOnClickListener(v->openEditNoteActivity());
+      findViewById(R.id.edit_note).setOnClickListener(v-> openAddNote());
 
       EditText search = findViewById(R.id.search);
       search.addTextChangedListener(new TextWatcher() {
@@ -146,10 +146,9 @@ public class NotesActivity
    /**
     * Этот метод открывает активность для редактирования или добавления заметки.
     */
-   private void openEditNoteActivity(){
+   private void openAddNote(){
       Intent intent = new Intent(this, EditNoteActivity.class);
       Bundle bundle = new Bundle();
-      bundle.putString("mode", "add");
       bundle.putString("group", group);
       if(startDate != null){
          bundle.putString("date", DateConverters.toString(startDate));
@@ -205,7 +204,7 @@ public class NotesActivity
     * открыть экран приложения для ее редактирования.
     * @return
     */
-   private boolean editNote(){
+   private boolean openEditNote(){
       Intent intent = new Intent(this, EditNoteActivity.class);
       intent.putExtra("noteID", selectedNotes.entrySet().iterator().next().getValue().id);
       startActivity(intent);
