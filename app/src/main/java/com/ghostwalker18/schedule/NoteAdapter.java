@@ -91,15 +91,15 @@ public class NoteAdapter
       holder.theme.setText(note.theme);
       holder.text.setText(note.text);
       canAccessPhoto = checkPhotoAccess();
-      if(note.photoID != null && canAccessPhoto){
-         ContentResolver contentResolver = context.getContentResolver();
+      if( canAccessPhoto){
          try {
-            holder.photo.setImageBitmap(BitmapFactory.decodeStream(
-                    contentResolver.openInputStream(Uri.parse(note.photoID))));
+            holder.photo.setImageURI(Uri.parse(note.photoID));
          } catch (Exception e) {
             holder.error.setText(context.getString(R.string.photo_error));
          }
       }
+      if(note.photoID != null && !canAccessPhoto)
+         holder.error.setText(R.string.gallery_access_denied);
       holder.itemView.setOnClickListener(v -> {
          holder.isSelected = !holder.isSelected;
          if(holder.isSelected){

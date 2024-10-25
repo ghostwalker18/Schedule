@@ -63,4 +63,7 @@
     <string name="theme">Theme</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="edit_note">Edit note</string>
+    <string name="add_note">New note</string>
+    <string name="gallery_access_denied">There is no permission to access the photo</string>
 </resources>

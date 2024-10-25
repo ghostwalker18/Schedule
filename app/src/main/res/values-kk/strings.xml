@@ -63,4 +63,7 @@
     <string name="theme">Тақырып</string>
     <string name="delete">Жою</string>
     <string name="edit">Өңдеу</string>
+    <string name="edit_note">Жазбаны өңдеңіз</string>
+    <string name="add_note">Жаңа ескерту</string>
+    <string name="gallery_access_denied">Фотосуретке кіруге рұқсат жоқ</string>
 </resources>

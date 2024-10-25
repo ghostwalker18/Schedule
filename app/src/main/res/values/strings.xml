@@ -59,8 +59,11 @@
     <string name="end_date">Конечная дата:</string>
     <string name="text">Текст</string>
     <string name="photo_error">Не удалось загрузить фотографию</string>
+    <string name="gallery_access_denied">Нет разрешения на доступ к фото</string>
     <string name="group">Группа</string>
     <string name="theme">Тема</string>
     <string name="delete">Удалить</string>
     <string name="edit">Редактировать</string>
+    <string name="edit_note">Редактировать заметку</string>
+    <string name="add_note">Новая заметка</string>
 </resources>

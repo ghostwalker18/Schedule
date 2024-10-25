@@ -63,4 +63,7 @@
     <string name="theme">Тема</string>
     <string name="delete">Видалити</string>
     <string name="edit">Редагувати</string>
+    <string name="edit_note">Редагувати замітку</string>
+    <string name="add_note">Нова замітка</string>
+    <string name="gallery_access_denied">Немає дозволу на доступ до фото</string>
 </resources>

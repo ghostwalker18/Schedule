@@ -181,6 +181,8 @@ public class EditNoteModel
                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
             } catch (Exception ignored){};
          }
+         else
+            noteToSave.photoID = null;
          if(isEdited)
             repository.updateNote(noteToSave);
          else

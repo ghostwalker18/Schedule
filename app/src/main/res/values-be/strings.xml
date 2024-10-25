@@ -63,4 +63,7 @@
     <string name="theme">Тэма</string>
     <string name="delete">Выдаліць</string>
     <string name="edit">Рэдагаваць</string>
+    <string name="edit_note">Рэдагаваць нататку</string>
+    <string name="add_note">Новая нататка</string>
+    <string name="gallery_access_denied">Няма дазволу на доступ да фота</string>
 </resources>

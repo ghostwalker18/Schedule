@@ -54,6 +54,7 @@ import androidx.lifecycle.ViewModelProvider;
 public class EditNoteActivity
         extends AppCompatActivity {
    private Uri photoUri;
+   private boolean isSaved = false;
    private TextView dateTextView;
    private EditNoteModel model;
    private AutoCompleteTextView groupField;
@@ -107,8 +108,13 @@ public class EditNoteActivity
 
       Bundle bundle = getIntent().getExtras();
       if(bundle != null){
-         if(bundle.getInt("noteID") != 0)
+         if(bundle.getInt("noteID") != 0){
             model.setNoteID(bundle.getInt("noteID"));
+            actionBar.setTitle(R.string.edit_note);
+         } else {
+            actionBar.setTitle(R.string.add_note);
+         }
+
          if(bundle.getString("group") != null)
             model.setGroup(bundle.getString("group"));
          if(bundle.getString("date") != null)
@@ -161,6 +167,18 @@ public class EditNoteActivity
       findViewById(R.id.choose_photo).setOnClickListener(v -> galleryPickLauncher.launch("image/*"));
    }
 
+   @Override
+   protected void onDestroy() {
+      super.onDestroy();
+      Uri photoUri = model.getPhotoID().getValue();
+      if(photoUri != null && !isSaved){
+         if(photoUri.getEncodedPath() != null){
+            File photoFile = new File(photoUri.getEncodedPath());
+            photoFile.delete();
+         }
+      };
+   }
+
    /**
     * Этот метод сохраняет заметку в репозитории и закрывает активность.
     */
@@ -168,6 +186,7 @@ public class EditNoteActivity
       model.setTheme(themeField.getText().toString());
       model.setText(textField.getText().toString());
       model.saveNote();
+      isSaved = true;
       finish();
    }
 
@@ -193,7 +212,7 @@ public class EditNoteActivity
             File photoFile = new File(photoUri.getEncodedPath());
             photoFile.delete();
          }
-      }
+      };
       finish();
    }
 
