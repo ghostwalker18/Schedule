@@ -49,7 +49,7 @@ public class NotesActivity
    private NotesFilterFragment filter;
    private Map<Integer, Note> selectedNotes = new HashMap<>();
    private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
-   private final NoteAdapter.onNoteClickListener listener = new NoteAdapter.onNoteClickListener() {
+   private final NoteAdapter.OnNoteClickListener listener = new NoteAdapter.OnNoteClickListener() {
       @Override
       public void onNoteSelected(Note note, int position) {
          selectedNotes.put(position, note);

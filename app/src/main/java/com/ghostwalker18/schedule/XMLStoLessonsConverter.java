@@ -33,7 +33,7 @@ import java.util.TreeMap;
  */
 public class XMLStoLessonsConverter
         implements IConverter {
-   private static  int FIRST_ROW_GAP_1;
+   private int firstRowGap1;
    private static final int GROUPS_ROW_1 = 3;
    private static final int SCHEDULE_HEIGHT_1 = 24;
    private static final int SCHEDULE_CELL_HEIGHT_1 = 4;
@@ -80,43 +80,40 @@ public class XMLStoLessonsConverter
          //searching for first row gap where schedule starts
          for(int j = GROUPS_ROW_1 + 2; j < sheet.getLastRowNum(); j++){
             if(!cache.getRow(j).getZeroHeight()){
-               FIRST_ROW_GAP_1 = j;
+               firstRowGap1 = j;
                break;
             }
          }
 
          //start filling schedule from top to bottom and from left to right
-         scheduleFilling : {
-            NavigableSet<Integer> groupBounds = groups.navigableKeySet();
-            for(int j = sheet.getFirstRowNum() + FIRST_ROW_GAP_1;
-                j < FIRST_ROW_GAP_1 + SCHEDULE_HEIGHT_1;
-                j += SCHEDULE_CELL_HEIGHT_1){
-               for(int k : groupBounds){
-                  Lesson lesson = new Lesson();
-                  lesson.setDate(date);
-                  lesson.setGroup(Objects.requireNonNull(groups.get(k)));
-                  lesson.setLessonNumber(getCellContentsAsString(cache, j, 1).trim());
-                  lesson.setTimes(prepareTimes(
-                          getCellContentsAsString(cache, j + 1, 1).trim()));
-                  String lessonSubject = getCellContentsAsString(cache, j, k) + " " +
-                          getCellContentsAsString(cache, j + 1, k);
-                  lesson.setSubject(prepareSubject(lessonSubject.trim()));
-                  lesson.setTeacher(prepareTeacher(getCellContentsAsString(cache, j + 2, k).trim()));
-                  Integer nextGroupBound = groupBounds.higher(k);
-                  String roomNumber;
-                  if(nextGroupBound != null){
-                     roomNumber = getCellContentsAsString(cache, j, nextGroupBound - 1).trim() + " "
-                             + getCellContentsAsString(cache, j + 1, nextGroupBound - 1).trim() + " "
-                             + getCellContentsAsString(cache, j + 2, nextGroupBound - 1).trim();
-                  }
-                  else{
-                     roomNumber = getCellContentsAsString(cache, j, k + 3).trim() + " "
-                             + getCellContentsAsString(cache, j + 1, k + 3).trim() + " "
-                             + getCellContentsAsString(cache, j + 2, k + 3).trim();
-                  }
-                  lesson.setRoomNumber(prepareRoomNumber(roomNumber));
-                  lessons.add(lesson);
+         NavigableSet<Integer> groupBounds = groups.navigableKeySet();
+         for (int j = sheet.getFirstRowNum() + firstRowGap1;
+              j < firstRowGap1 + SCHEDULE_HEIGHT_1;
+              j += SCHEDULE_CELL_HEIGHT_1) {
+            for (int k : groupBounds) {
+               Lesson lesson = new Lesson();
+               lesson.setDate(date);
+               lesson.setGroup(Objects.requireNonNull(groups.get(k)));
+               lesson.setLessonNumber(getCellContentsAsString(cache, j, 1).trim());
+               lesson.setTimes(prepareTimes(
+                       getCellContentsAsString(cache, j + 1, 1).trim()));
+               String lessonSubject = getCellContentsAsString(cache, j, k) + " " +
+                       getCellContentsAsString(cache, j + 1, k);
+               lesson.setSubject(prepareSubject(lessonSubject.trim()));
+               lesson.setTeacher(prepareTeacher(getCellContentsAsString(cache, j + 2, k).trim()));
+               Integer nextGroupBound = groupBounds.higher(k);
+               String roomNumber;
+               if (nextGroupBound != null) {
+                  roomNumber = getCellContentsAsString(cache, j, nextGroupBound - 1).trim() + " "
+                          + getCellContentsAsString(cache, j + 1, nextGroupBound - 1).trim() + " "
+                          + getCellContentsAsString(cache, j + 2, nextGroupBound - 1).trim();
+               } else {
+                  roomNumber = getCellContentsAsString(cache, j, k + 3).trim() + " "
+                          + getCellContentsAsString(cache, j + 1, k + 3).trim() + " "
+                          + getCellContentsAsString(cache, j + 2, k + 3).trim();
                }
+               lesson.setRoomNumber(prepareRoomNumber(roomNumber));
+               lessons.add(lesson);
             }
          }
       }

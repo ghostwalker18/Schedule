@@ -119,7 +119,7 @@ public class EditNoteActivity
             model.setGroup(bundle.getString("group"));
          if(bundle.getString("date") != null)
             model.setDate(DateConverters.fromString(bundle.getString("date")));
-      };
+      }
 
       dateTextView = findViewById(R.id.date);
       model.getDate().observe(this, date -> dateTextView.setText(DateConverters.toString(date)));
@@ -171,12 +171,10 @@ public class EditNoteActivity
    protected void onDestroy() {
       super.onDestroy();
       Uri photoUri = model.getPhotoID().getValue();
-      if(photoUri != null && !isSaved){
-         if(photoUri.getEncodedPath() != null){
-            File photoFile = new File(photoUri.getEncodedPath());
-            photoFile.delete();
-         }
-      };
+      if(photoUri != null && photoUri.getEncodedPath() != null && !isSaved){
+         File photoFile = new File(photoUri.getEncodedPath());
+         photoFile.delete();
+      }
    }
 
    /**
@@ -196,7 +194,7 @@ public class EditNoteActivity
     */
    private String makeNotePhotoName(){
       String res = "";
-      res = res + DateConverters.dateFormatPhoto.format(model.getDate().getValue().getTime()) + "_";
+      res = res + DateConverters.DATE_FORMAT_PHOTO.format(model.getDate().getValue().getTime()) + "_";
       res += new Random().nextInt(10000);
       res += ".jpg";
       return res;
@@ -206,13 +204,11 @@ public class EditNoteActivity
     * Этот метод позволяет закрыть активность и освободить ресурсы.
     */
    private void exitActivity(){
-      Uri photoUri = model.getPhotoID().getValue();
-      if(photoUri != null){
-         if(photoUri.getEncodedPath() != null){
-            File photoFile = new File(photoUri.getEncodedPath());
-            photoFile.delete();
-         }
-      };
+      photoUri = model.getPhotoID().getValue();
+      if(photoUri != null && photoUri.getEncodedPath() != null){
+         File photoFile = new File(photoUri.getEncodedPath());
+         photoFile.delete();
+      }
       finish();
    }
 

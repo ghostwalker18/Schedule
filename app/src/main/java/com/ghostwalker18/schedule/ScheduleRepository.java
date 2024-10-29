@@ -56,10 +56,10 @@ public class ScheduleRepository{
     private final SharedPreferences preferences;
     private final ScheduleNetworkAPI api;
     private final Context context;
-    private final String baseUri = "https://ptgh.onego.ru/9006/";
-    private final String mainSelector = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
-    private final String mondayTimesPath = "mondayTimes.jpg";
-    private final String otherTimesPath = "otherTimes.jpg";
+    private static final String BASE_URI = "https://ptgh.onego.ru/9006/";
+    private static final String MAIN_SELECTOR = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
+    private static final String MONDAY_TIMES_PATH = "mondayTimes.jpg";
+    private static final String OTHER_TIMES_PATH = "otherTimes.jpg";
     private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
     private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
     private final MutableLiveData<Status> status = new MutableLiveData<>();
@@ -82,7 +82,7 @@ public class ScheduleRepository{
        db = ScheduleApp.getInstance().getDatabase();
        context = ScheduleApp.getInstance();
        api = new Retrofit.Builder()
-               .baseUrl(baseUri)
+               .baseUrl(BASE_URI)
                .callbackExecutor(Executors.newFixedThreadPool(4))
                .build()
                .create(ScheduleNetworkAPI.class);
@@ -247,8 +247,8 @@ public class ScheduleRepository{
    public List<String> getLinksForFirstCorpusSchedule(){
         List<String> links = new ArrayList<>();
         try{
-            Document doc = Jsoup.connect(baseUri).get();
-            Elements linkElements = doc.select(mainSelector).get(0)
+            Document doc = Jsoup.connect(BASE_URI).get();
+            Elements linkElements = doc.select(MAIN_SELECTOR).get(0)
                     .select("tr").get(1)
                     .select("td").get(0)
                     .select("a");
@@ -272,8 +272,8 @@ public class ScheduleRepository{
     public  List<String> getLinksForSecondCorpusSchedule(){
         List<String> links = new ArrayList<>();
         try{
-            Document doc = Jsoup.connect(baseUri).get();
-            Elements linkElements = doc.select(mainSelector).get(0)
+            Document doc = Jsoup.connect(BASE_URI).get();
+            Elements linkElements = doc.select(MAIN_SELECTOR).get(0)
                     .select("tr").get(1)
                     .select("td").get(1)
                     .select("a");
@@ -323,8 +323,8 @@ public class ScheduleRepository{
      * Этот метод используется для обновления изображений расписания звонков
      */
     private void updateTimes(){
-        File mondayTimesFile = new File(context.getFilesDir(), mondayTimesPath);
-        File otherTimesFile = new File(context.getFilesDir(), otherTimesPath);
+        File mondayTimesFile = new File(context.getFilesDir(), MONDAY_TIMES_PATH);
+        File otherTimesFile = new File(context.getFilesDir(), OTHER_TIMES_PATH);
         if(!preferences.getBoolean("doNotUpdateTimes", true) ||
                 !mondayTimesFile.exists() || !otherTimesFile.exists()){
             Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
@@ -335,7 +335,7 @@ public class ScheduleRepository{
                         Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                         response.body().close();
                         mondayTimes.postValue(bitmap);
-                        try (FileOutputStream outputStream = context.openFileOutput(mondayTimesPath,
+                        try (FileOutputStream outputStream = context.openFileOutput(MONDAY_TIMES_PATH,
                                 Context.MODE_PRIVATE)){
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                         } catch (IOException ignored) {}
@@ -353,7 +353,7 @@ public class ScheduleRepository{
                         Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                         otherTimes.postValue(bitmap);
                         response.body().close();
-                        try (FileOutputStream outputStream = context.openFileOutput(otherTimesPath,
+                        try (FileOutputStream outputStream = context.openFileOutput(OTHER_TIMES_PATH,
                                 Context.MODE_PRIVATE)) {
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                         } catch (IOException ignored) {}
@@ -377,7 +377,7 @@ public class ScheduleRepository{
      */
     private void updateFirstCorpus(){
         List<String> scheduleLinks = getLinksForFirstCorpusSchedule();
-        if(scheduleLinks.size() == 0)
+        if(scheduleLinks.isEmpty())
             status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
         for(String link : scheduleLinks){
             status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
@@ -415,7 +415,7 @@ public class ScheduleRepository{
      */
     private void updateSecondCorpus(){
         List<String> scheduleLinks = getLinksForSecondCorpusSchedule();
-        if(scheduleLinks.size() == 0)
+        if(scheduleLinks.isEmpty())
             status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
         for(String link : scheduleLinks){
             status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));

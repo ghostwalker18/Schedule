@@ -186,7 +186,7 @@ public class MainActivity
      * их в папку загрузок.
      */
     private boolean downloadTimesFiles(){
-        String[] links = new String[]{ScheduleApp.mondayTimesURL, ScheduleApp.otherTimesURL};
+        String[] links = new String[]{ScheduleApp.MONDAY_TIMES_URL, ScheduleApp.OTHER_TIMES_URL};
         new Thread(() -> {
             DownloadManager downloadManager = getApplication().getSystemService(DownloadManager.class);
             for(String link : links){

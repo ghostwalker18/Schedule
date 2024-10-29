@@ -47,8 +47,8 @@ public abstract class AppDatabase
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
-                db.execSQL(updateDayTrigger1);
-                db.execSQL(updateDayTrigger2);
+                db.execSQL(UPDATE_DAY_TRIGGER_1);
+                db.execSQL(UPDATE_DAY_TRIGGER_2);
             }
         };
 
@@ -71,11 +71,11 @@ public abstract class AppDatabase
         @Override
         public void migrate(SupportSQLiteDatabase db){
             db.execSQL("DROP TRIGGER IF EXISTS update_day_stage1");
-            db.execSQL(updateDayTrigger1);
+            db.execSQL(UPDATE_DAY_TRIGGER_1);
         }
     };
 
-    private static final String updateDayTrigger1 =
+    private static final String UPDATE_DAY_TRIGGER_1 =
             "CREATE TRIGGER IF NOT EXISTS update_day_stage1 " +
             "BEFORE INSERT ON tblSchedule " +
             "BEGIN " +
@@ -84,7 +84,7 @@ public abstract class AppDatabase
             "                lessonNumber = NEW.lessonNumber;" +
             "END;";
 
-    private static final String updateDayTrigger2 =
+    private static final String UPDATE_DAY_TRIGGER_2 =
             "CREATE TRIGGER IF NOT EXISTS update_day_stage2 " +
                     "AFTER INSERT ON tblSchedule " +
                     "BEGIN " +

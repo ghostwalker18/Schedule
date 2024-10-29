@@ -14,9 +14,7 @@
 
 package com.ghostwalker18.schedule;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -41,17 +39,17 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  */
 public class NoteAdapter
         extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
-   interface onNoteClickListener{
+   interface OnNoteClickListener {
       void onNoteSelected(Note note, int position);
       void onNoteUnselected(Note note, int position);
    }
 
    private final Note[] notes;
-   private final onNoteClickListener listener;
+   private final OnNoteClickListener listener;
    private Context context;
    private boolean canAccessPhoto = false;
 
-   public NoteAdapter(Note[] notes, onNoteClickListener listener) {
+   public NoteAdapter(Note[] notes, OnNoteClickListener listener) {
       this.notes = notes;
       this.listener = listener;
    }

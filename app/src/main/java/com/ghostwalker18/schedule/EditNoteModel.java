@@ -42,12 +42,12 @@ public class EditNoteModel
    private boolean isEdited = false;
 
    /**
-    * Этот метод позволяет задать ID заметки для редактирования.
-    * @param ID идентификатор
+    * Этот метод позволяет задать id заметки для редактирования.
+    * @param id идентификатор
     */
-   public void setNoteID(Integer ID){
+   public void setNoteID(Integer id){
       isEdited = true;
-      note.addSource(repository.getNote(ID), note::setValue);
+      note.addSource(repository.getNote(id), note::setValue);
       note.observeForever(note1 -> {
          if(note1 != null){
             group.setValue(note1.group);
@@ -179,7 +179,7 @@ public class EditNoteModel
             try {
                ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID.getValue(),
                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            } catch (Exception ignored){};
+            } catch (Exception ignored){}
          }
          else
             noteToSave.photoID = null;

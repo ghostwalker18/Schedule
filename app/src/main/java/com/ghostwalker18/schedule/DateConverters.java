@@ -29,13 +29,13 @@ import androidx.room.TypeConverter;
  */
 public class DateConverters {
 
-   public static final SimpleDateFormat dateFormatPhoto = new SimpleDateFormat("dd_MM_yyyy",
+   public static final SimpleDateFormat DATE_FORMAT_PHOTO = new SimpleDateFormat("dd_MM_yyyy",
            new Locale("ru"));
-   private static final SimpleDateFormat dateFormatDB = new SimpleDateFormat("dd.MM.yyyy",
+   private static final SimpleDateFormat DATE_FORMAT_DB = new SimpleDateFormat("dd.MM.yyyy",
            new Locale("ru"));
-   private static final SimpleDateFormat dateFormatFirstCorpus = new SimpleDateFormat("d MMMM yyyy",
+   private static final SimpleDateFormat DATE_FORMAT_FIRST_CORPUS = new SimpleDateFormat("d MMMM yyyy",
            new Locale("ru"));
-   private static final SimpleDateFormat dateFormatSecondCorpus = new SimpleDateFormat("dd.MM.yyyy",
+   private static final SimpleDateFormat DATE_FORMAT_SECOND_CORPUS = new SimpleDateFormat("dd.MM.yyyy",
            new Locale("ru"));
 
    /**
@@ -45,8 +45,8 @@ public class DateConverters {
     * @return
     */
    @TypeConverter
-   static public String toString(Calendar date){
-      return date == null ? null : dateFormatDB.format(date.getTime());
+   public static String toString(Calendar date){
+      return date == null ? null : DATE_FORMAT_DB.format(date.getTime());
    }
 
    /**
@@ -57,8 +57,8 @@ public class DateConverters {
     * @return
     */
    @TypeConverter
-   static public Calendar fromString(String date){
-      return stringToCal(date, dateFormatDB);
+   public static Calendar fromString(String date){
+      return stringToCal(date, DATE_FORMAT_DB);
    }
 
    /**
@@ -67,7 +67,7 @@ public class DateConverters {
     * @return преобразованная дата в формате Calendar
     */
    public Calendar convertSecondCorpusDate(String date){
-      return stringToCal(date, dateFormatSecondCorpus);
+      return stringToCal(date, DATE_FORMAT_SECOND_CORPUS);
    }
 
    /**
@@ -76,7 +76,7 @@ public class DateConverters {
     * @return преобразованная дата в формате Calendar
     */
    public Calendar convertFirstCorpusDate(String date){
-      return stringToCal(date, dateFormatFirstCorpus);
+      return stringToCal(date, DATE_FORMAT_FIRST_CORPUS);
    }
 
    /**
