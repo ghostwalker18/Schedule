@@ -96,21 +96,21 @@ public class XMLStoLessonsConverter
                lesson.setGroup(Objects.requireNonNull(groups.get(k)));
                lesson.setLessonNumber(getCellContentsAsString(cache, j, 1).trim());
                lesson.setTimes(prepareTimes(
-                       getCellContentsAsString(cache, j + 1, 1).trim()));
+                       getCellContentsAsString(cache, j + 1, 1)));
                String lessonSubject = getCellContentsAsString(cache, j, k) + " " +
                        getCellContentsAsString(cache, j + 1, k);
-               lesson.setSubject(prepareSubject(lessonSubject.trim()));
-               lesson.setTeacher(prepareTeacher(getCellContentsAsString(cache, j + 2, k).trim()));
+               lesson.setSubject(prepareSubject(lessonSubject));
+               lesson.setTeacher(prepareTeacher(getCellContentsAsString(cache, j + 2, k)));
                Integer nextGroupBound = groupBounds.higher(k);
                String roomNumber;
                if (nextGroupBound != null) {
-                  roomNumber = getCellContentsAsString(cache, j, nextGroupBound - 1).trim() + " "
-                          + getCellContentsAsString(cache, j + 1, nextGroupBound - 1).trim() + " "
-                          + getCellContentsAsString(cache, j + 2, nextGroupBound - 1).trim();
+                  roomNumber = getCellContentsAsString(cache, j, nextGroupBound - 1) + " "
+                          + getCellContentsAsString(cache, j + 1, nextGroupBound - 1) + " "
+                          + getCellContentsAsString(cache, j + 2, nextGroupBound - 1);
                } else {
-                  roomNumber = getCellContentsAsString(cache, j, k + 3).trim() + " "
-                          + getCellContentsAsString(cache, j + 1, k + 3).trim() + " "
-                          + getCellContentsAsString(cache, j + 2, k + 3).trim();
+                  roomNumber = getCellContentsAsString(cache, j, k + 3) + " "
+                          + getCellContentsAsString(cache, j + 1, k + 3) + " "
+                          + getCellContentsAsString(cache, j + 2, k + 3);
                }
                lesson.setRoomNumber(prepareRoomNumber(roomNumber));
                lessons.add(lesson);
@@ -168,18 +168,18 @@ public class XMLStoLessonsConverter
                   lesson.setGroup(Objects.requireNonNull(groups.get(k)));
                   lesson.setLessonNumber(getCellContentsAsString(cache, j, 1).trim());
                   lesson.setTimes(prepareTimes(
-                          getCellContentsAsString(cache, j + 1, 1).trim()));
-                  lesson.setSubject(prepareSubject(getCellContentsAsString(cache, j, k).trim()));
-                  lesson.setTeacher(prepareTeacher(getCellContentsAsString(cache, j + 1, k).trim()));
+                          getCellContentsAsString(cache, j + 1, 1)));
+                  lesson.setSubject(prepareSubject(getCellContentsAsString(cache, j, k)));
+                  lesson.setTeacher(prepareTeacher(getCellContentsAsString(cache, j + 1, k)));
                   Integer nextGroupBound = groupBounds.higher(k);
                   String roomNumber;
                   if(nextGroupBound != null){
-                     roomNumber = getCellContentsAsString(cache, j, nextGroupBound - 1).trim();
+                     roomNumber = getCellContentsAsString(cache, j, nextGroupBound - 1);
                   }
                   else{
-                     roomNumber = getCellContentsAsString(cache, j, k + 2).trim();
+                     roomNumber = getCellContentsAsString(cache, j, k + 2);
                      if(roomNumber.equals(""))
-                        roomNumber = getCellContentsAsString(cache, j, k + 3).trim();
+                        roomNumber = getCellContentsAsString(cache, j, k + 3);
                   }
                   lesson.setRoomNumber(prepareRoomNumber(roomNumber));
                   lessons.add(lesson);
@@ -224,6 +224,9 @@ public class XMLStoLessonsConverter
     * @return время
     */
    private static String prepareTimes(String times){
+      if(times == null )
+         return null;
+      times = times.trim().replaceAll("\\s+", "");
       if(times.startsWith("0") || times.startsWith("1") || times.startsWith("2") || times.equals(""))
          return times;
       return "0" + times;
@@ -235,7 +238,8 @@ public class XMLStoLessonsConverter
     * @return обработанное имя преподавателя
     */
    private static String prepareTeacher(String teacher){
-      return teacher.replaceAll("\\s+", " ")
+      return teacher == null ? null : teacher.trim()
+              .replaceAll("\\s+", " ")
               .replaceAll("/", "");
    }
 
@@ -245,7 +249,8 @@ public class XMLStoLessonsConverter
     * @return обработанный номер кабинета
     */
    private static String prepareRoomNumber(String roomNumber){
-      return roomNumber.replaceAll("\\s*/\\s*", "/")
+      return roomNumber == null ? null : roomNumber.trim()
+              .replaceAll("\\s*/\\s*", "/")
               .replaceAll("\\s+", " ");
    }
 
@@ -255,6 +260,7 @@ public class XMLStoLessonsConverter
     * @return обработанное название предмета
     */
    private static String prepareSubject(String subject){
-      return subject.replaceAll("\\s+", " ");
+      return subject == null ? null : subject.trim()
+              .replaceAll("\\s+", " ");
    }
 }

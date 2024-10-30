@@ -21,6 +21,9 @@
       <entry key="debug">
         <State />
       </entry>
+      <entry key="useAppContext()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>
