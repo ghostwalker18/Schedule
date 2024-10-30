@@ -57,6 +57,10 @@ public class XMLSToLessonsConverterUnitTest {
         };
     }
 
+    /**
+     * Получение доступа к проверяемым приватным методам.
+     * @throws Exception
+     */
     @BeforeClass
     public static void getMethods() throws Exception {
         prepareTeacher = XMLStoLessonsConverter.class
@@ -73,18 +77,30 @@ public class XMLSToLessonsConverterUnitTest {
         prepareRoomNumber.setAccessible(true);
     }
 
+    /**
+     * Проверка обработки имени преподавателя, ввод не соответствует желаемому.
+     * @throws Exception
+     */
     @Test
     public void prepareTeacherTestIncorrectInput() throws Exception {
         String actualResult = (String) prepareTeacher.invoke(converter, " Иванов    И.И. ");
         Assert.assertEquals("Иванов И.И.", actualResult);
     }
 
+    /**
+     * Проверка обработки имени преподавателя, ввод уже соответствует желаемому.
+     * @throws Exception
+     */
     @Test
     public void prepareTeacherTestCorrectInput() throws Exception {
         String actualResult = (String) prepareTeacher.invoke(converter, "Иванов И.И.");
         Assert.assertEquals("Иванов И.И.", actualResult);
     }
 
+    /**
+     * Проверка обработки имени преподавателя, ввод некорректен.
+     * @throws Exception
+     */
     @Test
     public void prepareTeacherTestNullInput() throws Exception {
         String input = null;
@@ -92,18 +108,30 @@ public class XMLSToLessonsConverterUnitTest {
         Assert.assertNull(actualResult);
     }
 
+    /**
+     * Проверка обработки названия предмета, ввод не соответствует желаемому.
+     * @throws Exception
+     */
     @Test
     public void prepareSubjectTestIncorrectInput() throws Exception {
         String actualResult = (String) prepareSubject.invoke(converter, " 3D  \n моделирование ");
         Assert.assertEquals("3D моделирование", actualResult);
     }
 
+    /**
+     * Проверка обработки названия предмета, ввод уже соответствует желаемому.
+     * @throws Exception
+     */
     @Test
     public void prepareSubjectTestCorrectInput() throws Exception {
         String actualResult = (String) prepareSubject.invoke(converter, "3D моделирование");
         Assert.assertEquals("3D моделирование", actualResult);
     }
 
+    /**
+     * Проверка обработки названия предмета, ввод некорректен.
+     * @throws Exception
+     */
     @Test
     public void prepareSubjectTestNullInput() throws Exception {
         String input = null;
@@ -111,6 +139,10 @@ public class XMLSToLessonsConverterUnitTest {
         Assert.assertNull(actualResult);
     }
 
+    /**
+     * Проверка обработки времени занятия, ввод не соответствует желаемому.
+     * @throws Exception
+     */
     @Theory
     public void prepareTimesTestIncorrectInput(
             @FromDataPoints("prepareTimesIncorrectSet") Pair<String, String> pair)
@@ -119,6 +151,10 @@ public class XMLSToLessonsConverterUnitTest {
         Assert.assertEquals(pair.getSecond(), actualResult);
     }
 
+    /**
+     * Проверка обработк времени занятия, ввод уже соответствует желаемому.
+     * @throws Exception
+     */
     @Theory
     public void prepareTimesTestCorrectInput(
             @FromDataPoints("prepareTimesCorrectSet") Pair<String, String> pair)
@@ -127,6 +163,10 @@ public class XMLSToLessonsConverterUnitTest {
         Assert.assertEquals(pair.getSecond(), actualResult);
     }
 
+    /**
+     * Проверка обработки времени занятия, ввод некорректен.
+     * @throws Exception
+     */
     @Test
     public void prepareTimesTestNullInput() throws Exception {
         String input = null;
@@ -134,18 +174,30 @@ public class XMLSToLessonsConverterUnitTest {
         Assert.assertNull(actualResult);
     }
 
+    /**
+     * Проверка обработки номера кабинета, ввод не соответствует желаемому.
+     * @throws Exception
+     */
     @Test
     public void prepareRoomNumberTestIncorrectInput() throws Exception {
         String actualResult = (String) prepareRoomNumber.invoke(converter, " 32/ 45");
         Assert.assertEquals("32/45", actualResult);
     }
 
+    /**
+     * Проверка обработки номера кабинета, ввод уже соответствует желаемому.
+     * @throws Exception
+     */
     @Test
     public void prepareRoomNumberTestCorrectInput() throws Exception {
         String actualResult = (String) prepareRoomNumber.invoke(converter, "32 45");
         Assert.assertEquals("32 45", actualResult);
     }
 
+    /**
+     * Проверка обработки номера кабинета, ввод некорректен.
+     * @throws Exception
+     */
     @Test
     public void prepareRoomNumberTestNullInput() throws Exception {
         String input = null;

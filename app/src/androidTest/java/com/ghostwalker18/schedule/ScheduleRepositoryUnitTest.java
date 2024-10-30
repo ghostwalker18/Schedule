@@ -15,14 +15,13 @@
 package com.ghostwalker18.schedule;
 
 import android.content.Context;
-
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
+import java.util.List;
 
 /**
  * Модульные тесты для класса ScheduleRepository
@@ -32,10 +31,48 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ScheduleRepositoryUnitTest {
-    @Test
-    public void useAppContext() {
-        // Context of the app under test.
+
+    private static ScheduleRepository repository;
+
+    /**
+     * Инициализация репозитория.
+     */
+    @BeforeClass
+    public static void initRepo(){
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.ghostwalker18.schedule", appContext.getPackageName());
+        //AppDatabase db = Mockito.mock(AppDatabase.class, Answers.CALLS_REAL_METHODS);
+        repository = new ScheduleRepository(appContext, null);
+    }
+
+    /**
+     * Проверка получения ссылок на расписание для первого корпуса.
+     */
+    @Test
+    public void retrieveScheduleLinksForFirstCorpus(){
+        List<String> links = repository.getLinksForFirstCorpusSchedule();
+        Assert.assertFalse(links.isEmpty());
+        for(String link : links)
+            Assert.assertTrue(link.endsWith(".xlsx"));
+    }
+
+    /**
+     * Проверка получения ссылок на расписание для второго корпуса.
+     */
+    @Test
+    public void retrieveScheduleLinksForSecondCorpus(){
+        List<String> links = repository.getLinksForSecondCorpusSchedule();
+        Assert.assertFalse(links.isEmpty());
+        for(String link : links)
+            Assert.assertTrue(link.endsWith(".xlsx"));
+    }
+
+    /**
+     * Проверка сохранения группы в репозитории.
+     */
+    @Test
+    public void savingGroup(){
+        String group = "A-31";
+        repository.saveGroup(group);
+        Assert.assertEquals("A-31", repository.getSavedGroup());
     }
 }
