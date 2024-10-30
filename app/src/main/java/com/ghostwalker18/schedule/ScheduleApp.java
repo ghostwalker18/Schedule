@@ -66,7 +66,7 @@ public class ScheduleApp
         instance = this;
         database = AppDatabase.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        repository = new ScheduleRepository(this);
+        repository = new ScheduleRepository(this, database);
         repository.update();
         String theme = preferences.getString("theme", "");
         setTheme(theme);

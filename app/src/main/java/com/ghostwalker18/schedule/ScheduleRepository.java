@@ -78,9 +78,9 @@ public class ScheduleRepository{
         }
     }
 
-    public ScheduleRepository(Application app){
-       db = ScheduleApp.getInstance().getDatabase();
-       context = ScheduleApp.getInstance();
+    public ScheduleRepository(Context app,  AppDatabase db){
+       this.db = db;
+       context = app;
        api = new Retrofit.Builder()
                .baseUrl(BASE_URI)
                .callbackExecutor(Executors.newFixedThreadPool(4))
