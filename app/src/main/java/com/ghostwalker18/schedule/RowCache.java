@@ -57,7 +57,7 @@ public class RowCache {
      * @throws IndexOutOfBoundsException если кэш для ряда уже недоступен
      */
     public Row getRow(int row) throws IndexOutOfBoundsException {
-        if(row <= lowBoundary - size)
+        if(row <= lowBoundary - size || row < 0)
             throw new IndexOutOfBoundsException();
         if(row < lowBoundary + size){
             if(row > lowBoundary - size && row < lowBoundary)
