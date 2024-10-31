@@ -1,0 +1,15 @@
+name: CI/CD Unit testing
+on: [push, pull_request]
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+      - name: Run Unit tests
+        run: ./gradlew test
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2.3.4
