@@ -7,7 +7,8 @@ plugins {
 
 val keystorePropertiesFile = rootProject.file("/signing.properties")
 val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+if (keystorePropertiesFile.exists())
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
 

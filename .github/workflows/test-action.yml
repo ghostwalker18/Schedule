@@ -11,7 +11,8 @@ jobs:
           distribution: 'temurin'
           java-version: '20'
       - name: Run Unit tests
-        run:
+        run: |
+          chmod +x gradlew
           ./gradlew test
       - name: Coveralls
         uses: coverallsapp/github-action@v2.3.4
