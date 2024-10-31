@@ -9,10 +9,9 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '20'
       - name: Run Unit tests
-        run: |
-          chmod +x gradlew
+        run:
           ./gradlew test
       - name: Coveralls
         uses: coverallsapp/github-action@v2.3.4
