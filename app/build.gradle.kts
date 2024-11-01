@@ -1,8 +1,10 @@
+import com.android.build.api.dsl.JacocoOptions
 import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
     id("com.android.application")
+    id("jacoco")
 }
 
 val keystorePropertiesFile = rootProject.file("/signing.properties")
@@ -54,6 +56,7 @@ android {
         debug{
             isMinifyEnabled = false
             isDebuggable = true
+            enableUnitTestCoverage = true
         }
     }
 
