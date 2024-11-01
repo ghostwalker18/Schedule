@@ -19,3 +19,5 @@ jobs:
         uses: coverallsapp/github-action@v2.3.4
         with:
           format: 'jacoco'
+          fail-on-error: 'false'
+          files: ${{github.workspace}}/app/build/jacoco/testReleaseUnitTest.exec
