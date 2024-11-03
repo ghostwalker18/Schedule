@@ -1,10 +1,8 @@
-import com.android.build.api.dsl.JacocoOptions
 import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
     id("com.android.application")
-    id("jacoco")
 }
 
 val keystorePropertiesFile = rootProject.file("/signing.properties")
@@ -13,7 +11,6 @@ if (keystorePropertiesFile.exists())
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
-
     namespace = "com.ghostwalker18.schedule"
     compileSdk = 34
 
