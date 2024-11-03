@@ -128,10 +128,10 @@ public class NotesActivity
       EditText search = findViewById(R.id.search);
       search.addTextChangedListener(new TextWatcher() {
          @Override
-         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {/*Not required*/}
 
          @Override
-         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {/*Not required*/}
 
          @Override
          public void afterTextChanged(Editable editable) {

@@ -55,6 +55,7 @@ public class EditNoteActivity
         extends AppCompatActivity {
    private Uri photoUri;
    private boolean isSaved = false;
+   private Random nameSuffixGenerator = new Random();
    private TextView dateTextView;
    private EditNoteModel model;
    private AutoCompleteTextView groupField;
@@ -170,7 +171,7 @@ public class EditNoteActivity
    @Override
    protected void onDestroy() {
       super.onDestroy();
-      Uri photoUri = model.getPhotoID().getValue();
+      photoUri = model.getPhotoID().getValue();
       if(photoUri != null && photoUri.getEncodedPath() != null && !isSaved){
          File photoFile = new File(photoUri.getEncodedPath());
          photoFile.delete();
@@ -195,7 +196,7 @@ public class EditNoteActivity
    private String makeNotePhotoName(){
       String res = "";
       res = res + DateConverters.DATE_FORMAT_PHOTO.format(model.getDate().getValue().getTime()) + "_";
-      res += new Random().nextInt(10000);
+      res += nameSuffixGenerator.nextInt(10000);
       res += ".jpg";
       return res;
    }

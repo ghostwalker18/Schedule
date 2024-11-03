@@ -338,12 +338,12 @@ public class ScheduleRepository{
                         try (FileOutputStream outputStream = context.openFileOutput(MONDAY_TIMES_PATH,
                                 Context.MODE_PRIVATE)){
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                        } catch (IOException ignored) {}
+                        } catch (IOException ignored) {/*Not required*/}
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {/*Not required*/}
             });
             Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
             otherTimesResponse.enqueue(new Callback<ResponseBody>() {
@@ -356,12 +356,12 @@ public class ScheduleRepository{
                         try (FileOutputStream outputStream = context.openFileOutput(OTHER_TIMES_PATH,
                                 Context.MODE_PRIVATE)) {
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                        } catch (IOException ignored) {}
+                        } catch (IOException ignored) {/*Not required*/}
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {}
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {/*Not required*/}
             });
         }
         else {
