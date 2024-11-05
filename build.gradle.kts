@@ -5,3 +5,9 @@ plugins {
     // and/or
     id("io.github.gmazzo.test.aggregation.results") version "2.2.1"
 }
+
+testAggregation{
+    coverage{
+        exclude("**/*_Impl*")
+    }
+}
