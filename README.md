@@ -4,6 +4,7 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ghostwalker18_Schedule&metric=bugs)](https://sonarcloud.io/summary/new_code?id=ghostwalker18_Schedule)
 [![Code smells](https://sonarcloud.io/api/project_badges/measure?project=ghostwalker18_Schedule&metric=code_smells)](https://sonarcloud.io/dashboard?id=ghostwalker18_Schedule)
 # Расписание Петрозаводского техникума городского хозяйства.
+![Promo](https://github.com/ghostwalker18/Schedule/blob/master/promo.jpg?raw=true)
 Неофициальное Android-приложение расписания ПТГХ.
 Приложение представляет собой мобильный клиент, который скачивает файлы расписания с официального сайта Петрозаводского техникума городского хозяйства и представляет их содержимое в удобной для пользователя форме.
 <br>
