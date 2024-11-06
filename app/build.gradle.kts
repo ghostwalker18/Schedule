@@ -3,6 +3,7 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
+    id("jacoco")
 }
 
 val keystorePropertiesFile = rootProject.file("/signing.properties")

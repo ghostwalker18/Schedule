@@ -14,7 +14,6 @@
 
 package com.ghostwalker18.schedule;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -35,6 +34,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -63,7 +64,8 @@ public class ScheduleRepository{
     private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
     private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
     private final MutableLiveData<Status> status = new MutableLiveData<>();
-    private ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private final ExecutorService updateExecutorService = Executors.newFixedThreadPool(4);
+    private final List<Future<?>> updateFutures = new ArrayList<>();
 
     /**
      * Этот класс используетс для отображения статуса обновления репозитория.
@@ -95,9 +97,17 @@ public class ScheduleRepository{
      * Требуется интернет соединение.
      */
     public void update(){
-       executorService.execute(this::updateFirstCorpus);
-       executorService.execute(this::updateSecondCorpus);
-       executorService.execute(this::updateTimes);
+        boolean allJobsDone = true;
+        for(Future<?> future : updateFutures){
+            allJobsDone &= future.isDone();
+        }
+        if(allJobsDone){
+            updateFutures.clear();
+            updateFutures.add(updateExecutorService.submit(this::updateFirstCorpus));
+            updateFutures.add(updateExecutorService.submit(this::updateSecondCorpus));
+            updateFutures.add(updateExecutorService.submit(this::updateTimes));
+        }
+
     }
 
     /**
