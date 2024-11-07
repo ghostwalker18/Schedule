@@ -39,4 +39,11 @@ public interface IConverter {
   * @return лист объектов класса Lesson
   */
  List<Lesson> convertSecondCorpus(Workbook excelFile);
+
+ /**
+  * Функциональный интерфейс для общей операции конверсии.
+  */
+ interface IConversion{
+  List<Lesson> convert(Workbook excelFile);
+ }
 }

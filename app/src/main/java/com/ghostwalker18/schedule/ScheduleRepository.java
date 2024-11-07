@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -107,7 +108,6 @@ public class ScheduleRepository{
             updateFutures.add(updateExecutorService.submit(this::updateSecondCorpus));
             updateFutures.add(updateExecutorService.submit(this::updateTimes));
         }
-
     }
 
     /**
@@ -386,45 +386,26 @@ public class ScheduleRepository{
      * Этот метод используется для обновления БД приложения занятиями для первого корпуса
      */
     private void updateFirstCorpus(){
-        List<String> scheduleLinks = getLinksForFirstCorpusSchedule();
-        if(scheduleLinks.isEmpty())
-            status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-        for(String link : scheduleLinks){
-            status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
-            api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    if(response.body() != null){
-                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
-                        ZipSecureFile.setMinInflateRatio(0.0075);
-                        try(Workbook excelFile = StreamingReader.builder()
-                                .rowCacheSize(10)
-                                .bufferSize(4096)
-                                .open(response.body().byteStream())){
-                            List<Lesson> lessons = converter.convertFirstCorpus(excelFile);
-                            db.lessonDao().insertMany(lessons);
-                            status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
-                        }
-                        catch (Exception e){
-                            status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
-                        }
-                        response.body().close();
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
-                }
-            });
-        }
+        updateSchedule(this::getLinksForFirstCorpusSchedule, file -> converter.convertFirstCorpus(file));
     }
 
     /**
      * Этот метод используется для обновления БД приложения занятиями для второго корпуса
      */
     private void updateSecondCorpus(){
-        List<String> scheduleLinks = getLinksForSecondCorpusSchedule();
+        updateSchedule(this::getLinksForSecondCorpusSchedule, file -> converter.convertSecondCorpus(file));
+    }
+
+    /**
+     * Этот метод используется для обновления БД приложения занятиями
+     * @param linksGetter метод для получения ссылок на файлы расписания
+     * @param parser парсер файлов расписания
+     */
+    private void updateSchedule(Callable<List<String>> linksGetter, IConverter.IConversion parser){
+        List<String> scheduleLinks = new ArrayList<>();
+        try {
+            scheduleLinks = linksGetter.call();
+        } catch (Exception ignored){/*Not required*/}
         if(scheduleLinks.isEmpty())
             status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
         for(String link : scheduleLinks){
@@ -439,7 +420,7 @@ public class ScheduleRepository{
                                 .rowCacheSize(10)
                                 .bufferSize(4096)
                                 .open(response.body().byteStream())){
-                            List<Lesson> lessons = converter.convertSecondCorpus(excelFile);
+                            List<Lesson> lessons = parser.convert(excelFile);
                             db.lessonDao().insertMany(lessons);
                             status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
                         }
