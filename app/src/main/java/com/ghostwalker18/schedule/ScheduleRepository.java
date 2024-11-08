@@ -41,6 +41,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,14 +84,21 @@ public class ScheduleRepository{
     }
 
     public ScheduleRepository(Context app,  AppDatabase db){
-       this.db = db;
-       context = app;
-       api = new Retrofit.Builder()
-               .baseUrl(BASE_URI)
-               .callbackExecutor(Executors.newFixedThreadPool(4))
-               .build()
-               .create(ScheduleNetworkAPI.class);
-       preferences = PreferenceManager.getDefaultSharedPreferences(app);
+        this.db = db;
+        context = app;
+        long SIZE_OF_CACHE = 10 * 1024 * 1024; // 10 MiB
+        Cache cache = new Cache(new File(context.getCacheDir(), "http"), SIZE_OF_CACHE);
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .cache(cache)
+                .addInterceptor(new CacheInterceptor())
+                .build();
+        api = new Retrofit.Builder()
+                .baseUrl(BASE_URI)
+                .callbackExecutor(Executors.newFixedThreadPool(4))
+                .client(client)
+                .build()
+                .create(ScheduleNetworkAPI.class);
+        preferences = PreferenceManager.getDefaultSharedPreferences(app);
     }
 
     /**
