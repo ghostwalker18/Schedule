@@ -19,12 +19,19 @@ import androidx.annotation.NonNull;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 
+/**
+ * Этот класс служит для реализации кэширования запросов к серверу расписания.
+ *
+ * @author Ипатов Никита
+ * @since 3.1
+ */
 public class CacheInterceptor
         implements Interceptor {
    @Override
    public Response intercept(@NonNull Chain chain) throws IOException {
       Response response = chain.proceed(chain.request());
-      if(!response.isSuccessful())
+      if(!response.isSuccessful() || response.cacheControl().noCache()
+              || response.cacheControl().mustRevalidate() || response.cacheControl().noStore())
          return response;
       return response.newBuilder()
               .header("Cache-Control", "max-age=3600")
