@@ -73,7 +73,7 @@ public class XMLStoLessonsConverter
             ){
                String group = groupRowCell.getStringCellValue().trim();
                //mistake protection
-               groups.put(j, group.replaceAll("\\s+", "").trim());
+               groups.put(j, prepareGroup(group));
             }
          }
 
@@ -149,7 +149,7 @@ public class XMLStoLessonsConverter
             if(!groupRowCell.getStringCellValue().trim().equals("")){
                String group = groupRowCell.getStringCellValue().trim();
                //mistake protection
-               groups.put(j, group.replaceAll("\\s+", ""));
+               groups.put(j, prepareGroup(group));
             }
          }
 
@@ -216,6 +216,18 @@ public class XMLStoLessonsConverter
          default:
             return "";
       }
+   }
+
+   /**
+    * Этот метод используется для преобразования строки с группой к формату X-X.
+    * @param group название группы
+    * @return название группы
+    */
+   private static String prepareGroup(String group){
+      return group
+              .replaceAll("\\s+", "")
+              .replaceAll(
+                      "([йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ])(\\d)", "$1-$2");
    }
 
    /**
