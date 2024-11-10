@@ -14,6 +14,7 @@
 
 package com.ghostwalker18.schedule;
 
+import org.jsoup.nodes.Document;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -49,4 +50,7 @@ public interface ScheduleNetworkAPI {
     */
    @GET
    Call<ResponseBody> getScheduleFile(@Url String url);
+
+   @GET(ScheduleApp.BASE_URI)
+   Call<Document> getMainPage();
 }

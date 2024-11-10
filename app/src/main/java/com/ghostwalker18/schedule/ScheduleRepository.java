@@ -60,7 +60,6 @@ public class ScheduleRepository{
     private final SharedPreferences preferences;
     private final ScheduleNetworkAPI api;
     private final Context context;
-    private static final String BASE_URI = "https://ptgh.onego.ru/9006/";
     private static final String MAIN_SELECTOR = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
     private static final String MONDAY_TIMES_PATH = "mondayTimes.jpg";
     private static final String OTHER_TIMES_PATH = "otherTimes.jpg";
@@ -83,21 +82,10 @@ public class ScheduleRepository{
         }
     }
 
-    public ScheduleRepository(Context app,  AppDatabase db){
+    public ScheduleRepository(Context app,  AppDatabase db, NetworkService networkService){
         this.db = db;
         context = app;
-        long SIZE_OF_CACHE = 10 * 1024 * 1024; // 10 MiB
-        Cache cache = new Cache(new File(context.getCacheDir(), "http"), SIZE_OF_CACHE);
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .cache(cache)
-                .addInterceptor(new CacheInterceptor())
-                .build();
-        api = new Retrofit.Builder()
-                .baseUrl(BASE_URI)
-                .callbackExecutor(Executors.newFixedThreadPool(4))
-                .client(client)
-                .build()
-                .create(ScheduleNetworkAPI.class);
+        api = networkService.getScheduleAPI();
         preferences = PreferenceManager.getDefaultSharedPreferences(app);
     }
 
@@ -266,7 +254,7 @@ public class ScheduleRepository{
    public List<String> getLinksForFirstCorpusSchedule(){
         List<String> links = new ArrayList<>();
         try{
-            Document doc = Jsoup.connect(BASE_URI).get();
+            Document doc = api.getMainPage().execute().body();
             Elements linkElements = doc.select(MAIN_SELECTOR).get(0)
                     .select("tr").get(1)
                     .select("td").get(0)
@@ -291,7 +279,7 @@ public class ScheduleRepository{
     public  List<String> getLinksForSecondCorpusSchedule(){
         List<String> links = new ArrayList<>();
         try{
-            Document doc = Jsoup.connect(BASE_URI).get();
+            Document doc = api.getMainPage().execute().body();
             Elements linkElements = doc.select(MAIN_SELECTOR).get(0)
                     .select("tr").get(1)
                     .select("td").get(1)
@@ -302,7 +290,7 @@ public class ScheduleRepository{
             }
             return links;
         }
-        catch (IOException e){
+        catch (Exception e){
             return links;
         }
     }
