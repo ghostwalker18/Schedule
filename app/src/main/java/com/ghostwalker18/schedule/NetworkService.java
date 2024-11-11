@@ -15,6 +15,8 @@
 package com.ghostwalker18.schedule;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.io.File;
 import java.util.concurrent.Executors;
 import okhttp3.Cache;
@@ -25,25 +27,32 @@ public class NetworkService {
    private static final long SIZE_OF_CACHE = 10 * 1024 * 1024; // 10 MiB
    private final String baseUri;
    private final Context context;
+   private final SharedPreferences preferences;
 
-   public NetworkService(Context context, String baseUri){
+   public NetworkService(Context context, String baseUri, SharedPreferences preferences) {
       this.context = context;
       this.baseUri = baseUri;
+      this.preferences = preferences;
    }
 
    public ScheduleNetworkAPI getScheduleAPI(){
-      Cache cache = new Cache(new File(context.getCacheDir(), "http"), SIZE_OF_CACHE);
-      OkHttpClient client = new OkHttpClient().newBuilder()
-              .cache(cache)
-              .addInterceptor(new CacheInterceptor())
-              .build();
-      ScheduleNetworkAPI api = new Retrofit.Builder()
+      Retrofit.Builder apiBuilder = new Retrofit.Builder()
               .baseUrl(baseUri)
               .callbackExecutor(Executors.newFixedThreadPool(4))
-              .client(client)
-              .addConverterFactory(new JsoupConverterFactory())
+              .addConverterFactory(new JsoupConverterFactory());
+
+      boolean isCachingEnabled = preferences.getBoolean("isCachingEnabled", true);
+      if(isCachingEnabled){
+         Cache cache = new Cache(new File(context.getCacheDir(), "http"), SIZE_OF_CACHE);
+         OkHttpClient client = new OkHttpClient().newBuilder()
+                 .cache(cache)
+                 .addInterceptor(new CacheInterceptor())
+                 .build();
+         apiBuilder.client(client);
+      }
+
+      return apiBuilder
               .build()
               .create(ScheduleNetworkAPI.class);
-      return api;
    }
 }

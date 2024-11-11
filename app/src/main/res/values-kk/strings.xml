@@ -66,4 +66,7 @@
     <string name="edit_note">Жазбаны өңдеңіз</string>
     <string name="add_note">Жаңа ескерту</string>
     <string name="gallery_access_denied">Фотосуретке кіруге рұқсат жоқ</string>
+    <string name="network_settings">Желі</string>
+    <string name="option_enable_caching">Кэштеуді қосыңыз</string>
+    <string name="option_download_for">Үшін жүктеу</string>
 </resources>

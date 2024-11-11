@@ -33,4 +33,10 @@
         <item>Разам</item>
         <item>У асобным акне</item>
     </string-array>
+
+    <string-array name="download_entries">
+        <item>Для ўсіх карпусоў</item>
+        <item>Для першага корпуса</item>
+        <item>Для другога корпуса</item>
+    </string-array>
 </resources>

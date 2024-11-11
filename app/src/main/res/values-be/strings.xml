@@ -66,4 +66,7 @@
     <string name="edit_note">Рэдагаваць нататку</string>
     <string name="add_note">Новая нататка</string>
     <string name="gallery_access_denied">Няма дазволу на доступ да фота</string>
+    <string name="network_settings">Сетка</string>
+    <string name="option_enable_caching">Ўключыць кэшаванне</string>
+    <string name="option_download_for">Спампаваць для</string>
 </resources>

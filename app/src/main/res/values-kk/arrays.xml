@@ -33,4 +33,10 @@
         <item>Бірге</item>
         <item>Бөлек терезеде</item>
     </string-array>
+
+    <string-array name="download_entries">
+        <item>Барлық корпустар үшін</item>
+        <item>Бірінші корпус үшін</item>
+        <item>Екінші корпус үшін</item>
+    </string-array>
 </resources>

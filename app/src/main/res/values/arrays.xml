@@ -53,4 +53,16 @@
         <item>in_fragment</item>
         <item>in_activity</item>
     </string-array>
+
+    <string-array name="download_entries">
+        <item>Для всех корпусов</item>
+        <item>Для первого корпуса</item>
+        <item>Для второго корпуса</item>
+    </string-array>
+
+    <string-array name="download_values">
+        <item>all</item>
+        <item>first</item>
+        <item>second</item>
+    </string-array>
 </resources>
