@@ -75,7 +75,7 @@ public class ScheduleItemFragment
    public void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
-      repository = ScheduleApp.getInstance().getRepository();
+      repository = ScheduleApp.getInstance().getScheduleRepository();
       dayOfWeekID = getArguments().getInt("dayOfWeek");
       preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
       preferences.registerOnSharedPreferenceChangeListener(this);

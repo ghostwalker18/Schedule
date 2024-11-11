@@ -34,7 +34,7 @@ import androidx.lifecycle.Observer;
  */
 public class ScheduleWidget
         extends AppWidgetProvider {
-    static final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+    static final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
     static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,

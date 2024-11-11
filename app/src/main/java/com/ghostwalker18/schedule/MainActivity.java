@@ -159,10 +159,10 @@ public class MainActivity
     private boolean downloadScheduleFile(){
         new Thread(() -> {
             List<String> linksForFirstCorpusSchedule = ScheduleApp.getInstance()
-                    .getRepository()
+                    .getScheduleRepository()
                     .getLinksForFirstCorpusSchedule();
             List<String> linksForSecondCorpusSchedule = ScheduleApp.getInstance()
-                    .getRepository()
+                    .getScheduleRepository()
                     .getLinksForSecondCorpusSchedule();
             List<String> links = new ArrayList<>();
             links.addAll(linksForFirstCorpusSchedule);

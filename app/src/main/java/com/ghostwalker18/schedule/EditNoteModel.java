@@ -30,7 +30,8 @@ import androidx.lifecycle.ViewModel;
  */
 public class EditNoteModel
         extends ViewModel {
-   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+   private final ScheduleRepository scheduleRepository = ScheduleApp.getInstance().getScheduleRepository();
+   private final NotesRepository notesRepository = ScheduleApp.getInstance().getNotesRepository();
    private final MediatorLiveData<Note> note = new MediatorLiveData<>(new Note());
    private final MediatorLiveData<String[]> noteThemesMediator = new MediatorLiveData<>();
    private LiveData<String[]> themes = new MutableLiveData<>();
@@ -47,7 +48,7 @@ public class EditNoteModel
     */
    public void setNoteID(Integer id){
       isEdited = true;
-      note.addSource(repository.getNote(id), note::setValue);
+      note.addSource(notesRepository.getNote(id), note::setValue);
       note.observeForever(note1 -> {
          if(note1 != null){
             group.setValue(note1.group);
@@ -67,7 +68,7 @@ public class EditNoteModel
    public void setGroup(String group){
       this.group.setValue(group);
       noteThemesMediator.removeSource(themes);
-      themes = repository.getSubjects(group);
+      themes = scheduleRepository.getSubjects(group);
       noteThemesMediator.addSource(themes, noteThemesMediator::setValue);
    }
 
@@ -84,7 +85,7 @@ public class EditNoteModel
     * @return список допустимых групп
     */
    public LiveData<String[]> getGroups(){
-      return repository.getGroups();
+      return scheduleRepository.getGroups();
    }
 
    /**
@@ -184,9 +185,9 @@ public class EditNoteModel
          else
             noteToSave.photoID = null;
          if(isEdited)
-            repository.updateNote(noteToSave);
+            notesRepository.updateNote(noteToSave);
          else
-            repository.saveNote(noteToSave);
+            notesRepository.saveNote(noteToSave);
       }
    }
 }

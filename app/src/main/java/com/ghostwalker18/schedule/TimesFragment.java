@@ -36,7 +36,7 @@ public class TimesFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        repository = ScheduleApp.getInstance().getRepository();
+        repository = ScheduleApp.getInstance().getScheduleRepository();
     }
 
     @Override

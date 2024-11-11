@@ -14,6 +14,7 @@
 
 package com.ghostwalker18.schedule;
 
+import androidx.annotation.NonNull;
 import okhttp3.ResponseBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,7 +28,9 @@ import java.lang.reflect.Type;
 public class JsoupConverterFactory
         extends Converter.Factory {
    @Override
-   public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
+   public Converter<ResponseBody, ?> responseBodyConverter(@NonNull Type type,
+                                                           @NonNull Annotation[] annotations,
+                                                           @NonNull Retrofit retrofit) {
       if(type == Document.class){
          return new JsoupConverter(retrofit.baseUrl().toString());
       }

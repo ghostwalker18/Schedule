@@ -46,7 +46,7 @@ public class DaysFragment
         extends Fragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
-   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+   private final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
    private ScheduleState state;
    private View view;
    private ProgressBar updateScheduleProgress;

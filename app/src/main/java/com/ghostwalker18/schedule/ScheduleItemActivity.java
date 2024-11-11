@@ -68,7 +68,7 @@ public class ScheduleItemActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         table = findViewById(R.id.schedule);
-        repository = ScheduleApp.getInstance().getRepository();
+        repository = ScheduleApp.getInstance().getScheduleRepository();
         lessons = repository.getLessons(group, teacher, date);
         lessons.observe(this, lessons -> populateTable(table, lessons));
         findViewById(R.id.notes).setOnClickListener(view -> openNotesActivity());

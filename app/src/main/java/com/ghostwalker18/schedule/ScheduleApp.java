@@ -45,7 +45,8 @@ public class ScheduleApp
     private static ScheduleApp instance;
     private SharedPreferences preferences;
     private AppDatabase database;
-    private ScheduleRepository repository;
+    private ScheduleRepository scheduleRepository;
+    private NotesRepository notesRepository;
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
         switch (key){
@@ -67,8 +68,9 @@ public class ScheduleApp
         instance = this;
         database = AppDatabase.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        repository = new ScheduleRepository(this, database, new NetworkService(this, BASE_URI));
-        repository.update();
+        scheduleRepository = new ScheduleRepository(this, database, new NetworkService(this, BASE_URI));
+        scheduleRepository.update();
+        notesRepository = new NotesRepository(database);
         String theme = preferences.getString("theme", "");
         setTheme(theme);
         preferences.registerOnSharedPreferenceChangeListener(this);
@@ -78,12 +80,12 @@ public class ScheduleApp
         return instance;
     }
 
-    public AppDatabase getDatabase(){
-        return database;
+    public NotesRepository getNotesRepository(){
+        return notesRepository;
     }
 
-    public ScheduleRepository getRepository(){
-        return repository;
+    public ScheduleRepository getScheduleRepository(){
+        return scheduleRepository;
     }
 
     private void setTheme(String theme){

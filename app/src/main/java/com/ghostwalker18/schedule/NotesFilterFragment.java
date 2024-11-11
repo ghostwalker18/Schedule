@@ -41,7 +41,7 @@ import androidx.lifecycle.ViewModelProvider;
  */
 public class NotesFilterFragment
         extends Fragment {
-   private final ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+   private final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
    private NotesModel model;
    private TextView startDateField;
    private TextView endDateField;

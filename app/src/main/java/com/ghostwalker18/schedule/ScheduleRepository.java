@@ -50,7 +50,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
- * Этот класс представляет собой репозиторий данных приложения.
+ * Этот класс представляет собой репозиторий данных приложения о расписании.
  *
  * @author  Ипатов Никита
  */
@@ -183,66 +183,6 @@ public class ScheduleRepository{
      */
     public LiveData<Bitmap> getOtherTimes(){
          return otherTimes;
-   }
-
-    /**
-     * Этот метод позволяет сохранить заметку.
-     */
-    public void saveNote(Note note){
-       db.noteDao().insert(note);
-   }
-
-    /**
-     * Этот метод позволяет обновить заметку.
-     *
-     * @param note заметка
-     */
-    public void updateNote(Note note){
-       db.noteDao().update(note);
-   }
-
-    /**
-     * Этот метод позволяет получить заметку по ее ID.
-     *
-     * @param id первичный ключ
-     * @return заметка
-     */
-    public LiveData<Note> getNote(Integer id) {
-       return db.noteDao().getNote(id);
-    }
-
-    /**
-     * Этот метод позволяет получить заметки для заданных группы и временного промежутка.
-     *
-     * @param group
-     * @param dates
-     * @return
-     */
-    public LiveData<Note[]> getNotes(String group, Calendar[] dates){
-        if(dates.length == 1)
-            return db.noteDao().getNotes(dates[0], group);
-        return db.noteDao().getNotesForDays(dates, group);
-    }
-
-    /**
-     * Этот метод позволяет получить заметки для заданного ключевого слова и группы.
-     *
-     * @param group группа
-     * @param keyword ключевое слово
-     * @return список заметок
-     */
-    public LiveData<Note[]> getNotes(String group, String keyword){
-        return db.noteDao().getNotesByKeyword(keyword, group);
-    }
-
-    /**
-     * Этот метод позволяет удалить выбранные заметки из БД.
-     *
-     * @param notes заметки для удаления
-     */
-   public void deleteNotes(@NonNull Collection<Note> notes){
-       for(Note note : notes)
-           db.noteDao().delete(note);
    }
 
     /**

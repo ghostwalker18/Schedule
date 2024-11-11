@@ -146,7 +146,7 @@ public class WidgetSettingsActivity
       public int widgetId;
       private SharedPreferences preferences;
       private ListPreference groupChoicePreference;
-      private ScheduleRepository repository = ScheduleApp.getInstance().getRepository();
+      private ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
 
       public SettingsFragment(int widgetId){
          super();
