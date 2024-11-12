@@ -97,4 +97,22 @@ public class RowCacheUnitTest {
     public void incorrectRowNumberAccess(){
         Row row = cache.getRow(-1);
     }
+
+    /**
+     * Проверка слишком большого номера рядя.
+     */
+    @Test(expected = StackOverflowError.class)
+    public void tooHugeRowNumber(){
+        Row row = cache.getRow(1000000000);
+    }
+
+    /**
+     * Проверка выдачи немного устаревшнго ряда.
+     */
+    @Test
+    public void getSomeRotten(){
+        cache.getRow(8);
+        Row row = cache.getRow(5);
+        Assert.assertEquals(5, row.getRowNum());
+    }
 }
