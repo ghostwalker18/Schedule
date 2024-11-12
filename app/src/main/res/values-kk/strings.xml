@@ -68,5 +68,5 @@
     <string name="gallery_access_denied">Фотосуретке кіруге рұқсат жоқ</string>
     <string name="network_settings">Желі</string>
     <string name="option_enable_caching">Кэштеуді қосыңыз</string>
-    <string name="option_download_for">Үшін жүктеу</string>
+    <string name="option_download_for">Кестені жүктеу</string>
 </resources>

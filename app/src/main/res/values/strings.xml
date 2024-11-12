@@ -68,5 +68,5 @@
     <string name="add_note">Новая заметка</string>
     <string name="network_settings">Сеть</string>
     <string name="option_enable_caching">Включить кэширование</string>
-    <string name="option_download_for">Скачивать для</string>
+    <string name="option_download_for">Скачивать расписание для</string>
 </resources>

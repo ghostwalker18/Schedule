@@ -68,5 +68,5 @@
     <string name="gallery_access_denied">Немає дозволу на доступ до фото</string>
     <string name="network_settings">Мережа</string>
     <string name="option_enable_caching">Увімкнути кешування</string>
-    <string name="option_download_for">Завантажити для</string>
+    <string name="option_download_for">Завантажувати розклад для</string>
 </resources>

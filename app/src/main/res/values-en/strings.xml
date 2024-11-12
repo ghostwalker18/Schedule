@@ -68,5 +68,5 @@
     <string name="gallery_access_denied">There is no permission to access the photo</string>
     <string name="network_settings">Network</string>
     <string name="option_enable_caching">Enable caching</string>
-    <string name="option_download_for">Download for</string>
+    <string name="option_download_for">Download schedule for</string>
 </resources>

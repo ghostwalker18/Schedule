@@ -21,7 +21,6 @@ import android.graphics.BitmapFactory;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -30,27 +29,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
- * Этот класс представляет собой репозиторий данных приложения о расписании.
+ * Этот класс представляет собой репозиторий данных прилвожения о расписании.
  *
  * @author  Ипатов Никита
  */
@@ -95,14 +89,18 @@ public class ScheduleRepository{
      * Требуется интернет соединение.
      */
     public void update(){
+        String downloadFor = preferences.getString("downloadFor", "all");
         boolean allJobsDone = true;
         for(Future<?> future : updateFutures){
             allJobsDone &= future.isDone();
         }
+
         if(allJobsDone){
             updateFutures.clear();
-            updateFutures.add(updateExecutorService.submit(this::updateFirstCorpus));
-            updateFutures.add(updateExecutorService.submit(this::updateSecondCorpus));
+            if(downloadFor.equals("all") || downloadFor.equals("first"))
+                updateFutures.add(updateExecutorService.submit(this::updateFirstCorpus));
+            if(downloadFor.equals("all") || downloadFor.equals("second"))
+                updateFutures.add(updateExecutorService.submit(this::updateSecondCorpus));
             updateFutures.add(updateExecutorService.submit(this::updateTimes));
         }
     }

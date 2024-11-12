@@ -38,14 +38,14 @@
         app:title="@string/network_settings">
 
         <ListPreference
-            app:key="download_for"
+            app:key="downloadFor"
             app:title="@string/option_download_for"
             app:entryValues="@array/download_values"
             app:entries="@array/download_entries"
             app:defaultValue="all"/>
 
         <CheckBoxPreference
-            app:key="enableCaching"
+            app:key="isCachingEnabled"
             app:title="@string/option_enable_caching"
             app:defaultValue="true"/>
     </PreferenceCategory>

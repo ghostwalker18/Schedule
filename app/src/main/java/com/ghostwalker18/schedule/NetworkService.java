@@ -16,13 +16,18 @@ package com.ghostwalker18.schedule;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import java.io.File;
 import java.util.concurrent.Executors;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
+/**
+ * Этот класс используется для предоставления приложению услуг доступа к сети.
+ *
+ * @author Ipatov Nikita
+ * @since 3.1
+ */
 public class NetworkService {
    private static final long SIZE_OF_CACHE = 10 * 1024 * 1024; // 10 MiB
    private final String baseUri;
@@ -35,6 +40,10 @@ public class NetworkService {
       this.preferences = preferences;
    }
 
+   /**
+    * Этот метод позволяет получить API сайта ПТГХ.
+    * @return API сайта для доступа к скачиванию файлов расписания
+    */
    public ScheduleNetworkAPI getScheduleAPI(){
       Retrofit.Builder apiBuilder = new Retrofit.Builder()
               .baseUrl(baseUri)
