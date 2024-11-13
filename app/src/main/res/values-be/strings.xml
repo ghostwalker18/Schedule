@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Расклад ПТГГ (неафіцыйны)</string>
+    <string name="app_name">Расклад ПТГГ</string>
     <string name="settings">Настройкі</string>
     <string name="days_tab">Расклад заняткаў</string>
     <string name="times_tab">Расклад званкоў</string>

@@ -35,8 +35,8 @@
     </string-array>
 
     <string-array name="download_entries">
-        <item>For all corpuses</item>
-        <item>For first corpus</item>
-        <item>For second corpus</item>
+        <item>All corpuses</item>
+        <item>First corpus</item>
+        <item>Second corpus</item>
     </string-array>
 </resources>

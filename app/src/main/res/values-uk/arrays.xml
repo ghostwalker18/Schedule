@@ -35,8 +35,8 @@
     </string-array>
 
     <string-array name="download_entries">
-        <item>Для всіх корпусів</item>
-        <item>Для першого корпусу</item>
-        <item>Для другого корпусу</item>
+        <item>Всіх корпусів</item>
+        <item>Першого корпусу</item>
+        <item>Другого корпусу</item>
     </string-array>
 </resources>

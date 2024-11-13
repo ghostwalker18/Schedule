@@ -55,9 +55,9 @@
     </string-array>
 
     <string-array name="download_entries">
-        <item>Для всех корпусов</item>
-        <item>Для первого корпуса</item>
-        <item>Для второго корпуса</item>
+        <item>Всех корпусов</item>
+        <item>Первого корпуса</item>
+        <item>Второго корпуса</item>
     </string-array>
 
     <string-array name="download_values">
