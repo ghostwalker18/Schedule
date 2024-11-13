@@ -272,7 +272,7 @@ public class XMLStoLessonsConverter
     * @return обработанное название предмета
     */
    private static String prepareSubject(String subject){
-      return subject == null ? null : subject.trim()
+      return subject == null ? "" : subject.trim()
               .replaceAll("\\s+", " ");
    }
 }
