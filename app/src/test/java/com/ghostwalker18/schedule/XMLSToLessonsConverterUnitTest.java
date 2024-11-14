@@ -136,7 +136,7 @@ public class XMLSToLessonsConverterUnitTest {
     public void prepareSubjectTestNullInput() throws Exception {
         String input = null;
         String actualResult = (String) prepareSubject.invoke(converter, input);
-        Assert.assertNull(actualResult);
+        Assert.assertEquals("", actualResult);
     }
 
     /**
