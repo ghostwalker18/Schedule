@@ -25,6 +25,12 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+/**
+ * Этот класс используется для преобразования тела ответа Retrofit в Document библиотеки Jsoup.
+ *
+ * @author Ипатов Никита
+ * @since 3.1
+ */
 public class JsoupConverterFactory
         extends Converter.Factory {
    @Override
