@@ -47,6 +47,7 @@ public class ScheduleApp
     private AppDatabase database;
     private ScheduleRepository scheduleRepository;
     private NotesRepository notesRepository;
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
         switch (key){
@@ -77,18 +78,34 @@ public class ScheduleApp
         preferences.registerOnSharedPreferenceChangeListener(this);
     }
 
+    /**
+     * Этот метод позволяет получить доступ к экзэмпляру приложения
+     * @return приложение
+     */
     public static ScheduleApp getInstance(){
         return instance;
     }
 
+    /**
+     * Этот метод позволяет получить репозиторий заметок приложения.
+     * @return репозиторий заметок
+     */
     public NotesRepository getNotesRepository(){
         return notesRepository;
     }
 
+    /**
+     * Этот метод позволяет получить репозиторий расписания приложения.
+     * @return репозиторий расписания
+     */
     public ScheduleRepository getScheduleRepository(){
         return scheduleRepository;
     }
 
+    /**
+     * Этот метод позволяет установить тему приложения
+     * @param theme код темы (system, day, night)
+     */
     private void setTheme(String theme){
         switch (theme){
             case "system":
@@ -103,6 +120,10 @@ public class ScheduleApp
         }
     }
 
+    /**
+     * Этот метод позволяет установить язык приложения
+     * @param localeCode код языка
+     */
     private void setLocale(String localeCode){
         LocaleListCompat localeListCompat;
         if(localeCode.equals("system")){

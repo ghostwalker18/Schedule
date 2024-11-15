@@ -110,9 +110,7 @@ public class ScheduleItemFragment
          lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
       });
       date.observe(getViewLifecycleOwner(), date -> {
-         if(isDateToday(date)){
-            isOpened = true;
-         }
+         isOpened = isDateToday(date);
          button.setText(generateTitle(date, dayOfWeekID));
          lessons = repository.getLessons(state.getGroup().getValue(),
                  state.getTeacher().getValue(),
@@ -121,7 +119,7 @@ public class ScheduleItemFragment
          showTable();
       });
       setUpMode();
-      view.findViewById(R.id.notes).setOnClickListener(view1 -> openEditNotesActivity());
+      view.findViewById(R.id.notes).setOnClickListener(view1 -> openNotesActivity());
    }
 
    /**
@@ -291,7 +289,10 @@ public class ScheduleItemFragment
       return tr;
    }
 
-   private void openEditNotesActivity() {
+   /**
+    * Этот метод окрывает экран с заметками для этого дня.
+    */
+   private void openNotesActivity() {
       Bundle bundle = new Bundle();
       Intent intent = new Intent(this.getActivity(), NotesActivity.class);
       bundle.putString("group", state.getGroup().getValue());

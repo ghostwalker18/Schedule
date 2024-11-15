@@ -43,7 +43,7 @@ public interface IConverter {
  /**
   * Функциональный интерфейс для общей операции конверсии.
   */
- interface IConversion{
+ interface IConversion {
   List<Lesson> convert(Workbook excelFile);
  }
 }

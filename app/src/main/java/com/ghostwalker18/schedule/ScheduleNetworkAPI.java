@@ -28,7 +28,7 @@ import retrofit2.http.Url;
  */
 public interface ScheduleNetworkAPI {
    /**
-    * Получение файла расписания звонков на понедельник
+    * Получение файла расписания звонков на понедельник.
     *
     * @return асинхронный ответ сервера
     */
@@ -36,7 +36,7 @@ public interface ScheduleNetworkAPI {
    Call<ResponseBody> getMondayTimes();
 
    /**
-    * Получение файла расписания звонков со вторника по пятницу
+    * Получение файла расписания звонков со вторника по пятницу.
     *
     * @return асинхронный ответ сервера
     */
@@ -44,13 +44,18 @@ public interface ScheduleNetworkAPI {
    Call<ResponseBody> getOtherTimes();
 
    /**
-    * Получение файла расписания по заданному URL
+    * Получение файла расписания по заданному URL.
     *
     * @return асинхронный ответ сервера
     */
    @GET
    Call<ResponseBody> getScheduleFile(@Url String url);
 
+   /**
+    * Получение страницы с расписанием ПТГХ.
+    *
+    * @return асинхронный ответ сервера
+    */
    @GET(ScheduleApp.BASE_URI)
    Call<Document> getMainPage();
 }
