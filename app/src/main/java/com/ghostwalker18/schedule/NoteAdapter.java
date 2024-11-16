@@ -54,6 +54,10 @@ public class NoteAdapter
       this.listener = listener;
    }
 
+   /**
+    * Этот метод используется для проверки, есть ли у приложения доступ к фото в галерее.
+    * @return наличие доступа к фото
+    */
    private boolean checkPhotoAccess() {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
               (
@@ -66,11 +70,7 @@ public class NoteAdapter
               ContextCompat.checkSelfPermission(context, READ_MEDIA_VISUAL_USER_SELECTED) == PERMISSION_GRANTED
       ) {
          return true;
-      }  else if (ContextCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED) {
-         return true;
-      } else {
-         return false;
-      }
+      }  else return ContextCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED;
    }
 
    @NonNull

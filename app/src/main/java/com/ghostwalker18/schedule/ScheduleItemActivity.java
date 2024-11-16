@@ -157,6 +157,10 @@ public class ScheduleItemActivity
         return tr;
     }
 
+    /**
+     * Этот метод используется чтобы поделиться расписанием на этот день.
+     * @return
+     */
     private boolean shareSchedule(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -177,6 +181,9 @@ public class ScheduleItemActivity
         return true;
     }
 
+    /**
+     * Этот метод используется чтобы открыть экран с заметками для этого дня.
+     */
     private void openNotesActivity() {
         Bundle bundle = new Bundle();
         Intent intent = new Intent(this, NotesActivity.class);
