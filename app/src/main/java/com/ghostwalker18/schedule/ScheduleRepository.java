@@ -321,14 +321,14 @@ public class ScheduleRepository{
      * Этот метод используется для обновления БД приложения занятиями для первого корпуса
      */
     private void updateFirstCorpus(){
-        updateSchedule(this::getLinksForFirstCorpusSchedule, file -> converter.convertFirstCorpus(file));
+        updateSchedule(this::getLinksForFirstCorpusSchedule, converter::convertFirstCorpus);
     }
 
     /**
      * Этот метод используется для обновления БД приложения занятиями для второго корпуса
      */
     private void updateSecondCorpus(){
-        updateSchedule(this::getLinksForSecondCorpusSchedule, file -> converter.convertSecondCorpus(file));
+        updateSchedule(this::getLinksForSecondCorpusSchedule, converter::convertSecondCorpus);
     }
 
     /**

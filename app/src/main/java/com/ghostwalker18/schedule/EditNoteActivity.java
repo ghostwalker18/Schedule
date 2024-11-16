@@ -55,7 +55,7 @@ public class EditNoteActivity
         extends AppCompatActivity {
    private Uri photoUri;
    private boolean isSaved = false;
-   private Random nameSuffixGenerator = new Random();
+   private final Random nameSuffixGenerator = new Random();
    private TextView dateTextView;
    private EditNoteModel model;
    private AutoCompleteTextView groupField;

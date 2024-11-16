@@ -38,7 +38,6 @@ public class NotesModel
    private String keyword;
    private LiveData<Note[]> notesMediator = new MutableLiveData<>();
 
-
    /**
     * Этот метод выдает заметки для заданнной группы и временного интервала.
     * @return список заметок
@@ -77,12 +76,17 @@ public class NotesModel
             notesMediator = repository.getNotes(group,
                     generateDateSequence(startDate.getValue(), endDate.getValue()));
       }
-      notes.addSource(notesMediator, x -> notes.setValue(x));
+      notes.addSource(notesMediator, notes::setValue);
    }
 
+   /**
+    * Этот метод позволяет получить группу для выдачи заметок
+    * @return группа
+    */
    public String getGroup(){
       return group;
    }
+
    /**
     * Этот метод задает ключевое слова для поиска заметок по нему и выдачи их.
     * @param keyword ключевое слово
@@ -97,7 +101,7 @@ public class NotesModel
             notesMediator = repository.getNotes(group,
                     generateDateSequence(startDate.getValue(), endDate.getValue()));
       }
-      notes.addSource(notesMediator, x -> notes.setValue(x));
+      notes.addSource(notesMediator, notes::setValue);
    }
 
    /**
@@ -110,7 +114,7 @@ public class NotesModel
       if(startDate.getValue() != null && endDate.getValue() != null && group != null)
          notesMediator = repository.getNotes(group,
                  generateDateSequence(startDate.getValue(), endDate.getValue()));
-      notes.addSource(notesMediator, x -> notes.setValue(x));
+      notes.addSource(notesMediator, notes::setValue);
    }
 
    /**
@@ -123,7 +127,7 @@ public class NotesModel
       if(startDate.getValue() != null && endDate.getValue() != null && group != null)
          notesMediator = repository.getNotes(group,
                  generateDateSequence(startDate.getValue(), endDate.getValue()));
-      notes.addSource(notesMediator, x -> notes.setValue(x));
+      notes.addSource(notesMediator, notes::setValue);
    }
 
    /**

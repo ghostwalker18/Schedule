@@ -87,15 +87,14 @@ public class NotesFilterFragment
       });
 
       startDateField = view.findViewById(R.id.start_date);
-      model.getStartDate().observe(getViewLifecycleOwner(), date -> {
-         startDateField.setText(DateConverters.toString(date));
-      });
+      model.getStartDate().observe(getViewLifecycleOwner(), date ->
+              startDateField.setText(DateConverters.toString(date))
+      );
 
       endDateField = view.findViewById(R.id.end_date);
-      model.getEndDate().observe(getViewLifecycleOwner(), date -> {
-         endDateField.setText(DateConverters.toString(date));
-      });
-
+      model.getEndDate().observe(getViewLifecycleOwner(), date ->
+              endDateField.setText(DateConverters.toString(date))
+      );
    }
 
    /**
@@ -131,8 +130,8 @@ public class NotesFilterFragment
    public static class DatePickerFragment
            extends DialogFragment
            implements DatePickerDialog.OnDateSetListener {
+      private final String dateType;
       private NotesModel model;
-      private String dateType;
 
       public DatePickerFragment(String dateType){
          this.dateType = dateType;

@@ -139,6 +139,10 @@ public class EditNoteModel
       return theme;
    }
 
+   /**
+    * Этот метод позволяет получить список предметов у данной группы в качестве тем.
+    * @return список предлаагаемых тем
+    */
    public LiveData<String[]> getThemes(){
       return noteThemesMediator;
    }
@@ -161,6 +165,10 @@ public class EditNoteModel
       this.date.setValue(date);
    }
 
+   /**
+    * Этот метод позволяет получить id редактируемой заметки.
+    * @return id заметки
+    */
    public Integer getNoteID(){
       return note.getValue().id;
    }

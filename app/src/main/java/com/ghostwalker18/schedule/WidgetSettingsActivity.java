@@ -141,12 +141,11 @@ public class WidgetSettingsActivity
 
    public static class SettingsFragment
            extends PreferenceFragmentCompat
-           implements SharedPreferences.OnSharedPreferenceChangeListener{
-      private static SettingsFragment f = null;
+           implements SharedPreferences.OnSharedPreferenceChangeListener {
+      private final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
       public int widgetId;
       private SharedPreferences preferences;
       private ListPreference groupChoicePreference;
-      private ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
 
       public SettingsFragment(int widgetId){
          super();

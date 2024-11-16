@@ -43,7 +43,7 @@ public class JsoupConverterFactory
       return null;
    }
 
-   private class JsoupConverter implements Converter<ResponseBody, Document> {
+   private static class JsoupConverter implements Converter<ResponseBody, Document> {
       private final String baseUri;
 
       JsoupConverter(String baseUri){
