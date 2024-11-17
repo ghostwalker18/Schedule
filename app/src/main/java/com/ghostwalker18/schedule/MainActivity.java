@@ -17,6 +17,8 @@ package com.ghostwalker18.schedule;
 import android.app.DownloadManager;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
@@ -30,10 +32,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.core.content.FileProvider;
-import androidx.viewpager.widget.ViewPager;
+import androidx.lifecycle.Lifecycle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 /**
  * Этот класс представляет собой основной экран приложения.
@@ -42,7 +45,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
  */
 public class MainActivity
         extends AppCompatActivity {
-    private ViewPager pager;
+    private ViewPager2 pager;
     private DaysFragment daysFragment;
 
     @Override
@@ -53,11 +56,20 @@ public class MainActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         pager = findViewById(R.id.pager);
-        pager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
+        pager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager(), getLifecycle()));
         TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(pager);
+        new TabLayoutMediator(tabLayout, pager, (tab, position) -> {
+            switch(position){
+                case 0:
+                    tab.setText(getResources().getText(R.string.days_tab));
+                    break;
+                case 1:
+                    tab.setText(getResources().getText(R.string.times_tab));
+                    break;
+            }
+        }).attach();
         if(savedInstanceState == null){
-            daysFragment = (DaysFragment)((SectionsPagerAdapter)pager.getAdapter()).getItem(0);
+            daysFragment = (DaysFragment)((SectionPagerAdapter)pager.getAdapter()).createFragment(0);
         }
         else{
             for(Fragment fragment : getSupportFragmentManager().getFragments()){
@@ -201,41 +213,26 @@ public class MainActivity
         return true;
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private final DaysFragment daysFragment;
-        private final TimesFragment timesFragment;
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-            daysFragment = new DaysFragment();
-            timesFragment = new TimesFragment();
-        }
-
-        @Override
-        public int getCount(){
-            return 2;
+    public static class SectionPagerAdapter
+            extends FragmentStateAdapter{
+        public SectionPagerAdapter(@NonNull FragmentManager fragmentManager,
+                                   @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
         }
 
         @NonNull
-        public Fragment getItem(int position){
-            switch(position){
-                case 0:
-                    return daysFragment;
-                case 1:
-                    return timesFragment;
-                default:
-                    return new Fragment();
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position){
+                case 0: return new DaysFragment();
+                case 1: return new TimesFragment();
+                default: return new Fragment();
             }
         }
 
         @Override
-        public CharSequence getPageTitle(int position){
-            switch(position){
-                case 0:
-                    return getResources().getText(R.string.days_tab);
-                case 1:
-                    return getResources().getText(R.string.times_tab);
-            }
-            return null;
+        public int getItemCount() {
+            return 2;
         }
     }
 }
