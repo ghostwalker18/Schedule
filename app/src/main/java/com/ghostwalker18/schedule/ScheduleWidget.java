@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
@@ -52,7 +53,7 @@ public class ScheduleWidget
             group = repository.getSavedGroup();
             if(group == null)
                 group = context.getString(R.string.not_mentioned);
-        };
+        }
 
         Calendar date = Calendar.getInstance();
         switch (prefs.getString("day", "")){
@@ -184,7 +185,7 @@ public class ScheduleWidget
                         R.layout.schedule_widget_row_item);
                 if(counter % 2 == 1)
                     lessonItem.setInt(R.id.row, "setBackgroundColor",
-                            context.getResources().getColor(R.color.gray_500));
+                            ContextCompat.getColor(context, R.color.gray_500));
                 lessonItem.setTextViewText(R.id.lessonNumber, lesson.lessonNumber);
                 lessonItem.setTextViewText(R.id.subjectName, lesson.subject);
                 lessonItem.setTextViewText(R.id.teacherName, lesson.teacher);

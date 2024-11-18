@@ -188,7 +188,7 @@ public class EditNoteModel
             try {
                ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID.getValue(),
                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            } catch (Exception ignored){}
+            } catch (Exception ignored){/*Not required*/}
          }
          else
             noteToSave.photoID = null;

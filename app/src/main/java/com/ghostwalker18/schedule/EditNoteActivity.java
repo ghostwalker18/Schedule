@@ -123,7 +123,8 @@ public class EditNoteActivity
       }
 
       dateTextView = findViewById(R.id.date);
-      model.getDate().observe(this, date -> dateTextView.setText(DateConverters.toString(date)));
+      model.getDate().observe(this,
+              date -> dateTextView.setText(DateConverters.toString(date)));
 
       themeField = findViewById(R.id.theme);
       model.getTheme().observe(this, theme -> themeField.setText(theme));

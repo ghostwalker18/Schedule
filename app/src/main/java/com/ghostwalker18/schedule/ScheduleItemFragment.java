@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -129,17 +131,17 @@ public class ScheduleItemFragment
     * @return расписание на этот день
     */
    public String getSchedule(){
-      String schedule = getString(R.string.date) + ": ";
-      schedule = schedule + DateConverters.toString(date.getValue()) + "\n";
+      StringBuilder schedule = new StringBuilder(getString(R.string.date) + ": ");
+      schedule.append(DateConverters.toString(date.getValue())).append("\n");
 
-      schedule += "\n";
+      schedule.append("\n");
       for(Lesson lesson : lessons.getValue()){
-         schedule += lesson.toString();
-         schedule += "\n";
+         schedule.append(lesson.toString());
+         schedule.append("\n");
       }
-      schedule += "\n";
+      schedule.append("\n");
 
-      return schedule;
+      return schedule.toString();
    }
 
    /**
@@ -160,7 +162,9 @@ public class ScheduleItemFragment
          case "in_fragment":
             button.setOnClickListener(this::toggleSchedule);
             button.setCompoundDrawablesWithIntrinsicBounds(null, null,
-                    getResources().getDrawable(R.drawable.baseline_keyboard_arrow_down_24), null);
+                    ResourcesCompat.getDrawable(getResources(),
+                            R.drawable.baseline_keyboard_arrow_down_24,
+                            null), null);
             break;
          case "in_activity":
             button.setOnClickListener(this::openScheduleInActivity);
@@ -201,7 +205,8 @@ public class ScheduleItemFragment
       if(isOpened && mode.equals("in_fragment")){
          button.setCompoundDrawablesWithIntrinsicBounds(null,
                  null,
-                 getResources().getDrawable(R.drawable.baseline_keyboard_arrow_up_24),
+                 ResourcesCompat.getDrawable(getResources(),
+                         R.drawable.baseline_keyboard_arrow_up_24, null),
                  null);
          table.setVisibility(View.VISIBLE);
          getView().findViewById(R.id.notes).setVisibility(View.VISIBLE);
@@ -209,7 +214,8 @@ public class ScheduleItemFragment
       else{
          button.setCompoundDrawablesWithIntrinsicBounds(null,
                  null,
-                 getResources().getDrawable(R.drawable.baseline_keyboard_arrow_down_24),
+                 ResourcesCompat.getDrawable(getResources(),
+                         R.drawable.baseline_keyboard_arrow_down_24, null),
                  null);
          table.setVisibility(View.GONE);
          getView().findViewById(R.id.notes).setVisibility(View.GONE);
@@ -268,7 +274,7 @@ public class ScheduleItemFragment
          counter++;
          TableRow tr = addLesson(table, lesson);
          if(counter % 2 == 1)
-            tr.setBackgroundColor(getResources().getColor(R.color.gray_500));
+            tr.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray_500));
       }
    }
 

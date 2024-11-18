@@ -165,17 +165,17 @@ public class ScheduleItemActivity
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
 
-        String schedule = getString(R.string.date) + ": ";
-        schedule = schedule + DateConverters.toString(date) + "\n";
+        StringBuilder schedule = new StringBuilder(getString(R.string.date) + ": ");
+        schedule.append(DateConverters.toString(date)).append("\n");
 
-        schedule += "\n";
+        schedule.append("\n");
         for(Lesson lesson : lessons.getValue()){
-            schedule += lesson.toString();
-            schedule += "\n";
+            schedule.append(lesson.toString());
+            schedule.append("\n");
         }
-        schedule += "\n";
+        schedule.append("\n");
 
-        intent.putExtra(Intent.EXTRA_TEXT, schedule);
+        intent.putExtra(Intent.EXTRA_TEXT, schedule.toString());
         Intent shareIntent = Intent.createChooser(intent, null);
         startActivity(shareIntent);
         return true;
