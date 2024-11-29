@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1">
 
         <androidx.core.widget.NestedScrollView
@@ -36,11 +36,13 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/group_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/choices_text_size"
-                    android:text="@string/group_choice_text"/>
+                    android:text="@string/group_choice_text"
+                    android:labelFor="@id/group"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -60,16 +62,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:src="@drawable/baseline_clear_36"/>
+                        android:src="@drawable/baseline_clear_36"
+                        android:contentDescription="@string/days_group_clear_descr"/>
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/teacherLabel"
+                    android:id="@+id/teacher_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/choices_text_size"
-                    android:text="@string/teacher_choice_text"/>
+                    android:text="@string/teacher_choice_text"
+                    android:labelFor="@id/teacher"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,7 +93,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@null"
-                        android:src="@drawable/baseline_clear_36"/>
+                        android:src="@drawable/baseline_clear_36"
+                        android:contentDescription="@string/days_teacher_clear_descr"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -118,7 +123,8 @@
         android:src="@drawable/baseline_refresh_36"
         android:background="@null"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/update_descr"/>
 
     <LinearLayout
         android:layout_width="match_parent"

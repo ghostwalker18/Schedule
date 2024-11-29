@@ -18,13 +18,15 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="10dp"
         tools:context="com.ghostwalker18.schedule.TimesFragment"
-        android:layout_gravity="fill_vertical">
+        android:layout_gravity="fill_vertical"
+        android:baselineAligned="false">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -33,16 +35,17 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/monday_times"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:visibility="gone"
-                android:id="@+id/monday_times"/>
+                android:contentDescription="@string/times_monday"/>
 
             <ProgressBar
+                android:id="@+id/monday_times_stub"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/monday_times_stub"/>
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -52,16 +55,17 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/other_times"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:visibility="gone"
-                android:id="@+id/other_times"/>
+                android:contentDescription="@string/times_other"/>
 
             <ProgressBar
+                android:id="@+id/other_times_stub"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/other_times_stub"/>
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

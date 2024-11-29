@@ -40,7 +40,8 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="5dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/rustore_qr"/>
+        android:src="@drawable/rustore_qr"
+        android:contentDescription="@string/share_app_qr_descr"/>
 
     <TextView
         android:layout_width="match_parent"

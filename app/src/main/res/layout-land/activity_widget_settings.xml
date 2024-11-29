@@ -24,7 +24,8 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:src="@drawable/widget_light_today"/>
+        android:src="@drawable/widget_light_today"
+        android:contentDescription="@string/widget_settings_previes_descr"/>
 
     <LinearLayout
         android:orientation="vertical"

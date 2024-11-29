@@ -25,7 +25,8 @@
         android:layout_gravity="bottom"
         android:paddingBottom="10dp"
         android:visibility="gone"
-        android:src="@drawable/note_checked"/>
+        android:src="@drawable/note_checked"
+        android:contentDescription="@string/note_item_checked_descr"/>
 
     <LinearLayout
         android:id="@+id/note"
@@ -59,7 +60,8 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/note_item_photo_descr"/>
 
         <TextView
             android:id="@+id/error"

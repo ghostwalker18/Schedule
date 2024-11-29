@@ -36,7 +36,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabBackground="@drawable/tab_color_selector"/>
+            app:tabBackground="@drawable/tab_color_selector"
+            android:contentDescription="@string/main_tabs_descr"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2

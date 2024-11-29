@@ -24,7 +24,8 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
-        android:id="@+id/button"/>
+        android:id="@+id/button"
+        android:contentDescription="@string/schedule_item_show_descr"/>
 
     <TableLayout
         android:layout_width="match_parent"
@@ -72,5 +73,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:src="@drawable/baseline_notes_36"/>
+        android:src="@drawable/baseline_notes_36"
+        android:contentDescription="@string/schedule_item_notes_descr"/>
 </LinearLayout>

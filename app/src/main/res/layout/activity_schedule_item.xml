@@ -73,5 +73,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:src="@drawable/baseline_notes_36"/>
+        android:src="@drawable/baseline_notes_36"
+        android:contentDescription="@string/schedule_item_notes_descr"/>
 </LinearLayout>

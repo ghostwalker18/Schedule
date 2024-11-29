@@ -17,7 +17,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="40dp"
+    android:layout_marginStart="40dp"
     android:padding="10dp"
     android:elevation="5dp"
     android:background="@drawable/filter_custom_border">
@@ -40,7 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/baseline_clear_36"/>
+            android:src="@drawable/baseline_clear_36"
+            android:contentDescription="@string/filter_close_descr"/>
     </LinearLayout>
 
     <TextView
@@ -67,7 +68,8 @@
             android:id="@+id/group_clear"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/baseline_clear_24"/>
+            android:src="@drawable/baseline_clear_24"
+            android:contentDescription="@string/note_clear_group_descr"/>
     </LinearLayout>
 
     <LinearLayout
@@ -79,7 +81,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="5dp"
+            android:paddingEnd="5dp"
             android:textSize="@dimen/schedule_text_size"
             android:text="@string/start_date"/>
 
@@ -94,7 +96,8 @@
             android:id="@+id/set_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_keyboard_arrow_down_24"/>
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            android:contentDescription="@string/filter_start_date_descr"/>
     </LinearLayout>
 
     <LinearLayout
@@ -106,7 +109,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="5dp"
+            android:paddingEnd="5dp"
             android:textSize="@dimen/schedule_text_size"
             android:text="@string/end_date"/>
 
@@ -121,6 +124,7 @@
             android:id="@+id/set_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_keyboard_arrow_down_24"/>
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            android:contentDescription="@string/filter_end_date_descr"/>
     </LinearLayout>
 </LinearLayout>

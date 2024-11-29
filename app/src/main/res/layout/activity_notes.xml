@@ -40,10 +40,12 @@
 
             <EditText
                 android:id="@+id/search"
+                android:inputType="text"
                 android:layout_width="0.dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/baseline_search_36"/>
+                android:drawableLeft="@drawable/baseline_search_36"
+                android:importantForAutofill="no"/>
 
             <ImageButton
                 android:id="@+id/filter"
@@ -51,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:background="@null"
-                android:src="@drawable/baseline_tune_36"/>
+                android:src="@drawable/baseline_tune_36"
+                android:contentDescription="@string/notes_filter_descr"/>
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -75,5 +78,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:src="@drawable/outline_note_add_36"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:contentDescription="@string/notes_add_descr"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -62,7 +62,8 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:src="@drawable/baseline_refresh_24"
-            android:id="@+id/updateButton"/>
+            android:id="@+id/updateButton"
+            android:contentDescription="@string/update_descr"/>
     </LinearLayout>
 
     <LinearLayout
