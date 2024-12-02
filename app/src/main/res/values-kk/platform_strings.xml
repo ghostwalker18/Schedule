@@ -57,4 +57,5 @@
     <string name="update_descr">Кестені жаңарту</string>
     <string name="days_group_clear_descr">Топты тазарту</string>
     <string name="days_teacher_clear_descr">Мұғалімді тазарту</string>
+    <string name="notes_selection_cancel_descr">Жазбаларды бөлектеуді болдырмау</string>
 </resources>

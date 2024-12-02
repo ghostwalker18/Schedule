@@ -57,4 +57,5 @@
     <string name="update_descr">Update the schedule</string>
     <string name="days_group_clear_descr">Clear group</string>
     <string name="days_teacher_clear_descr">Clear teacher</string>
+    <string name="notes_selection_cancel_descr">"Сancel notes` selection "</string>
 </resources>

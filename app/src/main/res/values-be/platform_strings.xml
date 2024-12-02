@@ -57,4 +57,5 @@
     <string name="update_descr">Абнавіць расклад</string>
     <string name="days_group_clear_descr">Ачысціць групу</string>
     <string name="days_teacher_clear_descr">Ачысціць выкладчыка</string>
+    <string name="notes_selection_cancel_descr">Адмяніць вылучэнне нататак</string>
 </resources>

@@ -57,4 +57,5 @@
     <string name="update_descr">Оновити розклад</string>
     <string name="days_group_clear_descr">Очистити групу</string>
     <string name="days_teacher_clear_descr">Очистити викладача</string>
+    <string name="notes_selection_cancel_descr">Скасувати виділення нотаток</string>
 </resources>

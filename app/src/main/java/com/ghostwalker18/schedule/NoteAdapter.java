@@ -99,13 +99,11 @@ public class NoteAdapter
       if(note.photoID != null && !canAccessPhoto)
          holder.error.setText(R.string.gallery_access_denied);
       holder.itemView.setOnClickListener(v -> {
-         holder.isSelected = !holder.isSelected;
+         holder.setSelected(!holder.isSelected);
          if(holder.isSelected){
-            holder.checked.setVisibility(View.VISIBLE);
             listener.onNoteSelected(note, position);
          }
          else{
-            holder.checked.setVisibility(View.GONE);
             listener.onNoteUnselected(note, position);
          }
       });
@@ -136,6 +134,14 @@ public class NoteAdapter
          error = itemView.findViewById(R.id.error);
          photo = itemView.findViewById(R.id.image);
          checked = itemView.findViewById(R.id.checked);
+      }
+
+      public void setSelected(boolean selected) {
+         isSelected = selected;
+         if(isSelected)
+            checked.setVisibility(View.VISIBLE);
+         else
+            checked.setVisibility(View.GONE);
       }
    }
 }

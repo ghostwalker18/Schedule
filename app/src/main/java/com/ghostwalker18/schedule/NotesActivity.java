@@ -20,10 +20,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -47,18 +49,26 @@ public class NotesActivity
    private NotesModel model;
    private RecyclerView notesListView;
    private NotesFilterFragment filter;
-   private Map<Integer, Note> selectedNotes = new HashMap<>();
+   private Map<Integer, Note> selectedNotes = new ConcurrentHashMap<>();
    private final NotesRepository repository = ScheduleApp.getInstance().getNotesRepository();
    private final NoteAdapter.OnNoteClickListener listener = new NoteAdapter.OnNoteClickListener() {
       @Override
       public void onNoteSelected(Note note, int position) {
          selectedNotes.put(position, note);
+         findViewById(R.id.selectionPanel).setVisibility(View.VISIBLE);
+         findViewById(R.id.search_bar).setVisibility(View.GONE);
+         ((TextView) findViewById(R.id.selectedCount)).setText(String.valueOf(selectedNotes.size()));
          decideMenuOptions();
       }
 
       @Override
       public void onNoteUnselected(Note note, int position) {
          selectedNotes.remove(position, note);
+         if(selectedNotes.size() == 0){
+            findViewById(R.id.selectionPanel).setVisibility(View.GONE);
+            findViewById(R.id.search_bar).setVisibility(View.VISIBLE);
+         }
+         ((TextView) findViewById(R.id.selectedCount)).setText(String.valueOf(selectedNotes.size()));
          decideMenuOptions();
       }
    };
@@ -141,6 +151,16 @@ public class NotesActivity
             model.setKeyword(keyword);
          }
       });
+
+      findViewById(R.id.selectionCancel).setOnClickListener(view -> {
+         for(int position : selectedNotes.keySet()){
+            NoteAdapter.ViewHolder item = (NoteAdapter.ViewHolder) notesListView
+                    .findViewHolderForAdapterPosition(position);
+            if(item != null)
+               item.setSelected(false);
+            listener.onNoteUnselected(selectedNotes.get(position), position);
+         }
+      });
    }
 
    /**
@@ -182,7 +202,7 @@ public class NotesActivity
       intent.putExtra(Intent.EXTRA_TEXT, notes);
       Intent shareIntent = Intent.createChooser(intent, null);
       startActivity(shareIntent);
-      selectedNotes = new HashMap<>();
+      selectedNotes = new ConcurrentHashMap<>();
       decideMenuOptions();
       return true;
    }
@@ -193,7 +213,7 @@ public class NotesActivity
     */
    private boolean deleteNotes(){
       repository.deleteNotes(selectedNotes.values());
-      selectedNotes = new HashMap<>();
+      selectedNotes = new ConcurrentHashMap<>();
       decideMenuOptions();
       return true;
    }
@@ -207,7 +227,7 @@ public class NotesActivity
       Intent intent = new Intent(this, EditNoteActivity.class);
       intent.putExtra("noteID", selectedNotes.entrySet().iterator().next().getValue().id);
       startActivity(intent);
-      selectedNotes = new HashMap<>();
+      selectedNotes = new ConcurrentHashMap<>();
       decideMenuOptions();
       return true;
    }

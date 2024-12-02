@@ -216,12 +216,12 @@ public class DaysFragment
    private void enableTeacherSearch(){
       boolean addTeacherSearch = prefs.getBoolean("addTeacherSearch", false);
       if(addTeacherSearch){
-         view.findViewById(R.id.teacherLabel).setVisibility(View.VISIBLE);
+         view.findViewById(R.id.teacher_label).setVisibility(View.VISIBLE);
          view.findViewById(R.id.clear_teacher).setVisibility(View.VISIBLE);
          teacherSearch.setVisibility(View.VISIBLE);
       }
       else{
-         view.findViewById(R.id.teacherLabel).setVisibility(View.GONE);
+         view.findViewById(R.id.teacher_label).setVisibility(View.GONE);
          view.findViewById(R.id.clear_teacher).setVisibility(View.GONE);
          state.setTeacher(null);
          teacherSearch.setText("");
