@@ -75,7 +75,7 @@ public class NotesFilterFragment
       groupField = view.findViewById(R.id.group);
       groupField.setText(model.getGroup());
       repository.getGroups().observe(getViewLifecycleOwner(), groups -> {
-         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
                  R.layout.autocomplete_item_layout, groups);
          groupField.setAdapter(adapter);
       });

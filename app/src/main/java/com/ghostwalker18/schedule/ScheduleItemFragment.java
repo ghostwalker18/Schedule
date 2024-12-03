@@ -79,7 +79,7 @@ public class ScheduleItemFragment
       state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
       repository = ScheduleApp.getInstance().getScheduleRepository();
       dayOfWeekID = getArguments().getInt("dayOfWeek");
-      preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+      preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
       preferences.registerOnSharedPreferenceChangeListener(this);
    }
 
@@ -93,7 +93,7 @@ public class ScheduleItemFragment
    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
       super.onViewCreated(view, savedInstanceState);
       button = view.findViewById(R.id.button);
-      button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+      button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
       state.getCalendar().observe(getViewLifecycleOwner(),
               calendar -> date.setValue(new Calendar.Builder()
@@ -274,7 +274,7 @@ public class ScheduleItemFragment
          counter++;
          TableRow tr = addLesson(table, lesson);
          if(counter % 2 == 1)
-            tr.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray_500));
+            tr.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.gray_500));
       }
    }
 

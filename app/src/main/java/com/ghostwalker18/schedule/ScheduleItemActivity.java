@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -131,7 +132,7 @@ public class ScheduleItemActivity
             counter++;
             TableRow tr = addLesson(table, tableRowLayout, lesson);
             if(counter % 2 == 1)
-                tr.setBackgroundColor(getResources().getColor(R.color.gray_500));
+                tr.setBackgroundColor(ContextCompat.getColor(this, R.color.gray_500));
         }
     }
 

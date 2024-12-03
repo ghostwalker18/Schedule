@@ -58,7 +58,7 @@ public class DaysFragment
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+      prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
       prefs.registerOnSharedPreferenceChangeListener(this);
       state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
       if(savedInstanceState == null){
@@ -163,7 +163,7 @@ public class DaysFragment
       });
 
       repository.getGroups().observe(getViewLifecycleOwner(), strings -> {
-         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
                  R.layout.autocomplete_item_layout, strings);
          groupSearch.setAdapter(adapter);
          state.setGroup(groupSearch.getText().toString());
@@ -203,7 +203,7 @@ public class DaysFragment
       });
 
       repository.getTeachers().observe(getViewLifecycleOwner(), strings -> {
-         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
                  R.layout.autocomplete_item_layout, strings);
          teacherSearch.setAdapter(adapter);
       });

@@ -203,7 +203,7 @@ public class ScheduleRepository{
             }
             return links;
         }
-        catch(IOException e){
+        catch (IOException e){
             return links;
         }
    }
@@ -272,37 +272,33 @@ public class ScheduleRepository{
         File otherTimesFile = new File(context.getFilesDir(), OTHER_TIMES_PATH);
         if(!preferences.getBoolean("doNotUpdateTimes", true) ||
                 !mondayTimesFile.exists() || !otherTimesFile.exists()){
-            Call<ResponseBody> mondayTimesResponse = api.getMondayTimes();
-            mondayTimesResponse.enqueue(new Callback<ResponseBody>() {
+            api.getMondayTimes().enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    if(response.body() != null){
-                        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                        response.body().close();
+                    try(ResponseBody body = response.body();
+                        FileOutputStream outputStream = context
+                                .openFileOutput(MONDAY_TIMES_PATH, Context.MODE_PRIVATE)
+                    ){
+                        Bitmap bitmap = BitmapFactory.decodeStream(body.byteStream());
                         mondayTimes.postValue(bitmap);
-                        try (FileOutputStream outputStream = context.openFileOutput(MONDAY_TIMES_PATH,
-                                Context.MODE_PRIVATE)){
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                        } catch (IOException ignored) {/*Not required*/}
-                    }
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    } catch (Exception ignored) {/*Not required*/}
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {/*Not required*/}
             });
-            Call<ResponseBody> otherTimesResponse = api.getOtherTimes();
-            otherTimesResponse.enqueue(new Callback<ResponseBody>() {
+            api.getOtherTimes().enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    if(response.body() != null){
-                        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    try(ResponseBody body = response.body();
+                        FileOutputStream outputStream = context
+                                .openFileOutput(OTHER_TIMES_PATH, Context.MODE_PRIVATE)
+                    ){
+                        Bitmap bitmap = BitmapFactory.decodeStream(body.byteStream());
                         otherTimes.postValue(bitmap);
-                        response.body().close();
-                        try (FileOutputStream outputStream = context.openFileOutput(OTHER_TIMES_PATH,
-                                Context.MODE_PRIVATE)) {
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                        } catch (IOException ignored) {/*Not required*/}
-                    }
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    } catch (Exception ignored) {/*Not required*/}
                 }
 
                 @Override
@@ -348,21 +344,20 @@ public class ScheduleRepository{
             api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    if(response.body() != null){
-                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
-                        ZipSecureFile.setMinInflateRatio(0.0075);
-                        try(Workbook excelFile = StreamingReader.builder()
+                    try(ResponseBody body = response.body();
+                        Workbook excelFile = StreamingReader.builder()
                                 .rowCacheSize(10)
                                 .bufferSize(4096)
-                                .open(response.body().byteStream())){
-                            List<Lesson> lessons = parser.convert(excelFile);
-                            db.lessonDao().insertMany(lessons);
-                            status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
-                        }
-                        catch (Exception e){
-                            status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
-                        }
-                        response.body().close();
+                                .open(body.byteStream())
+                    ){
+                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                        ZipSecureFile.setMinInflateRatio(0.0075);
+                        List<Lesson> lessons = parser.convert(excelFile);
+                        db.lessonDao().insertMany(lessons);
+                        status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
+                    }
+                    catch (Exception e){
+                        status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
                     }
                 }
 
