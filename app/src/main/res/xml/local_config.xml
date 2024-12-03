@@ -12,7 +12,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+<locale-config
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <locale android:name="en"/>
     <locale android:name="ru"/>
     <locale android:name="be"/>

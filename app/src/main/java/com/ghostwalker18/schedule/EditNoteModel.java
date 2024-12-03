@@ -38,9 +38,15 @@ public class EditNoteModel
    private final MutableLiveData<String> theme = new MutableLiveData<>("");
    private final MutableLiveData<String> text = new MutableLiveData<>("");
    private final MutableLiveData<Uri> photoID = new MutableLiveData<>();
-   private final MutableLiveData<Calendar> date = new MutableLiveData<>();
-   private final MutableLiveData<String> group = new MutableLiveData<>();
+   private final MutableLiveData<Calendar> date = new MutableLiveData<>(Calendar.getInstance());
+   private final MutableLiveData<String> group = new MutableLiveData<>(scheduleRepository.getSavedGroup());
    private boolean isEdited = false;
+
+   EditNoteModel(){
+      super();
+      noteThemesMediator.addSource(scheduleRepository.getSubjects(
+              scheduleRepository.getSavedGroup()), noteThemesMediator::setValue);
+   }
 
    /**
     * Этот метод позволяет задать id заметки для редактирования.

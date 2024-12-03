@@ -32,12 +32,16 @@ public class NotesModel
         extends ViewModel {
    private final NotesRepository repository = ScheduleApp.getInstance().getNotesRepository();
    private final MediatorLiveData<Note[]> notes = new MediatorLiveData<>();
-   private final MutableLiveData<Calendar> startDate = new MutableLiveData<>();
-   private final MutableLiveData<Calendar> endDate = new MutableLiveData<>();
+   private final MutableLiveData<Calendar> startDate = new MutableLiveData<>(Calendar.getInstance());
+   private final MutableLiveData<Calendar> endDate = new MutableLiveData<>(Calendar.getInstance());
    private String group;
    private String keyword;
    private LiveData<Note[]> notesMediator = new MutableLiveData<>();
 
+   NotesModel(){
+      super();
+      setGroup(ScheduleApp.getInstance().getScheduleRepository().getSavedGroup());
+   }
    /**
     * Этот метод выдает заметки для заданнной группы и временного интервала.
     * @return список заметок

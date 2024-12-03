@@ -112,8 +112,6 @@ public class EditNoteActivity
          if(bundle.getInt("noteID") != 0){
             model.setNoteID(bundle.getInt("noteID"));
             actionBar.setTitle(R.string.edit_note);
-         } else {
-            actionBar.setTitle(R.string.add_note);
          }
 
          if(bundle.getString("group") != null)
