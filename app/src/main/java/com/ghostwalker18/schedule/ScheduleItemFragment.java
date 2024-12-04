@@ -14,6 +14,10 @@
 
 package com.ghostwalker18.schedule;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -208,10 +212,19 @@ public class ScheduleItemFragment
                  ResourcesCompat.getDrawable(getResources(),
                          R.drawable.baseline_keyboard_arrow_up_24, null),
                  null);
-         table.setVisibility(View.VISIBLE);
-         getView().findViewById(R.id.notes).setVisibility(View.VISIBLE);
-      }
-      else{
+         AnimatorSet open = (AnimatorSet) AnimatorInflater
+                 .loadAnimator(requireContext(), R.animator.drop_down);
+         open.setTarget(table);
+         open.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+               super.onAnimationStart(animation);
+               table.setVisibility(View.VISIBLE);
+               getView().findViewById(R.id.notes).setVisibility(View.VISIBLE);
+            }
+         });
+         open.start();
+      } else {
          button.setCompoundDrawablesWithIntrinsicBounds(null,
                  null,
                  ResourcesCompat.getDrawable(getResources(),
@@ -285,13 +298,15 @@ public class ScheduleItemFragment
     * @return ряд таблицы, куда было добавлено занятие
     */
    private TableRow addLesson(TableLayout table, Lesson lesson){
-      LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      LayoutInflater inflater = (LayoutInflater) getContext()
+              .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
       ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber);
       ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
       ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
       ((TextView)tr.findViewById(R.id.room)).setText(lesson.roomNumber);
-      table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+      table.addView(tr, new TableLayout.LayoutParams(
+              TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
       return tr;
    }
 
