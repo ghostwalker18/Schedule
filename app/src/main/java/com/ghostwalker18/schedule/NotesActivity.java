@@ -50,6 +50,7 @@ public class NotesActivity
    private Calendar startDate;
    private Calendar endDate;
    private boolean isEditAvailable, isDeleteAvailable, isShareAvailable = false;
+   private boolean isEditChanged, isDeleteChanged, isSharedChanged = true;
    private NotesModel model;
    private RecyclerView notesListView;
    private NotesFilterFragment filter;
@@ -100,9 +101,18 @@ public class NotesActivity
 
    @Override
    public boolean onPrepareOptionsMenu(Menu menu) {
-      toggleMenuItem(menu, R.id.action_edit, isEditAvailable);
-      toggleMenuItem(menu, R.id.action_delete, isDeleteAvailable);
-      toggleMenuItem(menu, R.id.action_share, isShareAvailable);
+      if(isEditChanged){
+         toggleMenuItem(menu, R.id.action_edit, isEditAvailable);
+         isEditChanged = false;
+      }
+      if(isDeleteChanged){
+         toggleMenuItem(menu, R.id.action_delete, isDeleteAvailable);
+         isDeleteChanged = false;
+      }
+      if(isSharedChanged){
+         toggleMenuItem(menu, R.id.action_share, isShareAvailable);
+         isSharedChanged = false;
+      }
       return true;
    }
 
@@ -232,52 +242,52 @@ public class NotesActivity
 
    /**
     * Этот метод позволяет поделиться выбранными заметками.
-    * @return
     */
-   private boolean shareNotes(){
+   private void shareNotes(){
       Intent intent = new Intent(Intent.ACTION_SEND);
       intent.setType("text/plain");
-      String notes = "";
+      StringBuilder notes = new StringBuilder();
       for(Note note : selectedNotes.values()){
-         notes += note.toString() + "\n";
+         notes.append(note.toString()).append("\n");
       }
-      intent.putExtra(Intent.EXTRA_TEXT, notes);
+      intent.putExtra(Intent.EXTRA_TEXT, notes.toString());
       Intent shareIntent = Intent.createChooser(intent, null);
       startActivity(shareIntent);
       resetSelection();
       decideMenuOptions();
-      return true;
    }
 
    /**
     * Этот метод позволяет удалить выбранные заметки.
-    * @return
     */
-   private boolean deleteNotes(){
+   private void deleteNotes(){
       repository.deleteNotes(selectedNotes.values());
       resetSelection();
       decideMenuOptions();
-      return true;
    }
 
    /**
     * Этот метод позволяет, если выбранна одна заметка,
     * открыть экран приложения для ее редактирования.
-    * @return
     */
-   private boolean openEditNote(){
+   private void openEditNote(){
       Intent intent = new Intent(this, EditNoteActivity.class);
       intent.putExtra("noteID", selectedNotes.entrySet().iterator().next().getValue().id);
       startActivity(intent);
       selectedNotes = new ConcurrentHashMap<>();
       decideMenuOptions();
-      return true;
    }
 
    /**
     * Этот метод позволяет определить, какие опции должны быть в меню.
     */
    private void decideMenuOptions(){
+      if(isEditAvailable != (selectedNotes.size() == 1))
+         isEditChanged = true;
+      if(isShareAvailable != (selectedNotes.size() > 0))
+         isSharedChanged = true;
+      if(isDeleteAvailable != (selectedNotes.size() > 0))
+         isDeleteChanged = true;
       isEditAvailable = (selectedNotes.size() == 1);
       isShareAvailable = (selectedNotes.size() > 0);
       isDeleteAvailable = (selectedNotes.size() > 0);
