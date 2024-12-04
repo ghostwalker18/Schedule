@@ -48,8 +48,8 @@ public class NotesActivity
    private String group;
    private Calendar startDate;
    private Calendar endDate;
-   private boolean isEditAvailable, isDeleteAvailable, isShareAvailable = false;
-   private boolean isEditChanged, isDeleteChanged, isSharedChanged = true;
+   private boolean isEditAvailable, isDeleteAvailable, isShareAvailable;
+   private boolean isEditChanged = true, isDeleteChanged = true, isSharedChanged = true;
    private NotesModel model;
    private RecyclerView notesListView;
    private NotesFilterFragment filter;
