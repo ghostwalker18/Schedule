@@ -21,7 +21,6 @@ import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -151,13 +150,7 @@ public class NotesActivity
       findViewById(R.id.edit_note).setOnClickListener(v-> openAddNote());
 
       EditText search = findViewById(R.id.search);
-      search.addTextChangedListener(new TextWatcher() {
-         @Override
-         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {/*Not required*/}
-
-         @Override
-         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {/*Not required*/}
-
+      search.addTextChangedListener(new TextWatcherAdapter() {
          @Override
          public void afterTextChanged(Editable editable) {
             String keyword = editable.toString().trim();

@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +127,14 @@ public class DaysFragment
    }
 
    /**
+    * Этот метод используется для получения доступа к элементам расписания.
+    * @return список отдельных элементов расписания
+    */
+   public List<ScheduleItemFragment> getDays(){
+      return days;
+   }
+
+   /**
     * Этот метод используется для настройки элемента поиска по группе.
     */
    private void setUpGroupSearch(){
@@ -139,13 +146,7 @@ public class DaysFragment
                  .getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
-      groupSearch.addTextChangedListener(new TextWatcher() {
-         @Override
-         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {/*Not required*/}
-
-         @Override
-         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {/*Not required*/}
-
+      groupSearch.addTextChangedListener(new TextWatcherAdapter() {
          @Override
          public void afterTextChanged(Editable editable) {
             if(editable.toString().equals(""))
@@ -182,13 +183,7 @@ public class DaysFragment
                  .getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
-      teacherSearch.addTextChangedListener(new TextWatcher() {
-         @Override
-         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {/*Not required*/}
-
-         @Override
-         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {/*Not required*/}
-
+      teacherSearch.addTextChangedListener(new TextWatcherAdapter() {
          @Override
          public void afterTextChanged(Editable editable) {
             if(editable.toString().equals(""))
@@ -227,13 +222,5 @@ public class DaysFragment
          teacherSearch.setText("");
          teacherSearch.setVisibility(View.GONE);
       }
-   }
-
-   /**
-    * Этот метод используется для получения доступа к элементам расписания.
-    * @return список отдельных элементов расписания
-    */
-   public List<ScheduleItemFragment> getDays(){
-      return days;
    }
 }
