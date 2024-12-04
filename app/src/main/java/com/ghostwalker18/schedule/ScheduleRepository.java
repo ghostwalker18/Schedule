@@ -193,7 +193,8 @@ public class ScheduleRepository{
         List<String> links = new ArrayList<>();
         try{
             Document doc = api.getMainPage().execute().body();
-            Elements linkElements = doc.select(MAIN_SELECTOR).get(0)
+            Elements linkElements = doc
+                    .select(MAIN_SELECTOR).get(0)
                     .select("tr").get(1)
                     .select("td").get(0)
                     .select("a");

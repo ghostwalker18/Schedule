@@ -19,20 +19,20 @@
     <item
         android:id="@+id/action_share"
         android:title="@string/share"
-        android:icon="@drawable/baseline_share_48"
+        android:icon="@drawable/baseline_share_36"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_download"
         android:title="@string/download_schedule"
-        android:icon="@drawable/baseline_download_48"
+        android:icon="@drawable/baseline_download_36"
         android:orderInCategory="2"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
-        android:icon="@drawable/baseline_settings_48"
+        android:icon="@drawable/baseline_settings_36"
         android:orderInCategory="3"
         app:showAsAction="ifRoom"/>
 </menu>

@@ -135,7 +135,7 @@ public class DaysFragment
       groupSearch.setOnItemClickListener((adapterView, view1, i, l) -> {
          String group = adapterView.getItemAtPosition(i).toString();
          state.setGroup(group);
-         InputMethodManager in = (InputMethodManager)getContext()
+         InputMethodManager in = (InputMethodManager)requireContext()
                  .getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });
@@ -178,7 +178,7 @@ public class DaysFragment
       teacherSearch.setOnItemClickListener((adapterView, view1, i, l) -> {
          String teacher = adapterView.getItemAtPosition(i).toString();
          state.setTeacher(teacher);
-         InputMethodManager in = (InputMethodManager)getContext()
+         InputMethodManager in = (InputMethodManager)requireContext()
                  .getSystemService(Context.INPUT_METHOD_SERVICE);
          in.hideSoftInputFromWindow(view1.getApplicationWindowToken(), 0);
       });

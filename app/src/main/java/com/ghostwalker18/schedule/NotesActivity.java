@@ -14,6 +14,10 @@
 
 package com.ghostwalker18.schedule;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,11 +26,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -76,29 +81,30 @@ public class NotesActivity
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
       getMenuInflater().inflate(R.menu.menu_notes_activity, menu);
+
+      ImageView editItemView = (ImageView) menu.findItem(R.id.action_edit).getActionView();
+      editItemView.setImageResource(R.drawable.baseline_edit_document_36);
+      editItemView.setPadding(20,10,20,10);
+      editItemView.setOnClickListener(view -> openEditNote());
+
+      ImageView deleteItemView = (ImageView) menu.findItem(R.id.action_delete).getActionView();
+      deleteItemView.setImageResource(R.drawable.baseline_delete_36);
+      deleteItemView.setPadding(20,10,20,10);
+      deleteItemView.setOnClickListener(view -> deleteNotes());
+
+      ImageView shareItemView = (ImageView) menu.findItem(R.id.action_share).getActionView();
+      shareItemView.setImageResource(R.drawable.baseline_share_36);
+      shareItemView.setPadding(20,10,20,10);
+      shareItemView.setOnClickListener(view -> shareNotes());
       return true;
    }
 
    @Override
    public boolean onPrepareOptionsMenu(Menu menu) {
-      menu.findItem(R.id.action_edit).setVisible(isEditAvailable);
-      menu.findItem(R.id.action_delete).setVisible(isDeleteAvailable);
-      menu.findItem(R.id.action_share).setVisible(isShareAvailable);
+      toggleMenuItem(menu, R.id.action_edit, isEditAvailable);
+      toggleMenuItem(menu, R.id.action_delete, isDeleteAvailable);
+      toggleMenuItem(menu, R.id.action_share, isShareAvailable);
       return true;
-   }
-
-   @Override
-   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-      if(item.getItemId() == R.id.action_share){
-         return shareNotes();
-      }
-      if(item.getItemId() == R.id.action_delete){
-         return deleteNotes();
-      }
-      if(item.getItemId() == R.id.action_edit){
-         return openEditNote();
-      }
-      return super.onOptionsItemSelected(item);
    }
 
    @Override
@@ -152,15 +158,52 @@ public class NotesActivity
          }
       });
 
-      findViewById(R.id.selectionCancel).setOnClickListener(view -> {
-         for(int position : selectedNotes.keySet()){
-            NoteAdapter.ViewHolder item = (NoteAdapter.ViewHolder) notesListView
-                    .findViewHolderForAdapterPosition(position);
-            if(item != null)
-               item.setSelected(false);
-            listener.onNoteUnselected(selectedNotes.get(position), position);
-         }
-      });
+      findViewById(R.id.selectionCancel).setOnClickListener(view -> resetSelection());
+   }
+
+   /**
+    * Этот метод отвечает за появление/скрытие элемента меню.
+    */
+   private void toggleMenuItem(Menu menu, int menuItemID, boolean isAvailable){
+      AnimatorSet open = (AnimatorSet) AnimatorInflater
+              .loadAnimator(this, R.animator.menu_item_appear);
+      AnimatorSet close = (AnimatorSet) AnimatorInflater
+              .loadAnimator(this, R.animator.menu_item_disappear);
+      MenuItem menuItem = menu.findItem(menuItemID);
+      if(isAvailable){
+         open.setTarget(menuItem.getActionView());
+         open.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+               super.onAnimationStart(animation);
+               menuItem.setVisible(true);
+            }
+         });
+         open.start();
+      } else {
+         close.setTarget(menuItem.getActionView());
+         close.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+               super.onAnimationEnd(animation);
+               menuItem.setVisible(false);
+            }
+         });
+         close.start();
+      }
+   }
+
+   /**
+    * Этот метод сбрасывает выделение всех заметок.
+    */
+   private void resetSelection(){
+      for(int position : selectedNotes.keySet()){
+         NoteAdapter.ViewHolder item = (NoteAdapter.ViewHolder) notesListView
+                 .findViewHolderForAdapterPosition(position);
+         if(item != null)
+            item.setSelected(false);
+         listener.onNoteUnselected(selectedNotes.get(position), position);
+      }
    }
 
    /**
@@ -202,7 +245,7 @@ public class NotesActivity
       intent.putExtra(Intent.EXTRA_TEXT, notes);
       Intent shareIntent = Intent.createChooser(intent, null);
       startActivity(shareIntent);
-      selectedNotes = new ConcurrentHashMap<>();
+      resetSelection();
       decideMenuOptions();
       return true;
    }
@@ -213,7 +256,7 @@ public class NotesActivity
     */
    private boolean deleteNotes(){
       repository.deleteNotes(selectedNotes.values());
-      selectedNotes = new ConcurrentHashMap<>();
+      resetSelection();
       decideMenuOptions();
       return true;
    }
