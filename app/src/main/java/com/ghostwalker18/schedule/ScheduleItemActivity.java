@@ -142,7 +142,7 @@ public class ScheduleItemActivity
      * @param table таблица для добавления ряда
      * @param tableRowLayout id макета ряда
      * @param lesson занятие
-     * @return
+     * @return заполненный ряд таблицы
      */
     private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -160,7 +160,6 @@ public class ScheduleItemActivity
 
     /**
      * Этот метод используется чтобы поделиться расписанием на этот день.
-     * @return
      */
     private boolean shareSchedule(){
         Intent intent = new Intent(Intent.ACTION_SEND);

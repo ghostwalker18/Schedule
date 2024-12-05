@@ -80,7 +80,7 @@ public class EditNoteModel
 
    /**
     * Этот метод позволяет получить группу заметки.
-    * @return
+    * @return название группы
     */
    public LiveData<String> getGroup(){
       return group;
@@ -104,7 +104,7 @@ public class EditNoteModel
 
    /**
     * Этот метод позволяет получить ID фотографии, прикрепленной к заметке.
-    * @return
+    * @return идентификатор фотографии
     */
    public LiveData<Uri> getPhotoID(){
       return photoID;
@@ -139,7 +139,7 @@ public class EditNoteModel
 
    /**
     * Этот метод позволяет получить тему заметки.
-    * @return
+    * @return тема
     */
    public LiveData<String> getTheme(){
       return theme;

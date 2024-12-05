@@ -115,11 +115,11 @@ public class WidgetSettingsActivity
             UiModeManager uiModeManager = (UiModeManager)getSystemService(Context.UI_MODE_SERVICE);
             int currentNightMode = uiModeManager.getNightMode();
             switch (currentNightMode) {
-               case UiModeManager.MODE_NIGHT_NO:
-                  previewName += "_light";
-                  break;
                case UiModeManager.MODE_NIGHT_YES:
                   previewName += "_dark";
+                  break;
+               default:
+                  previewName += "_light";
                   break;
             }
             break;

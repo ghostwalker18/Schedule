@@ -15,7 +15,6 @@
 package com.ghostwalker18.schedule;
 
 import android.content.res.Resources;
-
 import java.util.Calendar;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

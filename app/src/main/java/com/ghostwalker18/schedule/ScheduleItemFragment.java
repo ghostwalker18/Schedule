@@ -149,8 +149,8 @@ public class ScheduleItemFragment
    }
 
    /**
-    * Этот метод позволяет узнать, открыто ли расписание для промотра.
-    * @return
+    * Этот метод позволяет узнать, открыто ли расписание для просмотра.
+    * @return открыто ли окно
     */
    public boolean isOpened(){
       return isOpened;
@@ -266,7 +266,7 @@ public class ScheduleItemFragment
    /**
     * Этот метод используется для проверки, является ли заданная дата сегодняшним днем.
     * @param date дата для проверки
-    * @return
+    * @return сегодня ли дата
     */
    private boolean isDateToday(Calendar date){
       Calendar rightNow = Calendar.getInstance();

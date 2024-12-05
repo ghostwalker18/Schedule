@@ -117,17 +117,17 @@ public class MainActivity
     private boolean shareSchedule(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        String schedule = "";
+        StringBuilder schedule = new StringBuilder();
         for(ScheduleItemFragment day : daysFragment.getDays()){
             if(day.isOpened()){
-                schedule += day.getSchedule();
+                schedule.append(day.getSchedule());
             }
         }
-        if(schedule.equals("")){
+        if(schedule.toString().equals("")){
             Toast.makeText(this, R.string.nothing_to_share, Toast.LENGTH_SHORT).show();
             return true;
         }
-        intent.putExtra(Intent.EXTRA_TEXT, schedule);
+        intent.putExtra(Intent.EXTRA_TEXT, schedule.toString());
         Intent shareIntent = Intent.createChooser(intent, null);
         startActivity(shareIntent);
         return true;

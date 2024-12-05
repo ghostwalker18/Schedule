@@ -275,12 +275,9 @@ public class NotesActivity
     * Этот метод позволяет определить, какие опции должны быть в меню.
     */
    private void decideMenuOptions(){
-      if(isEditAvailable != (selectedNotes.size() == 1))
-         isEditChanged = true;
-      if(isShareAvailable != (selectedNotes.size() > 0))
-         isSharedChanged = true;
-      if(isDeleteAvailable != (selectedNotes.size() > 0))
-         isDeleteChanged = true;
+      isEditChanged = (isEditAvailable != (selectedNotes.size() == 1));
+      isSharedChanged = (isShareAvailable != (selectedNotes.size() > 0));
+      isDeleteChanged = (isDeleteAvailable != (selectedNotes.size() > 0));
       isEditAvailable = (selectedNotes.size() == 1);
       isShareAvailable = (selectedNotes.size() > 0);
       isDeleteAvailable = (selectedNotes.size() > 0);

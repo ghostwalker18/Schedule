@@ -92,20 +92,6 @@ public interface LessonDao {
     LiveData<String[]> getSubjectsForGroup(String group);
 
     /**
-     * Этот метод позволяет вставить элемент Lesson в БД.
-     * @param lesson занятия
-     */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    ListenableFuture<Long> insert(Lesson lesson);
-
-    /**
-     * Этот метод позволяет вставить элементы Lesson в БД.
-     * @param lessons занятия
-     */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    ListenableFuture<List<Long>> insertMany(Lesson... lessons);
-
-    /**
      * Этот метод позволяет вставить элементы Lesson в БД.
      * @param lessons занятия
      */

@@ -76,7 +76,7 @@ public interface NoteDao {
     /**
      * Этот метод позволяет внести заметку в БД.
      * @param note заметка
-     * @return
+     * @return количество внесенных изменений
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     ListenableFuture<Long> insert(Note note);
@@ -84,7 +84,7 @@ public interface NoteDao {
     /**
      * Этот метод позволяет обновить заметку из БД.
      * @param note заметка
-     * @return
+     * @return количество внесенных изменений
      */
     @Update
     ListenableFuture<Integer> update(Note note);
@@ -92,7 +92,7 @@ public interface NoteDao {
     /**
      * Этот метод позволяет удалить заметку из БД.
      * @param note заметка
-     * @return
+     * @return количество внесенных изменений
      */
     @Delete
     ListenableFuture<Integer> delete(Note note);

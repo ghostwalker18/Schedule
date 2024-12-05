@@ -97,7 +97,7 @@ public class RowCache {
         /**
          * Этот метод задает размер кэша.
          * @param size размер кэша в строках
-         * @return
+         * @return объект строителя
          */
         public Builder setSize(int size){
             this.size = size;
@@ -107,7 +107,7 @@ public class RowCache {
         /**
          * Этот метод задает лист для кэша.
          * @param sheet лист
-         * @return
+         * @return объект строителя
          */
         public Builder setSheet(Sheet sheet){
             this.sheet = sheet;
