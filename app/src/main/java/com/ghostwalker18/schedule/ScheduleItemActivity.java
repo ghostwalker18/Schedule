@@ -141,7 +141,8 @@ public class ScheduleItemActivity
     private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);
-        if(Utils.isLessonAvailable(lesson.date, lesson.times) != null){
+        if(Utils.isLessonAvailable(lesson.date, lesson.times) != null
+                && Utils.isDateToday(lesson.date)){
             switch (Utils.isLessonAvailable(lesson.date, lesson.times)){
                 case ENDED:
                     ((ImageView)tr.findViewById(R.id.available))

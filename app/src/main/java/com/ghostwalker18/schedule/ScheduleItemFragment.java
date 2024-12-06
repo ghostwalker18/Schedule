@@ -277,7 +277,8 @@ public class ScheduleItemFragment
       LayoutInflater inflater = (LayoutInflater) getContext()
               .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
-      if(Utils.isLessonAvailable(lesson.date, lesson.times) != null){
+      if(Utils.isLessonAvailable(lesson.date, lesson.times) != null
+              && Utils.isDateToday(lesson.date)){
          switch (Utils.isLessonAvailable(lesson.date, lesson.times)){
             case ENDED:
                ((ImageView)tr.findViewById(R.id.available))
