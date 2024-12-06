@@ -34,6 +34,12 @@
 
         <TableRow>
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/outline_event_available_24"
+                android:visibility="invisible"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight=".10"

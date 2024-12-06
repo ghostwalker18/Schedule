@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import okhttp3.internal.Util;
 
 /**
  * Этот класс представляет собой экран приложения для отображения расписания на день.
@@ -103,19 +105,11 @@ public class ScheduleItemActivity
      */
     private String generateTitle(Calendar date){
         String title = getString(R.string.day_table);
-        int month = date.get(Calendar.MONTH) + 1;
-        //Formatting month number with leading zero
-        String monthString = String.valueOf(month);
-        if(month < 10){
-            monthString = "0" + monthString;
+        title = title + " " + Utils.generateDateForTitle(date);
+        if(Utils.isDateToday(date)){
+            title = title + " - " + getResources().getString(R.string.today);
         }
-        int day = date.get(Calendar.DAY_OF_MONTH);
-        String dayString = String.valueOf(day);
-        //Formatting day number with leading zero
-        if(day < 10){
-            dayString = "0" + dayString;
-        }
-        return title + " " + dayString + "/" + monthString;
+        return title ;
     }
 
     /**
@@ -147,6 +141,22 @@ public class ScheduleItemActivity
     private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);
+        if(Utils.isLessonAvailable(lesson.date, lesson.times) != null){
+            switch (Utils.isLessonAvailable(lesson.date, lesson.times)){
+                case ENDED:
+                    ((ImageView)tr.findViewById(R.id.available))
+                            .setImageResource(R.drawable.outline_event_busy_24);
+                    break;
+                case STARTED:
+                    ((ImageView)tr.findViewById(R.id.available))
+                            .setImageResource(R.drawable.outline_access_time_24);
+                    break;
+                case NOT_STARTED:
+                    ((ImageView)tr.findViewById(R.id.available))
+                            .setImageResource(R.drawable.outline_event_available_24);
+                    break;
+            }
+        }
         ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber);
         ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
         ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
@@ -154,7 +164,8 @@ public class ScheduleItemActivity
         TextView timesView = tr.findViewById(R.id.times);
         if(timesView != null)
             timesView.setText(lesson.times);
-        table.addView(tr,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        table.addView(tr,new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
         return tr;
     }
 

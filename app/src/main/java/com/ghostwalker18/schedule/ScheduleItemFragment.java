@@ -37,6 +37,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -116,7 +117,7 @@ public class ScheduleItemFragment
          lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
       });
       date.observe(getViewLifecycleOwner(), date -> {
-         isOpened = isDateToday(date);
+         isOpened = Utils.isDateToday(date);
          button.setText(generateTitle(date, dayOfWeekID));
          lessons = repository.getLessons(state.getGroup().getValue(),
                  state.getTeacher().getValue(),
@@ -243,36 +244,11 @@ public class ScheduleItemFragment
     */
    private String generateTitle(Calendar date,  int dayOfWeekId){
       String dayOfWeek = getResources().getString(dayOfWeekId);
-      //Month is a number in 0 - 11
-      int month = date.get(Calendar.MONTH) + 1;
-      //Formatting month number with leading zero
-      String monthString = String.valueOf(month);
-      if(month < 10){
-         monthString = "0" + monthString;
-      }
-      int day = date.get(Calendar.DAY_OF_MONTH);
-      String dayString = String.valueOf(day);
-      //Formatting day number with leading zero
-      if(day < 10){
-         dayString = "0" + dayString;
-      }
-      String label = dayOfWeek + " (" + dayString  + "/" + monthString + ")";
-      if(isDateToday(date)){
+      String label = dayOfWeek + " (" + Utils.generateDateForTitle(date) + ")";
+      if(Utils.isDateToday(date)){
          label = label + " - " + getResources().getString(R.string.today);
       }
       return label;
-   }
-
-   /**
-    * Этот метод используется для проверки, является ли заданная дата сегодняшним днем.
-    * @param date дата для проверки
-    * @return сегодня ли дата
-    */
-   private boolean isDateToday(Calendar date){
-      Calendar rightNow = Calendar.getInstance();
-      return rightNow.get(Calendar.YEAR) == date.get(Calendar.YEAR)
-              && rightNow.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-              && rightNow.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH);
    }
 
    /**
@@ -301,6 +277,22 @@ public class ScheduleItemFragment
       LayoutInflater inflater = (LayoutInflater) getContext()
               .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
+      if(Utils.isLessonAvailable(lesson.date, lesson.times) != null){
+         switch (Utils.isLessonAvailable(lesson.date, lesson.times)){
+            case ENDED:
+               ((ImageView)tr.findViewById(R.id.available))
+                       .setImageResource(R.drawable.outline_event_busy_24);
+               break;
+            case STARTED:
+               ((ImageView)tr.findViewById(R.id.available))
+                       .setImageResource(R.drawable.outline_access_time_24);
+               break;
+            case NOT_STARTED:
+               ((ImageView)tr.findViewById(R.id.available))
+                       .setImageResource(R.drawable.outline_event_available_24);
+               break;
+         }
+      }
       ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber);
       ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
       ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
