@@ -215,6 +215,8 @@ public class MainActivity
 
     public static class SectionPagerAdapter
             extends FragmentStateAdapter{
+        DaysFragment daysFragment = new DaysFragment();
+        TimesFragment timesFragment = new TimesFragment();
         public SectionPagerAdapter(@NonNull FragmentManager fragmentManager,
                                    @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
@@ -224,8 +226,8 @@ public class MainActivity
         @Override
         public Fragment createFragment(int position) {
             switch (position){
-                case 0: return new DaysFragment();
-                case 1: return new TimesFragment();
+                case 0: return daysFragment;
+                case 1: return timesFragment;
                 default: return new Fragment();
             }
         }
