@@ -14,17 +14,14 @@
 
 package com.ghostwalker18.schedule;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -35,6 +32,7 @@ import androidx.core.content.FileProvider;
 import androidx.lifecycle.Lifecycle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -170,25 +168,33 @@ public class MainActivity
      */
     private boolean downloadScheduleFile(){
         new Thread(() -> {
-            List<String> linksForFirstCorpusSchedule = ScheduleApp.getInstance()
-                    .getScheduleRepository()
-                    .getLinksForFirstCorpusSchedule();
-            List<String> linksForSecondCorpusSchedule = ScheduleApp.getInstance()
-                    .getScheduleRepository()
-                    .getLinksForSecondCorpusSchedule();
             List<String> links = new ArrayList<>();
-            links.addAll(linksForFirstCorpusSchedule);
-            links.addAll(linksForSecondCorpusSchedule);
-            DownloadManager downloadManager = getApplication().getSystemService(DownloadManager.class);
-            for(String link : links){
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link))
-                        .setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                        .setTitle(getString(R.string.schedule))
-                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                                ScheduleRepository.getNameFromLink(link));
-                downloadManager.enqueue(request);
+            String downloadFor = PreferenceManager
+                    .getDefaultSharedPreferences(this)
+                    .getString("downloadFor", "all");
+            if(downloadFor.equals("all") || downloadFor.equals("first")){
+                List<String> linksForFirstCorpusSchedule = ScheduleApp.getInstance()
+                        .getScheduleRepository()
+                        .getLinksForFirstCorpusSchedule();
+                links.addAll(linksForFirstCorpusSchedule);
             }
+            if(downloadFor.equals("all") || downloadFor.equals("second")){
+                List<String> linksForSecondCorpusSchedule = ScheduleApp.getInstance()
+                        .getScheduleRepository()
+                        .getLinksForSecondCorpusSchedule();
+                links.addAll(linksForSecondCorpusSchedule);
+            }
+
+            DownloadDialog downloadDialog = new DownloadDialog();
+            Bundle args = new Bundle();
+            args.putInt("number_of_files", links.size());
+            args.putStringArray("links", links.toArray(new String[0]));
+            String mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            args.putString("mime_type", mimeType);
+            String downloadTitle = getString(R.string.days_tab);
+            args.putString("download_title", downloadTitle);
+            downloadDialog.setArguments(args);
+            downloadDialog.show(getSupportFragmentManager(), "download");
         }).start();
         return true;
     }
@@ -198,21 +204,26 @@ public class MainActivity
      * их в папку загрузок.
      */
     private boolean downloadTimesFiles(){
-        String[] links = new String[]{ScheduleApp.MONDAY_TIMES_URL, ScheduleApp.OTHER_TIMES_URL};
-        new Thread(() -> {
-            DownloadManager downloadManager = getApplication().getSystemService(DownloadManager.class);
-            for(String link : links){
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link))
-                        .setMimeType("image/jpg")
-                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                        .setTitle(getString(R.string.times_tab))
-                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getString(R.string.times_tab));
-                downloadManager.enqueue(request);
-            }
-        }).start();
+        String[] links = new String[]{ScheduleRepository.MONDAY_TIMES_URL, ScheduleRepository.OTHER_TIMES_URL};
+        DownloadDialog downloadDialog = new DownloadDialog();
+        Bundle args = new Bundle();
+        args.putInt("number_of_files", links.length);
+        args.putStringArray("links", links);
+        String mimeType = "image/jpg";
+        args.putString("mime_type", mimeType);
+        String downloadTitle = getString(R.string.times_tab);
+        args.putString("download_title", downloadTitle);
+        downloadDialog.setArguments(args);
+        downloadDialog.show(getSupportFragmentManager(), "download");
         return true;
     }
 
+    /**
+     * Этот класс используется для реализации вкладок расписаний.
+     *
+     * @author Ипатов Никита
+     * @since 3.2
+     */
     public static class SectionPagerAdapter
             extends FragmentStateAdapter{
         DaysFragment daysFragment = new DaysFragment();

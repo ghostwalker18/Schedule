@@ -54,9 +54,14 @@ public class ScheduleRepository{
     private final SharedPreferences preferences;
     private final ScheduleNetworkAPI api;
     private final Context context;
+    public static final String BASE_URI = "https://ptgh.onego.ru/9006/";
     private static final String MAIN_SELECTOR = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
     private static final String MONDAY_TIMES_PATH = "mondayTimes.jpg";
     private static final String OTHER_TIMES_PATH = "otherTimes.jpg";
+    public static final String MONDAY_TIMES_URL =
+            "https://r1.nubex.ru/s1748-17b/47698615b7_fit-in~1280x800~filters:no_upscale()__f44488_08.jpg";
+    public static final String OTHER_TIMES_URL =
+            "https://r1.nubex.ru/s1748-17b/320e9d2d69_fit-in~1280x800~filters:no_upscale()__f44489_bb.jpg";
     private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
     private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
     private final MutableLiveData<Status> status = new MutableLiveData<>();
@@ -252,17 +257,6 @@ public class ScheduleRepository{
      */
     public String getSavedGroup(){
         return preferences.getString("savedGroup", null);
-    }
-
-    /**
-     * Этот метод позволяет получить имя скачиваемого файла из ссылки на него.
-     *
-     * @param link ссылка на файл
-     * @return имя файла
-     */
-    public static String getNameFromLink(String link){
-        String[] parts = link.split("/");
-        return parts[parts.length - 1];
     }
 
     /**

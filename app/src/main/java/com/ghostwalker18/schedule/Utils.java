@@ -27,6 +27,7 @@ public class Utils {
    enum LessonAvailability{
       ENDED, STARTED, NOT_STARTED
    }
+
    /**
     * Этот метод позволяет определить, доступно ли занятие для посещения на текущий момент времени.
     *
@@ -49,8 +50,6 @@ public class Utils {
          end.set(Calendar.HOUR, Integer.parseInt(endTime.split("\\.")[0]));
          end.set(Calendar.MINUTE, Integer.parseInt(endTime.split("\\.")[1]));
 
-         String e = end.getTime().toString();
-         String s = start.getTime().toString();
          if(currentTime.before(start))
             return LessonAvailability.NOT_STARTED;
          else if(currentTime.before(end))
@@ -95,5 +94,16 @@ public class Utils {
          dayString = "0" + dayString;
       }
       return dayString + "/" + monthString;
+   }
+
+   /**
+    * Этот метод позволяет получить имя скачиваемого файла из ссылки на него.
+    *
+    * @param link ссылка на файл
+    * @return имя файла
+    */
+   public static String getNameFromLink(String link){
+      String[] parts = link.split("/");
+      return parts[parts.length - 1];
    }
 }

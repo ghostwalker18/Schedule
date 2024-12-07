@@ -13,6 +13,10 @@
   ~ limitations under the License.
   -->
 <resources>
+    <string name="download_approvement">Пацверджанне запампоўкі</string>
+    <string name="download_notice">Колькасць файлаў раскладу для запампоўкі: %1$d. вы хочаце спампаваць іх?</string>
+    <string name="download_ok">Скачаць</string>
+    <string name="download_cancel">Адмена</string>
     <string name="for_group">Для групы:</string>
     <string name="last_chosen">Апошняя абраная</string>
     <string name="not_mentioned">Не пазначана</string>

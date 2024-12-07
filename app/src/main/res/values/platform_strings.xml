@@ -13,6 +13,10 @@
   ~ limitations under the License.
   -->
 <resources>
+    <string name="download_approvement">Подтверждение скачивания</string>
+    <string name="download_notice">Количество файлов расписания для скачивания: %1$d. Вы хотите скачать их?</string>
+    <string name="download_ok">Скачать</string>
+    <string name="download_cancel">Отмена</string>
     <string name="for_group">Для группы:</string>
     <string name="last_chosen">Последняя выбранная</string>
     <string name="not_mentioned">Не указано</string>

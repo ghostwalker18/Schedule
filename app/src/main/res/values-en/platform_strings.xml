@@ -13,6 +13,10 @@
   ~ limitations under the License.
   -->
 <resources>
+    <string name="download_approvement">Download confirmation</string>
+    <string name="download_notice">Number of schedule files to download: %1$d. Do you want to download them?</string>
+    <string name="download_ok">Download</string>
+    <string name="download_cancel">Cancel</string>
     <string name="for_group">For group:</string>
     <string name="last_chosen">Last chosen</string>
     <string name="not_mentioned">Not mentioned</string>

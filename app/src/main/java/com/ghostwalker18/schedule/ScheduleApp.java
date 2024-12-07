@@ -35,11 +35,6 @@ import androidx.preference.PreferenceManager;
 public class ScheduleApp
         extends Application
         implements SharedPreferences.OnSharedPreferenceChangeListener {
-    public static final String BASE_URI = "https://ptgh.onego.ru/9006/";
-    public static final String MONDAY_TIMES_URL =
-            "https://r1.nubex.ru/s1748-17b/47698615b7_fit-in~1280x800~filters:no_upscale()__f44488_08.jpg";
-    public static final String OTHER_TIMES_URL =
-            "https://r1.nubex.ru/s1748-17b/320e9d2d69_fit-in~1280x800~filters:no_upscale()__f44489_bb.jpg";
     private static ScheduleApp instance;
     private SharedPreferences preferences;
     private AppDatabase database;
@@ -68,7 +63,7 @@ public class ScheduleApp
         database = AppDatabase.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         scheduleRepository = new ScheduleRepository(this, database,
-                new NetworkService(this, BASE_URI, preferences));
+                new NetworkService(this, ScheduleRepository.BASE_URI, preferences));
         scheduleRepository.update();
         notesRepository = new NotesRepository(database);
         String theme = preferences.getString("theme", "");
