@@ -25,7 +25,6 @@
     <string name="app_widget_description">Расклад ПТГХ на дзень для групы</string>
     <string name="schedule_missing">Спіс заняткаў адсутнічае</string>
     <string name="tomorrow">Заўтра</string>
-    <string name="rounded_corners">Скругленыя вуглы</string>
     <string name="appearance">Пастава</string>
     <string name="day">Дзень</string>
     <string name="dynamic_colors">Выкарыстоўваць дынамічныя колеру</string>
@@ -62,4 +61,5 @@
     <string name="days_group_clear_descr">Ачысціць групу</string>
     <string name="days_teacher_clear_descr">Ачысціць выкладчыка</string>
     <string name="notes_selection_cancel_descr">Адмяніць вылучэнне нататак</string>
+    <string name="availability_descr">Даступнасць для наведвання</string>
 </resources>

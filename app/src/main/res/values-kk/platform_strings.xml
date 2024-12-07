@@ -14,7 +14,7 @@
   -->
 <resources>
     <string name="download_approvement">Жүктеуді растау</string>
-    <string name="download_notice">Жүктеуге арналған кесте файлдарының саны: %1 d d. оларды жүктеп алғыңыз келе ме?</string>
+    <string name="download_notice">Жүктеуге арналған кесте файлдарының саны: %1$d. оларды жүктеп алғыңыз келе ме?</string>
     <string name="download_ok">Жүктеу</string>
     <string name="download_cancel">Бас тарту</string>
     <string name="for_group">Топ үшін:</string>
@@ -25,7 +25,6 @@
     <string name="app_widget_description">Топқа арналған ПҚШТ кестесі</string>
     <string name="schedule_missing">Сабақтар тізімі жоқ</string>
     <string name="tomorrow">Ертең</string>
-    <string name="rounded_corners">Дөңгеленген бұрыштар</string>
     <string name="appearance">Сыртқы түрі</string>
     <string name="day">Күн</string>
     <string name="dynamic_colors">Динамикалық түстерді қолданыңыз</string>
@@ -62,4 +61,5 @@
     <string name="days_group_clear_descr">Топты тазарту</string>
     <string name="days_teacher_clear_descr">Мұғалімді тазарту</string>
     <string name="notes_selection_cancel_descr">Жазбаларды бөлектеуді болдырмау</string>
+    <string name="availability_descr">Келуге қол жетімділік</string>
 </resources>

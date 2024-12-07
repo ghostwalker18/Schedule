@@ -26,7 +26,6 @@
     <string name="tomorrow">Завтра</string>
     <string name="appearance">Внешний вид</string>
     <string name="dynamic_colors">Использовать динамические цвета</string>
-    <string name="rounded_corners">Скругленные углы</string>
     <string name="add_widget">Добавить виджет</string>
     <string name="app_widget_description">Расписание ПТГХ на день для группы</string>
     <string name="permission_for_photo">Требуется разрешение, чтобы сделать фото</string>
@@ -62,6 +61,7 @@
     <string name="times_monday">Звонки на понедельник</string>
     <string name="times_other">Звонки со вторника по пятницу</string>
     <string name="update_descr">Обновить расписание</string>
+    <string name="availability_descr">Доступность для посещения</string>
     <string name="days_group_clear_descr">Очистить группу</string>
     <string name="days_teacher_clear_descr">Очистить преподавателя</string>
     <string name="notes_selection_cancel_descr">Отменить выделение заметок</string>

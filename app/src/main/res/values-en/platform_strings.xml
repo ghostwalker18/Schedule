@@ -25,7 +25,6 @@
     <string name="app_widget_description">PCME schedule for group on day</string>
     <string name="schedule_missing">There is no list of classes</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="rounded_corners">Rounded corners</string>
     <string name="appearance">Appearance</string>
     <string name="day">Day</string>
     <string name="dynamic_colors">Use dynamic colors</string>
@@ -62,4 +61,5 @@
     <string name="days_group_clear_descr">Clear group</string>
     <string name="days_teacher_clear_descr">Clear teacher</string>
     <string name="notes_selection_cancel_descr">"Сancel notes` selection "</string>
+    <string name="availability_descr">Accessibility to visit</string>
 </resources>

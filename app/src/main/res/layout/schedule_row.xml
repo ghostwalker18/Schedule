@@ -19,6 +19,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/availability_descr"
         android:id="@+id/available"/>
 
     <TextView

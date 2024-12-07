@@ -14,7 +14,7 @@
   -->
 <resources>
     <string name="download_approvement">Підтвердження скачування</string>
-    <string name="download_notice">Кількість файлів розкладу для завантаження: %1 $ d. ви хочете завантажити їх?</string>
+    <string name="download_notice">Кількість файлів розкладу для завантаження: %1$d. ви хочете завантажити їх?</string>
     <string name="download_ok">Завантажити</string>
     <string name="download_cancel">Скасування</string>
     <string name="for_group">Для групи:</string>
@@ -25,7 +25,6 @@
     <string name="app_widget_description">Розклад ПТМГ на день для групи</string>
     <string name="schedule_missing">Список занять відсутній</string>
     <string name="tomorrow">Завтра</string>
-    <string name="rounded_corners">Округлені кути</string>
     <string name="appearance">Зовнішній вигляд</string>
     <string name="day">День</string>
     <string name="dynamic_colors">Використовувати динамічні кольори</string>
@@ -62,4 +61,5 @@
     <string name="days_group_clear_descr">Очистити групу</string>
     <string name="days_teacher_clear_descr">Очистити викладача</string>
     <string name="notes_selection_cancel_descr">Скасувати виділення нотаток</string>
+    <string name="availability_descr">Доступність для відвідування</string>
 </resources>
