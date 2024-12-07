@@ -118,6 +118,9 @@ public class ScheduleItemFragment
       });
       date.observe(getViewLifecycleOwner(), date -> {
          isOpened = Utils.isDateToday(date);
+         if(Utils.isDateToday(date))
+            table.findViewById(R.id.available_column).setVisibility(View.INVISIBLE);
+         super.onViewCreated(view, savedInstanceState);
          button.setText(generateTitle(date, dayOfWeekID));
          lessons = repository.getLessons(state.getGroup().getValue(),
                  state.getTeacher().getValue(),
@@ -277,21 +280,22 @@ public class ScheduleItemFragment
       LayoutInflater inflater = (LayoutInflater) getContext()
               .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
-      if(Utils.isLessonAvailable(lesson.date, lesson.times) != null
-              && Utils.isDateToday(lesson.date)){
-         switch (Utils.isLessonAvailable(lesson.date, lesson.times)){
-            case ENDED:
-               ((ImageView)tr.findViewById(R.id.available))
-                       .setImageResource(R.drawable.outline_event_busy_24);
-               break;
-            case STARTED:
-               ((ImageView)tr.findViewById(R.id.available))
-                       .setImageResource(R.drawable.outline_access_time_24);
-               break;
-            case NOT_STARTED:
-               ((ImageView)tr.findViewById(R.id.available))
-                       .setImageResource(R.drawable.outline_event_available_24);
-               break;
+      ImageView availabilityItem = (ImageView)tr.findViewById(R.id.available);
+      if(Utils.isDateToday(lesson.date)){
+         availabilityItem.setVisibility(View.INVISIBLE);
+         if(Utils.isLessonAvailable(lesson.date, lesson.times) != null){
+            switch (Utils.isLessonAvailable(lesson.date, lesson.times)){
+               case ENDED:
+                  availabilityItem.setImageResource(R.drawable.outline_event_busy_24);
+                  break;
+               case STARTED:
+                  availabilityItem.setImageResource(R.drawable.outline_access_time_24);
+                  break;
+               case NOT_STARTED:
+                  availabilityItem.setImageResource(R.drawable.outline_event_available_24);
+                  break;
+            }
+            availabilityItem.setVisibility(View.VISIBLE);
          }
       }
       ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber);

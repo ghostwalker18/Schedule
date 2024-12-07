@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -34,7 +35,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import okhttp3.internal.Util;
 
 /**
  * Этот класс представляет собой экран приложения для отображения расписания на день.
@@ -71,6 +71,8 @@ public class ScheduleItemActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         table = findViewById(R.id.schedule);
+        if(Utils.isDateToday(date))
+            findViewById(R.id.available_column).setVisibility(View.INVISIBLE);
         repository = ScheduleApp.getInstance().getScheduleRepository();
         lessons = repository.getLessons(group, teacher, date);
         lessons.observe(this, lessons -> populateTable(table, lessons));
@@ -141,23 +143,25 @@ public class ScheduleItemActivity
     private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);
-        if(Utils.isLessonAvailable(lesson.date, lesson.times) != null
-                && Utils.isDateToday(lesson.date)){
-            switch (Utils.isLessonAvailable(lesson.date, lesson.times)){
-                case ENDED:
-                    ((ImageView)tr.findViewById(R.id.available))
-                            .setImageResource(R.drawable.outline_event_busy_24);
-                    break;
-                case STARTED:
-                    ((ImageView)tr.findViewById(R.id.available))
-                            .setImageResource(R.drawable.outline_access_time_24);
-                    break;
-                case NOT_STARTED:
-                    ((ImageView)tr.findViewById(R.id.available))
-                            .setImageResource(R.drawable.outline_event_available_24);
-                    break;
+        ImageView availabilityItem = (ImageView)tr.findViewById(R.id.available);
+        if(Utils.isDateToday(lesson.date)){
+            availabilityItem.setVisibility(View.INVISIBLE);
+            if(Utils.isLessonAvailable(lesson.date, lesson.times) != null){
+                switch (Utils.isLessonAvailable(lesson.date, lesson.times)){
+                    case ENDED:
+                        availabilityItem.setImageResource(R.drawable.outline_event_busy_24);
+                        break;
+                    case STARTED:
+                        availabilityItem.setImageResource(R.drawable.outline_access_time_24);
+                        break;
+                    case NOT_STARTED:
+                        availabilityItem.setImageResource(R.drawable.outline_event_available_24);
+                        break;
+                }
+                availabilityItem.setVisibility(View.VISIBLE);
             }
         }
+
         ((TextView)tr.findViewById(R.id.number)).setText(lesson.lessonNumber);
         ((TextView)tr.findViewById(R.id.subject)).setText(lesson.subject);
         ((TextView)tr.findViewById(R.id.teacher)).setText(lesson.teacher);
