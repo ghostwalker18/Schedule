@@ -339,14 +339,14 @@ public class ScheduleRepository{
             api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    ZipSecureFile.setMinInflateRatio(0.0005);
                     try(ResponseBody body = response.body();
                         Workbook excelFile = StreamingReader.builder()
                                 .rowCacheSize(10)
-                                .bufferSize(4096)
+                                .bufferSize(10485670)
                                 .open(body.byteStream())
                     ){
                         status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
-                        ZipSecureFile.setMinInflateRatio(0.0075);
                         List<Lesson> lessons = parser.convert(excelFile);
                         db.lessonDao().insertMany(lessons);
                         status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));

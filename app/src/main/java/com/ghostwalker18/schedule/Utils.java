@@ -36,7 +36,7 @@ public class Utils {
     * @return доступность для посещения
     */
    @Nullable
-   static LessonAvailability isLessonAvailable(Calendar lessonDate, String lessonTimes){
+   static synchronized LessonAvailability isLessonAvailable(Calendar lessonDate, String lessonTimes){
       try{
          Calendar currentTime = Calendar.getInstance();
          String startTime = lessonTimes.split("-")[0];
@@ -67,7 +67,7 @@ public class Utils {
     * @param date дата для проверки
     * @return сегодня ли дата
     */
-   static boolean isDateToday(Calendar date){
+   static synchronized boolean isDateToday(Calendar date){
       Calendar rightNow = Calendar.getInstance();
       return rightNow.get(Calendar.YEAR) == date.get(Calendar.YEAR)
               && rightNow.get(Calendar.MONTH) == date.get(Calendar.MONTH)

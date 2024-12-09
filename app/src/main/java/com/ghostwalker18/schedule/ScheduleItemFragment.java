@@ -120,6 +120,8 @@ public class ScheduleItemFragment
          isOpened = Utils.isDateToday(date);
          if(Utils.isDateToday(date))
             table.findViewById(R.id.available_column).setVisibility(View.INVISIBLE);
+         else
+            table.findViewById(R.id.available_column).setVisibility(View.GONE);
          super.onViewCreated(view, savedInstanceState);
          button.setText(generateTitle(date, dayOfWeekID));
          lessons = repository.getLessons(state.getGroup().getValue(),
