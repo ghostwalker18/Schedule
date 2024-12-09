@@ -19,6 +19,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.github.pjfanning.xlsx.StreamingReader;
+import com.github.pjfanning.xlsx.exceptions.OpenException;
+import com.github.pjfanning.xlsx.exceptions.ParseException;
+import com.github.pjfanning.xlsx.exceptions.ReadException;
+
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jsoup.nodes.Document;
@@ -340,16 +344,20 @@ public class ScheduleRepository{
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                     ZipSecureFile.setMinInflateRatio(0.0005);
+                    status.postValue(new Status(context.getString(R.string.schedule_opening_status), 33));
                     try(ResponseBody body = response.body();
                         Workbook excelFile = StreamingReader.builder()
                                 .rowCacheSize(10)
                                 .bufferSize(10485670)
                                 .open(body.byteStream())
                     ){
-                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 33));
+                        status.postValue(new Status(context.getString(R.string.schedule_parsing_status), 50));
                         List<Lesson> lessons = parser.convert(excelFile);
                         db.lessonDao().insertMany(lessons);
                         status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
+                    }
+                    catch(OpenException | ReadException | ParseException e){
+                        status.postValue(new Status(context.getString(R.string.schedule_opening_error), 0));
                     }
                     catch (Exception e){
                         status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));

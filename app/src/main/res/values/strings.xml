@@ -46,8 +46,10 @@
     <string name="schedule_settings">Расписание</string>
     <string name="option_language">Язык</string>
     <string name="schedule_download_error">Ошибка при скачивании расписания</string>
+    <string name="schedule_opening_error">Ошибка при открытии файла расписания</string>
     <string name="schedule_parsing_error">Ошибка при обработке расписания</string>
     <string name="schedule_download_status">Скачивание расписания</string>
+    <string name="schedule_opening_status">Открытие файла расписания</string>
     <string name="schedule_parsing_status">Обработка расписания</string>
     <string name="processing_completed_status">Расписание успешно обновлено</string>
     <string name="notes_activity">Заметки</string>

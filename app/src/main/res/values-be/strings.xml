@@ -45,7 +45,9 @@
     <string name="schedule_settings">Расклад</string>
     <string name="option_language">Мова</string>
     <string name="schedule_download_error">Памылка пры спампоўцы раскладу</string>
+    <string name="schedule_opening_error">Памылка пры адкрыцці файла раскладу</string>
     <string name="schedule_parsing_error">Памылка пры апрацоўцы раскладу</string>
+    <string name="schedule_opening_status">Адкрыццё файла раскладу</string>
     <string name="schedule_parsing_status">Апрацоўка раскладу</string>
     <string name="processing_completed_status">Расклад паспяхова абноўлены</string>
     <string name="schedule_download_status">Запампоўванне раскладу</string>

@@ -45,7 +45,9 @@
     <string name="schedule_settings">Schedule</string>
     <string name="option_language">Language</string>
     <string name="schedule_download_error">Schedule download error</string>
+    <string name="schedule_opening_error">Error opening schedule file</string>
     <string name="schedule_parsing_error">Schedule parsing error</string>
+    <string name="schedule_opening_status">Opening schedule file</string>
     <string name="schedule_parsing_status">Schedule parsing</string>
     <string name="processing_completed_status">Schedule successfully updated</string>
     <string name="schedule_download_status">Schedule download</string>
