@@ -84,11 +84,21 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/notes_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <TextView
+            android:id="@+id/no_notes_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="@dimen/schedule_text_size"
+            android:text="@string/no_notes_now"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notes"
@@ -96,7 +106,7 @@
             android:layout_height="match_parent"
             android:paddingHorizontal="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-    </FrameLayout>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_note"

@@ -14,6 +14,7 @@
   -->
 <resources>
     <string name="download_approvement">Подтверждение скачивания</string>
+    <string name="no_notes_now">Пока нет заметок</string>
     <string name="download_notice">Количество файлов расписания для скачивания: %1$d. Вы хотите скачать их?</string>
     <string name="download_ok">Скачать</string>
     <string name="download_cancel">Отмена</string>

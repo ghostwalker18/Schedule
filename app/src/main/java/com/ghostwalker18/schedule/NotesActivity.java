@@ -142,7 +142,13 @@ public class NotesActivity
 
       notesListView = findViewById(R.id.notes);
       model.getNotes().observe(this,
-              notes -> notesListView.setAdapter(new NoteAdapter(notes, listener)));
+              notes -> {
+                  if(notes.length == 0)
+                     findViewById(R.id.no_notes_notification).setVisibility(View.VISIBLE);
+                  else
+                     findViewById(R.id.no_notes_notification).setVisibility(View.GONE);
+                  notesListView.setAdapter(new NoteAdapter(notes, listener));
+              });
 
       filter = new NotesFilterFragment();
       findViewById(R.id.filter).setOnClickListener(v->openFilterFragment());

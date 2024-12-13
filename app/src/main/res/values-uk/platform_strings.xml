@@ -14,6 +14,7 @@
   -->
 <resources>
     <string name="download_approvement">Підтвердження скачування</string>
+    <string name="no_notes_now">Поки немає нотаток</string>
     <string name="download_notice">Кількість файлів розкладу для завантаження: %1$d. ви хочете завантажити їх?</string>
     <string name="download_ok">Завантажити</string>
     <string name="download_cancel">Скасування</string>
