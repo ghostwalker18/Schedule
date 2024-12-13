@@ -151,6 +151,21 @@ public class NotesActivity
               });
 
       filter = new NotesFilterFragment();
+      filter.setListener(new NotesFilterFragment.VisibilityListener() {
+         @Override
+         public void onFragmentShow() {
+            NoteAdapter adapter = (NoteAdapter) notesListView.getAdapter();
+            if(adapter != null)
+               adapter.setClickable(false);
+         }
+
+         @Override
+         public void onFragmentHide() {
+            NoteAdapter adapter = (NoteAdapter) notesListView.getAdapter();
+            if(adapter != null)
+               adapter.setClickable(true);
+         }
+      });
       findViewById(R.id.filter).setOnClickListener(v->openFilterFragment());
 
       findViewById(R.id.edit_note).setOnClickListener(v-> openAddNote());

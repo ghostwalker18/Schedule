@@ -41,11 +41,16 @@ import androidx.lifecycle.ViewModelProvider;
  */
 public class NotesFilterFragment
         extends Fragment {
+   public interface VisibilityListener {
+      void onFragmentShow();
+      void onFragmentHide();
+   }
    private final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
    private NotesModel model;
    private TextView startDateField;
    private TextView endDateField;
    private AutoCompleteTextView groupField;
+   private VisibilityListener listener;
 
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +102,19 @@ public class NotesFilterFragment
       );
    }
 
+   @Override
+   public void onAttach(@NonNull Context context) {
+      super.onAttach(context);
+      listener.onFragmentShow();
+   }
+
+   /**
+    * Этот метод задает слушателя события сокрытия фрагмента с экрана.
+    */
+   public void setListener(VisibilityListener listener){
+      this.listener = listener;
+   }
+
    /**
     * Этот метод служит для сокрытия фргмента с экрана.
     */
@@ -106,6 +124,7 @@ public class NotesFilterFragment
               .setCustomAnimations(R.anim.slide_in, R.anim.slide_out)
               .remove(this)
               .commit();
+      listener.onFragmentHide();
    }
 
    /**

@@ -48,6 +48,7 @@ public class NoteAdapter
    private final OnNoteClickListener listener;
    private Context context;
    private boolean canAccessPhoto = false;
+   private boolean isClickable = true;
 
    public NoteAdapter(Note[] notes, OnNoteClickListener listener) {
       this.notes = notes;
@@ -99,6 +100,8 @@ public class NoteAdapter
       if(note.photoID != null && !canAccessPhoto)
          holder.error.setText(R.string.gallery_access_denied);
       holder.itemView.setOnClickListener(v -> {
+         if(!isClickable)
+            return;
          holder.setSelected(!holder.isSelected);
          if(holder.isSelected){
             listener.onNoteSelected(note, position);
@@ -107,6 +110,10 @@ public class NoteAdapter
             listener.onNoteUnselected(note, position);
          }
       });
+   }
+
+   public void setClickable(boolean clickable){
+      isClickable = clickable;
    }
 
    @Override
