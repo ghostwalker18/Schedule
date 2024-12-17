@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="10dp"
         android:background="@null"
-        android:src="@drawable/baseline_keyboard_arrow_left_24"
+        android:src="@drawable/baseline_keyboard_arrow_left_36"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,13 +32,13 @@
 
     <ImageView
         android:id="@+id/preview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/previous"
+        app:layout_constraintEnd_toStartOf="@id/next"/>
 
     <ImageButton
         android:id="@+id/next"
@@ -46,7 +46,7 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="10dp"
         android:background="@null"
-        android:src="@drawable/baseline_keyboard_arrow_right_24"
+        android:src="@drawable/baseline_keyboard_arrow_right_36"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/preview"
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:src="@drawable/baseline_clear_24"
+        android:src="@drawable/baseline_clear_36"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

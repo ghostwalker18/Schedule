@@ -92,12 +92,12 @@ public class NoteAdapter
       canAccessPhoto = checkPhotoAccess();
       if( canAccessPhoto){
          try {
-            holder.photo.setImageURI(Uri.parse(note.photoID));
+            //holder.photo.setImageURI(Uri.parse(note.photoIDs));
          } catch (Exception e) {
             holder.error.setText(context.getString(R.string.photo_error));
          }
       }
-      if(note.photoID != null && !canAccessPhoto)
+      if(note.photoIDs != null && !canAccessPhoto)
          holder.error.setText(R.string.gallery_access_denied);
       holder.itemView.setOnClickListener(v -> {
          if(!isClickable)
@@ -131,7 +131,8 @@ public class NoteAdapter
            extends RecyclerView.ViewHolder {
       public boolean isSelected = false;
       private final TextView theme, text, date, error;
-      private final ImageView photo, checked;
+      private final ImageView checked;
+      //private final PreviewFragment preview;
 
       public ViewHolder(@NonNull View itemView) {
          super(itemView);
@@ -139,7 +140,7 @@ public class NoteAdapter
          theme = itemView.findViewById(R.id.theme);
          text = itemView.findViewById(R.id.text);
          error = itemView.findViewById(R.id.error);
-         photo = itemView.findViewById(R.id.image);
+         //photo = itemView.findViewById(R.id.image);
          checked = itemView.findViewById(R.id.checked);
       }
 

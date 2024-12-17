@@ -22,13 +22,10 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.core.content.FileProvider;
@@ -61,19 +58,18 @@ public class EditNoteActivity
    private AutoCompleteTextView groupField;
    private AutoCompleteTextView themeField;
    private EditText textField;
-   private ImageView preview;
-   private ImageButton previewClear;
+   private PreviewFragment preview;
    private final ActivityResultLauncher<Uri> takePhotoLauncher = registerForActivityResult(
            new ActivityResultContracts.TakePicture(),
            result -> {
-              model.setPhotoID(photoUri);
+              model.addPhotoID(photoUri);
               MediaScannerConnection.scanFile(this,
                       new String[]{photoUri.getEncodedPath()}, new String[]{"image/jpeg"}, null);
            }
    );
    private final ActivityResultLauncher<String> galleryPickLauncher = registerForActivityResult(
            new ActivityResultContracts.GetContent(),
-           uri -> model.setPhotoID(uri)
+           uri -> model.addPhotoID(uri)
    );
    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
            new ActivityResultContracts.RequestPermission(),
@@ -145,16 +141,11 @@ public class EditNoteActivity
       groupField.setOnItemClickListener((adapterView, view, i, l) ->
               model.setGroup(groupField.getText().toString()));
 
-      previewClear = findViewById(R.id.image_clear);
-      previewClear.setOnClickListener(v -> {
-         model.setPhotoID(null);
-         previewClear.setVisibility(View.GONE);
-      });
-
-      preview = findViewById(R.id.photo_preview);
-      model.getPhotoID().observe(this, photoID -> {
-         preview.setImageURI(photoID);
-         previewClear.setVisibility(View.VISIBLE);
+      preview = (PreviewFragment) getSupportFragmentManager().findFragmentById(R.id.preview);
+      preview.setEditable(true);
+      preview.setListener(uri -> model.removePhotoID(uri));
+      model.getPhotoIDs().observe(this, photoIDs -> {
+         preview.setImageIDs(photoIDs);
       });
 
       findViewById(R.id.group_clear).setOnClickListener(v -> model.setGroup(""));
@@ -170,10 +161,11 @@ public class EditNoteActivity
    @Override
    protected void onDestroy() {
       super.onDestroy();
-      photoUri = model.getPhotoID().getValue();
-      if(photoUri != null && photoUri.getEncodedPath() != null && !isSaved){
-         File photoFile = new File(photoUri.getEncodedPath());
-         photoFile.delete();
+      for(Uri photoUri : model.getPhotoIDs().getValue()){
+         if(photoUri != null && photoUri.getEncodedPath() != null && !isSaved){
+            File photoFile = new File(photoUri.getEncodedPath());
+            photoFile.delete();
+         }
       }
    }
 
@@ -204,10 +196,11 @@ public class EditNoteActivity
     * Этот метод позволяет закрыть активность и освободить ресурсы.
     */
    private void exitActivity(){
-      photoUri = model.getPhotoID().getValue();
-      if(photoUri != null && photoUri.getEncodedPath() != null){
-         File photoFile = new File(photoUri.getEncodedPath());
-         photoFile.delete();
+      for(Uri photoUri : model.getPhotoIDs().getValue()){
+         if(photoUri != null && photoUri.getEncodedPath() != null){
+            File photoFile = new File(photoUri.getEncodedPath());
+            photoFile.delete();
+         }
       }
       finish();
    }

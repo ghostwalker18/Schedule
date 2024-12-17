@@ -168,22 +168,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/photo_preview"
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/preview"
+                    android:name="com.ghostwalker18.schedule.PreviewFragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingHorizontal="5dp"
                     android:adjustViewBounds="true"
-                    android:contentDescription="@string/note_photo_preview_descr"/>
-
-                <ImageButton
-                    android:id="@+id/image_clear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:src="@drawable/baseline_clear_36"
-                    android:contentDescription="@string/note_image_clear_descr"/>
+                    android:contentDescription="@string/note_photo_preview_descr"/>/>
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

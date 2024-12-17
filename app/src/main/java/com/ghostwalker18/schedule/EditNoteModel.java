@@ -39,7 +39,7 @@ public class EditNoteModel
    private LiveData<String[]> themes = new MutableLiveData<>();
    private final MutableLiveData<String> theme = new MutableLiveData<>("");
    private final MutableLiveData<String> text = new MutableLiveData<>("");
-   private final MutableLiveData<ArrayList<Uri>> photoIDs = new MutableLiveData<>();
+   private final MutableLiveData<ArrayList<Uri>> photoIDs = new MutableLiveData<>(new ArrayList<>());
    private final MutableLiveData<Calendar> date = new MutableLiveData<>(Calendar.getInstance());
    private final MutableLiveData<String> group = new MutableLiveData<>(scheduleRepository.getSavedGroup());
    private boolean isEdited = false;

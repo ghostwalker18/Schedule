@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +35,7 @@ import androidx.fragment.app.Fragment;
 public  class PreviewFragment
         extends Fragment {
    public interface DeleteListener{
-      void onPhotoDelete(int position);
+      void onPhotoDelete(Uri uri);
    }
    private boolean isEditable = false;
    private int currentItem = 0;
@@ -68,8 +67,12 @@ public  class PreviewFragment
     * Этот метод используется для задания списка URI отображаемых фотографий.
     * @param uris отображаемые фотографии
     */
-   public void setPhotosIDs(ArrayList<Uri> uris){
+   public void setImageIDs(ArrayList<Uri> uris){
       photoUris = uris;
+      if(photoUris.size() > 0){
+         ((ImageView) view.findViewById(R.id.preview))
+                 .setImageURI(photoUris.get(photoUris.size() - 1));
+      }
    }
 
    /**
@@ -79,45 +82,49 @@ public  class PreviewFragment
       this.listener = listener;
    }
 
+   /**
+    * Этот метод задает возможность удаления фотографий из списка.
+    * @param editable
+    */
    public void setEditable(boolean editable){
       isEditable = editable;
-      if(isEditable)
-         view.findViewById(R.id.delete).setVisibility(View.VISIBLE);
-      else
-         view.findViewById(R.id.delete).setVisibility(View.GONE);
    }
 
    /**
     * Этот метод используется для отображения следущего фото.
     */
    private void showNextPhoto(){
-      currentItem++;
-      if(currentItem > photoUris.size())
-         currentItem = 0;
-      ((ImageView) view.findViewById(R.id.preview)).setImageURI(photoUris.get(currentItem));
+      if(photoUris.size() != 0){
+         currentItem++;
+         if(currentItem >= photoUris.size())
+            currentItem = 0;
+         ((ImageView) view.findViewById(R.id.preview)).setImageURI(photoUris.get(currentItem));
+      }
    }
 
    /**
     * Этот метод используется для отображения предыдущего фото
     */
    private void showPreviousPhoto(){
-      currentItem--;
-      if(currentItem < 0)
-         currentItem = photoUris.size() - 1;
-      ((ImageView) view.findViewById(R.id.preview)).setImageURI(photoUris.get(currentItem));
+      if(photoUris.size() != 0){
+         currentItem--;
+         if(currentItem < 0)
+            currentItem = photoUris.size() - 1;
+         ((ImageView) view.findViewById(R.id.preview)).setImageURI(photoUris.get(currentItem));
+      }
    }
 
    /**
     * Этот метод используется для удаления текущей фотографии из списка
     */
    private void deletePhoto(){
-      if(isEditable){
-         photoUris.remove(currentItem);
+      if(isEditable && photoUris.size() != 0){
+         Uri deletedUri = photoUris.remove(currentItem);
          if(currentItem < photoUris.size())
             ((ImageView) view.findViewById(R.id.preview))
                     .setImageURI(photoUris.get(currentItem));
          if(listener != null)
-            listener.onPhotoDelete(currentItem);
+            listener.onPhotoDelete(deletedUri);
       }
    }
 }
