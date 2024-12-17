@@ -16,6 +16,8 @@ package com.ghostwalker18.schedule;
 
 import android.content.Intent;
 import android.net.Uri;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -37,7 +39,7 @@ public class EditNoteModel
    private LiveData<String[]> themes = new MutableLiveData<>();
    private final MutableLiveData<String> theme = new MutableLiveData<>("");
    private final MutableLiveData<String> text = new MutableLiveData<>("");
-   private final MutableLiveData<Uri> photoID = new MutableLiveData<>();
+   private final MutableLiveData<ArrayList<Uri>> photoIDs = new MutableLiveData<>();
    private final MutableLiveData<Calendar> date = new MutableLiveData<>(Calendar.getInstance());
    private final MutableLiveData<String> group = new MutableLiveData<>(scheduleRepository.getSavedGroup());
    private boolean isEdited = false;
@@ -61,8 +63,8 @@ public class EditNoteModel
             date.setValue(note1.date);
             text.setValue(note1.text);
             theme.setValue(note1.theme);
-            if(note1.photoID != null)
-               photoID.setValue(Uri.parse(note1.photoID));
+            if(note1.photoIDs != null)
+               photoIDs.setValue(note1.photoIDs);
          }
       });
    }
@@ -94,20 +96,32 @@ public class EditNoteModel
       return scheduleRepository.getGroups();
    }
 
-   /**
-    * Этот метод позволяет задать ID фотографии, прикрепляемой к заметке.
-    * @param id uri фотографии
-    */
-   public void setPhotoID(Uri id){
-      photoID.setValue(id);
+   public void addPhotoID(Uri id){
+      ArrayList<Uri> currentUris = photoIDs.getValue();
+      currentUris.add(id);
+      photoIDs.setValue(currentUris);
+   }
+
+   public void removePhotoID(Uri id){
+      ArrayList<Uri> currentUris = photoIDs.getValue();
+      currentUris.remove(id);
+      photoIDs.setValue(currentUris);
    }
 
    /**
-    * Этот метод позволяет получить ID фотографии, прикрепленной к заметке.
+    * Этот метод позволяет задать ID фотографий, прикрепляемых к заметке.
+    * @param id uri фотографии
+    */
+   public void setPhotoIDs(ArrayList<Uri> id){
+      photoIDs.setValue(id);
+   }
+
+   /**
+    * Этот метод позволяет получить ID фотографий, прикрепленных к заметке.
     * @return идентификатор фотографии
     */
-   public LiveData<Uri> getPhotoID(){
-      return photoID;
+   public LiveData<ArrayList<Uri>> getPhotoIDs(){
+      return photoIDs;
    }
 
    /**
@@ -189,15 +203,17 @@ public class EditNoteModel
          noteToSave.group = group.getValue();
          noteToSave.theme = theme.getValue();
          noteToSave.text = text.getValue();
-         if(photoID.getValue() != null){
-            noteToSave.photoID = photoID.getValue().toString();
+         if(photoIDs.getValue() != null){
+            noteToSave.photoIDs = photoIDs.getValue();
             try {
-               ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID.getValue(),
-                       Intent.FLAG_GRANT_READ_URI_PERMISSION);
+               for(Uri photoID : photoIDs.getValue()){
+                  ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID,
+                          Intent.FLAG_GRANT_READ_URI_PERMISSION);
+               }
             } catch (Exception ignored){/*Not required*/}
          }
          else
-            noteToSave.photoID = null;
+            noteToSave.photoIDs = null;
          if(isEdited)
             notesRepository.updateNote(noteToSave);
          else

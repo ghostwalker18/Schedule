@@ -39,7 +39,7 @@ public class DateConverters {
            new Locale("ru"));
 
    /**
-    * Этот метод преобразует Calendar сущнисти в String для БД.
+    * Этот метод преобразует Calendar сущности в String для БД.
     *
     * @param date  the entity attribute value to be converted
     * @return
@@ -52,8 +52,7 @@ public class DateConverters {
    /**
     * Этот метод преобразует String из БД в Calendar сущности.
     *
-    * @param date  the data from the database column to be
-    *                converted
+    * @param date  the data from the database column to be converted
     * @return
     */
    @TypeConverter

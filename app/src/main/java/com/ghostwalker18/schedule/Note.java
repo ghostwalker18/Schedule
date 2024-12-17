@@ -15,6 +15,9 @@
 package com.ghostwalker18.schedule;
 
 import android.content.res.Resources;
+import android.net.Uri;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -47,8 +50,9 @@ public class Note {
     @ColumnInfo(name="noteText")
     @NonNull
     public String text;
+    @TypeConverters({PhotoURIArrayConverters.class})
     @ColumnInfo(name="notePhotoID")
-    public String photoID;
+    public ArrayList<Uri> photoIDs;
 
     @Override
     public String toString(){
