@@ -14,11 +14,13 @@
 
 package com.ghostwalker18.schedule;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import java.util.ArrayList;
 import androidx.annotation.NonNull;
@@ -41,7 +43,8 @@ public  class PreviewFragment
    private int currentItem = 0;
    private ArrayList<Uri> photoUris;
    private DeleteListener listener;
-   private View view;
+   private ImageView preview;
+   private ImageButton deleteButton;
 
    @Nullable
    @Override
@@ -50,15 +53,27 @@ public  class PreviewFragment
       return inflater.inflate(R.layout.fragment_preview, container, false);
    }
 
+   @SuppressLint("ClickableViewAccessibility")
    @Override
    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
       super.onViewCreated(view, savedInstanceState);
-      this.view = view;
+      preview = view.findViewById(R.id.preview);
+      preview.setOnTouchListener(new OnSwipeListener(requireContext()){
+         @Override
+         public void onSwipeLeft() {
+            showNextPhoto();
+         }
+         @Override
+         public void onSwipeRight() {
+            showPreviousPhoto();
+         }
+      });
+      deleteButton = view.findViewById(R.id.delete);
       if(isEditable)
-         view.findViewById(R.id.delete).setVisibility(View.VISIBLE);
+         deleteButton.setVisibility(View.VISIBLE);
       else
-         view.findViewById(R.id.delete).setVisibility(View.GONE);
-      view.findViewById(R.id.delete).setOnClickListener(view1 -> deletePhoto());
+         deleteButton.setVisibility(View.GONE);
+      deleteButton.setOnClickListener(view1 -> deletePhoto());
       view.findViewById(R.id.previous).setOnClickListener(view1 -> showPreviousPhoto());
       view.findViewById(R.id.next).setOnClickListener(view1 -> showNextPhoto());
    }
@@ -70,9 +85,11 @@ public  class PreviewFragment
    public void setImageIDs(ArrayList<Uri> uris){
       photoUris = uris;
       if(photoUris.size() > 0){
-         ((ImageView) view.findViewById(R.id.preview))
-                 .setImageURI(photoUris.get(photoUris.size() - 1));
+         preview.setImageURI(photoUris.get(photoUris.size() - 1));
+         deleteButton.setVisibility(View.VISIBLE);
       }
+      else
+         deleteButton.setVisibility(View.GONE);
    }
 
    /**
@@ -98,7 +115,7 @@ public  class PreviewFragment
          currentItem++;
          if(currentItem >= photoUris.size())
             currentItem = 0;
-         ((ImageView) view.findViewById(R.id.preview)).setImageURI(photoUris.get(currentItem));
+         preview.setImageURI(photoUris.get(currentItem));
       }
    }
 
@@ -110,7 +127,7 @@ public  class PreviewFragment
          currentItem--;
          if(currentItem < 0)
             currentItem = photoUris.size() - 1;
-         ((ImageView) view.findViewById(R.id.preview)).setImageURI(photoUris.get(currentItem));
+         preview.setImageURI(photoUris.get(currentItem));
       }
    }
 
@@ -120,12 +137,12 @@ public  class PreviewFragment
    private void deletePhoto(){
       if(isEditable && photoUris.size() != 0){
          Uri deletedUri = photoUris.remove(currentItem);
-         if(photoUris.size() == 0)
-            ((ImageView) view.findViewById(R.id.preview))
-                    .setImageResource(R.drawable.baseline_no_photography_72);
+         if(photoUris.size() == 0){
+            preview.setImageResource(R.drawable.baseline_no_photography_72);
+            deleteButton.setVisibility(View.GONE);
+         }
          if(currentItem < photoUris.size())
-            ((ImageView) view.findViewById(R.id.preview))
-                    .setImageURI(photoUris.get(currentItem));
+            preview.setImageURI(photoUris.get(currentItem));
          if(listener != null)
             listener.onPhotoDelete(deletedUri);
       }
