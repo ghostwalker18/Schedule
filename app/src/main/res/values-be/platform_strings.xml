@@ -42,7 +42,7 @@
     <string name="note_text_clear_descr">Ачысціць тэкст</string>
     <string name="note_take_photo_descr">Зрабіць фота для нататкі</string>
     <string name="note_photo_preview_descr">Прадпрагляд фота для нататкі</string>
-    <string name="note_image_clear_descr">Ачысціць фота</string>
+    <string name="preview_image_clear_descr">Ачысціць фота</string>
     <string name="note_save_descr">Захаваць нататку</string>
     <string name="main_tabs_descr">Ўкладкі расклад і званкі</string>
     <string name="notes_add_descr">Дадаць нататку</string>
@@ -63,4 +63,7 @@
     <string name="days_teacher_clear_descr">Ачысціць выкладчыка</string>
     <string name="notes_selection_cancel_descr">Адмяніць вылучэнне нататак</string>
     <string name="availability_descr">Даступнасць для наведвання</string>
+    <string name="preview_next_descr">Паказаць наступную фатаграфію</string>
+    <string name="preview_previous_descr">Паказаць папярэднюю фотаздымак</string>
+    <string name="preview_photo_descr">Бягучая фотаздымак</string>
 </resources>

@@ -42,7 +42,7 @@
     <string name="note_text_clear_descr">Мәтінді өшіру</string>
     <string name="note_take_photo_descr">Ескерту үшін фотосурет түсіріңіз</string>
     <string name="note_photo_preview_descr">Ескерту үшін фотосуретті алдын ала қарау</string>
-    <string name="note_image_clear_descr">Фотосуретті тазалау</string>
+    <string name="preview_image_clear_descr">Фотосуретті тазалау</string>
     <string name="note_save_descr">Жазбаны сақтау</string>
     <string name="main_tabs_descr">Кесте қойындылары және қоңыраулар</string>
     <string name="notes_add_descr">Ескерту қосу</string>
@@ -63,4 +63,7 @@
     <string name="days_teacher_clear_descr">Мұғалімді тазарту</string>
     <string name="notes_selection_cancel_descr">Жазбаларды бөлектеуді болдырмау</string>
     <string name="availability_descr">Келуге қол жетімділік</string>
+    <string name="preview_next_descr">Келесі фотосуретті көрсету</string>
+    <string name="preview_previous_descr">Алдыңғы фотосуретті көрсету</string>
+    <string name="preview_photo_descr">Ағымдағы фотосурет</string>
 </resources>

@@ -15,6 +15,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -111,19 +112,14 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/text"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -140,46 +136,38 @@
                     android:src="@drawable/baseline_clear_24"
                     android:contentDescription="@string/note_text_clear_descr"/>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/choose_photo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/outline_image_search_36"
-                    android:contentDescription="@string/note_choose_photo_descr"/>
-
-                <ImageButton
-                    android:id="@+id/take_photo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/baseline_add_a_photo_36"
-                    android:contentDescription="@string/note_take_photo_descr"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/preview"
-                    android:name="com.ghostwalker18.schedule.PreviewFragment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingHorizontal="5dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/note_photo_preview_descr"/>/>
-            </LinearLayout>
-        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/choose_photo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/outline_image_search_36"
+            android:contentDescription="@string/note_choose_photo_descr"/>
+
+        <ImageButton
+            android:id="@+id/take_photo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/baseline_add_a_photo_36"
+            android:contentDescription="@string/note_take_photo_descr"/>
+    </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/preview"
+        android:name="com.ghostwalker18.schedule.PreviewFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/note_photo_preview_descr"
+        tools:layout="@layout/fragment_preview" />
 
     <LinearLayout
         android:layout_width="match_parent"

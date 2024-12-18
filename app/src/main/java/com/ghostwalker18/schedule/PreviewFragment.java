@@ -84,7 +84,7 @@ public  class PreviewFragment
 
    /**
     * Этот метод задает возможность удаления фотографий из списка.
-    * @param editable
+    * @param editable возможность удаления
     */
    public void setEditable(boolean editable){
       isEditable = editable;
@@ -120,6 +120,9 @@ public  class PreviewFragment
    private void deletePhoto(){
       if(isEditable && photoUris.size() != 0){
          Uri deletedUri = photoUris.remove(currentItem);
+         if(photoUris.size() == 0)
+            ((ImageView) view.findViewById(R.id.preview))
+                    .setImageResource(R.drawable.baseline_no_photography_72);
          if(currentItem < photoUris.size())
             ((ImageView) view.findViewById(R.id.preview))
                     .setImageURI(photoUris.get(currentItem));
