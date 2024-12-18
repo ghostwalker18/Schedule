@@ -18,7 +18,6 @@ import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import androidx.annotation.NonNull;
 
 /**
  * Этот класс используется для реализации обработки смахивания вправо или влево.
@@ -30,9 +29,17 @@ public class OnSwipeListener
         implements View.OnTouchListener {
    private final GestureDetector gestureDetector;
 
+
    public OnSwipeListener(Context context) {
       gestureDetector = new GestureDetector(context, new GestureListener());
    }
+
+   /**
+    * Этот метод используется для обработки смахивания вверх.
+    */
+   public void onSwipeTop() {/*To override*/}
+
+   public void onSwipeBottom() {/*To override*/}
 
    /**
     * Этот метод используется для обработки смахивания влево.
@@ -45,21 +52,13 @@ public class OnSwipeListener
    public void onSwipeRight() {/*To override*/}
 
    public boolean onTouch(View v, MotionEvent event) {
-      if(event.getAction() == MotionEvent.ACTION_UP)
-         v.performClick();
       return gestureDetector.onTouchEvent(event);
    }
 
    private final class GestureListener
            extends GestureDetector.SimpleOnGestureListener {
-
       private static final int SWIPE_DISTANCE_THRESHOLD = 100;
       private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-
-      @Override
-      public boolean onDown(@NonNull MotionEvent e) {
-         return true;
-      }
 
       @Override
       public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -72,6 +71,15 @@ public class OnSwipeListener
                onSwipeRight();
             else
                onSwipeLeft();
+            return true;
+         }
+         if (Math.abs(distanceY) > Math.abs(distanceX)
+                 && Math.abs(distanceY) > SWIPE_DISTANCE_THRESHOLD
+                 && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+            if (distanceY > 0)
+               onSwipeBottom();
+            else
+               onSwipeTop();
             return true;
          }
          return false;

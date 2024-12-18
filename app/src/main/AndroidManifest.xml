@@ -125,6 +125,10 @@
                 android:value=".NotesActivity"/>
         </activity>
 
+        <activity
+            android:name=".PhotoViewActivity"
+            android:exported="false"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.ghostwalker18.schedule.timefilesprovider"

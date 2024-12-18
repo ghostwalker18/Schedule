@@ -15,6 +15,7 @@
 package com.ghostwalker18.schedule;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -63,12 +64,23 @@ public  class PreviewFragment
       preview = view.findViewById(R.id.preview);
       preview.setOnTouchListener(new OnSwipeListener(requireContext()){
          @Override
+         public void onSwipeTop(){
+            deletePhoto();
+         }
+         @Override
          public void onSwipeLeft() {
             showNextPhoto();
          }
          @Override
          public void onSwipeRight() {
             showPreviousPhoto();
+         }
+      });
+      preview.setOnClickListener(view1 -> {
+         if(photoUris.size() != 0){
+            Intent intent = new Intent(requireActivity(), PhotoViewActivity.class);
+            intent.putExtra("photo_uri", photoUris.get(currentItem).toString());
+            startActivity(intent);
          }
       });
       deleteButton = view.findViewById(R.id.delete);
