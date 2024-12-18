@@ -36,6 +36,9 @@ import androidx.fragment.app.Fragment;
  */
 public  class PreviewFragment
         extends Fragment {
+   /**
+    * Этот интерфейс задает слушателя события удаления изображения из галереи превью.
+    */
    public interface DeleteListener{
       void onPhotoDelete(Uri uri);
    }
@@ -140,7 +143,11 @@ public  class PreviewFragment
          if(photoUris.size() == 0){
             preview.setImageResource(R.drawable.baseline_no_photography_72);
             deleteButton.setVisibility(View.GONE);
+            return;
          }
+         currentItem--;
+         if(currentItem < 0)
+            currentItem = photoUris.size() - 1;
          if(currentItem < photoUris.size())
             preview.setImageURI(photoUris.get(currentItem));
          if(listener != null)

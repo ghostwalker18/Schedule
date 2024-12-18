@@ -34,8 +34,14 @@ public class OnSwipeListener
       gestureDetector = new GestureDetector(context, new GestureListener());
    }
 
+   /**
+    * Этот метод используется для обработки смахивания влево.
+    */
    public void onSwipeLeft() {/*To override*/}
 
+   /**
+    * Этот метод используется для обработки смахивания вправо.
+    */
    public void onSwipeRight() {/*To override*/}
 
    public boolean onTouch(View v, MotionEvent event) {
