@@ -42,7 +42,6 @@
     <string name="note_text_clear_descr">Очистити текст</string>
     <string name="note_take_photo_descr">Зробити фото для замітки</string>
     <string name="note_photo_preview_descr">Передпроглядання фото для замітки</string>
-    <string name="preview_image_clear_descr">Очистити фото</string>
     <string name="note_save_descr">Зберегти замітку</string>
     <string name="main_tabs_descr">Вкладки розклад і дзвінки</string>
     <string name="notes_add_descr">Додати замітку</string>
@@ -66,4 +65,5 @@
     <string name="preview_next_descr">Показати наступну фотографію</string>
     <string name="preview_previous_descr">Показати попередню фотографія</string>
     <string name="preview_photo_descr">Поточна фотографія</string>
+    <string name="preview_image_clear_descr">Очистити фото</string>
 </resources>

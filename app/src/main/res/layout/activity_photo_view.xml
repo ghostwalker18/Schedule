@@ -26,7 +26,7 @@
         android:src="@drawable/baseline_clear_36"
         android:background="@null"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
         android:id="@+id/photo"

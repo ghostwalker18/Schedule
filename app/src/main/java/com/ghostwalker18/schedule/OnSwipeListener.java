@@ -39,6 +39,9 @@ public class OnSwipeListener
     */
    public void onSwipeTop() {/*To override*/}
 
+   /**
+    * Этот метод используется для обработки смахивания вниз.
+    */
    public void onSwipeBottom() {/*To override*/}
 
    /**

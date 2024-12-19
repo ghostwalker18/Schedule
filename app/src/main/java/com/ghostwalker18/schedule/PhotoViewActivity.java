@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class PhotoViewActivity
         extends AppCompatActivity {
     private Uri photoUri;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

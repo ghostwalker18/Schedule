@@ -42,7 +42,6 @@
     <string name="note_text_clear_descr">Clear text</string>
     <string name="note_take_photo_descr">Take a photo for note</string>
     <string name="note_photo_preview_descr">Photo preview</string>
-    <string name="preview_image_clear_descr">Clear photo</string>
     <string name="note_save_descr">Save note</string>
     <string name="main_tabs_descr">Tabs of schedule and times</string>
     <string name="notes_add_descr">Add note</string>
@@ -66,4 +65,5 @@
     <string name="preview_next_descr">Show the next photo</string>
     <string name="preview_previous_descr">Show the previous photo</string>
     <string name="preview_photo_descr">Current photo</string>
+    <string name="preview_image_clear_descr">Clear photo</string>
 </resources>
