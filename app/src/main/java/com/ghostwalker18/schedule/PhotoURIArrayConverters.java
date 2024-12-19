@@ -16,6 +16,14 @@ package com.ghostwalker18.schedule;
 
 import android.net.Uri;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -38,6 +46,7 @@ public class PhotoURIArrayConverters {
     */
    @TypeConverter
    public static String toString(ArrayList<Uri> uris){
+      new GsonBuilder().registerTypeAdapter(Uri.class, new UriJsonAdapter());
       if(uris == null || uris.size() == 0)
          return null;
       return new Gson().toJson(uris);
@@ -51,9 +60,41 @@ public class PhotoURIArrayConverters {
     */
    @TypeConverter
    public static ArrayList<Uri> fromString(String uriString){
+      new GsonBuilder().registerTypeAdapter(Uri.class, new UriJsonAdapter());
       if (uriString == null)
          return null;
       Type listType = new TypeToken<ArrayList<Uri>>() {}.getType();
       return new Gson().fromJson(uriString, listType);
+   }
+
+   /**
+    * Этот класс используется для конвертации Uri в Json и наоборот.
+    *
+    * @author Ипатов Никита
+    * @since 3.2
+    */
+   private static class UriJsonAdapter
+           implements JsonSerializer<Uri>, JsonDeserializer<Uri>{
+
+      @Override
+      public Uri deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+              throws JsonParseException {
+         try{
+            String uri = json.getAsString();
+            if(uri == null || uri.equals("")){
+               return Uri.EMPTY;
+            }
+            else
+               return Uri.parse(uri);
+         }
+         catch (UnsupportedOperationException e){
+            return Uri.EMPTY;
+         }
+      }
+
+      @Override
+      public JsonElement serialize(Uri src, Type typeOfSrc, JsonSerializationContext context) {
+         return new JsonPrimitive(src.toString());
+      }
    }
 }
