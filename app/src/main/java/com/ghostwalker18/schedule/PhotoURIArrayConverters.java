@@ -46,10 +46,12 @@ public class PhotoURIArrayConverters {
     */
    @TypeConverter
    public static String toString(ArrayList<Uri> uris){
-      new GsonBuilder().registerTypeAdapter(Uri.class, new UriJsonAdapter());
+      Gson gson = new GsonBuilder()
+              .registerTypeAdapter(Uri.class, new UriJsonAdapter())
+              .create();
       if(uris == null || uris.size() == 0)
          return null;
-      return new Gson().toJson(uris);
+      return gson.toJson(uris);
    }
 
    /**
@@ -60,11 +62,13 @@ public class PhotoURIArrayConverters {
     */
    @TypeConverter
    public static ArrayList<Uri> fromString(String uriString){
-      new GsonBuilder().registerTypeAdapter(Uri.class, new UriJsonAdapter());
+      Gson gson  = new GsonBuilder()
+              .registerTypeAdapter(Uri.class, new UriJsonAdapter())
+              .create();
       if (uriString == null)
          return null;
       Type listType = new TypeToken<ArrayList<Uri>>() {}.getType();
-      return new Gson().fromJson(uriString, listType);
+      return gson.fromJson(uriString, listType);
    }
 
    /**
