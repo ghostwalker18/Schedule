@@ -51,7 +51,8 @@ public class PhotoURIArrayConverters {
               .create();
       if(uris == null || uris.size() == 0)
          return null;
-      return gson.toJson(uris);
+      Type listType = new TypeToken<ArrayList<Uri>>() {}.getType();
+      return gson.toJson(uris, listType);
    }
 
    /**

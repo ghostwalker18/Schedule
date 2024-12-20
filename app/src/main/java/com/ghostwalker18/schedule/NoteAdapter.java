@@ -15,21 +15,11 @@
 package com.ghostwalker18.schedule;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.READ_MEDIA_IMAGES;
-import static android.Manifest.permission.READ_MEDIA_VIDEO;
-import static android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
  * Этот класс служит для отображения списка заметок.
@@ -38,16 +28,13 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * @since 3.0
  */
 public class NoteAdapter
-        extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
+        extends RecyclerView.Adapter<NoteViewHolder> {
    interface OnNoteClickListener {
       void onNoteSelected(Note note, int position);
       void onNoteUnselected(Note note, int position);
    }
-
    private final Note[] notes;
    private final OnNoteClickListener listener;
-   private Context context;
-   private boolean canAccessPhoto = false;
    private boolean isClickable = true;
 
    public NoteAdapter(Note[] notes, OnNoteClickListener listener) {
@@ -55,50 +42,19 @@ public class NoteAdapter
       this.listener = listener;
    }
 
-   /**
-    * Этот метод используется для проверки, есть ли у приложения доступ к фото в галерее.
-    * @return наличие доступа к фото
-    */
-   private boolean checkPhotoAccess() {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-              (
-                      ContextCompat.checkSelfPermission(context, READ_MEDIA_IMAGES) == PERMISSION_GRANTED ||
-                      ContextCompat.checkSelfPermission(context, READ_MEDIA_VIDEO) == PERMISSION_GRANTED
-              )
-      ) {
-         return true;
-      } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
-              ContextCompat.checkSelfPermission(context, READ_MEDIA_VISUAL_USER_SELECTED) == PERMISSION_GRANTED
-      ) {
-         return true;
-      }  else return ContextCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED;
-   }
-
    @NonNull
    @Override
-   public NoteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-      context = parent.getContext();
+   public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+      Context context = parent.getContext();
       LayoutInflater inflater = LayoutInflater.from(context);
       View view = inflater.inflate(R.layout.fragment_note, parent, false);
-      return new ViewHolder(view);
+      return new NoteViewHolder(view, context);
    }
 
    @Override
-   public void onBindViewHolder(@NonNull NoteAdapter.ViewHolder holder, int position) {
+   public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
       Note note = notes[position];
-      holder.date.setText(DateConverters.toString(note.date));
-      holder.theme.setText(note.theme);
-      holder.text.setText(note.text);
-      canAccessPhoto = checkPhotoAccess();
-      if( canAccessPhoto){
-         try {
-            //holder.photo.setImageURI(Uri.parse(note.photoIDs));
-         } catch (Exception e) {
-            holder.error.setText(context.getString(R.string.photo_error));
-         }
-      }
-      if(note.photoIDs != null && !canAccessPhoto)
-         holder.error.setText(R.string.gallery_access_denied);
+      holder.setNote(note);
       holder.itemView.setOnClickListener(v -> {
          if(!isClickable)
             return;
@@ -119,37 +75,5 @@ public class NoteAdapter
    @Override
    public int getItemCount() {
       return notes.length;
-   }
-
-   /**
-    * Этот класс служит для работы с элементом списка.
-    *
-    * @author Ипатов Никита
-    * @since 3.0
-    */
-   public static class ViewHolder
-           extends RecyclerView.ViewHolder {
-      public boolean isSelected = false;
-      private final TextView theme, text, date, error;
-      private final ImageView checked;
-      //private final PreviewFragment preview;
-
-      public ViewHolder(@NonNull View itemView) {
-         super(itemView);
-         date = itemView.findViewById(R.id.date);
-         theme = itemView.findViewById(R.id.theme);
-         text = itemView.findViewById(R.id.text);
-         error = itemView.findViewById(R.id.error);
-         //photo = itemView.findViewById(R.id.image);
-         checked = itemView.findViewById(R.id.checked);
-      }
-
-      public void setSelected(boolean selected) {
-         isSelected = selected;
-         if(isSelected)
-            checked.setVisibility(View.VISIBLE);
-         else
-            checked.setVisibility(View.GONE);
-      }
    }
 }

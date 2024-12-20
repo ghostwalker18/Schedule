@@ -221,7 +221,7 @@ public class NotesActivity
     */
    private void resetSelection(){
       for(int position : selectedNotes.keySet()){
-         NoteAdapter.ViewHolder item = (NoteAdapter.ViewHolder) notesListView
+         NoteViewHolder item = (NoteViewHolder) notesListView
                  .findViewHolderForAdapterPosition(position);
          if(item != null)
             item.setSelected(false);
