@@ -66,4 +66,5 @@
     <string name="preview_previous_descr">Паказаць папярэднюю фотаздымак</string>
     <string name="preview_photo_descr">Бягучая фотаздымак</string>
     <string name="preview_image_clear_descr">Ачысціць фота</string>
+    <string name="photoview_back_descr">Згарнуць фота</string>
 </resources>

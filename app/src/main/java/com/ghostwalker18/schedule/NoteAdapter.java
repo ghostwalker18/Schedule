@@ -14,7 +14,6 @@
 
 package com.ghostwalker18.schedule;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +44,9 @@ public class NoteAdapter
    @NonNull
    @Override
    public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-      Context context = parent.getContext();
-      LayoutInflater inflater = LayoutInflater.from(context);
+      LayoutInflater inflater = LayoutInflater.from(parent.getContext());
       View view = inflater.inflate(R.layout.fragment_note, parent, false);
-      return new NoteViewHolder(view, context);
+      return new NoteViewHolder(view, parent.getContext());
    }
 
    @Override

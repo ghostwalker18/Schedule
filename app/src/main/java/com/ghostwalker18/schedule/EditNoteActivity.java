@@ -160,13 +160,13 @@ public class EditNoteActivity
 
    @Override
    protected void onDestroy() {
-      super.onDestroy();
       for(Uri photoUri : model.getPhotoIDs().getValue()){
          if(photoUri != null && photoUri.getEncodedPath() != null && !isSaved){
             File photoFile = new File(photoUri.getEncodedPath());
             photoFile.delete();
          }
       }
+      super.onDestroy();
    }
 
    /**

@@ -69,4 +69,5 @@
     <string name="preview_previous_descr">Показать предыдущую фотография</string>
     <string name="preview_photo_descr">Текущая фотография</string>
     <string name="preview_image_clear_descr">Очистить фото</string>
+    <string name="photoview_back_descr">Свернуть фото</string>
 </resources>

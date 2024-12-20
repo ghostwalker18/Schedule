@@ -66,4 +66,5 @@
     <string name="preview_previous_descr">Алдыңғы фотосуретті көрсету</string>
     <string name="preview_photo_descr">Ағымдағы фотосурет</string>
     <string name="preview_image_clear_descr">Фотосуретті тазалау</string>
+    <string name="photoview_back_descr">Фотосуретті бүктеңіз</string>
 </resources>

@@ -25,6 +25,7 @@
         android:padding="10dp"
         android:src="@drawable/baseline_clear_36"
         android:background="@null"
+        android:contentDescription="@string/photoview_back_descr"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

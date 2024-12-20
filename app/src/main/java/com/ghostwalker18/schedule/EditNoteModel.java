@@ -96,24 +96,24 @@ public class EditNoteModel
       return scheduleRepository.getGroups();
    }
 
+   /**
+    * Этот метод добавляет фотографию к заметке.
+    * @param id идентификатор фотографии
+    */
    public void addPhotoID(Uri id){
       ArrayList<Uri> currentUris = photoIDs.getValue();
       currentUris.add(id);
       photoIDs.setValue(currentUris);
    }
 
+   /**
+    * Этот метод убирает фотографию из заметки.
+    * @param id идентификатор фотографии
+    */
    public void removePhotoID(Uri id){
       ArrayList<Uri> currentUris = photoIDs.getValue();
       currentUris.remove(id);
       photoIDs.setValue(currentUris);
-   }
-
-   /**
-    * Этот метод позволяет задать ID фотографий, прикрепляемых к заметке.
-    * @param id uri фотографии
-    */
-   public void setPhotoIDs(ArrayList<Uri> id){
-      photoIDs.setValue(id);
    }
 
    /**
@@ -183,14 +183,6 @@ public class EditNoteModel
     */
    public void setDate(Calendar date) {
       this.date.setValue(date);
-   }
-
-   /**
-    * Этот метод позволяет получить id редактируемой заметки.
-    * @return id заметки
-    */
-   public Integer getNoteID(){
-      return note.getValue().id;
    }
 
    /**
