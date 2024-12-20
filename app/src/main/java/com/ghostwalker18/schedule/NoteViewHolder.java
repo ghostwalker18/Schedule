@@ -99,11 +99,20 @@ public class NoteViewHolder
       theme.setText(note.theme);
       text.setText(note.text);
       photoUris = note.photoIDs;
+      if(photoUris != null && photoUris.size() > 1){
+         itemView.findViewById(R.id.previous).setVisibility(View.VISIBLE);
+         itemView.findViewById(R.id.next).setVisibility(View.VISIBLE);
+      }
+      else{
+         itemView.findViewById(R.id.previous).setVisibility(View.INVISIBLE);
+         itemView.findViewById(R.id.next).setVisibility(View.INVISIBLE);
+      }
       if(checkPhotoAccess()){
          try {
             if(photoUris != null && photoUris.size() > 0)
                preview.setImageURI(photoUris.get(photoUris.size() - 1));
-         } catch (Exception e) {
+         }
+         catch (Exception e) {
             error.setText(context.getString(R.string.photo_error));
          }
       }

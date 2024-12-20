@@ -42,7 +42,7 @@ public class DateConverters {
     * Этот метод преобразует Calendar сущности в String для БД.
     *
     * @param date  the entity attribute value to be converted
-    * @return
+    * @return converted data
     */
    @TypeConverter
    public static String toString(Calendar date){
@@ -53,7 +53,7 @@ public class DateConverters {
     * Этот метод преобразует String из БД в Calendar сущности.
     *
     * @param date  the data from the database column to be converted
-    * @return
+    * @return converted data
     */
    @TypeConverter
    public static Calendar fromString(String date){

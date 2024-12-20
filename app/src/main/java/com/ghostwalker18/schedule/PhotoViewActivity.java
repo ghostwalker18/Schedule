@@ -41,7 +41,7 @@ public class PhotoViewActivity
         }
         photoUri = Uri.parse(bundle.getString("photo_uri"));
         ((ImageView) findViewById(R.id.photo)).setImageURI(photoUri);
-        findViewById(R.id.back_button).setOnClickListener(view -> finish());
+        findViewById(R.id.back_button).setOnClickListener(view -> finishAfterTransition());
     }
 
     @Override

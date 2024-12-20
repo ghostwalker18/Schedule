@@ -27,6 +27,8 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.TypeConverter;
 
 /**
@@ -42,8 +44,9 @@ public class PhotoURIArrayConverters {
     * Этот метод преобразует ArrayList of Uri сущности в String для БД.
     *
     * @param uris  the entity attribute value to be converted
-    * @return
+    * @return converted data
     */
+   @Nullable
    @TypeConverter
    public static String toString(ArrayList<Uri> uris){
       Gson gson = new GsonBuilder()
@@ -59,8 +62,9 @@ public class PhotoURIArrayConverters {
     * Этот метод преобразует String из БД в ArrayList of Uri сущности.
     *
     * @param uriString  the data from the database column to be converted
-    * @return
+    * @return converted data
     */
+   @Nullable
    @TypeConverter
    public static ArrayList<Uri> fromString(String uriString){
       Gson gson  = new GsonBuilder()
@@ -82,7 +86,7 @@ public class PhotoURIArrayConverters {
            implements JsonSerializer<Uri>, JsonDeserializer<Uri>{
 
       @Override
-      public Uri deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+      public Uri deserialize(@NonNull JsonElement json, Type typeOfT, JsonDeserializationContext context)
               throws JsonParseException {
          try{
             String uri = json.getAsString();
@@ -98,7 +102,7 @@ public class PhotoURIArrayConverters {
       }
 
       @Override
-      public JsonElement serialize(Uri src, Type typeOfSrc, JsonSerializationContext context) {
+      public JsonElement serialize(@NonNull Uri src, Type typeOfSrc, JsonSerializationContext context) {
          return new JsonPrimitive(src.toString());
       }
    }

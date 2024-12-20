@@ -49,6 +49,8 @@ public  class PreviewFragment
    private ArrayList<Uri> photoUris;
    private DeleteListener listener;
    private ImageView preview;
+   private ImageButton previousButton;
+   private ImageButton nextButton;
    private ImageButton deleteButton;
 
    @Nullable
@@ -97,8 +99,10 @@ public  class PreviewFragment
       else
          deleteButton.setVisibility(View.GONE);
       deleteButton.setOnClickListener(view1 -> deletePhoto());
-      view.findViewById(R.id.previous).setOnClickListener(view1 -> showPreviousPhoto());
-      view.findViewById(R.id.next).setOnClickListener(view1 -> showNextPhoto());
+      previousButton = view.findViewById(R.id.previous);
+      nextButton = view.findViewById(R.id.next);
+      previousButton.setOnClickListener(view1 -> showPreviousPhoto());
+      nextButton.setOnClickListener(view1 -> showNextPhoto());
       invalidatePreview();
    }
 
@@ -143,6 +147,14 @@ public  class PreviewFragment
          }
          else
             deleteButton.setVisibility(View.GONE);
+      }
+      if(photoUris != null && photoUris.size() > 1){
+         previousButton.setVisibility(View.VISIBLE);
+         nextButton.setVisibility(View.VISIBLE);
+      }
+      else{
+         previousButton.setVisibility(View.INVISIBLE);
+         nextButton.setVisibility(View.INVISIBLE);
       }
    }
 
