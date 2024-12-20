@@ -15,6 +15,7 @@
 package com.ghostwalker18.schedule;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -62,6 +63,11 @@ public  class PreviewFragment
    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
       super.onViewCreated(view, savedInstanceState);
       preview = view.findViewById(R.id.preview);
+      if(savedInstanceState != null){
+         photoUris = savedInstanceState.getParcelableArrayList("uris");
+         currentItem = savedInstanceState.getInt("current_item");
+         isEditable = savedInstanceState.getBoolean("is_editable");
+      }
       preview.setOnTouchListener(new OnSwipeListener(requireContext()){
          @Override
          public void onSwipeTop(){
@@ -77,10 +83,12 @@ public  class PreviewFragment
          }
       });
       preview.setOnClickListener(view1 -> {
-         if(photoUris.size() != 0){
+         if(photoUris != null && photoUris.size() != 0){
             Intent intent = new Intent(requireActivity(), PhotoViewActivity.class);
             intent.putExtra("photo_uri", photoUris.get(currentItem).toString());
-            startActivity(intent);
+            ActivityOptions options = ActivityOptions
+                    .makeSceneTransitionAnimation(getActivity(), preview, "photo");
+            startActivity(intent, options.toBundle());
          }
       });
       deleteButton = view.findViewById(R.id.delete);
@@ -91,6 +99,15 @@ public  class PreviewFragment
       deleteButton.setOnClickListener(view1 -> deletePhoto());
       view.findViewById(R.id.previous).setOnClickListener(view1 -> showPreviousPhoto());
       view.findViewById(R.id.next).setOnClickListener(view1 -> showNextPhoto());
+      invalidatePreview();
+   }
+
+   @Override
+   public void onSaveInstanceState(@NonNull Bundle outState) {
+      outState.putParcelableArrayList("uris", photoUris);
+      outState.putInt("current_item", currentItem);
+      outState.putBoolean("is_editable", isEditable);
+      super.onSaveInstanceState(outState);
    }
 
    /**
@@ -99,12 +116,7 @@ public  class PreviewFragment
     */
    public void setImageIDs(ArrayList<Uri> uris){
       photoUris = uris;
-      if(photoUris.size() > 0){
-         preview.setImageURI(photoUris.get(photoUris.size() - 1));
-         deleteButton.setVisibility(View.VISIBLE);
-      }
-      else
-         deleteButton.setVisibility(View.GONE);
+      invalidatePreview();
    }
 
    /**
@@ -120,6 +132,18 @@ public  class PreviewFragment
     */
    public void setEditable(boolean editable){
       isEditable = editable;
+   }
+
+   private void invalidatePreview(){
+      if(isVisible()){
+         if(photoUris != null && photoUris.size() > 0){
+            preview.setImageURI(photoUris.get(photoUris.size() - 1));
+            if(isEditable)
+               deleteButton.setVisibility(View.VISIBLE);
+         }
+         else
+            deleteButton.setVisibility(View.GONE);
+      }
    }
 
    /**

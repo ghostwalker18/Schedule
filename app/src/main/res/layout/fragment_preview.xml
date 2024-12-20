@@ -38,6 +38,7 @@
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
         android:src="@drawable/baseline_no_photography_72"
+        android:transitionName="photo"
         android:contentDescription="@string/preview_photo_descr"
         app:layout_constraintBottom_toBottomOf="@+id/next"
         app:layout_constraintEnd_toStartOf="@id/next"
