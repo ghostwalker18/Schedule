@@ -119,6 +119,7 @@
             android:name=".EditNoteActivity"
             android:exported="false"
             android:label="@string/add_note"
+            android:screenOrientation="portrait"
             android:parentActivityName=".NotesActivity">
 
             <meta-data

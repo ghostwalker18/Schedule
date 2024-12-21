@@ -51,7 +51,7 @@ public class Note {
     @NonNull
     public String text;
     @TypeConverters({PhotoURIArrayConverters.class})
-    @ColumnInfo(name="notePhotoID")
+    @ColumnInfo(name="notePhotoIDs")
     public ArrayList<Uri> photoIDs;
 
     @Override
