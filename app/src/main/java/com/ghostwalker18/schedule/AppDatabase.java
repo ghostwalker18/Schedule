@@ -19,15 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 /**
  * Этот класс используется Room для генерации класса для ORM операций с БД приложения.
  *
  * @author  Ипатов Никита
+ * @since 3.2
  */
-@Database(entities = {Lesson.class, Note.class}, version = 3, exportSchema = false)
+@Database(entities = {Lesson.class, Note.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase
         extends RoomDatabase {
     public abstract LessonDao lessonDao();
@@ -54,28 +54,13 @@ public abstract class AppDatabase
 
         return Room.databaseBuilder(context, AppDatabase.class, "database")
                 .addCallback(callback)
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(DataBaseMigrations.MIGRATION_1_2,
+                        DataBaseMigrations.MIGRATION_2_3,
+                        DataBaseMigrations.MIGRATION_3_4)
                 .build();
     }
 
-    private static final Migration MIGRATION_1_2 = new Migration(1, 2){
-        @Override
-        public void migrate(SupportSQLiteDatabase db){
-            db.execSQL("CREATE TABLE IF NOT EXISTS tblNote ( 'noteGroup' TEXT NOT NULL, " +
-                    "'noteTheme' TEXT, 'noteText' TEXT NOT NULL, 'notePhotoID' TEXT, " +
-                    "'id' INTEGER NOT NULL, 'noteDate' TEXT NOT NULL, PRIMARY KEY(`id`))");
-        }
-    };
-
-    private static final Migration MIGRATION_2_3 = new Migration(2, 3){
-        @Override
-        public void migrate(SupportSQLiteDatabase db){
-            db.execSQL("DROP TRIGGER IF EXISTS update_day_stage1");
-            db.execSQL(UPDATE_DAY_TRIGGER_1);
-        }
-    };
-
-    private static final String UPDATE_DAY_TRIGGER_1 =
+    public static final String UPDATE_DAY_TRIGGER_1 =
             "CREATE TRIGGER IF NOT EXISTS update_day_stage1 " +
             "BEFORE INSERT ON tblSchedule " +
             "BEGIN " +
@@ -84,7 +69,7 @@ public abstract class AppDatabase
             "                lessonNumber = NEW.lessonNumber;" +
             "END;";
 
-    private static final String UPDATE_DAY_TRIGGER_2 =
+    public static final String UPDATE_DAY_TRIGGER_2 =
             "CREATE TRIGGER IF NOT EXISTS update_day_stage2 " +
                     "AFTER INSERT ON tblSchedule " +
                     "BEGIN " +
