@@ -49,13 +49,17 @@ public class PhotoURIArrayConverters {
    @Nullable
    @TypeConverter
    public static String toString(ArrayList<Uri> uris){
-      Gson gson = new GsonBuilder()
-              .registerTypeAdapter(Uri.class, new UriJsonAdapter())
-              .create();
-      if(uris == null || uris.size() == 0)
+      try{
+         Gson gson = new GsonBuilder()
+                 .registerTypeAdapter(Uri.class, new UriJsonAdapter())
+                 .create();
+         if(uris == null || uris.size() == 0)
+            return null;
+         Type listType = new TypeToken<ArrayList<Uri>>() {}.getType();
+         return gson.toJson(uris, listType);
+      } catch (Exception e){
          return null;
-      Type listType = new TypeToken<ArrayList<Uri>>() {}.getType();
-      return gson.toJson(uris, listType);
+      }
    }
 
    /**
@@ -67,13 +71,17 @@ public class PhotoURIArrayConverters {
    @Nullable
    @TypeConverter
    public static ArrayList<Uri> fromString(String uriString){
-      Gson gson  = new GsonBuilder()
-              .registerTypeAdapter(Uri.class, new UriJsonAdapter())
-              .create();
-      if (uriString == null)
+      try{
+         Gson gson  = new GsonBuilder()
+                 .registerTypeAdapter(Uri.class, new UriJsonAdapter())
+                 .create();
+         if (uriString == null)
+            return null;
+         Type listType = new TypeToken<ArrayList<Uri>>() {}.getType();
+         return gson.fromJson(uriString, listType);
+      } catch (Exception e){
          return null;
-      Type listType = new TypeToken<ArrayList<Uri>>() {}.getType();
-      return gson.fromJson(uriString, listType);
+      }
    }
 
    /**
