@@ -67,4 +67,5 @@
     <string name="preview_photo_descr">Бягучая фотаздымак</string>
     <string name="preview_image_clear_descr">Ачысціць фота</string>
     <string name="photoview_back_descr">Згарнуць фота</string>
+    <string name="photoview_share_descr">Падзяліцца фота</string>
 </resources>

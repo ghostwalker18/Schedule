@@ -14,6 +14,7 @@
 
 package com.ghostwalker18.schedule;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -42,11 +43,22 @@ public class PhotoViewActivity
         photoUri = Uri.parse(bundle.getString("photo_uri"));
         ((ImageView) findViewById(R.id.photo)).setImageURI(photoUri);
         findViewById(R.id.back_button).setOnClickListener(view -> finishAfterTransition());
+        findViewById(R.id.share_button).setOnClickListener(view -> sharePhoto());
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString("photo_uri", photoUri.toString());
         super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Этот метод используетсяя чтобы поделиться отображаемым фото.
+     */
+    private void sharePhoto(){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, photoUri);
+        startActivity(Intent.createChooser(shareIntent, null));
     }
 }

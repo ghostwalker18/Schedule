@@ -67,4 +67,5 @@
     <string name="preview_photo_descr">Current photo</string>
     <string name="preview_image_clear_descr">Clear photo</string>
     <string name="photoview_back_descr">Collapse photo</string>
+    <string name="photoview_share_descr">Share photo</string>
 </resources>
