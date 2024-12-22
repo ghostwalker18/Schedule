@@ -199,7 +199,9 @@ public class EditNoteModel
             noteToSave.photoIDs = photoIDs.getValue();
             try {
                for(Uri photoID : photoIDs.getValue()){
-                  ScheduleApp.getInstance().getContentResolver().takePersistableUriPermission(photoID,
+                  ScheduleApp.getInstance()
+                          .getContentResolver()
+                          .takePersistableUriPermission(photoID,
                           Intent.FLAG_GRANT_READ_URI_PERMISSION);
                }
             } catch (Exception ignored){/*Not required*/}

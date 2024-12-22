@@ -228,7 +228,8 @@ public class ScheduleRepository{
         List<String> links = new ArrayList<>();
         try{
             Document doc = api.getMainPage().execute().body();
-            Elements linkElements = doc.select(MAIN_SELECTOR).get(0)
+            Elements linkElements = doc
+                    .select(MAIN_SELECTOR).get(0)
                     .select("tr").get(1)
                     .select("td").get(1)
                     .select("a");
@@ -273,7 +274,8 @@ public class ScheduleRepository{
                 !mondayTimesFile.exists() || !otherTimesFile.exists()){
             api.getMondayTimes().enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                public void onResponse(@NonNull Call<ResponseBody> call,
+                                       @NonNull Response<ResponseBody> response) {
                     try(ResponseBody body = response.body();
                         FileOutputStream outputStream = context
                                 .openFileOutput(MONDAY_TIMES_PATH, Context.MODE_PRIVATE)
@@ -285,11 +287,13 @@ public class ScheduleRepository{
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {/*Not required*/}
+                public void onFailure(@NonNull Call<ResponseBody> call,
+                                      @NonNull Throwable t) {/*Not required*/}
             });
             api.getOtherTimes().enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                public void onResponse(@NonNull Call<ResponseBody> call,
+                                       @NonNull Response<ResponseBody> response) {
                     try(ResponseBody body = response.body();
                         FileOutputStream outputStream = context
                                 .openFileOutput(OTHER_TIMES_PATH, Context.MODE_PRIVATE)
@@ -301,7 +305,8 @@ public class ScheduleRepository{
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {/*Not required*/}
+                public void onFailure(@NonNull Call<ResponseBody> call,
+                                      @NonNull Throwable t) {/*Not required*/}
             });
         }
         else {
@@ -342,7 +347,8 @@ public class ScheduleRepository{
             status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
             api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                public void onResponse(@NonNull Call<ResponseBody> call,
+                                       @NonNull Response<ResponseBody> response) {
                     ZipSecureFile.setMinInflateRatio(0.0005);
                     status.postValue(new Status(context.getString(R.string.schedule_opening_status), 33));
                     try(ResponseBody body = response.body();
@@ -365,7 +371,8 @@ public class ScheduleRepository{
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<ResponseBody> call,
+                                      @NonNull Throwable t) {
                     status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
                 }
             });

@@ -121,7 +121,8 @@ public class ScheduleItemActivity
      */
     private void populateTable(TableLayout table, Lesson[] lessons){
         int tableRowLayout = R.layout.schedule_row;
-        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        if(this.getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE)
             tableRowLayout = R.layout.schedule_row_with_times;
         int counter = 0;
         for(Lesson lesson : lessons){
@@ -141,7 +142,8 @@ public class ScheduleItemActivity
      * @return заполненный ряд таблицы
      */
     private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);
         ImageView availabilityItem = (ImageView)tr.findViewById(R.id.available);
         if(Utils.isDateToday(lesson.date)){

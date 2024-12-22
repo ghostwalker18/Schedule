@@ -18,8 +18,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.util.List;
 
 /**
- * Этот интерфейс описывет методы для преобразования эксель-файлов расписания ПТГХ в коллекции
- * элементов Lesson.
+ * Этот интерфейс описывет методы для преобразования эксель-файлов расписания ПТГХ
+ * в коллекции элементов Lesson.
  *
  * @author Ипатов Никита
  */
@@ -30,7 +30,7 @@ public interface IConverter {
   * @param excelFile эксель файл расписания для первого корпуса
   * @return лист объектов класса Lesson
   */
-  List<Lesson> convertFirstCorpus(Workbook excelFile);
+ List<Lesson> convertFirstCorpus(Workbook excelFile);
 
  /**
   * Этот метод используется для обработки файла расписания второго корпуса на Первомайском пр.

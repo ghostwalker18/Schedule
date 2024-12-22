@@ -43,7 +43,8 @@ public class ScheduleWidget
         repository.update();
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget_wrapper);
+        RemoteViews views = new RemoteViews(context.getPackageName(),
+                R.layout.schedule_widget_wrapper);
 
         SharedPreferences prefs = context.getSharedPreferences("WIDGET_" + appWidgetId,
                 Context.MODE_PRIVATE);
@@ -171,7 +172,8 @@ public class ScheduleWidget
         @Override
         public void onChanged(Lesson[] lessons) {
             Context context = ScheduleApp.getInstance().getApplicationContext();
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.schedule_widget_wrapper);
+            RemoteViews views = new RemoteViews(context.getPackageName(),
+                    R.layout.schedule_widget_wrapper);
             views.removeAllViews(R.id.schedule);
             if(lessons.length == 0) {
                 RemoteViews placeholder = new RemoteViews(context.getPackageName(),

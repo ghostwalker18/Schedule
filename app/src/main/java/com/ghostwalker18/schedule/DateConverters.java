@@ -28,14 +28,17 @@ import androidx.room.TypeConverter;
  * @author  Ипатов Никита
  */
 public class DateConverters {
-
-   public static final SimpleDateFormat DATE_FORMAT_PHOTO = new SimpleDateFormat("dd_MM_yyyy",
+   public static final SimpleDateFormat DATE_FORMAT_PHOTO = new SimpleDateFormat(
+           "dd_MM_yyyy",
            new Locale("ru"));
-   private static final SimpleDateFormat DATE_FORMAT_DB = new SimpleDateFormat("dd.MM.yyyy",
+   private static final SimpleDateFormat DATE_FORMAT_DB = new SimpleDateFormat(
+           "dd.MM.yyyy",
            new Locale("ru"));
-   private static final SimpleDateFormat DATE_FORMAT_FIRST_CORPUS = new SimpleDateFormat("d MMMM yyyy",
+   private static final SimpleDateFormat DATE_FORMAT_FIRST_CORPUS = new SimpleDateFormat(
+           "d MMMM yyyy",
            new Locale("ru"));
-   private static final SimpleDateFormat DATE_FORMAT_SECOND_CORPUS = new SimpleDateFormat("dd.MM.yyyy",
+   private static final SimpleDateFormat DATE_FORMAT_SECOND_CORPUS = new SimpleDateFormat(
+           "dd.MM.yyyy",
            new Locale("ru"));
 
    /**
@@ -61,7 +64,8 @@ public class DateConverters {
    }
 
    /**
-    * Этот метод преобразует String из расписания второго корпуса на Первомайском пр. в Calendar сущности.
+    * Этот метод преобразует String из расписания второго корпуса
+    * на Первомайском пр. в Calendar сущности.
     * @param date дата из расписания второго корпуса
     * @return преобразованная дата в формате Calendar
     */
@@ -70,7 +74,8 @@ public class DateConverters {
    }
 
    /**
-    * Этот метод преобразует String из расписания первого корпуса на Мурманской ул. в Calendar сущности.
+    * Этот метод преобразует String из расписания первого корпуса на
+    * Мурманской ул. в Calendar сущности.
     * @param date дата из расписания первого корпуса
     * @return преобразованная дата в формате Calendar
     */

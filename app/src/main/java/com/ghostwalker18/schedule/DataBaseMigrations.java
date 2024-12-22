@@ -27,7 +27,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  * @since 3.2
  */
 public class DataBaseMigrations {
-
    public static final Migration MIGRATION_1_2 = new Migration(1, 2){
       @Override
       public void migrate(@NonNull SupportSQLiteDatabase db){

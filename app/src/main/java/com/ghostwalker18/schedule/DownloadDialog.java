@@ -38,11 +38,13 @@ public class DownloadDialog
    private final DialogInterface.OnClickListener listener = (dialogInterface, which) -> {
       if(which == Dialog.BUTTON_POSITIVE){
          new Thread(() -> {
-            DownloadManager downloadManager = requireActivity().getSystemService(DownloadManager.class);
+            DownloadManager downloadManager = requireActivity()
+                    .getSystemService(DownloadManager.class);
             for(String link : links){
                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link))
                        .setMimeType(mimeTypeOfFilesToDownload)
-                       .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                       .setNotificationVisibility(
+                               DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                        .setTitle(downloadTitle)
                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
                                Utils.getNameFromLink(link));

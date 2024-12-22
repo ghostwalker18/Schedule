@@ -67,7 +67,8 @@ public class MainActivity
             }
         }).attach();
         if(savedInstanceState == null){
-            daysFragment = (DaysFragment)((SectionPagerAdapter)pager.getAdapter()).createFragment(0);
+            daysFragment = (DaysFragment)((SectionPagerAdapter)pager
+                    .getAdapter()).createFragment(0);
         }
         else{
             for(Fragment fragment : getSupportFragmentManager().getFragments()){
@@ -204,7 +205,8 @@ public class MainActivity
      * их в папку загрузок.
      */
     private boolean downloadTimesFiles(){
-        String[] links = new String[]{ScheduleRepository.MONDAY_TIMES_URL, ScheduleRepository.OTHER_TIMES_URL};
+        String[] links = new String[]{ScheduleRepository.MONDAY_TIMES_URL,
+                ScheduleRepository.OTHER_TIMES_URL};
         DownloadDialog downloadDialog = new DownloadDialog();
         Bundle args = new Bundle();
         args.putInt("number_of_files", links.length);

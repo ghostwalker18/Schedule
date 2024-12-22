@@ -94,7 +94,8 @@ public class PhotoURIArrayConverters {
            implements JsonSerializer<Uri>, JsonDeserializer<Uri>{
 
       @Override
-      public Uri deserialize(@NonNull JsonElement json, Type typeOfT, JsonDeserializationContext context)
+      public Uri deserialize(@NonNull JsonElement json, Type typeOfT,
+                             JsonDeserializationContext context)
               throws JsonParseException {
          try{
             String uri = json.getAsString();
@@ -110,7 +111,8 @@ public class PhotoURIArrayConverters {
       }
 
       @Override
-      public JsonElement serialize(@NonNull Uri src, Type typeOfSrc, JsonSerializationContext context) {
+      public JsonElement serialize(@NonNull Uri src, Type typeOfSrc,
+                                   JsonSerializationContext context) {
          return new JsonPrimitive(src.toString());
       }
    }

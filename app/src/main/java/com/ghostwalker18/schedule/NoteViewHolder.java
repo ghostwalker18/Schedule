@@ -74,7 +74,8 @@ public class NoteViewHolder
             Intent intent = new Intent(context, PhotoViewActivity.class);
             intent.putExtra("photo_uri", photoUris.get(currentItem).toString());
             ActivityOptions options = ActivityOptions
-                    .makeSceneTransitionAnimation((AppCompatActivity)context, preview, "photo");
+                    .makeSceneTransitionAnimation(
+                            (AppCompatActivity)context, preview, "photo");
             context.startActivity(intent, options.toBundle());
          }
       });
