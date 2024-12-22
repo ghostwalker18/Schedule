@@ -26,7 +26,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  * Этот класс используется Room для генерации класса для ORM операций с БД приложения.
  *
  * @author  Ипатов Никита
- * @since 3.2
+ * @since 1.0
  */
 @Database(entities = {Lesson.class, Note.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase

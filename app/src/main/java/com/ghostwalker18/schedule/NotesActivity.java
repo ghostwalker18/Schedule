@@ -288,7 +288,7 @@ public class NotesActivity
       Intent intent = new Intent(this, EditNoteActivity.class);
       intent.putExtra("noteID", selectedNotes.entrySet().iterator().next().getValue().id);
       startActivity(intent);
-      selectedNotes = new ConcurrentHashMap<>();
+      resetSelection();
       decideMenuOptions();
    }
 
