@@ -48,7 +48,7 @@ public class DataBaseMigrations {
       @Override
       public void migrate(@NonNull SupportSQLiteDatabase db) {
          db.execSQL("UPDATE tblNote " +
-                 "SET notePhotoID = '[{' || notePhotoID || '}]'");
+                 "SET notePhotoID = '[\"' || notePhotoID || '\"]'");
          db.execSQL("ALTER TABLE tblNote " +
                  "RENAME COLUMN notePhotoID TO notePhotoIDs");
       }

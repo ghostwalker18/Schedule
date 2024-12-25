@@ -35,7 +35,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 12
-        versionName = "3.2"
+        versionName = "4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,7 +51,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
 
-        debug{
+        debug {
             isMinifyEnabled = false
             isDebuggable = true
             enableUnitTestCoverage = true

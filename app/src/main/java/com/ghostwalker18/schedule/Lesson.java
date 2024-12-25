@@ -125,7 +125,6 @@ public class Lesson {
         this.teacher = teacher;
     }
 
-
     @NonNull
     @Override
     public String toString() {
