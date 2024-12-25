@@ -52,6 +52,14 @@ public class ScheduleState
       calendar.setValue(date);
    }
 
+   /**
+    * Этот метод позваляет передвинуть состояние расписания к выбранной дате.
+    * @param date дата для отображения расписания
+    */
+   public void goToDate(Calendar date){
+      calendar.setValue(date);
+   }
+
    public LiveData<Calendar> getCalendar(){
       return calendar;
    }

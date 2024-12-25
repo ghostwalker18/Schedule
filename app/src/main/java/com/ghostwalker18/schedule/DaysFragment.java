@@ -14,6 +14,8 @@
 
 package com.ghostwalker18.schedule;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,13 +26,16 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -94,7 +99,17 @@ public class DaysFragment
       setUpTeacherSearch();
       enableTeacherSearch();
       view.findViewById(R.id.forward_button).setOnClickListener(v -> state.goNextWeek());
+      view.findViewById(R.id.forward_button).setOnLongClickListener(v -> {
+         DatePickerFragment dialog = new DatePickerFragment();
+         dialog.show(getChildFragmentManager(), "date");
+         return true;
+      });
       view.findViewById(R.id.back_button).setOnClickListener(v -> state.goPreviousWeek());
+      view.findViewById(R.id.back_button).setOnLongClickListener(v -> {
+         DatePickerFragment dialog = new DatePickerFragment();
+         dialog.show(getChildFragmentManager(), "date");
+         return true;
+      });
       view.findViewById(R.id.refresh_button).setOnClickListener(v -> repository.update());
       updateScheduleProgress = view.findViewById(R.id.updateScheduleProgress);
       updateScheduleStatus = view.findViewById(R.id.updateScheduleStatus);
@@ -221,6 +236,37 @@ public class DaysFragment
          state.setTeacher(null);
          teacherSearch.setText("");
          teacherSearch.setVisibility(View.GONE);
+      }
+   }
+
+   /**
+    * Этот класс используется для выбора даты (недели) для отображения расписания.
+    *
+    * @author Ипатов Никита
+    * @since 4.1
+    */
+   public static class DatePickerFragment
+           extends DialogFragment
+           implements DatePickerDialog.OnDateSetListener {
+      private ScheduleState model;
+
+      @NonNull
+      @Override
+      public Dialog onCreateDialog(Bundle savedInstanceState) {
+         model = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
+         // Use the current date as the default date in the picker.
+         final Calendar c = Calendar.getInstance();
+         int year = c.get(Calendar.YEAR);
+         int month = c.get(Calendar.MONTH);
+         int day = c.get(Calendar.DAY_OF_MONTH);
+
+         return new DatePickerDialog(requireContext(), this, year, month, day);
+      }
+      @Override
+      public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+         Calendar date = Calendar.getInstance();
+         date.set(year, month, day);
+         model.goToDate(date);
       }
    }
 }
