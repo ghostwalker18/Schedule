@@ -39,6 +39,7 @@ import androidx.preference.PreferenceFragmentCompat;
  *
  * @author  Ипатов Никита
  * @since 2.3
+ * @see ScheduleWidget
  */
 public class WidgetSettingsActivity
         extends AppCompatActivity

@@ -24,7 +24,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  * Этот класс используется для проведения миграций между версиями БД приложения.
  *
  * @author Ипатов Никита
- * @since 3.2
+ * @since 4.0
  */
 public class DataBaseMigrations {
    public static final Migration MIGRATION_1_2 = new Migration(1, 2){

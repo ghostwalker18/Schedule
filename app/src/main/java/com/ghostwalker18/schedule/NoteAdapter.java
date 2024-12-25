@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * @author Ипатов Никита
  * @since 3.0
+ * @see NoteViewHolder
  */
 public class NoteAdapter
         extends RecyclerView.Adapter<NoteViewHolder> {

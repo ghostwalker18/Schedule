@@ -24,6 +24,8 @@ import androidx.lifecycle.ViewModel;
  * Этот класс используется для отслеживания изменения состояния расписания.
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see DaysFragment
  */
 public class ScheduleState
         extends ViewModel {

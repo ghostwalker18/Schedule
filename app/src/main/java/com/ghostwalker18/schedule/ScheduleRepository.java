@@ -48,9 +48,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Этот класс представляет собой репозиторий данных прилвожения о расписании.
+ * Этот класс представляет собой репозиторий данных приложения о расписании.
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see LessonDao
+ * @see IConverter
+ * @see NetworkService
  */
 public class ScheduleRepository{
     private final AppDatabase db;

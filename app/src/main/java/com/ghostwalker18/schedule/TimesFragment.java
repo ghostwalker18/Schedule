@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
  * расписания звонков.
  *
  * @author  Ипатов Никита
+ * @since 1.0
  */
 public class TimesFragment
         extends Fragment {

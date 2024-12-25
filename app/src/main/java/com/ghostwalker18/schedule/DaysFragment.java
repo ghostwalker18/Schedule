@@ -45,6 +45,9 @@ import androidx.preference.PreferenceManager;
  * отображения расписания занятий.
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see ScheduleRepository
+ * @see ScheduleState
  */
 public class DaysFragment
         extends Fragment

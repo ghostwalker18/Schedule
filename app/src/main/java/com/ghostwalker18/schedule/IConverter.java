@@ -22,6 +22,8 @@ import java.util.List;
  * в коллекции элементов Lesson.
  *
  * @author Ипатов Никита
+ * @since 1.0
+ * @see Lesson
  */
 public interface IConverter {
  /**

@@ -40,6 +40,9 @@ import androidx.viewpager2.widget.ViewPager2;
  * Этот класс представляет собой основной экран приложения.
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see DaysFragment
+ * @see TimesFragment
  */
 public class MainActivity
         extends AppCompatActivity {

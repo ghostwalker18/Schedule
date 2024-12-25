@@ -28,7 +28,7 @@ import androidx.fragment.app.DialogFragment;
  * Этот класс используется для скачивания файлов с подтверждением загрузки.
  *
  * @author Ипатов Никита
- * @since 3.2
+ * @since 4.0
  */
 public class DownloadDialog
         extends DialogFragment {

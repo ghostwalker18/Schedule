@@ -27,6 +27,7 @@ import retrofit2.Retrofit;
  *
  * @author Ipatov Nikita
  * @since 3.1
+ * @see CacheInterceptor
  */
 public class NetworkService {
    private static final long SIZE_OF_CACHE = 10 * 1024 * 1024; // 10 MiB

@@ -29,6 +29,9 @@ import androidx.lifecycle.ViewModel;
  *
  * @author Ипатов Никита
  * @since 3.0
+ * @see EditNoteActivity
+ * @see NotesRepository
+ * @see ScheduleRepository
  */
 public class EditNoteModel
         extends ViewModel {

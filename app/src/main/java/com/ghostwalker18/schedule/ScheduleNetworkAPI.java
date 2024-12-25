@@ -25,6 +25,7 @@ import retrofit2.http.Url;
  * используемого при скачивании файлов расписания и звонков.
  *
  * @author  Ипатов Никита
+ * @since 1.0
  */
 public interface ScheduleNetworkAPI {
    /**

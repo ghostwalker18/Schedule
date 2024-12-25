@@ -21,7 +21,7 @@ import androidx.annotation.Nullable;
  * В этом классе содержаться различные вспомогательные методы, использующиеся по всему приложению.
  *
  * @author Ипатов Никита
- * @since 3.2
+ * @since 4.0
  */
 public class Utils {
    enum LessonAvailability{

@@ -26,6 +26,9 @@ import androidx.room.TypeConverter;
  * Содержит методы для преобразования Calendar в String для БД и наоборот
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see Lesson
+ * @see Note
  */
 public class DateConverters {
    public static final SimpleDateFormat DATE_FORMAT_PHOTO = new SimpleDateFormat(

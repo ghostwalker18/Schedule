@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModel;
  *
  * @author Ипатов Никита
  * @since 3.0
+ * @see NotesActivity
  */
 public class NotesModel
         extends ViewModel {

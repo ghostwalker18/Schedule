@@ -30,6 +30,8 @@ import java.util.TreeMap;
  * Этот класс содержит в себе методы для работы с файлами расписания ПТГХ.
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see IConverter
  */
 public class XMLStoLessonsConverter
         implements IConverter {

@@ -38,7 +38,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * Этот класс служит для работы с элементом списка.
  *
  * @author Ипатов Никита
- * @since 3.2
+ * @since 4.0
  */
 public class NoteViewHolder
         extends RecyclerView.ViewHolder {

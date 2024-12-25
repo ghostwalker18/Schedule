@@ -26,6 +26,8 @@ import androidx.preference.PreferenceFragmentCompat;
  * Этот класс представляет собой экран настроек приложения
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see ScheduleApp
  */
 public class SettingsActivity
         extends AppCompatActivity {

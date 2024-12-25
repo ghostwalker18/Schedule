@@ -22,7 +22,7 @@ import android.text.TextWatcher;
  * чтобы избежать реализации ненужных методов.
  *
  * @author Ипатов Никита
- * @since 3.2
+ * @since 4.0
  */
 public class TextWatcherAdapter
         implements TextWatcher {

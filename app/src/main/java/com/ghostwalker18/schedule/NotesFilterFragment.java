@@ -38,6 +38,7 @@ import androidx.lifecycle.ViewModelProvider;
  *
  * @author Ипатов Никита
  * @since 3.0
+ * @see DatePickerFragment
  */
 public class NotesFilterFragment
         extends Fragment {

@@ -47,6 +47,8 @@ import androidx.lifecycle.ViewModelProvider;
  *
  * @author Ипатов Никита
  * @since 3.0
+ * @see EditNoteModel
+ * @see PreviewFragment
  */
 public class EditNoteActivity
         extends AppCompatActivity {

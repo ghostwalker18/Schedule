@@ -23,7 +23,7 @@ import android.view.View;
  * Этот класс используется для реализации обработки смахивания вправо или влево.
  *
  * @author Ипатов Никита
- * @since 3.2
+ * @since 4.0
  */
 public class OnSwipeListener
         implements View.OnTouchListener {

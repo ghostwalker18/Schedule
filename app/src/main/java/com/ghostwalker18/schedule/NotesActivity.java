@@ -42,6 +42,9 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * @author Ипатов Никита
  * @since 3.0
+ * @see NotesModel
+ * @see NoteAdapter
+ * @see NotesFilterFragment
  */
 public class NotesActivity
         extends AppCompatActivity {

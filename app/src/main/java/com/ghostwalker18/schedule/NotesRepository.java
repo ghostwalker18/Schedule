@@ -24,6 +24,7 @@ import androidx.lifecycle.LiveData;
  *
  * @author Ипатов Никита
  * @since 3.1
+ * @see NoteDao
  */
 public class NotesRepository {
    private final AppDatabase db;

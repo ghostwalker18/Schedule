@@ -31,6 +31,7 @@ import androidx.room.Update;
  *
  * @author  Ипатов Никита
  * @since 3.0
+ * @see Note
  */
 @Dao
 @TypeConverters({DateConverters.class})

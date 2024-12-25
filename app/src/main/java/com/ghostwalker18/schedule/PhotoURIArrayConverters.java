@@ -36,7 +36,8 @@ import androidx.room.TypeConverter;
  * Содержит методы для преобразования ArrayList of Uri в String для БД и наоборот
  *
  * @author  Ипатов Никита
- * @since 3.2
+ * @since 4.0
+ * @see Note
  */
 public class PhotoURIArrayConverters {
 

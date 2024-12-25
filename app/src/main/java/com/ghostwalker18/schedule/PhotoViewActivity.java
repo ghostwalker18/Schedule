@@ -26,7 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
  * Этот класс используется для просмотра фото заметки в отдельном экране.
  *
  * @author Ипатов Никита
- * @since 3.2
+ * @since 4.0
  */
 public class PhotoViewActivity
         extends AppCompatActivity {

@@ -32,6 +32,7 @@ import androidx.lifecycle.Observer;
  *
  * @author Ипатов Никита
  * @since 2.2
+ * @see WidgetSettingsActivity
  */
 public class ScheduleWidget
         extends AppWidgetProvider {

@@ -34,7 +34,7 @@ import androidx.fragment.app.Fragment;
  * с возможностью удаления текущего.
  *
  * @author Ипатов Никита
- * @since 3.2
+ * @since 4.0
  */
 public  class PreviewFragment
         extends Fragment {

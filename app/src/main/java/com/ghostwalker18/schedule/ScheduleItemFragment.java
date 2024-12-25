@@ -47,6 +47,8 @@ import android.widget.TextView;
  * используемый для отображения расписания на день.
  *
  * @author Ипатов Никита
+ * @since 1.0
+ * @see ScheduleRepository
  */
 public class ScheduleItemFragment
         extends Fragment

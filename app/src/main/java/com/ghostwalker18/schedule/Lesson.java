@@ -28,6 +28,7 @@ import androidx.room.TypeConverters;
  * времени проведения, группы, преподавателя, предмета.
  *
  * @author  Ипатов Никита
+ * @since 1.0
  */
 @Entity(tableName = "tblSchedule", primaryKeys = {"lessonDate", "lessonNumber", "groupName", "subjectName"})
 public class Lesson {

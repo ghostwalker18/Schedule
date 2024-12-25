@@ -27,6 +27,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  *
  * @author  Ипатов Никита
  * @since 1.0
+ * @see LessonDao
+ * @see NoteDao
  */
 @Database(entities = {Lesson.class, Note.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase

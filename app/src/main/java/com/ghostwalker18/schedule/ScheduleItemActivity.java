@@ -40,6 +40,8 @@ import androidx.lifecycle.MutableLiveData;
  * Этот класс представляет собой экран приложения для отображения расписания на день.
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see ScheduleRepository
  */
 public class ScheduleItemActivity
         extends AppCompatActivity {

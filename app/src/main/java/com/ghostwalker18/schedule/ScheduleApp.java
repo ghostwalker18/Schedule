@@ -30,7 +30,7 @@ import androidx.preference.PreferenceManager;
  * </p>
  *
  * @author  Ипатов Никита
- * @version  3.1
+ * @version  4.1
  */
 public class ScheduleApp
         extends Application

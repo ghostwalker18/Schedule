@@ -30,6 +30,8 @@ import androidx.room.Update;
  * Используется Room для генерации.
  *
  * @author  Ипатов Никита
+ * @since 1.0
+ * @see Lesson
  */
 @Dao
 @TypeConverters({DateConverters.class})
