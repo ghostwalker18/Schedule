@@ -34,7 +34,7 @@ android {
         applicationId = "com.ghostwalker18.schedule"
         minSdk = 26
         targetSdk = 34
-        versionCode = 12
+        versionCode = 13
         versionName = "4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

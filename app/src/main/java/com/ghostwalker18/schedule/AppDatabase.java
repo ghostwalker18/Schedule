@@ -15,6 +15,9 @@
 package com.ghostwalker18.schedule;
 
 import android.content.Context;
+
+import java.io.File;
+
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -33,6 +36,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 @Database(entities = {Lesson.class, Note.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase
         extends RoomDatabase {
+    private final static String DATABASE_NAME = "database";
     public abstract LessonDao lessonDao();
     public abstract NoteDao noteDao();
 
@@ -55,11 +59,19 @@ public abstract class AppDatabase
             }
         };
         Builder<AppDatabase> builder = Room
-                .databaseBuilder(context, AppDatabase.class, "database")
+                .databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
                 .addCallback(callback);
         for(Migration migration : DataBaseMigrations.getMigrations())
             builder.addMigrations(migration);
         return builder.build();
+    }
+
+    public static File exportDBFile(Context context){
+        return context.getDatabasePath(DATABASE_NAME);
+    }
+
+    public static void importDBFile(File dbFile){
+        
     }
 
     public static final String UPDATE_DAY_TRIGGER_1 =

@@ -22,6 +22,7 @@
         android:icon="@drawable/baseline_share_36"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/action_download"
         android:title="@string/download_schedule"
