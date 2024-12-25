@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Розклад ПТМГ</string>
+    <string name="app_name">Розклад ПАБТ</string>
     <string name="settings">Налаштування</string>
     <string name="days_tab">Розклад занять</string>
     <string name="times_tab">Розклад дзвінків</string>

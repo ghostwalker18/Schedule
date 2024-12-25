@@ -28,7 +28,7 @@
     <string name="appearance">Внешний вид</string>
     <string name="dynamic_colors">Использовать динамические цвета</string>
     <string name="add_widget">Добавить виджет</string>
-    <string name="app_widget_description">Расписание ПТГХ на день для группы</string>
+    <string name="app_widget_description">Расписание ПАСТ на день для группы</string>
     <string name="permission_for_photo">Требуется разрешение, чтобы сделать фото</string>
     <string name="share_app">Поделиться приложением</string>
     <string name="scan_qr_code">Отсканируйте QR код</string>

@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Кесте ПҚШТ</string>
+    <string name="app_name">Кесте ПСҚК</string>
     <string name="settings">Параметрлер</string>
     <string name="days_tab">Сабақ кестесі</string>
     <string name="times_tab">Қоңырау кестесі</string>
