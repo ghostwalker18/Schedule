@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="10dp"
-        tools:context="com.ghostwalker18.schedule.TimesFragment"
+        tools:context="com.ghostwalker18.schedule.views.TimesFragment"
         android:layout_gravity="fill_vertical"
         android:baselineAligned="false">
 

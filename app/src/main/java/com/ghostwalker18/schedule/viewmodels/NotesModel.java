@@ -12,8 +12,12 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.viewmodels;
 
+import com.ghostwalker18.schedule.Note;
+import com.ghostwalker18.schedule.views.NotesActivity;
+import com.ghostwalker18.schedule.NotesRepository;
+import com.ghostwalker18.schedule.ScheduleApp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,6 +47,7 @@ public class NotesModel
       super();
       setGroup(ScheduleApp.getInstance().getScheduleRepository().getSavedGroup());
    }
+
    /**
     * Этот метод выдает заметки для заданнной группы и временного интервала.
     * @return список заметок

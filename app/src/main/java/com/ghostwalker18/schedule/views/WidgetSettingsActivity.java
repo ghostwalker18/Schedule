@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.views;
 
 import android.app.UiModeManager;
 import android.appwidget.AppWidgetManager;
@@ -23,6 +23,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.ScheduleApp;
+import com.ghostwalker18.schedule.ScheduleRepository;
+import com.ghostwalker18.schedule.ScheduleWidget;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;

@@ -23,6 +23,9 @@ import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ghostwalker18.schedule.views.PhotoViewActivity;
+
 import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

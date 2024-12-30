@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    tools:context="com.ghostwalker18.schedule.DaysFragment">
+    tools:context="com.ghostwalker18.schedule.views.DaysFragment">
 
     <Button
         android:layout_width="wrap_content"

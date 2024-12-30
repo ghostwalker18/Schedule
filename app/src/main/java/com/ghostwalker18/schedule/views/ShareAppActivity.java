@@ -12,10 +12,11 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import com.ghostwalker18.schedule.R;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;

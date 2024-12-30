@@ -24,7 +24,7 @@ import androidx.annotation.Nullable;
  * @since 4.0
  */
 public class Utils {
-   enum LessonAvailability{
+   public enum LessonAvailability{
       ENDED, STARTED, NOT_STARTED
    }
 
@@ -36,7 +36,7 @@ public class Utils {
     * @return доступность для посещения
     */
    @Nullable
-   static synchronized LessonAvailability isLessonAvailable(Calendar lessonDate, String lessonTimes){
+   public static synchronized LessonAvailability isLessonAvailable(Calendar lessonDate, String lessonTimes){
       try{
          Calendar currentTime = Calendar.getInstance();
          String startTime = lessonTimes.split("-")[0];
@@ -67,7 +67,7 @@ public class Utils {
     * @param date дата для проверки
     * @return сегодня ли дата
     */
-   static synchronized boolean isDateToday(Calendar date){
+   public static synchronized boolean isDateToday(Calendar date){
       Calendar rightNow = Calendar.getInstance();
       return rightNow.get(Calendar.YEAR) == date.get(Calendar.YEAR)
               && rightNow.get(Calendar.MONTH) == date.get(Calendar.MONTH)
@@ -79,7 +79,7 @@ public class Utils {
     * @param date дата
     * @return представление даты в формате ХХ/ХХ
     */
-   static String generateDateForTitle(Calendar date){
+   public static String generateDateForTitle(Calendar date){
       //Month is a number in 0 - 11
       int month = date.get(Calendar.MONTH) + 1;
       //Formatting month number with leading zero

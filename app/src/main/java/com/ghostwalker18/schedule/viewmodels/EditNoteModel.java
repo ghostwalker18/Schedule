@@ -12,11 +12,15 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.viewmodels;
 
 import android.content.Intent;
 import android.net.Uri;
-
+import com.ghostwalker18.schedule.views.EditNoteActivity;
+import com.ghostwalker18.schedule.Note;
+import com.ghostwalker18.schedule.NotesRepository;
+import com.ghostwalker18.schedule.ScheduleApp;
+import com.ghostwalker18.schedule.ScheduleRepository;
 import java.util.ArrayList;
 import java.util.Calendar;
 import androidx.lifecycle.LiveData;

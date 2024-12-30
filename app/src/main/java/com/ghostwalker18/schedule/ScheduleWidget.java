@@ -21,6 +21,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
+
+import com.ghostwalker18.schedule.views.MainActivity;
+import com.ghostwalker18.schedule.views.WidgetSettingsActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import androidx.core.content.ContextCompat;
@@ -39,8 +43,8 @@ public class ScheduleWidget
     static final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
     static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                       int appWidgetId) {
         repository.update();
 
         // Construct the RemoteViews object

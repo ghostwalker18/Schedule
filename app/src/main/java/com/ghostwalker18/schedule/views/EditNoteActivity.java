@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.views;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -28,6 +28,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.viewmodels.EditNoteModel;
 import androidx.core.content.FileProvider;
 import java.io.File;
 import java.util.Calendar;

@@ -12,9 +12,14 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.views;
 
 import android.content.Intent;
+
+import com.ghostwalker18.schedule.DownloadDialog;
+import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.ScheduleApp;
+import com.ghostwalker18.schedule.ScheduleRepository;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import androidx.annotation.NonNull;

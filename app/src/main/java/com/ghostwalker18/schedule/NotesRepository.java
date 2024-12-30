@@ -35,6 +35,8 @@ public class NotesRepository {
 
    /**
     * Этот метод позволяет сохранить заметку.
+    *
+    * @param note заметка
     */
    public void saveNote(@NonNull Note note){
       db.noteDao().insert(note);

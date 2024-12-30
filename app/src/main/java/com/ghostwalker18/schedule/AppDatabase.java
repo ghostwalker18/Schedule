@@ -42,7 +42,7 @@ public abstract class AppDatabase
 
     /**
      * Этот метод позволяет получить сконфигурированную базу данных приложения.
-     * @param context контекс приложения
+     * @param context контекст приложения
      * @return база данных Room
      */
     public static AppDatabase getInstance(Context context){
@@ -66,10 +66,19 @@ public abstract class AppDatabase
         return builder.build();
     }
 
+    /**
+     * Этот метод позволяет получить архивированные файлы БД приложения для ее экспорта.
+     * @param context контекст приложения
+     * @return
+     */
     public static File exportDBFile(Context context){
         return context.getDatabasePath(DATABASE_NAME);
     }
 
+    /**
+     * Этот метод заменяет файлы БД приложения импортированными из стороннего источника.
+     * @param dbFile архив с файлами БД
+     */
     public static void importDBFile(File dbFile){
         
     }

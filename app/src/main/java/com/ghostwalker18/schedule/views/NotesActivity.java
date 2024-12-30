@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.views;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -27,6 +27,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.Note;
+import com.ghostwalker18.schedule.NoteAdapter;
+import com.ghostwalker18.schedule.NoteViewHolder;
+import com.ghostwalker18.schedule.NotesRepository;
+import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.ScheduleApp;
+import com.ghostwalker18.schedule.TextWatcherAdapter;
+import com.ghostwalker18.schedule.viewmodels.NotesModel;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

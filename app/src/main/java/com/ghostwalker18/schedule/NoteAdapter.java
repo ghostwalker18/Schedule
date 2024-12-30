@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class NoteAdapter
         extends RecyclerView.Adapter<NoteViewHolder> {
-   interface OnNoteClickListener {
+   public interface OnNoteClickListener {
       void onNoteSelected(Note note, int position);
       void onNoteUnselected(Note note, int position);
    }

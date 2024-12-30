@@ -12,8 +12,9 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.viewmodels;
 
+import com.ghostwalker18.schedule.views.DaysFragment;
 import java.util.Calendar;
 import java.util.Date;
 import androidx.lifecycle.LiveData;
