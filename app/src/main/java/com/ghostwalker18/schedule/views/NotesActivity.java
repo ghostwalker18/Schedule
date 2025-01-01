@@ -30,7 +30,6 @@ import android.widget.TextView;
 import com.ghostwalker18.schedule.DateConverters;
 import com.ghostwalker18.schedule.Note;
 import com.ghostwalker18.schedule.NoteAdapter;
-import com.ghostwalker18.schedule.NoteViewHolder;
 import com.ghostwalker18.schedule.NotesRepository;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;

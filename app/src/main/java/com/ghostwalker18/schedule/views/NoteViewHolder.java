@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.views;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
@@ -23,10 +23,12 @@ import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.ghostwalker18.schedule.views.PhotoViewActivity;
-
+import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.Note;
+import com.ghostwalker18.schedule.OnSwipeListener;
+import com.ghostwalker18.schedule.R;
 import java.util.ArrayList;
+import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -49,7 +51,7 @@ public class NoteViewHolder
    public boolean isSelected = false;
    private int currentItem = 0;
    private ArrayList<Uri> photoUris;
-   private final TextView theme, text, date, error;
+   private final TextView theme, text, date, error, imageCounterView;
    private final ImageView checked, preview;
 
    @SuppressLint("ClickableViewAccessibility")
@@ -60,6 +62,7 @@ public class NoteViewHolder
       theme = itemView.findViewById(R.id.theme);
       text = itemView.findViewById(R.id.text);
       error = itemView.findViewById(R.id.error);
+      imageCounterView = itemView.findViewById(R.id.image_counter);
       checked = itemView.findViewById(R.id.checked);
       preview = itemView.findViewById(R.id.preview);
       preview.setOnTouchListener(new OnSwipeListener(context){
@@ -113,8 +116,10 @@ public class NoteViewHolder
       }
       if(checkPhotoAccess()){
          try {
-            if(photoUris != null && photoUris.size() > 0)
+            if(photoUris != null && photoUris.size() > 0){
+               prepareImagesCounterView();
                preview.setImageURI(photoUris.get(photoUris.size() - 1));
+            }
          }
          catch (Exception e) {
             error.setText(context.getString(R.string.photo_error));
@@ -132,6 +137,7 @@ public class NoteViewHolder
          currentItem++;
          if(currentItem >= photoUris.size())
             currentItem = 0;
+         prepareImagesCounterView();
          try{
             preview.setImageURI(photoUris.get(currentItem));
          }
@@ -149,6 +155,7 @@ public class NoteViewHolder
          currentItem--;
          if(currentItem < 0)
             currentItem = photoUris.size() - 1;
+         prepareImagesCounterView();
          try{
             preview.setImageURI(photoUris.get(currentItem));
          }
@@ -156,6 +163,16 @@ public class NoteViewHolder
             error.setText(context.getString(R.string.photo_error));
          }
       }
+   }
+
+   /**
+    * Этот метод используется для обновления отображаемой информации
+    * о количестве фото и текущей фотографии.
+    */
+   private void prepareImagesCounterView(){
+      imageCounterView.setText(String.format(
+              new Locale("ru"),"%d/%d",
+              currentItem + 1, photoUris.size()));
    }
 
    /**

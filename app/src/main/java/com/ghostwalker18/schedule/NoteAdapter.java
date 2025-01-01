@@ -17,6 +17,7 @@ package com.ghostwalker18.schedule;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.ghostwalker18.schedule.views.NoteViewHolder;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 

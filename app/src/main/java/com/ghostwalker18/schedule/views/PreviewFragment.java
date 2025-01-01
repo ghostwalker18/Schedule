@@ -24,9 +24,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.ghostwalker18.schedule.OnSwipeListener;
 import com.ghostwalker18.schedule.R;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -54,6 +58,7 @@ public  class PreviewFragment
    private ImageButton previousButton;
    private ImageButton nextButton;
    private ImageButton deleteButton;
+   private TextView imageCounterView;
 
    @Nullable
    @Override
@@ -105,6 +110,7 @@ public  class PreviewFragment
       nextButton = view.findViewById(R.id.next);
       previousButton.setOnClickListener(view1 -> showPreviousPhoto());
       nextButton.setOnClickListener(view1 -> showNextPhoto());
+      imageCounterView = view.findViewById(R.id.image_counter);
       invalidatePreview();
    }
 
@@ -144,6 +150,7 @@ public  class PreviewFragment
       if(isVisible()){
          if(photoUris != null && photoUris.size() > 0){
             preview.setImageURI(photoUris.get(photoUris.size() - 1));
+            prepareImagesCounterView();
             if(isEditable)
                deleteButton.setVisibility(View.VISIBLE);
          }
@@ -169,6 +176,7 @@ public  class PreviewFragment
          if(currentItem >= photoUris.size())
             currentItem = 0;
          preview.setImageURI(photoUris.get(currentItem));
+         prepareImagesCounterView();
       }
    }
 
@@ -181,6 +189,7 @@ public  class PreviewFragment
          if(currentItem < 0)
             currentItem = photoUris.size() - 1;
          preview.setImageURI(photoUris.get(currentItem));
+         prepareImagesCounterView();
       }
    }
 
@@ -203,5 +212,15 @@ public  class PreviewFragment
          if(listener != null)
             listener.onPhotoDelete(deletedUri);
       }
+   }
+
+   /**
+    * Этот метод используется для обновления отображаемой информации
+    * о количестве фото и текущей фотографии.
+    */
+   private void prepareImagesCounterView(){
+      imageCounterView.setText(String.format(
+              new Locale("ru"),"%d/%d",
+              currentItem + 1, photoUris.size()));
    }
 }

@@ -18,6 +18,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/image_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:background="@null"
+        android:text="0/0"
+        android:textSize="@dimen/schedule_text_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
     <ImageButton
         android:id="@+id/previous"
         android:layout_width="wrap_content"
@@ -65,7 +76,7 @@
         android:background="@null"
         android:src="@drawable/baseline_clear_36"
         android:contentDescription="@string/preview_image_clear_descr"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
