@@ -27,6 +27,7 @@
         android:text="0/0"
         android:textSize="@dimen/schedule_text_size"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/delete"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <ImageButton
@@ -76,7 +77,7 @@
         android:background="@null"
         android:src="@drawable/baseline_clear_36"
         android:contentDescription="@string/preview_image_clear_descr"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,7 +47,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  */
 public class NoteViewHolder
         extends RecyclerView.ViewHolder {
-   private Context context;
+   private final Context context;
    public boolean isSelected = false;
    private int currentItem = 0;
    private ArrayList<Uri> photoUris;
@@ -117,7 +117,6 @@ public class NoteViewHolder
       if(checkPhotoAccess()){
          try {
             if(photoUris != null && photoUris.size() > 0){
-               prepareImagesCounterView();
                preview.setImageURI(photoUris.get(photoUris.size() - 1));
             }
          }
@@ -127,6 +126,7 @@ public class NoteViewHolder
       }
       if(note.photoIDs != null && !checkPhotoAccess())
          error.setText(R.string.gallery_access_denied);
+      prepareImagesCounterView();
    }
 
    /**
@@ -170,9 +170,18 @@ public class NoteViewHolder
     * о количестве фото и текущей фотографии.
     */
    private void prepareImagesCounterView(){
-      imageCounterView.setText(String.format(
-              new Locale("ru"),"%d/%d",
-              currentItem + 1, photoUris.size()));
+      try {
+         if(photoUris.size() == 0)
+            imageCounterView.setVisibility(View.INVISIBLE);
+         else{
+            imageCounterView.setVisibility(View.VISIBLE);
+            imageCounterView.setText(String.format(
+                    new Locale("ru"),"%d/%d",
+                    currentItem + 1, photoUris.size()));
+         }
+      } catch (Exception e) {
+         imageCounterView.setVisibility(View.INVISIBLE);
+      }
    }
 
    /**

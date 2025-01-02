@@ -101,11 +101,12 @@ public  class PreviewFragment
          }
       });
       deleteButton = view.findViewById(R.id.delete);
-      if(isEditable)
+      if(isEditable){
          deleteButton.setVisibility(View.VISIBLE);
+         deleteButton.setOnClickListener(view1 -> deletePhoto());
+      }
       else
-         deleteButton.setVisibility(View.GONE);
-      deleteButton.setOnClickListener(view1 -> deletePhoto());
+         deleteButton.setVisibility(View.INVISIBLE);
       previousButton = view.findViewById(R.id.previous);
       nextButton = view.findViewById(R.id.next);
       previousButton.setOnClickListener(view1 -> showPreviousPhoto());
@@ -150,12 +151,12 @@ public  class PreviewFragment
       if(isVisible()){
          if(photoUris != null && photoUris.size() > 0){
             preview.setImageURI(photoUris.get(photoUris.size() - 1));
-            prepareImagesCounterView();
             if(isEditable)
                deleteButton.setVisibility(View.VISIBLE);
          }
          else
             deleteButton.setVisibility(View.GONE);
+         prepareImagesCounterView();
       }
       if(photoUris != null && photoUris.size() > 1){
          previousButton.setVisibility(View.VISIBLE);
@@ -209,6 +210,7 @@ public  class PreviewFragment
             currentItem = photoUris.size() - 1;
          if(currentItem < photoUris.size())
             preview.setImageURI(photoUris.get(currentItem));
+         prepareImagesCounterView();
          if(listener != null)
             listener.onPhotoDelete(deletedUri);
       }
@@ -219,8 +221,17 @@ public  class PreviewFragment
     * о количестве фото и текущей фотографии.
     */
    private void prepareImagesCounterView(){
-      imageCounterView.setText(String.format(
-              new Locale("ru"),"%d/%d",
-              currentItem + 1, photoUris.size()));
+      try {
+         if(photoUris.size() == 0)
+            imageCounterView.setVisibility(View.INVISIBLE);
+         else{
+            imageCounterView.setVisibility(View.VISIBLE);
+            imageCounterView.setText(String.format(
+                    new Locale("ru"),"%d/%d",
+                    currentItem + 1, photoUris.size()));
+         }
+      } catch (Exception e) {
+         imageCounterView.setVisibility(View.INVISIBLE);
+      }
    }
 }
