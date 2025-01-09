@@ -14,6 +14,9 @@
 
 package com.ghostwalker18.schedule;
 
+import com.ghostwalker18.schedule.models.Lesson;
+import com.ghostwalker18.schedule.models.Note;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

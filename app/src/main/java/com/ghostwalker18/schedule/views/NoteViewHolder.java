@@ -24,7 +24,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.ghostwalker18.schedule.DateConverters;
-import com.ghostwalker18.schedule.Note;
+import com.ghostwalker18.schedule.models.Note;
 import com.ghostwalker18.schedule.OnSwipeListener;
 import com.ghostwalker18.schedule.R;
 import java.util.ArrayList;

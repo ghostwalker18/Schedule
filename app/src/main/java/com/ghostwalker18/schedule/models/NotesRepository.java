@@ -12,7 +12,10 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.models;
+
+import com.ghostwalker18.schedule.database.AppDatabase;
+import com.ghostwalker18.schedule.database.NoteDao;
 
 import java.util.Calendar;
 import java.util.Collection;

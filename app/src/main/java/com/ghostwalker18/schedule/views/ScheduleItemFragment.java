@@ -42,10 +42,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.ghostwalker18.schedule.DateConverters;
-import com.ghostwalker18.schedule.Lesson;
+import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
-import com.ghostwalker18.schedule.ScheduleRepository;
+import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.Utils;
 import com.ghostwalker18.schedule.viewmodels.ScheduleState;
 

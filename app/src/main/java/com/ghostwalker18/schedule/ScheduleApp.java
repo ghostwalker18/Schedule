@@ -16,6 +16,11 @@ package com.ghostwalker18.schedule;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+
+import com.ghostwalker18.schedule.database.AppDatabase;
+import com.ghostwalker18.schedule.models.NotesRepository;
+import com.ghostwalker18.schedule.models.ScheduleRepository;
+import com.ghostwalker18.schedule.network.NetworkService;
 import com.google.android.material.color.DynamicColors;
 import java.util.Locale;
 import androidx.annotation.Nullable;

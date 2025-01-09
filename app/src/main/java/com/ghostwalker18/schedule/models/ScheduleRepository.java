@@ -12,17 +12,24 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.ghostwalker18.schedule.database.AppDatabase;
+import com.ghostwalker18.schedule.IConverter;
+import com.ghostwalker18.schedule.database.LessonDao;
+import com.ghostwalker18.schedule.network.NetworkService;
+import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.network.ScheduleNetworkAPI;
+import com.ghostwalker18.schedule.XMLStoLessonsConverter;
 import com.github.pjfanning.xlsx.StreamingReader;
 import com.github.pjfanning.xlsx.exceptions.OpenException;
 import com.github.pjfanning.xlsx.exceptions.ParseException;
 import com.github.pjfanning.xlsx.exceptions.ReadException;
-
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jsoup.nodes.Document;

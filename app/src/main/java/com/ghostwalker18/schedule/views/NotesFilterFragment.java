@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.ghostwalker18.schedule.DateConverters;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
-import com.ghostwalker18.schedule.ScheduleRepository;
+import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.viewmodels.NotesModel;
 import java.util.Calendar;
 import androidx.annotation.NonNull;

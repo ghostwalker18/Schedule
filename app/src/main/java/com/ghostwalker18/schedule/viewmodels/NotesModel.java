@@ -14,9 +14,9 @@
 
 package com.ghostwalker18.schedule.viewmodels;
 
-import com.ghostwalker18.schedule.Note;
+import com.ghostwalker18.schedule.models.Note;
 import com.ghostwalker18.schedule.views.NotesActivity;
-import com.ghostwalker18.schedule.NotesRepository;
+import com.ghostwalker18.schedule.models.NotesRepository;
 import com.ghostwalker18.schedule.ScheduleApp;
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -12,8 +12,10 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.database;
 
+import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.models.Note;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Calendar;
 import androidx.lifecycle.LiveData;

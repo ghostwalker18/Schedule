@@ -12,7 +12,9 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.network;
+
+import com.ghostwalker18.schedule.models.ScheduleRepository;
 
 import org.jsoup.nodes.Document;
 import okhttp3.ResponseBody;

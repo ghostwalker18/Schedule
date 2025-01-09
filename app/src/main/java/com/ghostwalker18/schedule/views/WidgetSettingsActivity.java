@@ -25,7 +25,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
-import com.ghostwalker18.schedule.ScheduleRepository;
+import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.ScheduleWidget;
 import java.util.ArrayList;
 import java.util.Arrays;

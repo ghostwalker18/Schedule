@@ -12,9 +12,12 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.database;
 
 import android.content.Context;
+
+import com.ghostwalker18.schedule.models.Lesson;
+import com.ghostwalker18.schedule.models.Note;
 
 import java.io.File;
 

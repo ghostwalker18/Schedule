@@ -12,9 +12,14 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.models;
 
 import android.content.res.Resources;
+
+import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.ScheduleApp;
+
 import java.util.Calendar;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

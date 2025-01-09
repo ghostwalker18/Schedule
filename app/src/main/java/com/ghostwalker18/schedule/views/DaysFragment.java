@@ -32,7 +32,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
-import com.ghostwalker18.schedule.ScheduleRepository;
+import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.TextWatcherAdapter;
 import com.ghostwalker18.schedule.viewmodels.ScheduleState;
 import java.util.ArrayList;

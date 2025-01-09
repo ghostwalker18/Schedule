@@ -15,6 +15,8 @@
 package com.ghostwalker18.schedule;
 
 import android.net.Uri;
+
+import com.ghostwalker18.schedule.models.Note;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;

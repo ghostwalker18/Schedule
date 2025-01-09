@@ -12,8 +12,10 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.database;
 
+import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.models.Lesson;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Calendar;
 import java.util.List;
@@ -44,14 +46,14 @@ public interface LessonDao {
     LiveData<String[]> getTeachers();
 
     /**
-     * Этот метод позволяет получить списко групп из БД.
+     * Этот метод позволяет получить список групп из БД.
      * @return список групп
      */
     @Query("SELECT DISTINCT groupName FROM tblSchedule ORDER BY groupName ASC")
     LiveData<String[]> getGroups();
 
     /**
-     * Этот метод позволяет позволяет получить список занятий на заданную дату у заданной группы,
+     * Этот метод позволяет получить список занятий на заданную дату у заданной группы,
      * которые проводит заданный преподаватель.
      * @param date дата
      * @param group группа

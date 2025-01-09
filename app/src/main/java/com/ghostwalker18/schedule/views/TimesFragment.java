@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
-import com.ghostwalker18.schedule.ScheduleRepository;
+import com.ghostwalker18.schedule.models.ScheduleRepository;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

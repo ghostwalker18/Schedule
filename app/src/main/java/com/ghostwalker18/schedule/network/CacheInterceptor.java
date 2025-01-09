@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.network;
 
 import java.io.IOException;
 import androidx.annotation.NonNull;
