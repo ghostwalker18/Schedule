@@ -34,7 +34,7 @@ import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.TextWatcherAdapter;
-import com.ghostwalker18.schedule.viewmodels.ScheduleState;
+import com.ghostwalker18.schedule.viewmodels.ScheduleModel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -52,14 +52,14 @@ import androidx.preference.PreferenceManager;
  * @author  Ипатов Никита
  * @since 1.0
  * @see ScheduleRepository
- * @see ScheduleState
+ * @see ScheduleModel
  */
 public class DaysFragment
         extends Fragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
    private SharedPreferences prefs;
    private final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
-   private ScheduleState state;
+   private ScheduleModel state;
    private View view;
    private ProgressBar updateScheduleProgress;
    private TextView updateScheduleStatus;
@@ -72,7 +72,7 @@ public class DaysFragment
       super.onCreate(savedInstanceState);
       prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
       prefs.registerOnSharedPreferenceChangeListener(this);
-      state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
+      state = new ViewModelProvider(requireActivity()).get(ScheduleModel.class);
       if(savedInstanceState == null){
          days.add(ScheduleItemFragment.newInstance(
                  R.string.monday));
@@ -256,12 +256,12 @@ public class DaysFragment
    public static class DatePickerFragment
            extends DialogFragment
            implements DatePickerDialog.OnDateSetListener {
-      private ScheduleState model;
+      private ScheduleModel model;
 
       @NonNull
       @Override
       public Dialog onCreateDialog(Bundle savedInstanceState) {
-         model = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
+         model = new ViewModelProvider(requireActivity()).get(ScheduleModel.class);
          // Use the current date as the default date in the picker.
          final Calendar c = Calendar.getInstance();
          int year = c.get(Calendar.YEAR);

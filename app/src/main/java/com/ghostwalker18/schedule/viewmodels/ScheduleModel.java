@@ -28,7 +28,7 @@ import androidx.lifecycle.ViewModel;
  * @since 1.0
  * @see DaysFragment
  */
-public class ScheduleState
+public class ScheduleModel
         extends ViewModel {
    private final MutableLiveData<String> group = new MutableLiveData<>();
    private final MutableLiveData<String> teacher = new MutableLiveData<>();

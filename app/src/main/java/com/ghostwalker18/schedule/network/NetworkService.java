@@ -16,9 +16,6 @@ package com.ghostwalker18.schedule.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import com.ghostwalker18.schedule.JsoupConverterFactory;
-
 import java.io.File;
 import java.util.concurrent.Executors;
 import okhttp3.Cache;

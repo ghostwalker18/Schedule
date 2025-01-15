@@ -27,8 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import java.util.Calendar;
@@ -44,10 +42,10 @@ import android.widget.TextView;
 import com.ghostwalker18.schedule.DateConverters;
 import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.R;
-import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.Utils;
-import com.ghostwalker18.schedule.viewmodels.ScheduleState;
+import com.ghostwalker18.schedule.viewmodels.DayModel;
+import com.ghostwalker18.schedule.viewmodels.ScheduleModel;
 
 /**
  * Этот класс предсавляет собой кастомный элемент GUI,
@@ -71,10 +69,8 @@ public class ScheduleItemFragment
    private SharedPreferences preferences;
    private Button button;
    private TableLayout table;
-   private ScheduleState state;
-   private ScheduleRepository repository;
-   private final MutableLiveData<Calendar> date = new MutableLiveData<>();
-   private LiveData<Lesson[]> lessons = new MutableLiveData<>();
+   private ScheduleModel scheduleModel;
+   private DayModel model;
    private int dayOfWeekID;
    private boolean isOpened = false;
    private String mode;
@@ -90,8 +86,8 @@ public class ScheduleItemFragment
    @Override
    public void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      state = new ViewModelProvider(requireActivity()).get(ScheduleState.class);
-      repository = ScheduleApp.getInstance().getScheduleRepository();
+      scheduleModel = new ViewModelProvider(requireActivity()).get(ScheduleModel.class);
+      model = new ViewModelProvider(this).get(DayModel.class);
       dayOfWeekID = getArguments().getInt("dayOfWeek");
       preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
       preferences.registerOnSharedPreferenceChangeListener(this);
@@ -109,36 +105,23 @@ public class ScheduleItemFragment
       button = view.findViewById(R.id.button);
       button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
       table = view.findViewById(R.id.schedule);
-      state.getCalendar().observe(getViewLifecycleOwner(),
-              calendar -> date.setValue(new Calendar.Builder()
-              .setWeekDate(state.getYear(), state.getWeek(), weekdaysNumbers.get(dayOfWeekID))
-              .build()));
-      state.getGroup().observe(getViewLifecycleOwner(), group -> {
-         lessons = repository.getLessons(state.getGroup().getValue(),
-                 state.getTeacher().getValue(),
-                 date.getValue());
-         lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
-      });
-      state.getTeacher().observe(getViewLifecycleOwner(), teacher -> {
-         lessons = repository.getLessons(state.getGroup().getValue(),
-                 state.getTeacher().getValue(),
-                 date.getValue());
-         lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
-      });
-      date.observe(getViewLifecycleOwner(), date -> {
+      scheduleModel.getCalendar().observe(getViewLifecycleOwner(), date ->
+              model.setDate(new Calendar.Builder()
+                  .setWeekDate(scheduleModel.getYear(),
+                          scheduleModel.getWeek(),
+                          weekdaysNumbers.get(dayOfWeekID))
+                  .build()));
+      scheduleModel.getGroup().observe(getViewLifecycleOwner(), model::setGroup);
+      scheduleModel.getTeacher().observe(getViewLifecycleOwner(), model::setTeacher);
+      model.getDate().observe(getViewLifecycleOwner(), date -> {
          isOpened = Utils.isDateToday(date);
          if(Utils.isDateToday(date))
             table.findViewById(R.id.available_column).setVisibility(View.INVISIBLE);
          else
             table.findViewById(R.id.available_column).setVisibility(View.GONE);
-         super.onViewCreated(view, savedInstanceState);
          button.setText(generateTitle(date, dayOfWeekID));
-         lessons = repository.getLessons(state.getGroup().getValue(),
-                 state.getTeacher().getValue(),
-                 date);
-         lessons.observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
-         showTable();
       });
+      model.getLessons().observe(getViewLifecycleOwner(), lessons -> populateTable(table, lessons));
       setUpMode();
       view.findViewById(R.id.notes).setOnClickListener(view1 -> openNotesActivity());
    }
@@ -151,10 +134,10 @@ public class ScheduleItemFragment
     */
    public String getSchedule(){
       StringBuilder schedule = new StringBuilder(getString(R.string.date) + ": ");
-      schedule.append(DateConverters.toString(date.getValue())).append("\n");
+      schedule.append(DateConverters.toString(model.getDate().getValue())).append("\n");
 
       schedule.append("\n");
-      for(Lesson lesson : lessons.getValue()){
+      for(Lesson lesson : model.getLessons().getValue()){
          schedule.append(lesson.toString());
          schedule.append("\n");
       }
@@ -208,9 +191,9 @@ public class ScheduleItemFragment
     */
    private void openScheduleInActivity(View view){
       Bundle bundle = new Bundle();
-      bundle.putString("group", state.getGroup().getValue());
-      bundle.putString("teacher", state.getTeacher().getValue());
-      bundle.putString("date", DateConverters.toString(state.getCalendar().getValue()));
+      bundle.putString("group", scheduleModel.getGroup().getValue());
+      bundle.putString("teacher", scheduleModel.getTeacher().getValue());
+      bundle.putString("date", DateConverters.toString(scheduleModel.getCalendar().getValue()));
       bundle.putInt("dayOfWeek", weekdaysNumbers.get(dayOfWeekID));
       Intent intent = new Intent(this.getActivity(), ScheduleItemActivity.class);
       intent.putExtras(bundle);
@@ -291,7 +274,7 @@ public class ScheduleItemFragment
       LayoutInflater inflater = (LayoutInflater) getContext()
               .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);
-      ImageView availabilityItem = (ImageView)tr.findViewById(R.id.available);
+      ImageView availabilityItem = tr.findViewById(R.id.available);
       if(Utils.isDateToday(lesson.date)){
          availabilityItem.setVisibility(View.INVISIBLE);
          if(Utils.isLessonAvailable(lesson.date, lesson.times) != null){
@@ -324,8 +307,8 @@ public class ScheduleItemFragment
    private void openNotesActivity() {
       Bundle bundle = new Bundle();
       Intent intent = new Intent(this.getActivity(), NotesActivity.class);
-      bundle.putString("group", state.getGroup().getValue());
-      bundle.putString("date", DateConverters.toString(date.getValue()));
+      bundle.putString("group", scheduleModel.getGroup().getValue());
+      bundle.putString("date", DateConverters.toString(model.getDate().getValue()));
       intent.putExtras(bundle);
       startActivity(intent);
    }
