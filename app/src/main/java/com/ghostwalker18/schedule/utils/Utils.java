@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.utils;
 
 import java.util.Calendar;
 import androidx.annotation.Nullable;

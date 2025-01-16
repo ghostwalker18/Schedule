@@ -28,7 +28,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.viewmodels.EditNoteModel;
 import androidx.core.content.FileProvider;
@@ -44,7 +44,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 
 /**
  * Этот класс представляет собой экран редактирования или добавления новой заметки

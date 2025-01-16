@@ -15,12 +15,9 @@
 package com.ghostwalker18.schedule.database;
 
 import android.content.Context;
-
 import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.models.Note;
-
 import java.io.File;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;

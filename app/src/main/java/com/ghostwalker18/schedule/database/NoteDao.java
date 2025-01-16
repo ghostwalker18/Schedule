@@ -14,7 +14,7 @@
 
 package com.ghostwalker18.schedule.database;
 
-import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.models.Note;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Calendar;

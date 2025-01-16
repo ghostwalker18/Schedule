@@ -39,11 +39,11 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import com.ghostwalker18.schedule.DateConverters;
+import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
-import com.ghostwalker18.schedule.Utils;
+import com.ghostwalker18.schedule.utils.Utils;
 import com.ghostwalker18.schedule.viewmodels.DayModel;
 import com.ghostwalker18.schedule.viewmodels.ScheduleModel;
 

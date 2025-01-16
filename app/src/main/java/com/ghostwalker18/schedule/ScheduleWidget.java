@@ -21,12 +21,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
-
 import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.views.MainActivity;
 import com.ghostwalker18.schedule.views.WidgetSettingsActivity;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import androidx.core.content.ContextCompat;

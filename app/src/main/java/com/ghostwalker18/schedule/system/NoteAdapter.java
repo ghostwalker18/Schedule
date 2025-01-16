@@ -12,12 +12,12 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.system;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.models.Note;
 import com.ghostwalker18.schedule.views.NoteViewHolder;
 import androidx.annotation.NonNull;

@@ -16,7 +16,6 @@ package com.ghostwalker18.schedule;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-
 import com.ghostwalker18.schedule.database.AppDatabase;
 import com.ghostwalker18.schedule.models.NotesRepository;
 import com.ghostwalker18.schedule.models.ScheduleRepository;

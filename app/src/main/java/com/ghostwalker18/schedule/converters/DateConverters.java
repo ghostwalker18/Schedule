@@ -12,11 +12,10 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.converters;
 
 import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.models.Note;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

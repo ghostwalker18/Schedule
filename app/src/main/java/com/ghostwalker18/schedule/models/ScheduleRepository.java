@@ -18,14 +18,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import com.ghostwalker18.schedule.database.AppDatabase;
-import com.ghostwalker18.schedule.IConverter;
+import com.ghostwalker18.schedule.converters.IConverter;
 import com.ghostwalker18.schedule.database.LessonDao;
 import com.ghostwalker18.schedule.network.NetworkService;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.network.ScheduleNetworkAPI;
-import com.ghostwalker18.schedule.XMLStoLessonsConverter;
+import com.ghostwalker18.schedule.converters.XMLStoLessonsConverter;
 import com.github.pjfanning.xlsx.StreamingReader;
 import com.github.pjfanning.xlsx.exceptions.OpenException;
 import com.github.pjfanning.xlsx.exceptions.ParseException;

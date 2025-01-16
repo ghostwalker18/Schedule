@@ -15,7 +15,6 @@
 package com.ghostwalker18.schedule.network;
 
 import com.ghostwalker18.schedule.models.ScheduleRepository;
-
 import org.jsoup.nodes.Document;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

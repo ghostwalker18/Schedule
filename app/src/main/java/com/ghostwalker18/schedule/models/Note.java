@@ -16,12 +16,10 @@ package com.ghostwalker18.schedule.models;
 
 import android.content.res.Resources;
 import android.net.Uri;
-
-import com.ghostwalker18.schedule.DateConverters;
-import com.ghostwalker18.schedule.PhotoURIArrayConverters;
+import com.ghostwalker18.schedule.converters.DateConverters;
+import com.ghostwalker18.schedule.converters.PhotoURIArrayConverters;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import androidx.annotation.NonNull;

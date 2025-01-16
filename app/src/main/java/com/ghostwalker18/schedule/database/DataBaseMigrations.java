@@ -14,8 +14,6 @@
 
 package com.ghostwalker18.schedule.database;
 
-import com.ghostwalker18.schedule.database.AppDatabase;
-
 import java.util.Arrays;
 import java.util.Collection;
 import androidx.annotation.NonNull;

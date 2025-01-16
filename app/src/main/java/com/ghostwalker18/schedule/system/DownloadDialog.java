@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.system;
 
 import android.app.Dialog;
 import android.app.DownloadManager;
@@ -20,6 +20,8 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.utils.Utils;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;

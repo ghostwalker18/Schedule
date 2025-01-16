@@ -16,7 +16,7 @@ package com.ghostwalker18.schedule.views;
 
 import android.content.Intent;
 
-import com.ghostwalker18.schedule.DownloadDialog;
+import com.ghostwalker18.schedule.system.DownloadDialog;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.models.ScheduleRepository;

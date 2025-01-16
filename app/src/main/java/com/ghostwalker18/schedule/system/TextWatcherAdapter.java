@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.ghostwalker18.schedule;
+package com.ghostwalker18.schedule.system;
 
 import android.text.Editable;
 import android.text.TextWatcher;
