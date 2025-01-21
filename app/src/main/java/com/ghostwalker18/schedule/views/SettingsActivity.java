@@ -16,6 +16,7 @@ package com.ghostwalker18.schedule.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import androidx.annotation.Nullable;
@@ -53,7 +54,20 @@ public class SettingsActivity
 
         findViewById(R.id.share_app).setOnClickListener(v -> startActivity(
                 new Intent(this, ShareAppActivity.class)));
+        findViewById(R.id.copyright).setOnLongClickListener(this::sendEmailToDeveloper);
     }
+
+    /**
+     * Эта функция используется что бы связаться с разработчиком.
+     */
+    private boolean sendEmailToDeveloper(View view){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ScheduleApp.DEVELOPER_EMAIL});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Расписание ПАСТ (мобильное)");
+        startActivity(intent);
+        return true;
+    }
+
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

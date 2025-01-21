@@ -46,10 +46,11 @@
             android:text="@string/share_app"/>
 
         <TextView
+            android:id="@+id/copyright"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingVertical="10dp"
             android:textAlignment="center"
-            android:text="2024©"/>
+            android:text="2024© Ипатов Никита"/>
     </LinearLayout>
 </LinearLayout>

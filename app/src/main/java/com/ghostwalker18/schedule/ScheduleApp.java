@@ -39,6 +39,7 @@ import androidx.preference.PreferenceManager;
 public class ScheduleApp
         extends Application
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static final String DEVELOPER_EMAIL = "ghostwalker18@mail.ru";
     private static ScheduleApp instance;
     private SharedPreferences preferences;
     private AppDatabase database;

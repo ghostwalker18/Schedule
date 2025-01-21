@@ -30,9 +30,7 @@ import android.widget.TextView;
 import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.models.Note;
 import com.ghostwalker18.schedule.system.NoteAdapter;
-import com.ghostwalker18.schedule.models.NotesRepository;
 import com.ghostwalker18.schedule.R;
-import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.system.TextWatcherAdapter;
 import com.ghostwalker18.schedule.viewmodels.NotesModel;
 import java.util.Calendar;
@@ -64,8 +62,7 @@ public class NotesActivity
    private NotesModel model;
    private RecyclerView notesListView;
    private NotesFilterFragment filter;
-   private Map<Integer, Note> selectedNotes = new ConcurrentHashMap<>();
-   private final NotesRepository repository = ScheduleApp.getInstance().getNotesRepository();
+   private final Map<Integer, Note> selectedNotes = new ConcurrentHashMap<>();
    private final NoteAdapter.OnNoteClickListener listener = new NoteAdapter.OnNoteClickListener() {
       @Override
       public void onNoteSelected(Note note, int position) {
@@ -286,7 +283,7 @@ public class NotesActivity
     * Этот метод позволяет удалить выбранные заметки.
     */
    private void deleteNotes(){
-      repository.deleteNotes(selectedNotes.values());
+      model.deleteNotes(selectedNotes.values());
       resetSelection();
       decideMenuOptions();
    }

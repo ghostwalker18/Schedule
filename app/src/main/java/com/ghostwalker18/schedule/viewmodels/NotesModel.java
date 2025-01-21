@@ -20,6 +20,7 @@ import com.ghostwalker18.schedule.models.NotesRepository;
 import com.ghostwalker18.schedule.ScheduleApp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -39,9 +40,9 @@ public class NotesModel
    private final MediatorLiveData<Note[]> notes = new MediatorLiveData<>();
    private final MutableLiveData<Calendar> startDate = new MutableLiveData<>(Calendar.getInstance());
    private final MutableLiveData<Calendar> endDate = new MutableLiveData<>(Calendar.getInstance());
+   private LiveData<Note[]> notesMediator = new MutableLiveData<>();
    private String group;
    private String keyword;
-   private LiveData<Note[]> notesMediator = new MutableLiveData<>();
 
    NotesModel(){
       super();
@@ -54,6 +55,14 @@ public class NotesModel
     */
    public LiveData<Note[]> getNotes(){
       return notes;
+   }
+
+   /**
+    * Этот метод удаляет выбранные заметки из репозитория.
+    * @param notes заметки для удаления
+    */
+   public void deleteNotes(Collection<Note> notes) {
+      repository.deleteNotes(notes);
    }
 
    /**
