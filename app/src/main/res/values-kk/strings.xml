@@ -71,4 +71,10 @@
     <string name="network_settings">Желі</string>
     <string name="option_enable_caching">Кэштеуді қосыңыз</string>
     <string name="option_download_for">Кестені жүктеу</string>
+    <string name="import_activity">Деректерді импорттау/экспорттау</string>
+    <string name="operation_type">Операция түрін таңдаңыз</string>
+    <string name="data_types">Деректерді таңдаңыз</string>
+    <string name="import_policy_type">Импорттау режимі</string>
+    <string name="import_data">Деректерді импорттау</string>
+    <string name="export_data">Деректерді экспорттау</string>
 </resources>

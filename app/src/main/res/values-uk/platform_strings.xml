@@ -68,5 +68,6 @@
     <string name="preview_image_clear_descr">Очистити фото</string>
     <string name="photoview_back_descr">Згорнути фото</string>
     <string name="photoview_share_descr">Поділитися фото</string>
-    <string name="no_email_client_found">Пошта қолданбасы табылмады</string>
+    <string name="no_email_client_found">Поштовий додаток не знайдено</string>
+    <string name="connect_to_developer">Зв\'язатися з розробником</string>
 </resources>

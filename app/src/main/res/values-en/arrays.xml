@@ -39,4 +39,20 @@
         <item>First corpus</item>
         <item>Second corpus</item>
     </string-array>
+
+    <string-array name="operation_type_entries">
+        <item>Export</item>
+        <item>Import</item>
+    </string-array>
+
+    <string-array name="data_types_entries">
+        <item>Schedule</item>
+        <item>Notes</item>
+        <item>Schedule and notes</item>
+    </string-array>
+
+    <string-array name="import_mode_entries">
+        <item>Replace</item>
+        <item>Merge</item>
+    </string-array>
 </resources>

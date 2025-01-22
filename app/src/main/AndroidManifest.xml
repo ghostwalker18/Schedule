@@ -131,6 +131,11 @@
             android:name=".views.PhotoViewActivity"
             android:exported="false"/>
 
+        <activity
+            android:name=".views.ImportActivity"
+            android:label="@string/import_activity"
+            android:exported="false"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.ghostwalker18.schedule.timefilesprovider"
@@ -165,4 +170,11 @@
                 android:value="true"/>
         </service>
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO"/>
+            <data android:scheme="mailto" android:host="*" />
+        </intent>
+    </queries>
 </manifest>

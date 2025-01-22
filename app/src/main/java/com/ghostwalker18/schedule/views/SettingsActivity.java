@@ -16,6 +16,7 @@ package com.ghostwalker18.schedule.views;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -64,11 +65,11 @@ public class SettingsActivity
      */
     private boolean sendEmailToDeveloper(View view){
         try{
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ScheduleApp.DEVELOPER_EMAIL});
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Расписание ПАСТ (мобильное)");
-            startActivity(intent);
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+            startActivity(Intent.createChooser(intent, getString(R.string.connect_to_developer)));
         } catch (ActivityNotFoundException e){
             Toast toast = new Toast(this);
             toast.setText(R.string.no_email_client_found);

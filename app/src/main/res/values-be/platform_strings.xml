@@ -69,4 +69,5 @@
     <string name="photoview_back_descr">Згарнуць фота</string>
     <string name="photoview_share_descr">Падзяліцца фота</string>
     <string name="no_email_client_found">Паштовае прыкладанне не знойдзена</string>
+    <string name="connect_to_developer">Звязацца з распрацоўшчыкам</string>
 </resources>

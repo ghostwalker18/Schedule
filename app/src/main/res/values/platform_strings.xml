@@ -72,4 +72,6 @@
     <string name="photoview_back_descr">Свернуть фото</string>
     <string name="photoview_share_descr">Поделиться фото</string>
     <string name="no_email_client_found">Почтовое приложение не найдено</string>
+    <string name="email_subject" translatable="false">Расписание ПАСТ (мобильное)</string>
+    <string name="connect_to_developer">Связаться с разработчиком</string>
 </resources>
