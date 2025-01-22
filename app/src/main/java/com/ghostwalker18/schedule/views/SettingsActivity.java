@@ -57,6 +57,8 @@ public class SettingsActivity
 
         findViewById(R.id.share_app).setOnClickListener(v -> startActivity(
                 new Intent(this, ShareAppActivity.class)));
+        findViewById(R.id.data_transfer).setOnClickListener(v -> startActivity(
+                new Intent(this, ImportActivity.class)));
         findViewById(R.id.copyright).setOnLongClickListener(this::sendEmailToDeveloper);
     }
 

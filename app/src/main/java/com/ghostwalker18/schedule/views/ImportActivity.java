@@ -16,7 +16,9 @@ package com.ghostwalker18.schedule.views;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import com.ghostwalker18.schedule.R;
 import androidx.annotation.Nullable;
@@ -43,17 +45,23 @@ public class ImportActivity
       operationTypeSpinner = findViewById(R.id.operation_type);
       dataTypesSpinner = findViewById(R.id.data_types);
       importModeSpinner = findViewById(R.id.import_policy_type);
-      operationTypeSpinner.setOnItemClickListener((adapterView, view, i, l) -> {
-         String operation = operationTypeSpinner.getSelectedItem().toString();
-         if(operation.equals("import")){
-            findViewById(R.id.import_options_panel).setVisibility(View.VISIBLE);
-            doOperationButton.setText(R.string.import_data);
-            doOperationButton.setOnClickListener(v -> importDB());
-         } else {
-            findViewById(R.id.import_options_panel).setVisibility(View.GONE);
-            doOperationButton.setText(R.string.export_data);
-            doOperationButton.setOnClickListener(v -> exportDB());
+      operationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+         @Override
+         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            String operation = getResources().getStringArray(R.array.operation_type_values)[i];
+            if(operation.equals("import")){
+               findViewById(R.id.import_options_panel).setVisibility(View.VISIBLE);
+               doOperationButton.setText(R.string.import_data);
+               doOperationButton.setOnClickListener(v -> importDB());
+            } else {
+               findViewById(R.id.import_options_panel).setVisibility(View.GONE);
+               doOperationButton.setText(R.string.export_data);
+               doOperationButton.setOnClickListener(v -> exportDB());
+            }
          }
+
+         @Override
+         public void onNothingSelected(AdapterView<?> adapterView) {/*Not required*/}
       });
    }
 

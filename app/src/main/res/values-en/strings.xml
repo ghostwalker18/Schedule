@@ -71,6 +71,7 @@
     <string name="network_settings">Network</string>
     <string name="option_enable_caching">Enable caching</string>
     <string name="option_download_for">Download schedule for</string>
+    <string name="data_transfer">Data transfer</string>
     <string name="import_activity">Import/export data</string>
     <string name="operation_type">Select the type of operation</string>
     <string name="data_types">Select the data</string>

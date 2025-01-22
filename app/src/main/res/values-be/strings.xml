@@ -71,6 +71,7 @@
     <string name="network_settings">Сетка</string>
     <string name="option_enable_caching">Ўключыць кэшаванне</string>
     <string name="option_download_for">Спампоўваць расклад для</string>
+    <string name="data_transfer">Перанос дадзеных</string>
     <string name="import_activity">Імпарт/экспарт даных</string>
     <string name="operation_type">Выберыце тып аперацыі</string>
     <string name="data_types">Выберыце дадзеныя</string>

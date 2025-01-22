@@ -71,6 +71,7 @@
     <string name="network_settings">Сеть</string>
     <string name="option_enable_caching">Включить кэширование</string>
     <string name="option_download_for">Скачивать расписание для</string>
+    <string name="data_transfer">Перенос данных</string>
     <string name="import_activity">Импорт/экспорт данных</string>
     <string name="operation_type">Выберите тип операции</string>
     <string name="data_types">Выберите данные</string>
