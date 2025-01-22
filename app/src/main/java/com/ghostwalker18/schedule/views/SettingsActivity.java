@@ -14,9 +14,12 @@
 
 package com.ghostwalker18.schedule.views;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import androidx.annotation.Nullable;
@@ -61,10 +64,17 @@ public class SettingsActivity
      * Эта функция используется что бы связаться с разработчиком.
      */
     private boolean sendEmailToDeveloper(View view){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ScheduleApp.DEVELOPER_EMAIL});
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Расписание ПАСТ (мобильное)");
-        startActivity(intent);
+        try{
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ScheduleApp.DEVELOPER_EMAIL});
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Расписание ПАСТ (мобильное)");
+            startActivity(intent);
+        } catch (ActivityNotFoundException e){
+            Toast toast = new Toast(this);
+            toast.setText(R.string.no_email_client_found);
+            toast.show();
+        } catch (Exception ignored){/*Not required*/}
         return true;
     }
 

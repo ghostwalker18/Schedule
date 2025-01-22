@@ -68,4 +68,5 @@
     <string name="preview_image_clear_descr">Фотосуретті тазалау</string>
     <string name="photoview_back_descr">Фотосуретті бүктеңіз</string>
     <string name="photoview_share_descr">Фотосуретті бөлісу</string>
+    <string name="no_email_client_found">Пошта қолданбасы табылмады</string>
 </resources>
