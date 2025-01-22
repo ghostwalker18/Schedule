@@ -21,10 +21,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.utils.Utils;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import io.appmetrica.analytics.AppMetrica;
 
 /**
  * Этот класс используется для скачивания файлов с подтверждением загрузки.
@@ -39,6 +41,9 @@ public class DownloadDialog
    private String downloadTitle;
    private final DialogInterface.OnClickListener listener = (dialogInterface, which) -> {
       if(which == Dialog.BUTTON_POSITIVE){
+         if(ScheduleApp.getInstance().isAppMetricaActivated())
+            AppMetrica.reportEvent("Скачали файлы расписания");
+
          new Thread(() -> {
             DownloadManager downloadManager = requireActivity()
                     .getSystemService(DownloadManager.class);
@@ -54,7 +59,7 @@ public class DownloadDialog
             }
          }).start();
       }
-      else{
+      else {
          dismiss();
       }
    };

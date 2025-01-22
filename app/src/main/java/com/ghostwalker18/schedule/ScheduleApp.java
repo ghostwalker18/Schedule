@@ -16,6 +16,8 @@ package com.ghostwalker18.schedule;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.ghostwalker18.schedule.database.AppDatabase;
 import com.ghostwalker18.schedule.models.NotesRepository;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
@@ -43,6 +45,7 @@ public class ScheduleApp
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String DEVELOPER_EMAIL = "ghostwalker18@mail.ru";
     private static ScheduleApp instance;
+    private boolean isAppMetricaActivated = false;
     private SharedPreferences preferences;
     private AppDatabase database;
     private ScheduleRepository scheduleRepository;
@@ -67,11 +70,15 @@ public class ScheduleApp
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
         instance = this;
+        try{
+            String appMetricaApiKey = getString(R.string.app_metrica_api_key); //from non-public strings
+            AppMetricaConfig config = AppMetricaConfig.newConfigBuilder(appMetricaApiKey).build();
+            // Initializing the AppMetrica SDK.
+            AppMetrica.activate(this, config);
+            isAppMetricaActivated = true;
+        } catch(Exception e){}
         // Creating an extended library configuration.
-        String appMetricaApiKey = getString(R.string.app_metrica_api_key); //from non-public strings
-        AppMetricaConfig config = AppMetricaConfig.newConfigBuilder(appMetricaApiKey).build();
-        // Initializing the AppMetrica SDK.
-        AppMetrica.activate(this, config);
+
         database = AppDatabase.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         scheduleRepository = new ScheduleRepository(this, database,
@@ -84,11 +91,18 @@ public class ScheduleApp
     }
 
     /**
-     * Этот метод позволяет получить доступ к экзэмпляру приложения
+     * Этот метод позволяет получить доступ к экзэмпляру приложения.
      * @return приложение
      */
     public static ScheduleApp getInstance(){
         return instance;
+    }
+
+    /**
+     * Этот метод позволяет узнать активирована ли AppMetrica/
+     */
+    public boolean isAppMetricaActivated(){
+        return isAppMetricaActivated;
     }
 
     /**

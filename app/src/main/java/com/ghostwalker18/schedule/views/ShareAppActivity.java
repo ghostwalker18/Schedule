@@ -17,10 +17,13 @@ package com.ghostwalker18.schedule.views;
 import android.content.Intent;
 import android.os.Bundle;
 import com.ghostwalker18.schedule.R;
+import com.ghostwalker18.schedule.ScheduleApp;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import io.appmetrica.analytics.AppMetrica;
 
 /**
  * Этот класс представляет собой экран, где пользователь может поделиться ссылкой на приложение.
@@ -42,6 +45,9 @@ public class ShareAppActivity
          actionBar.setDisplayHomeAsUpEnabled(true);
       }
       findViewById(R.id.share_link).setOnClickListener(v -> shareLink());
+
+      if(ScheduleApp.getInstance().isAppMetricaActivated())
+         AppMetrica.reportEvent("Поделились приложением");
    }
 
    /**

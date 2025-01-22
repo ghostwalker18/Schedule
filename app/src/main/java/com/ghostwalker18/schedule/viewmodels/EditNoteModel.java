@@ -27,6 +27,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.appmetrica.analytics.AppMetrica;
 
 /**
  * Этот класс используется для отслеживания изменений состояния редактируемой заметки.
@@ -217,8 +218,13 @@ public class EditNoteModel
             noteToSave.photoIDs = null;
          if(isEdited)
             notesRepository.updateNote(noteToSave);
-         else
+         else{
+            if(ScheduleApp.getInstance().isAppMetricaActivated())
+               AppMetrica.reportEvent("Добавлена заметка");
+
             notesRepository.saveNote(noteToSave);
+         }
+
       }
    }
 }

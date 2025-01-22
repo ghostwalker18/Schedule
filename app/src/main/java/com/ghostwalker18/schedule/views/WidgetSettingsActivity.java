@@ -37,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import io.appmetrica.analytics.AppMetrica;
 
 /**
  * Этот класс представляет собой экран настроек виджета приложения
@@ -92,6 +93,10 @@ public class WidgetSettingsActivity
    @Override
    public void onClick(View view) {
       setResult(RESULT_OK, resultValue);
+
+      if(ScheduleApp.getInstance().isAppMetricaActivated())
+         AppMetrica.reportEvent("Добавили виджет");
+
       AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
       preferences.edit()
               .putBoolean("isEdited", true)

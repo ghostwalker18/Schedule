@@ -40,6 +40,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import io.appmetrica.analytics.AppMetrica;
 
 /**
  * Этот класс представляет собой основной экран приложения.
@@ -136,6 +137,10 @@ public class MainActivity
         }
         intent.putExtra(Intent.EXTRA_TEXT, schedule.toString());
         Intent shareIntent = Intent.createChooser(intent, null);
+
+        if(ScheduleApp.getInstance().isAppMetricaActivated())
+            AppMetrica.reportEvent("Поделились расписанием занятий");
+
         startActivity(shareIntent);
         return true;
     }
@@ -163,6 +168,9 @@ public class MainActivity
             shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
             shareIntent.setType("image/*");
             startActivity(Intent.createChooser(shareIntent, null));
+
+            if(ScheduleApp.getInstance().isAppMetricaActivated())
+                AppMetrica.reportEvent("Поделились расписанием звонков");
         }
         else{
             Toast toast = Toast.makeText(this, R.string.nothing_to_share, Toast.LENGTH_SHORT);

@@ -27,6 +27,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.models.Note;
 import com.ghostwalker18.schedule.system.NoteAdapter;
@@ -42,6 +44,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import io.appmetrica.analytics.AppMetrica;
 
 /**
  * Этот классс представляет собой экран приложения, на котором отображаются заметки к занятиям.
@@ -266,6 +269,9 @@ public class NotesActivity
     * Этот метод позволяет поделиться выбранными заметками.
     */
    private void shareNotes(){
+      if(ScheduleApp.getInstance().isAppMetricaActivated())
+         AppMetrica.reportEvent("Поделились заметками");
+
       Intent intent = new Intent(Intent.ACTION_SEND);
       intent.setType("text/plain");
       StringBuilder notes = new StringBuilder();
