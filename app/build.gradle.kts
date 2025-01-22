@@ -3,6 +3,7 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
+    id("io.appmetrica.analytics")
     id("jacoco")
 }
 
@@ -10,6 +11,18 @@ val keystorePropertiesFile = rootProject.file("/signing.properties")
 val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists())
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+val appMetricaPropertiesFile = rootProject.file("/appMetrica.properties")
+val appMetricaProperties = Properties()
+if (appMetricaPropertiesFile.exists()){
+    appMetricaProperties.load(FileInputStream(appMetricaPropertiesFile))
+
+    appmetrica {
+        setPostApiKey(appMetricaProperties["apiKey"].toString())
+        enableAnalytics = true
+    }
+}
+
 
 android {
     namespace = "com.ghostwalker18.schedule"
@@ -78,6 +91,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("androidx.room:room-guava:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation("io.appmetrica.analytics:analytics:7.5.0")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:4.11.0")

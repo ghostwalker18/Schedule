@@ -26,6 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
+import io.appmetrica.analytics.AppMetrica;
+import io.appmetrica.analytics.AppMetricaConfig;
 
 /**
  * <h1>Schedule</h1>
@@ -65,6 +67,11 @@ public class ScheduleApp
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
         instance = this;
+        // Creating an extended library configuration.
+        String appMetricaApiKey = getString(R.string.app_metrica_api_key); //from non-public strings
+        AppMetricaConfig config = AppMetricaConfig.newConfigBuilder(appMetricaApiKey).build();
+        // Initializing the AppMetrica SDK.
+        AppMetrica.activate(this, config);
         database = AppDatabase.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         scheduleRepository = new ScheduleRepository(this, database,
