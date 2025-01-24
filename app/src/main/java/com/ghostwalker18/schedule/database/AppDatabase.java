@@ -69,9 +69,9 @@ public abstract class AppDatabase
     /**
      * Этот метод позволяет получить архивированные файлы БД приложения для ее экспорта.
      * @param context контекст приложения
-     * @return
+     * @return файл БД приложения
      */
-    public static File exportDBFile(Context context){
+    public File exportDBFile(Context context, String dataType){
         return context.getDatabasePath(DATABASE_NAME);
     }
 
@@ -79,7 +79,7 @@ public abstract class AppDatabase
      * Этот метод заменяет файлы БД приложения импортированными из стороннего источника.
      * @param dbFile архив с файлами БД
      */
-    public static void importDBFile(File dbFile){
+    public void importDBFile(File dbFile, String dataType, String importPolicy){
         
     }
 

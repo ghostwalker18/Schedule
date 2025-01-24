@@ -122,6 +122,14 @@ public class ScheduleApp
     }
 
     /**
+     * Этот метод используется для получения БД приложения.
+     * @return синглтон БД
+     */
+    public AppDatabase getDatabase(){
+        return database;
+    }
+
+    /**
      * Этот метод позволяет установить тему приложения
      * @param theme код темы (system, day, night)
      */

@@ -78,4 +78,6 @@
     <string name="import_policy_type">Режим импорта</string>
     <string name="import_data">Импортировать данные</string>
     <string name="export_data">Экспортировать данные</string>
+    <string name="import_file_dialog">Выберите файл для импорта</string>
+    <string name="import_db_error">Не удалось импортировать данные. Проверьте формат данных</string>
 </resources>
