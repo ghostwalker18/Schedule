@@ -20,6 +20,7 @@
     <uses-feature android:name="android.hardware.camera.any"
         android:required="false"/>
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -43,6 +44,14 @@
         android:theme="@style/AppTheme"
         tools:targetApi="34"
         android:minSdkVersion="26">
+
+        <meta-data
+            android:name="ru.rustore.sdk.pushclient.default_notification_icon"
+            android:resource="@drawable/favicon" />
+
+        <meta-data
+            android:name="ru.rustore.sdk.pushclient.default_notification_color"
+            android:resource="@color/colorPrimary" />
 
         <activity
             android:name=".views.MainActivity"
@@ -159,6 +168,16 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/schedule_widget_info"/>
         </receiver>
+
+        <service
+            android:name=".notifications.PushNotificationsService"
+            android:exported="true"
+            tools:ignore="ExportedService">
+
+            <intent-filter>
+                <action android:name="ru.rustore.sdk.pushclient.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

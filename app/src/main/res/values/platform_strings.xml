@@ -74,4 +74,6 @@
     <string name="no_email_client_found">Почтовое приложение не найдено</string>
     <string name="email_subject" translatable="false">Расписание ПАСТ (мобильное)</string>
     <string name="connect_to_developer">Связаться с разработчиком</string>
+    <string name="notifications_notification_app_update_channel_name" translatable="false">app_update</string>
+    <string name="notifications_notification_schedule_update_channel_name" translatable="false">schedule_update</string>
 </resources>

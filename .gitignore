@@ -16,3 +16,4 @@ local.properties
 signing.properties
 /app/src/main/res/values/non_public_strings.xml
 /appMetrica.properties
+/app/google-services.json

@@ -17,19 +17,22 @@ package com.ghostwalker18.schedule;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
-
 import com.ghostwalker18.schedule.database.AppDatabase;
 import com.ghostwalker18.schedule.models.NotesRepository;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.network.NetworkService;
+import com.ghostwalker18.schedule.notifications.NotificationManagerWrapper;
 import com.google.android.material.color.DynamicColors;
 import java.util.Locale;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 import io.appmetrica.analytics.AppMetrica;
 import io.appmetrica.analytics.AppMetricaConfig;
+import ru.rustore.sdk.pushclient.RuStorePushClient;
+import ru.rustore.sdk.pushclient.common.logger.DefaultLogger;
 
 /**
  * <h1>Schedule</h1>
@@ -70,14 +73,17 @@ public class ScheduleApp
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
         instance = this;
+
+        //Initializing of third-party analytics and push services.
         try{
             String appMetricaApiKey = getString(R.string.app_metrica_api_key); //from non-public strings
             AppMetricaConfig config = AppMetricaConfig.newConfigBuilder(appMetricaApiKey).build();
             // Initializing the AppMetrica SDK.
             AppMetrica.activate(this, config);
             isAppMetricaActivated = true;
-        } catch(Exception e){}
-        // Creating an extended library configuration.
+        } catch(Exception e){/*Not required*/}
+        // Initializing the RuStore Push SDK.
+        initPushes();
 
         database = AppDatabase.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -99,7 +105,7 @@ public class ScheduleApp
     }
 
     /**
-     * Этот метод позволяет узнать активирована ли AppMetrica/
+     * Этот метод позволяет узнать активирована ли AppMetrica.
      */
     public boolean isAppMetricaActivated(){
         return isAppMetricaActivated;
@@ -130,10 +136,43 @@ public class ScheduleApp
     }
 
     /**
+     * Этот метод используется для инициализации доставки Push-уведомлений RuStore.
+     */
+    private void initPushes() {
+        createNotificationPushChannels();
+        RuStorePushClient.INSTANCE.init(
+                this,
+                getString(R.string.rustore_api_key), //from non-public strings
+                new DefaultLogger()
+        );
+        RuStorePushClient.INSTANCE.getToken()
+                .addOnSuccessListener(result -> {
+                    Log.w("App", "getToken onSuccess = " + result);
+                })
+                .addOnFailureListener(throwable -> {
+                    Log.e("App", "getToken onFailure", throwable);
+                });
+    }
+
+    /**
+     * Этот метод используется для создания каналов уведомлений.
+     */
+    public void createNotificationPushChannels() {
+        NotificationManagerWrapper.getInstance(this).createNotificationChannel(
+                getString(R.string.notifications_notification_app_update_channel_id), //from non-public strings
+                getString(R.string.notifications_notification_app_update_channel_name)
+        );
+        NotificationManagerWrapper.getInstance(this).createNotificationChannel(
+                getString(R.string.notifications_notification_schedule_update_channel_id), //from non-public strings
+                getString(R.string.notifications_notification_schedule_update_channel_name)
+        );
+    }
+
+    /**
      * Этот метод позволяет установить тему приложения
      * @param theme код темы (system, day, night)
      */
-    private void setTheme(String theme){
+    private void setTheme(@NonNull String theme){
         switch (theme){
             case "system":
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -151,7 +190,7 @@ public class ScheduleApp
      * Этот метод позволяет установить язык приложения
      * @param localeCode код языка
      */
-    private void setLocale(String localeCode){
+    private void setLocale(@NonNull String localeCode){
         LocaleListCompat localeListCompat;
         if(localeCode.equals("system")){
             localeListCompat = LocaleListCompat.getEmptyLocaleList();

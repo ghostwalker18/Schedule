@@ -3,8 +3,9 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    id("io.appmetrica.analytics")
+    //id("io.appmetrica.analytics")
     id("jacoco")
+    id("com.google.gms.google-services")
 }
 
 val keystorePropertiesFile = rootProject.file("/signing.properties")
@@ -12,7 +13,7 @@ val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists())
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
-val appMetricaPropertiesFile = rootProject.file("/appMetrica.properties")
+/*val appMetricaPropertiesFile = rootProject.file("/appMetrica.properties")
 val appMetricaProperties = Properties()
 if (appMetricaPropertiesFile.exists()){
     appMetricaProperties.load(FileInputStream(appMetricaPropertiesFile))
@@ -21,7 +22,7 @@ if (appMetricaPropertiesFile.exists()){
         setPostApiKey(appMetricaProperties["apiKey"].toString())
         enableAnalytics = true
     }
-}
+}*/
 
 
 android {
@@ -92,6 +93,9 @@ dependencies {
     implementation("androidx.room:room-guava:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("io.appmetrica.analytics:analytics:7.5.0")
+    implementation("ru.rustore.sdk:pushclient:6.5.0")
+    implementation("com.google.firebase:firebase-messaging:22.0.0")
+    implementation("com.google.android.gms:play-services-base:17.5.0")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:4.11.0")
