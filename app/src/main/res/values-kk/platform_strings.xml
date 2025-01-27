@@ -70,4 +70,15 @@
     <string name="photoview_share_descr">Фотосуретті бөлісу</string>
     <string name="no_email_client_found">Пошта қолданбасы табылмады</string>
     <string name="connect_to_developer">Әзірлеушімен байланысыңыз</string>
+    <string name="notifications">Хабарландырулар</string>
+    <string name="notifications_notification_app_update_channel_name">Қолданба жаңартулары</string>
+    <string name="notifications_notification_app_update_channel_descr">
+        Қолданбаның мобильді және жұмыс үстелі нұсқасы үшін жаңа жаңартулар туралы хабарландырулар алыңыз
+    </string>
+    <string name="notifications_notification_schedule_update_channel_name">Кесте</string>
+    <string name="notifications_notificatioin_schedule_update_channel_descr">
+        Кестедегі өзгерістер туралы хабарландырулар алыңыз
+    </string>
+    <string name="notifications_new_schedule_available">Жаңа кесте орналастырылды</string>
+    <string name="notifications_schedule_unavailable">Ой! Кестені жаңарту мүмкін болмады…</string>
 </resources>

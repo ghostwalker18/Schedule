@@ -74,6 +74,15 @@
     <string name="no_email_client_found">Почтовое приложение не найдено</string>
     <string name="email_subject" translatable="false">Расписание ПАСТ (мобильное)</string>
     <string name="connect_to_developer">Связаться с разработчиком</string>
-    <string name="notifications_notification_app_update_channel_name" translatable="false">app_update</string>
-    <string name="notifications_notification_schedule_update_channel_name" translatable="false">schedule_update</string>
+    <string name="notifications">Уведомления</string>
+    <string name="notifications_notification_app_update_channel_name">Обновления приложений</string>
+    <string name="notifications_notification_app_update_channel_descr">
+        Получайте уведомления о новых обновления для мобильной и десктопной версии приложения
+    </string>
+    <string name="notifications_notification_schedule_update_channel_name">Расписание</string>
+    <string name="notifications_notificatioin_schedule_update_channel_descr">
+        Получайте уведомления о изменениях в расписании
+    </string>
+    <string name="notifications_new_schedule_available">Выложено новое расписание</string>
+    <string name="notifications_schedule_unavailable">Упс! Не получилось обновить расписание…</string>
 </resources>

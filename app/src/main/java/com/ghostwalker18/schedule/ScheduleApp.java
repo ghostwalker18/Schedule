@@ -31,8 +31,10 @@ import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 import io.appmetrica.analytics.AppMetrica;
 import io.appmetrica.analytics.AppMetricaConfig;
-import ru.rustore.sdk.pushclient.RuStorePushClient;
 import ru.rustore.sdk.pushclient.common.logger.DefaultLogger;
+import ru.rustore.sdk.universalpush.RuStoreUniversalPushClient;
+import ru.rustore.sdk.universalpush.firebase.provides.FirebasePushProvider;
+import ru.rustore.sdk.universalpush.rustore.providers.RuStorePushProvider;
 
 /**
  * <h1>Schedule</h1>
@@ -53,6 +55,7 @@ public class ScheduleApp
     private AppDatabase database;
     private ScheduleRepository scheduleRepository;
     private NotesRepository notesRepository;
+    private final RuStoreUniversalPushClient pushClient = RuStoreUniversalPushClient.INSTANCE;
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
@@ -65,6 +68,20 @@ public class ScheduleApp
                 String localeCode = sharedPreferences.getString(key, "en");
                 setLocale(localeCode);
                 break;
+            case "update_notifications":
+                boolean enabled = sharedPreferences.getBoolean("update_notifications", false);
+                if(enabled)
+                    pushClient.subscribeToTopic("update_notifications");
+                else
+                    pushClient.unsubscribeFromTopic("update_notifications");
+                break;
+            case "schedule_notifications":
+                 enabled = sharedPreferences.getBoolean("schedule_notifications", false);
+                if(enabled)
+                    pushClient.subscribeToTopic("schedule_notifications");
+                else
+                    pushClient.unsubscribeFromTopic("schedule_notifications");
+                break;
         }
     }
 
@@ -73,6 +90,15 @@ public class ScheduleApp
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
         instance = this;
+        database = AppDatabase.getInstance(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        scheduleRepository = new ScheduleRepository(this, database,
+                new NetworkService(this, ScheduleRepository.BASE_URI, preferences));
+        scheduleRepository.update();
+        notesRepository = new NotesRepository(database);
+        String theme = preferences.getString("theme", "");
+        setTheme(theme);
+        preferences.registerOnSharedPreferenceChangeListener(this);
 
         //Initializing of third-party analytics and push services.
         try{
@@ -84,16 +110,6 @@ public class ScheduleApp
         } catch(Exception e){/*Not required*/}
         // Initializing the RuStore Push SDK.
         initPushes();
-
-        database = AppDatabase.getInstance(this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        scheduleRepository = new ScheduleRepository(this, database,
-                new NetworkService(this, ScheduleRepository.BASE_URI, preferences));
-        scheduleRepository.update();
-        notesRepository = new NotesRepository(database);
-        String theme = preferences.getString("theme", "");
-        setTheme(theme);
-        preferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     /**
@@ -139,33 +155,35 @@ public class ScheduleApp
      * Этот метод используется для инициализации доставки Push-уведомлений RuStore.
      */
     private void initPushes() {
-        createNotificationPushChannels();
-        RuStorePushClient.INSTANCE.init(
+        pushClient.init(
                 this,
-                getString(R.string.rustore_api_key), //from non-public strings
-                new DefaultLogger()
+                new RuStorePushProvider(this, getString(R.string.rustore_api_key), //from non-public strings
+                        new DefaultLogger()),
+                new FirebasePushProvider(this),
+                null
         );
-        RuStorePushClient.INSTANCE.getToken()
+        pushClient.getTokens()
                 .addOnSuccessListener(result -> {
                     Log.w("App", "getToken onSuccess = " + result);
                 })
                 .addOnFailureListener(throwable -> {
                     Log.e("App", "getToken onFailure", throwable);
                 });
-    }
-
-    /**
-     * Этот метод используется для создания каналов уведомлений.
-     */
-    public void createNotificationPushChannels() {
+        //Do not forget to add same calls in NotificationLocaleUpdater for locale changes updates
         NotificationManagerWrapper.getInstance(this).createNotificationChannel(
-                getString(R.string.notifications_notification_app_update_channel_id), //from non-public strings
-                getString(R.string.notifications_notification_app_update_channel_name)
+                getString(R.string.notifications_notification_app_update_channel_id),
+                getString(R.string.notifications_notification_app_update_channel_name),
+                getString(R.string.notifications_notification_app_update_channel_descr)
         );
         NotificationManagerWrapper.getInstance(this).createNotificationChannel(
-                getString(R.string.notifications_notification_schedule_update_channel_id), //from non-public strings
-                getString(R.string.notifications_notification_schedule_update_channel_name)
+                getString(R.string.notifications_notification_schedule_update_channel_id),
+                getString(R.string.notifications_notification_schedule_update_channel_name),
+                getString(R.string.notifications_notificatioin_schedule_update_channel_descr)
         );
+        if(preferences.getBoolean("update_notifications", false))
+            pushClient.subscribeToTopic("update_notificatons");
+        if(preferences.getBoolean("schedule_notifications", false))
+            pushClient.subscribeToTopic("schedule_notifications");
     }
 
     /**
@@ -192,9 +210,8 @@ public class ScheduleApp
      */
     private void setLocale(@NonNull String localeCode){
         LocaleListCompat localeListCompat;
-        if(localeCode.equals("system")){
+        if(localeCode.equals("system"))
             localeListCompat = LocaleListCompat.getEmptyLocaleList();
-        }
         else
             localeListCompat = LocaleListCompat.create(new Locale(localeCode));
         AppCompatDelegate.setApplicationLocales(localeListCompat);

@@ -70,4 +70,15 @@
     <string name="photoview_share_descr">Падзяліцца фота</string>
     <string name="no_email_client_found">Паштовае прыкладанне не знойдзена</string>
     <string name="connect_to_developer">Звязацца з распрацоўшчыкам</string>
+    <string name="notifications">Апавяшчэнні</string>
+    <string name="notifications_notification_app_update_channel_name">Абнаўлення прыкладанняў</string>
+    <string name="notifications_notification_app_update_channel_descr">
+        Атрымлівайце апавяшчэння аб новых абнаўлення для мабільнай і дэсктопнай версіі прыкладання
+    </string>
+    <string name="notifications_notification_schedule_update_channel_name">Расклад</string>
+    <string name="notifications_notificatioin_schedule_update_channel_descr">
+        Атрымлівайце апавяшчэння аб зменах у раскладзе
+    </string>
+    <string name="notifications_new_schedule_available">Выкладзены новы расклад</string>
+    <string name="notifications_schedule_unavailable">Упс! Не атрымалася абнавіць расклад…</string>
 </resources>

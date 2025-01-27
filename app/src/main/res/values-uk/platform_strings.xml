@@ -70,4 +70,15 @@
     <string name="photoview_share_descr">Поділитися фото</string>
     <string name="no_email_client_found">Поштовий додаток не знайдено</string>
     <string name="connect_to_developer">Зв\'язатися з розробником</string>
+    <string name="notifications">Повідомлення</string>
+    <string name="notifications_notification_app_update_channel_name">Оновлення додатків</string>
+    <string name="notifications_notification_app_update_channel_descr">
+        Отримайте сповіщення про нові оновлення для мобільної та настільної версії програми
+    </string>
+    <string name="notifications_notification_schedule_update_channel_name">Розклад</string>
+    <string name="notifications_notificatioin_schedule_update_channel_descr">
+        Отримуйте повідомлення про зміни в розкладі
+    </string>
+    <string name="notifications_new_schedule_available">Викладено новий розклад</string>
+    <string name="notifications_schedule_unavailable">Упс! Не вийшло оновити розклад…</string>
 </resources>

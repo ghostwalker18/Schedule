@@ -169,15 +169,15 @@
                 android:resource="@xml/schedule_widget_info"/>
         </receiver>
 
-        <service
-            android:name=".notifications.PushNotificationsService"
-            android:exported="true"
-            tools:ignore="ExportedService">
+        <receiver
+            android:name=".notifications.NotificationsLocaleUpdater"
+            android:enabled="true"
+            android:exported="true">
 
             <intent-filter>
-                <action android:name="ru.rustore.sdk.pushclient.MESSAGING_EVENT" />
+                <action android:name="android.intent.action.LOCALE_CHANGED"/>
             </intent-filter>
-        </service>
+        </receiver>
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

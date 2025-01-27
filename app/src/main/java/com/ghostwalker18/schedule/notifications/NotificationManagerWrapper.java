@@ -17,20 +17,19 @@ package com.ghostwalker18.schedule.notifications;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationChannelCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 /**
- * Этот класс представляет собой надстройку над стандартным менеджером уведомлений Android.
+ * Этот класс представляет собой надстройку над NotificationManagerCompat для удобства использования.
  *
  * @author Ипатов Никита
  * @author RuStore
  * @since 4.1
  */
-public final class NotificationManagerWrapper {
+public class NotificationManagerWrapper {
    private static NotificationManagerWrapper instance;
    private final NotificationManagerCompat notificationManager;
 
@@ -39,30 +38,33 @@ public final class NotificationManagerWrapper {
    }
 
    /**
-    * Этот метод создает канал уведомлений.
+    * Этот метод позволяет создать канал для отправки и получения push-уведомлений.
     * @param channelId ID канала
     * @param channelName имя канала
     */
-   public void createNotificationChannel(String channelId, String channelName){
+   public void createNotificationChannel(String channelId, String channelName, String channelDescription){
       NotificationChannelCompat.Builder builder =
-              new NotificationChannelCompat.Builder(channelId, NotificationManagerCompat.IMPORTANCE_DEFAULT);
+              new NotificationChannelCompat.Builder(channelId,
+                      NotificationManagerCompat.IMPORTANCE_DEFAULT);
       builder.setName(channelName);
+      if(channelDescription != null)
+         builder.setDescription(channelDescription);
       notificationManager.createNotificationChannel(builder.build());
    }
 
    /**
-    * Этот метод позволяет показать Push-уведомление
+    * Этот метод позволяет показать push-уведомление.
     * @param context контекст приложения
-    * @param data уведомление
+    * @param data сообщение
     */
-   public void showNotification(Context context, @NonNull AppNotification data) {
+   public void showNotification(Context context, AppNotification data) {
       NotificationCompat.Builder builder =
               new NotificationCompat.Builder(context, data.getChannelId())
                       .setContentTitle(data.getTitle())
                       .setContentText(data.getMessage());
       NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
       if (notificationManager.getNotificationChannel(data.getChannelId()) == null) {
-         createNotificationChannel(data.getChannelId(), data.getChannelName());
+         createNotificationChannel(data.getChannelId(), data.getChannelName(), null);
       }
       if (ActivityCompat.checkSelfPermission(
               context,
@@ -74,7 +76,7 @@ public final class NotificationManagerWrapper {
    }
 
    /**
-    * Этот метод позволяет получить синглтон менеджера уведомлений
+    * Этот метод позволяет получить экзампляр менеджера push-уведомлений.
     * @param context контекст приложения
     * @return менеджер уведомлений
     */
