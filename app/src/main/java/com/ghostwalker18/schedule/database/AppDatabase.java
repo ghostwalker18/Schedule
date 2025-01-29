@@ -45,6 +45,7 @@ public abstract class AppDatabase
      * @param context контекст приложения
      * @return база данных Room
      */
+    @NonNull
     public static AppDatabase getInstance(Context context){
         Callback callback =  new RoomDatabase.Callback(){
             /**
@@ -71,7 +72,7 @@ public abstract class AppDatabase
      * @param context контекст приложения
      * @return файл БД приложения
      */
-    public File exportDBFile(Context context, String dataType){
+    public File exportDBFile(@NonNull Context context, @NonNull String dataType){
         return context.getDatabasePath(DATABASE_NAME);
     }
 

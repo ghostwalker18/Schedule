@@ -16,7 +16,9 @@ package com.ghostwalker18.schedule.utils;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.jetbrains.annotations.Contract;
 import java.util.Iterator;
+import androidx.annotation.NonNull;
 
 /**
  * Этот класс служит для реализации буферизированного псевдорандомного доступа
@@ -38,11 +40,13 @@ public class RowCache {
      * Этот метод используется для получения построителя кэша.
      * @return строитель
      */
+    @NonNull
+    @Contract(" -> new")
     public static Builder builder(){
         return new Builder();
     }
 
-    private RowCache(Sheet sheet, int size){
+    private RowCache(@NonNull Sheet sheet, int size){
         this.size = size;
         rows = new Row[size];
         oldRows = new Row[size];

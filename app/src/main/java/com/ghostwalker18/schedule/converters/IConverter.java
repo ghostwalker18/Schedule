@@ -27,6 +27,7 @@ import java.util.List;
  * @see Lesson
  */
 public interface IConverter {
+
  /**
   * Этот метод используется для обработки файла расписания первого корпуса на ул.Мурманская.
   *
@@ -47,6 +48,7 @@ public interface IConverter {
   * Функциональный интерфейс для общей операции конверсии.
   */
  interface IConversion {
+
   List<Lesson> convert(Workbook excelFile);
  }
 }

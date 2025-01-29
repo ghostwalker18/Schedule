@@ -189,6 +189,7 @@ public class EditNoteActivity
     * Этот метод позволяет сгенерировать имя для сделанного фото для заметки.
     * @return имя файла для фото
     */
+   @NonNull
    private String makeNotePhotoName(){
       String res = "";
       res = res + DateConverters.DATE_FORMAT_PHOTO.format(model.getDate().getValue().getTime()) + "_";

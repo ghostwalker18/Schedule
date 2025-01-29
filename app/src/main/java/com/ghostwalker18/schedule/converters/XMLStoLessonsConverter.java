@@ -27,6 +27,7 @@ import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.TreeMap;
+import androidx.annotation.NonNull;
 
 /**
  * Этот класс содержит в себе методы для работы с файлами расписания ПТГХ.
@@ -46,7 +47,7 @@ public class XMLStoLessonsConverter
    private static final int GROUPS_ROW_2 = 3;
    private static final int SCHEDULE_CELL_HEIGHT_2 = 2;
 
-   public List<Lesson> convertFirstCorpus(Workbook excelFile){
+   public List<Lesson> convertFirstCorpus(@NonNull Workbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
       DateConverters dateConverters = new DateConverters();
 
@@ -125,7 +126,7 @@ public class XMLStoLessonsConverter
       return lessons;
    }
 
-   public List<Lesson> convertSecondCorpus(Workbook excelFile){
+   public List<Lesson> convertSecondCorpus(@NonNull Workbook excelFile){
       List<Lesson> lessons = new ArrayList<>();
       DateConverters dateConverters = new DateConverters();
 

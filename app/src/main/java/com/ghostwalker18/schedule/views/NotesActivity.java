@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.models.Note;
@@ -38,6 +37,7 @@ import com.ghostwalker18.schedule.viewmodels.NotesModel;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -198,7 +198,7 @@ public class NotesActivity
    /**
     * Этот метод отвечает за появление/скрытие элемента меню.
     */
-   private void toggleMenuItem(Menu menu, int menuItemID, boolean isAvailable){
+   private void toggleMenuItem(@NonNull Menu menu, int menuItemID, boolean isAvailable){
       AnimatorSet open = (AnimatorSet) AnimatorInflater
               .loadAnimator(this, R.animator.menu_item_appear);
       AnimatorSet close = (AnimatorSet) AnimatorInflater

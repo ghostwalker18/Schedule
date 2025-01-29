@@ -26,6 +26,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
+import org.jetbrains.annotations.Contract;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import androidx.annotation.NonNull;
@@ -112,6 +113,8 @@ public class PhotoURIArrayConverters {
          }
       }
 
+      @NonNull
+      @Contract("_, _, _ -> new")
       @Override
       public JsonElement serialize(@NonNull Uri src, Type typeOfSrc,
                                    JsonSerializationContext context) {

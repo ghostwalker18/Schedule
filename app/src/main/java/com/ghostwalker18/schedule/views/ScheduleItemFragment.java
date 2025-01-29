@@ -75,6 +75,7 @@ public class ScheduleItemFragment
    private boolean isOpened = false;
    private String mode;
 
+   @NonNull
    public static ScheduleItemFragment newInstance(int dayOfWeekId) {
       Bundle args = new Bundle();
       args.putInt("dayOfWeek", dayOfWeekId);
@@ -94,7 +95,7 @@ public class ScheduleItemFragment
    }
 
    @Override
-   public View onCreateView(LayoutInflater inflater, ViewGroup container,
+   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
       return inflater.inflate(R.layout.fragment_schedule_item, container, false);
    }
@@ -253,7 +254,7 @@ public class ScheduleItemFragment
     * @param table таблица для заполнения
     * @param lessons занятия
     */
-   private void populateTable(TableLayout table, Lesson[] lessons){
+   private void populateTable(@NonNull TableLayout table, @NonNull Lesson[] lessons){
       table.removeViews(1, table.getChildCount() - 1);
       int counter = 0;
       for(Lesson lesson : lessons){
@@ -270,7 +271,8 @@ public class ScheduleItemFragment
     * @param lesson занятие
     * @return ряд таблицы, куда было добавлено занятие
     */
-   private TableRow addLesson(TableLayout table, Lesson lesson){
+   @NonNull
+   private TableRow addLesson(TableLayout table, @NonNull Lesson lesson){
       LayoutInflater inflater = (LayoutInflater) getContext()
               .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TableRow tr = (TableRow) inflater.inflate(R.layout.schedule_row, null);

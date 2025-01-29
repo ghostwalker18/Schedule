@@ -15,6 +15,7 @@
 package com.ghostwalker18.schedule.utils;
 
 import java.util.Calendar;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
@@ -67,7 +68,7 @@ public class Utils {
     * @param date дата для проверки
     * @return сегодня ли дата
     */
-   public static synchronized boolean isDateToday(Calendar date){
+   public static synchronized boolean isDateToday(@NonNull Calendar date){
       Calendar rightNow = Calendar.getInstance();
       return rightNow.get(Calendar.YEAR) == date.get(Calendar.YEAR)
               && rightNow.get(Calendar.MONTH) == date.get(Calendar.MONTH)
@@ -79,7 +80,8 @@ public class Utils {
     * @param date дата
     * @return представление даты в формате ХХ/ХХ
     */
-   public static String generateDateForTitle(Calendar date){
+   @NonNull
+   public static String generateDateForTitle(@NonNull Calendar date){
       //Month is a number in 0 - 11
       int month = date.get(Calendar.MONTH) + 1;
       //Formatting month number with leading zero
@@ -102,7 +104,7 @@ public class Utils {
     * @param link ссылка на файл
     * @return имя файла
     */
-   public static String getNameFromLink(String link){
+   public static String getNameFromLink(@NonNull String link){
       String[] parts = link.split("/");
       return parts[parts.length - 1];
    }

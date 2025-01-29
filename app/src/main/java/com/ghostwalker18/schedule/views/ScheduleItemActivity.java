@@ -149,7 +149,8 @@ public class ScheduleItemActivity
      * @param lesson занятие
      * @return заполненный ряд таблицы
      */
-    private TableRow addLesson(TableLayout table, int tableRowLayout, Lesson lesson){
+    @NonNull
+    private TableRow addLesson(TableLayout table, int tableRowLayout, @NonNull Lesson lesson){
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(tableRowLayout, null);

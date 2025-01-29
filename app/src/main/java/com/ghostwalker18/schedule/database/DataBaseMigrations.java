@@ -58,6 +58,7 @@ public class DataBaseMigrations {
     * Этот метод возвращает список всех миграций БД приложения
     * @return миграции приложения между версиями БД
     */
+   @NonNull
    public static Collection<Migration> getMigrations(){
       return  Arrays.asList(
               MIGRATION_1_2,

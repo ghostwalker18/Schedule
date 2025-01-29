@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -155,7 +157,8 @@ public class NotesModel
     * @param endDate конечная дата (включается в интервал)
     * @return массив дат
     */
-   private Calendar[] generateDateSequence(Calendar startDate, Calendar endDate){
+   @NonNull
+   private Calendar[] generateDateSequence(@NonNull Calendar startDate, Calendar endDate){
       if(startDate.equals(endDate) || endDate.before(startDate))
          return new Calendar[]{startDate};
       List<Calendar> resultList = new ArrayList<>();

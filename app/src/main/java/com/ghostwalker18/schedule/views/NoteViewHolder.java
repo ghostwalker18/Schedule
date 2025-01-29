@@ -101,7 +101,7 @@ public class NoteViewHolder
     * Этот метод используется для задания заметки для отображения.
     * @param note отображаемая заметка
     */
-   public void setNote(Note note){
+   public void setNote(@NonNull Note note){
       date.setText(DateConverters.toString(note.date));
       theme.setText(note.theme);
       text.setText(note.text);

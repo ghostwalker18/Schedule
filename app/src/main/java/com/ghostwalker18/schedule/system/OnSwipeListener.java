@@ -19,6 +19,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 /**
  * Этот класс используется для реализации обработки смахивания вправо или влево.
  *
@@ -64,7 +66,8 @@ public class OnSwipeListener
       private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
       @Override
-      public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+      public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2,
+                             float velocityX, float velocityY) {
          float distanceX = e2.getX() - e1.getX();
          float distanceY = e2.getY() - e1.getY();
          if (Math.abs(distanceX) > Math.abs(distanceY)
