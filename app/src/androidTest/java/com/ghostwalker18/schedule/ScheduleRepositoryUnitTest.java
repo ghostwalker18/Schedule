@@ -15,6 +15,8 @@
 package com.ghostwalker18.schedule;
 
 import android.content.Context;
+
+import com.ghostwalker18.schedule.models.ScheduleRepository;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Assert;

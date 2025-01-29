@@ -41,9 +41,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -63,11 +64,6 @@ import retrofit2.Response;
  * @see NetworkService
  */
 public class ScheduleRepository{
-    private final AppDatabase db;
-    private final IConverter converter = new XMLStoLessonsConverter();
-    private final SharedPreferences preferences;
-    private final ScheduleNetworkAPI api;
-    private final Context context;
     public static final String BASE_URI = "https://ptgh.onego.ru/9006/";
     private static final String MAIN_SELECTOR = "h2:contains(Расписание занятий и объявления:) + div > table > tbody";
     private static final String MONDAY_TIMES_PATH = "mondayTimes.jpg";
@@ -76,11 +72,38 @@ public class ScheduleRepository{
             "https://r1.nubex.ru/s1748-17b/47698615b7_fit-in~1280x800~filters:no_upscale()__f44488_08.jpg";
     public static final String OTHER_TIMES_URL =
             "https://r1.nubex.ru/s1748-17b/320e9d2d69_fit-in~1280x800~filters:no_upscale()__f44489_bb.jpg";
+    private final AppDatabase db;
+    private final IConverter converter = new XMLStoLessonsConverter();
+    private final SharedPreferences preferences;
+    private final ScheduleNetworkAPI api;
+    private final Context context;
     private final MutableLiveData<Bitmap> mondayTimes = new MutableLiveData<>();
     private final MutableLiveData<Bitmap> otherTimes = new MutableLiveData<>();
     private final MutableLiveData<Status> status = new MutableLiveData<>();
+    private CompletableFuture<UpdateResult> updateResult;
     private final ExecutorService updateExecutorService = Executors.newFixedThreadPool(4);
-    private final List<Future<?>> updateFutures = new ArrayList<>();
+    private final List<CompletableFuture<UpdateResult>> updateFutures = new ArrayList<>();
+    private boolean allJobsDone = true;
+
+    /**
+     * Это перечисление показывает, чем завершилось обновление репозитория.
+     */
+    public enum UpdateResult {
+        SUCCESS, FAIL;
+
+        public static UpdateResult fromInt(int i){
+            if (i == 0) {
+                return SUCCESS;
+            }
+            return FAIL;
+        }
+
+        public static int toInt(UpdateResult result){
+            if(result == SUCCESS)
+                return 0;
+            return 1;
+        }
+    }
 
     /**
      * Этот класс используетс для отображения статуса обновления репозитория.
@@ -95,7 +118,7 @@ public class ScheduleRepository{
         }
     }
 
-    public ScheduleRepository(Context app,  AppDatabase db, NetworkService networkService){
+    public ScheduleRepository(Context app, AppDatabase db, @NonNull NetworkService networkService){
         this.db = db;
         context = app;
         api = networkService.getScheduleAPI();
@@ -109,18 +132,34 @@ public class ScheduleRepository{
      */
     public void update(){
         String downloadFor = preferences.getString("downloadFor", "all");
-        boolean allJobsDone = true;
-        for(Future<?> future : updateFutures){
-            allJobsDone &= future.isDone();
-        }
-
-        if(allJobsDone){
+        if(allJobsDone) {
+            allJobsDone = false;
             updateFutures.clear();
-            if(downloadFor.equals("all") || downloadFor.equals("first"))
-                updateFutures.add(updateExecutorService.submit(this::updateFirstCorpus));
-            if(downloadFor.equals("all") || downloadFor.equals("second"))
-                updateFutures.add(updateExecutorService.submit(this::updateSecondCorpus));
-            updateFutures.add(updateExecutorService.submit(this::updateTimes));
+            if (downloadFor.equals("all") || downloadFor.equals("first"))
+                updateFutures.add(
+                        CompletableFuture.supplyAsync(this::updateFirstCorpus, updateExecutorService)
+                );
+            if (downloadFor.equals("all") || downloadFor.equals("second"))
+                updateFutures.add(
+                        CompletableFuture.supplyAsync(this::updateSecondCorpus, updateExecutorService)
+                );
+            updateFutures.add(
+                    CompletableFuture.supplyAsync(this::updateTimes, updateExecutorService)
+            );
+
+            updateResult = CompletableFuture.allOf(updateFutures.toArray(new CompletableFuture[0]))
+                    .thenApplyAsync(ignored -> {
+                        allJobsDone = true;
+                        for(CompletableFuture<UpdateResult> future : updateFutures){
+                            if(future.getNow(UpdateResult.FAIL) == UpdateResult.FAIL){
+                                preferences.edit()
+                                        .putInt("previous_update_result", UpdateResult.toInt(UpdateResult.FAIL))
+                                        .apply();
+                                return UpdateResult.FAIL;
+                            }
+                        }
+                        return UpdateResult.SUCCESS;
+            }, updateExecutorService);
         }
     }
 
@@ -133,6 +172,20 @@ public class ScheduleRepository{
     public LiveData<Status> getStatus(){
        return status;
    }
+
+    /**
+     * Этот метод используется для получения результата обновления репозитория.
+     */
+    public CompletableFuture<UpdateResult> onUpdateCompleted(){
+        return updateResult;
+    }
+
+    /**
+     * Этот метод используется для получения результата предыдущего обновления репозитория.
+     */
+    public UpdateResult getUpdateResult(){
+        return UpdateResult.fromInt(preferences.getInt("previous_update_result", 0));
+    }
 
     /**
      * Этот метод возвращает все группы, упоминаемые в расписании.
@@ -148,7 +201,6 @@ public class ScheduleRepository{
      *
      * @return список учителей
      */
-
     public LiveData<String[]> getTeachers(){
       return db.lessonDao().getTeachers();
     }
@@ -180,6 +232,16 @@ public class ScheduleRepository{
        else if (group != null)
           return db.lessonDao().getLessonsForGroup(date, group);
        else return new MutableLiveData<>(new Lesson[]{});
+    }
+
+    /**
+     * Этот метод позволяет получить последнюю дату,
+     * для которой для заданной группы указано расписание.
+     * @param group группа
+     * @return последняя дата, для которой существует расписание
+     */
+    public Calendar getLastKnownLessonDate(String group){
+        return db.lessonDao().getLastKnownLessonDate(group);
     }
 
     /**
@@ -277,7 +339,7 @@ public class ScheduleRepository{
     /**
      * Этот метод используется для обновления изображений расписания звонков
      */
-    private void updateTimes(){
+    private UpdateResult updateTimes(){
         File mondayTimesFile = new File(context.getFilesDir(), MONDAY_TIMES_PATH);
         File otherTimesFile = new File(context.getFilesDir(), OTHER_TIMES_PATH);
         if(!preferences.getBoolean("doNotUpdateTimes", true) ||
@@ -325,20 +387,21 @@ public class ScheduleRepository{
             Bitmap bitmap2 = BitmapFactory.decodeFile(otherTimesFile.getAbsolutePath());
             otherTimes.postValue(bitmap2);
         }
+        return UpdateResult.SUCCESS;
     }
 
     /**
      * Этот метод используется для обновления БД приложения занятиями для первого корпуса
      */
-    private void updateFirstCorpus(){
-        updateSchedule(this::getLinksForFirstCorpusSchedule, converter::convertFirstCorpus);
+    private UpdateResult updateFirstCorpus(){
+        return updateSchedule(this::getLinksForFirstCorpusSchedule, converter::convertFirstCorpus);
     }
 
     /**
      * Этот метод используется для обновления БД приложения занятиями для второго корпуса
      */
-    private void updateSecondCorpus(){
-        updateSchedule(this::getLinksForSecondCorpusSchedule, converter::convertSecondCorpus);
+    private UpdateResult updateSecondCorpus(){
+        return updateSchedule(this::getLinksForSecondCorpusSchedule, converter::convertSecondCorpus);
     }
 
     /**
@@ -346,13 +409,19 @@ public class ScheduleRepository{
      * @param linksGetter метод для получения ссылок на файлы расписания
      * @param parser парсер файлов расписания
      */
-    private void updateSchedule(Callable<List<String>> linksGetter, IConverter.IConversion parser){
-        List<String> scheduleLinks = new ArrayList<>();
+    private UpdateResult updateSchedule(Callable<List<String>> linksGetter, IConverter.IConversion parser){
+        List<String> scheduleLinks;
         try {
             scheduleLinks = linksGetter.call();
-        } catch (Exception ignored){/*Not required*/}
-        if(scheduleLinks.isEmpty())
+        } catch (Exception ignored){
+            return UpdateResult.FAIL;
+        }
+        if(scheduleLinks.isEmpty()){
             status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
+            return UpdateResult.FAIL;
+        }
+        final List<UpdateResult> successCounter = new ArrayList<>();
+        final CountDownLatch latch = new CountDownLatch(scheduleLinks.size());
         for(String link : scheduleLinks){
             status.postValue(new Status(context.getString(R.string.schedule_download_status), 10));
             api.getScheduleFile(link).enqueue(new Callback<ResponseBody>() {
@@ -371,21 +440,36 @@ public class ScheduleRepository{
                         List<Lesson> lessons = parser.convert(excelFile);
                         db.lessonDao().insertMany(lessons);
                         status.postValue(new Status(context.getString(R.string.processing_completed_status), 100));
+                        successCounter.add(UpdateResult.SUCCESS);
                     }
-                    catch(OpenException | ReadException | ParseException e){
+                    catch(OpenException | ReadException | ParseException e) {
                         status.postValue(new Status(context.getString(R.string.schedule_opening_error), 0));
                     }
-                    catch (Exception e){
+                    catch(Exception e) {
                         status.postValue(new Status(context.getString(R.string.schedule_parsing_error), 0));
+                    }
+                    finally {
+                        latch.countDown();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call,
                                       @NonNull Throwable t) {
+                    latch.countDown();
                     status.postValue(new Status(context.getString(R.string.schedule_download_error), 0));
                 }
             });
+        }
+        try{
+            latch.await();
+            if(successCounter.size() == scheduleLinks.size())
+                return UpdateResult.SUCCESS;
+            else
+                return UpdateResult.FAIL;
+        }
+        catch (Exception e) {
+            return UpdateResult.FAIL;
         }
     }
 }

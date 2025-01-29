@@ -38,6 +38,7 @@ import androidx.room.Update;
 @Dao
 @TypeConverters({DateConverters.class})
 public interface LessonDao {
+
     /**
      * Этот метод позволяет получить список учителей из БД.
      * @return списко учителей
@@ -94,6 +95,15 @@ public interface LessonDao {
     @Query("SELECT DISTINCT subjectName FROM tblSchedule WHERE groupName = :group " +
             "ORDER BY subjectName ASC")
     LiveData<String[]> getSubjectsForGroup(String group);
+
+    /**
+     * Этот метод позволяет получить последнюю дату,
+     * для которой для заданной группы указано расписание.
+     * @param group группа
+     * @return последняя дата, для которой существует расписание
+     */
+    @Query("SELECT MAX(lessonDate) FROM tblSchedule WHERE groupName =:group")
+    Calendar getLastKnownLessonDate(String group);
 
     /**
      * Этот метод позволяет вставить элементы Lesson в БД.

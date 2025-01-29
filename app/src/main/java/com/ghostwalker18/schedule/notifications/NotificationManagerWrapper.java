@@ -17,6 +17,8 @@ package com.ghostwalker18.schedule.notifications;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import com.ghostwalker18.schedule.R;
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationChannelCompat;
 import androidx.core.app.NotificationCompat;
@@ -29,7 +31,7 @@ import androidx.core.app.NotificationManagerCompat;
  * @author RuStore
  * @since 4.1
  */
-public class NotificationManagerWrapper {
+public final class NotificationManagerWrapper {
    private static NotificationManagerWrapper instance;
    private final NotificationManagerCompat notificationManager;
 
@@ -57,9 +59,10 @@ public class NotificationManagerWrapper {
     * @param context контекст приложения
     * @param data сообщение
     */
-   public void showNotification(Context context, AppNotification data) {
+   public void showNotification(Context context, @NonNull AppNotification data) {
       NotificationCompat.Builder builder =
               new NotificationCompat.Builder(context, data.getChannelId())
+                      .setSmallIcon(R.drawable.notification_icon)
                       .setContentTitle(data.getTitle())
                       .setContentText(data.getMessage());
       NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -69,7 +72,7 @@ public class NotificationManagerWrapper {
       if (ActivityCompat.checkSelfPermission(
               context,
               Manifest.permission.POST_NOTIFICATIONS
-      ) != PackageManager.PERMISSION_DENIED) {
+      ) != PackageManager.PERMISSION_GRANTED) {
          return;
       }
       notificationManager.notify(data.getId(), builder.build());

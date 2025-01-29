@@ -47,11 +47,11 @@
 
         <meta-data
             android:name="ru.rustore.sdk.pushclient.default_notification_icon"
-            android:resource="@drawable/favicon" />
+            android:resource="@drawable/notification_icon" />
 
         <meta-data
-            android:name="ru.rustore.sdk.pushclient.default_notification_color"
-            android:resource="@color/colorPrimary" />
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/notification_icon" />
 
         <activity
             android:name=".views.MainActivity"

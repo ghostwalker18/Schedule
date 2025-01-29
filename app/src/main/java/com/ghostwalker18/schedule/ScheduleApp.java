@@ -22,13 +22,19 @@ import com.ghostwalker18.schedule.models.NotesRepository;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.network.NetworkService;
 import com.ghostwalker18.schedule.notifications.NotificationManagerWrapper;
+import com.ghostwalker18.schedule.notifications.ScheduleUpdateNotificationWorker;
 import com.google.android.material.color.DynamicColors;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 import io.appmetrica.analytics.AppMetrica;
 import io.appmetrica.analytics.AppMetricaConfig;
 import ru.rustore.sdk.pushclient.common.logger.DefaultLogger;
@@ -76,12 +82,21 @@ public class ScheduleApp
                     pushClient.unsubscribeFromTopic("update_notifications");
                 break;
             case "schedule_notifications":
-                 enabled = sharedPreferences.getBoolean("schedule_notifications", false);
-                if(enabled)
-                    pushClient.subscribeToTopic("schedule_notifications");
-                else
-                    pushClient.unsubscribeFromTopic("schedule_notifications");
-                break;
+                enabled = sharedPreferences.getBoolean("schedule_notifications", false);
+                if(enabled){
+                    Constraints constraints = new Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.UNMETERED)
+                            .build();
+                    PeriodicWorkRequest request = new PeriodicWorkRequest
+                            .Builder(ScheduleUpdateNotificationWorker.class, 30, TimeUnit.MINUTES)
+                            .addTag("update_schedule")
+                            .setConstraints(constraints)
+                            .build();
+                    WorkManager.getInstance(this).enqueue(request);
+                }
+                else{
+                    WorkManager.getInstance(this).cancelAllWorkByTag("update_schedule");
+                }
         }
     }
 
@@ -163,12 +178,9 @@ public class ScheduleApp
                 null
         );
         pushClient.getTokens()
-                .addOnSuccessListener(result -> {
-                    Log.w("App", "getToken onSuccess = " + result);
-                })
-                .addOnFailureListener(throwable -> {
-                    Log.e("App", "getToken onFailure", throwable);
-                });
+                .addOnSuccessListener(result -> Log.w("App", "getToken onSuccess = " + result))
+                .addOnFailureListener(throwable -> Log.e("App", "getToken onFailure", throwable));
+
         //Do not forget to add same calls in NotificationLocaleUpdater for locale changes updates
         NotificationManagerWrapper.getInstance(this).createNotificationChannel(
                 getString(R.string.notifications_notification_app_update_channel_id),

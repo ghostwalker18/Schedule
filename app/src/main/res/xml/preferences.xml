@@ -77,6 +77,6 @@
 
         <SwitchPreference
             app:key="schedule_notifications"
-            app:title="@string/notifications_notification_app_update_channel_name"/>
+            app:title="@string/notifications_notification_schedule_update_channel_name"/>
     </PreferenceCategory>
 </PreferenceScreen>

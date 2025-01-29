@@ -18,19 +18,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import com.ghostwalker18.schedule.R;
+import androidx.annotation.NonNull;
 
 /**
- * Этот класс служит для изменения названий каналов уведомлений в соответствии с текущим языком при
- * его изменении.
+ * Этот класс служит для изменения названий и описаний каналов уведомлений
+ * в соответствии с текущим языком при его изменении.
  *
  * @author Ипатов Никита
  * @since 4.1
  */
-public class NotificationsLocaleUpdater
+public final class NotificationsLocaleUpdater
         extends BroadcastReceiver {
 
    @Override
-   public void onReceive(Context context, Intent intent) {
+   public void onReceive(Context context, @NonNull Intent intent) {
       if(intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)){
          NotificationManagerWrapper.getInstance(context).createNotificationChannel(
                  context.getString(R.string.notifications_notification_app_update_channel_id),
