@@ -26,6 +26,8 @@ import com.ghostwalker18.schedule.network.NetworkService;
 import com.ghostwalker18.schedule.notifications.NotificationManagerWrapper;
 import com.ghostwalker18.schedule.notifications.ScheduleUpdateNotificationWorker;
 import com.google.android.material.color.DynamicColors;
+import com.google.firebase.FirebaseApp;
+
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
@@ -126,10 +128,11 @@ public class ScheduleApp
             AppMetricaConfig config = AppMetricaConfig.newConfigBuilder(appMetricaApiKey).build();
             // Initializing the AppMetrica SDK.
             AppMetrica.activate(this, config);
+            FirebaseApp.initializeApp(this);
+            // Initializing the RuStore Push SDK.
+            initPushes();
             isAppMetricaActivated = true;
         } catch(Exception e){/*Not required*/}
-        // Initializing the RuStore Push SDK.
-        initPushes();
         //Change app settings in order to be same as system settings
         checkNotificationsPermissions();
     }

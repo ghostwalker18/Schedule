@@ -35,6 +35,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
+
 import android.content.SharedPreferences;
 import java.util.Objects;
 
@@ -73,7 +75,7 @@ public class SettingsActivity
     }
 
     /**
-     * Этот метод используется, чтобы связаться с разработчиком приложения.
+     * Этот метод используется для того, чтобы связаться с разработчиком приложения.
      */
     private boolean sendEmailToDeveloper(View view){
         try{
@@ -94,14 +96,14 @@ public class SettingsActivity
             extends PreferenceFragmentCompat
             implements SharedPreferences.OnSharedPreferenceChangeListener{
         private SharedPreferences preferences;
+        private SwitchPreference enableUpdateNotifications;
+        private SwitchPreference enableScheduleNotifications;
         private final ActivityResultLauncher<String> notificationPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 granted -> {
                     if(!granted){
-                        preferences.edit()
-                                .putBoolean("schedule_notifications", false)
-                                .putBoolean("update_notifications", false)
-                                .apply();
+                        enableScheduleNotifications.setChecked(false);
+                        enableUpdateNotifications.setChecked(false);
                     }
                 }
         );
@@ -116,70 +118,73 @@ public class SettingsActivity
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.preferences, rootKey);
+            enableUpdateNotifications = findPreference("update_notifications");
+            enableScheduleNotifications = findPreference("schedule_notifications");
         }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
             if(Objects.equals(key, "schedule_notifications")
                     || Objects.equals(key, "update_notifications")){
-                if (ActivityCompat.checkSelfPermission(
-                        getContext(),
-                        Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED) {
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                        Toast toast = Toast.makeText(getActivity(),
-                                getResources().getText(R.string.notifications_permission_reqired),
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                    } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                try{
+                    if (ActivityCompat.checkSelfPermission(
+                            getContext(),
+                            Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                            Toast toast = Toast.makeText(getActivity(),
+                                    getResources().getText(R.string.notifications_permission_reqired),
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                            enableScheduleNotifications.setChecked(false);
+                            enableUpdateNotifications.setChecked(false);
+                        } else {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                        }
+                    } else{
+                        if(Objects.equals(key, "schedule_notifications")
+                                && preferences.getBoolean("schedule_notifications", false)
+                                && !NotificationManagerWrapper.getInstance(getContext())
+                                .isNotificationChannelEnabled(
+                                        getString(
+                                                //from non public strings
+                                                R.string.notifications_notification_schedule_update_channel_id
+                                        )
+                                )){
+                            Toast toast = Toast.makeText(getActivity(),
+                                    String.format(
+                                            (String) getResources()
+                                                    .getText(R.string.notifications_channnel_enable_required),
+                                            getResources()
+                                                    .getText(R.string.notifications_notification_schedule_update_channel_name)
+                                    ),
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                            enableScheduleNotifications.setChecked(false);
+                        }
+                        if(Objects.equals(key, "update_notifications")
+                                && preferences.getBoolean("update_notifications", false)
+                                && !NotificationManagerWrapper.getInstance(getContext())
+                                .isNotificationChannelEnabled(
+                                        getString(
+                                                //from non public strings
+                                                R.string.notifications_notification_app_update_channel_id
+                                        )
+                                )){
+                            Toast toast = Toast.makeText(getActivity(),
+                                    String.format(
+                                            (String) getResources()
+                                                    .getText(R.string.notifications_channnel_enable_required),
+                                            getResources()
+                                                    .getText(R.string.notifications_notification_app_update_channel_name)
+                                    ),
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                            enableUpdateNotifications.setChecked(false);
+                        }
                     }
-                } else{
-                    if(Objects.equals(key, "schedule_notifications")
-                            && preferences.getBoolean("schedule_notifications", false)
-                            && !NotificationManagerWrapper.getInstance(getContext())
-                            .isNotificationChannelEnabled(
-                                    getString(
-                                            //from non public strings
-                                            R.string.notifications_notification_schedule_update_channel_id
-                                    )
-                            )){
-                        Toast toast = Toast.makeText(getActivity(),
-                                String.format(
-                                        (String) getResources()
-                                                .getText(R.string.notifications_channnel_enable_required),
-                                        getResources()
-                                                .getText(R.string.notifications_notification_schedule_update_channel_name)
-                                ),
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                        preferences.edit()
-                                .putBoolean("schedule_notifications", false)
-                                .apply();}
-                    if(Objects.equals(key, "update_notifications")
-                            && preferences.getBoolean("update_notifications", false)
-                            && !NotificationManagerWrapper.getInstance(getContext())
-                            .isNotificationChannelEnabled(
-                                    getString(
-                                            //from non public strings
-                                            R.string.notifications_notification_app_update_channel_id
-                                    )
-                            )){
-                        Toast toast = Toast.makeText(getActivity(),
-                                String.format(
-                                        (String) getResources()
-                                                .getText(R.string.notifications_channnel_enable_required),
-                                        getResources()
-                                                .getText(R.string.notifications_notification_app_update_channel_name)
-                                ),
-                                Toast.LENGTH_SHORT);
-                        toast.show();
-                        preferences.edit()
-                                .putBoolean("update_notifications", false)
-                                .apply();
-                    }
-                }
+                } catch (Exception ignored){/*Not required*/}
             }
         }
     }
