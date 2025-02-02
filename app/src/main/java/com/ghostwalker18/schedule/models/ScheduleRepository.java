@@ -413,7 +413,7 @@ public class ScheduleRepository{
         List<String> scheduleLinks;
         try {
             scheduleLinks = linksGetter.call();
-        } catch (Exception ignored){
+        } catch (Exception e){
             return UpdateResult.FAIL;
         }
         if(scheduleLinks.isEmpty()){

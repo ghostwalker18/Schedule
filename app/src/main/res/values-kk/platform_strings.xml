@@ -71,12 +71,16 @@
     <string name="no_email_client_found">Пошта қолданбасы табылмады</string>
     <string name="connect_to_developer">Әзірлеушімен байланысыңыз</string>
     <string name="notifications">Хабарландырулар</string>
+    <string name="notifications_permission_reqired">Хабарландыруларды жіберу үшін рұқсат қажет</string>
+    <string name="notifications_channnel_enable_required">
+        Арнаны қосыңыз: %s қолданбаның жүйелік хабарландыру параметрлерінде
+    </string>
     <string name="notifications_notification_app_update_channel_name">Қолданба жаңартулары</string>
     <string name="notifications_notification_app_update_channel_descr">
         Қолданбаның мобильді және жұмыс үстелі нұсқасы үшін жаңа жаңартулар туралы хабарландырулар алыңыз
     </string>
     <string name="notifications_notification_schedule_update_channel_name">Кесте</string>
-    <string name="notifications_notificatioin_schedule_update_channel_descr">
+    <string name="notifications_notification_schedule_update_channel_descr">
         Кестедегі өзгерістер туралы хабарландырулар алыңыз
     </string>
     <string name="notifications_new_schedule_available">Жаңа кесте орналастырылды</string>

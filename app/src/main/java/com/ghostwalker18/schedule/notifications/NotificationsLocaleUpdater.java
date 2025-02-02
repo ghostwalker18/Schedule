@@ -41,7 +41,7 @@ public final class NotificationsLocaleUpdater
          NotificationManagerWrapper.getInstance(context).createNotificationChannel(
                  context.getString(R.string.notifications_notification_schedule_update_channel_id),
                  context.getString(R.string.notifications_notification_schedule_update_channel_name),
-                 context.getString(R.string.notifications_notificatioin_schedule_update_channel_descr)
+                 context.getString(R.string.notifications_notification_schedule_update_channel_descr)
          );
       }
    }

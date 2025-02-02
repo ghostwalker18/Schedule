@@ -14,8 +14,10 @@
 
 package com.ghostwalker18.schedule;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import com.ghostwalker18.schedule.database.AppDatabase;
 import com.ghostwalker18.schedule.models.NotesRepository;
@@ -29,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
@@ -65,6 +68,7 @@ public class ScheduleApp
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
+        boolean enabled;
         switch (key){
             case "theme":
                 String theme = sharedPreferences.getString(key, "");
@@ -75,9 +79,10 @@ public class ScheduleApp
                 setLocale(localeCode);
                 break;
             case "update_notifications":
-                boolean enabled = sharedPreferences.getBoolean("update_notifications", false);
-                if(enabled)
+                enabled = sharedPreferences.getBoolean("update_notifications", false);
+                if(enabled){
                     pushClient.subscribeToTopic("update_notifications");
+                }
                 else
                     pushClient.unsubscribeFromTopic("update_notifications");
                 break;
@@ -125,6 +130,8 @@ public class ScheduleApp
         } catch(Exception e){/*Not required*/}
         // Initializing the RuStore Push SDK.
         initPushes();
+        //Change app settings in order to be same as system settings
+        checkNotificationsPermissions();
     }
 
     /**
@@ -167,7 +174,7 @@ public class ScheduleApp
     }
 
     /**
-     * Этот метод используется для инициализации доставки Push-уведомлений RuStore.
+     * Этот метод используется для инициализации доставки Push-уведомлений RuStore и Firebase.
      */
     private void initPushes() {
         pushClient.init(
@@ -178,8 +185,10 @@ public class ScheduleApp
                 null
         );
         pushClient.getTokens()
-                .addOnSuccessListener(result -> Log.w("App", "getToken onSuccess = " + result))
-                .addOnFailureListener(throwable -> Log.e("App", "getToken onFailure", throwable));
+                .addOnSuccessListener(result -> Log.w(
+                        "AppPushes", "getToken onSuccess = " + result))
+                .addOnFailureListener(throwable -> Log.e(
+                        "AppPushes", "getToken onFailure", throwable));
 
         //Do not forget to add same calls in NotificationLocaleUpdater for locale changes updates
         NotificationManagerWrapper.getInstance(this).createNotificationChannel(
@@ -190,7 +199,7 @@ public class ScheduleApp
         NotificationManagerWrapper.getInstance(this).createNotificationChannel(
                 getString(R.string.notifications_notification_schedule_update_channel_id),
                 getString(R.string.notifications_notification_schedule_update_channel_name),
-                getString(R.string.notifications_notificatioin_schedule_update_channel_descr)
+                getString(R.string.notifications_notification_schedule_update_channel_descr)
         );
         if(preferences.getBoolean("update_notifications", false))
             pushClient.subscribeToTopic("update_notificatons");
@@ -227,5 +236,38 @@ public class ScheduleApp
         else
             localeListCompat = LocaleListCompat.create(new Locale(localeCode));
         AppCompatDelegate.setApplicationLocales(localeListCompat);
+    }
+
+    /**
+     * Этот метод проверяет разрешения приложения
+     * и меняет настройки приложения в соответствии с результатом
+     */
+    private void checkNotificationsPermissions(){
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+        ) != PackageManager.PERMISSION_GRANTED) {
+            preferences.edit()
+                    .putBoolean("update_notifications", false)
+                    .putBoolean("schedule_notifications", false)
+                    .apply();
+            return;
+        }
+        if(!NotificationManagerWrapper.getInstance(this)
+                .isNotificationChannelEnabled(
+                        getString(R.string.notifications_notification_schedule_update_channel_id))
+        ){
+            preferences.edit()
+                    .putBoolean("schedule_notifications", false)
+                    .apply();
+        }
+        if(!NotificationManagerWrapper.getInstance(this)
+                .isNotificationChannelEnabled(
+                        getString(R.string.notifications_notification_app_update_channel_id))
+        ){
+            preferences.edit()
+                    .putBoolean("update_notifications", false)
+                    .apply();
+        }
     }
 }

@@ -15,8 +15,11 @@
 package com.ghostwalker18.schedule.notifications;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 import com.ghostwalker18.schedule.R;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -76,6 +79,20 @@ public final class NotificationManagerWrapper {
          return;
       }
       notificationManager.notify(data.getId(), builder.build());
+   }
+
+   /**
+    * Этот метод проверяет, включен ли канал уведомлений.
+    * @param channelId ID канала
+    */
+   public boolean isNotificationChannelEnabled(String channelId){
+      try {
+         if (!TextUtils.isEmpty(channelId)) {
+            NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
+            return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+         }
+      } catch (Exception ignored){/*Not required*/}
+      return false;
    }
 
    /**

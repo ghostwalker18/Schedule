@@ -71,12 +71,16 @@
     <string name="no_email_client_found">The mail application was not found</string>
     <string name="connect_to_developer">Contact the developer</string>
     <string name="notifications">Notifications</string>
+    <string name="notifications_permission_reqired">Permission is required to send notifications</string>
+    <string name="notifications_channnel_enable_required">
+        Please enable the channel: %s in the app\'s notification system settings.
+    </string>
     <string name="notifications_notification_app_update_channel_name">Application Updates</string>
     <string name="notifications_notification_app_update_channel_descr">
         Receive notifications about new updates for the mobile and desktop versions of the app
     </string>
     <string name="notifications_notification_schedule_update_channel_name">Schedule</string>
-    <string name="notifications_notificatioin_schedule_update_channel_descr">
+    <string name="notifications_notification_schedule_update_channel_descr">
         Receive notifications about schedule changes
     </string>
     <string name="notifications_new_schedule_available">A new schedule has been posted</string>
