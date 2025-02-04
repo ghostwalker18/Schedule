@@ -16,6 +16,11 @@
     <files-path
         name="images"
         path="/"/>
+
+    <cache-path
+        name="database_export"
+        path="/database"/>
+
     <external-path
         name="notes_gallery"
         path="."/>

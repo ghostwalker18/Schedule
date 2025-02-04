@@ -19,9 +19,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import com.ghostwalker18.schedule.R;
+import java.io.File;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 /**
  * Этот класс используется для просмотра фото заметки в отдельном экране.
@@ -59,7 +61,9 @@ public class PhotoViewActivity
     private void sharePhoto(){
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("image/*");
-        shareIntent.putExtra(Intent.EXTRA_STREAM, photoUri);
+        Uri shareUri = FileProvider.getUriForFile(this,
+                "com.ghostwalker18.schedule.timefilesprovider", new File(photoUri.getPath()));
+        shareIntent.putExtra(Intent.EXTRA_STREAM, shareUri);
         startActivity(Intent.createChooser(shareIntent, null));
     }
 }
