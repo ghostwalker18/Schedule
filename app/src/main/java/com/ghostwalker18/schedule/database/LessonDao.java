@@ -106,6 +106,19 @@ public interface LessonDao {
     Calendar getLastKnownLessonDate(String group);
 
     /**
+     * Этот метод позволяет получить все содержимое расписания (например, для экспорта).
+     * @return все содержимое tblSchedule
+     */
+    @Query("SELECT * FROM tblSchedule")
+    List<Lesson> getAllLessons();
+
+    /**
+     * Этот метод позволяет удалить все содержимое tblSchedule
+     */
+    @Query("DELETE FROM tblSchedule")
+    void deleteAllLessons();
+
+    /**
      * Этот метод позволяет вставить элементы Lesson в БД.
      * @param lessons занятия
      */

@@ -18,6 +18,7 @@ import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.models.Note;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Calendar;
+import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -77,12 +78,32 @@ public interface NoteDao {
     LiveData<Note[]> getNotesByKeyword(String keyword, String group);
 
     /**
+     * Этот метод позволяет получить все содержимое заметок (например, для экспорта).
+     * @return все содержимое tblNote
+     */
+    @Query("SELECT * FROM tblNote")
+    List<Note> getAllNotes();
+
+    /**
+     * Этот метод позволяет удалить все содержимое tblNote
+     */
+    @Query("DELETE FROM tblNote")
+    void deleteAllNotes();
+
+    /**
      * Этот метод позволяет внести заметку в БД.
      * @param note заметка
      * @return количество внесенных изменений
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     ListenableFuture<Long> insert(Note note);
+
+    /**
+     * Этот метод позволяет вставить элементы Note в БД.
+     * @param notes заметки
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    ListenableFuture<List<Long>> insertMany(List<Note> notes);
 
     /**
      * Этот метод позволяет обновить заметку из БД.

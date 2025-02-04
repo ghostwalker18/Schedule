@@ -18,6 +18,8 @@ import android.content.Context;
 import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.models.Note;
 import java.io.File;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -36,18 +38,92 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 @Database(entities = {Lesson.class, Note.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase
         extends RoomDatabase {
-    private final static String DATABASE_NAME = "database";
     public abstract LessonDao lessonDao();
     public abstract NoteDao noteDao();
+    private final static String APP_DATABASE_NAME = "database";
+    private final static String EXPORT_DATABASE_NAME = "export_database.db";
+    private final static String IMPORT_DATABASE_NAME = "import_database.db";
+    private static volatile AppDatabase instance;
 
     /**
-     * Этот метод позволяет получить сконфигурированную базу данных приложения.
+     * Этот метод позволяет получить сконфигурированную базу данных приложения по умолчанию.
      * @param context контекст приложения
      * @return база данных Room
      */
     @NonNull
-    public static AppDatabase getInstance(Context context){
+    public static AppDatabase getInstance(final Context context){
+        if(instance == null){
+            synchronized (AppDatabase.class){
+                if(instance == null){
+                    instance = createAppDatabase(context, APP_DATABASE_NAME, null);
+                }
+            }
+        }
+        return instance;
+    }
+
+
+    /**
+     * Этот метод позволяет получить архивированные файлы БД приложения для ее экспорта.
+     * @param context контекст приложения
+     * @return файл БД приложения
+     */
+    public File exportDBFile(@NonNull Context context, @NonNull String dataType){
+        AppDatabase exportDB = createAppDatabase(context, EXPORT_DATABASE_NAME, null);
+        exportDB.lessonDao().deleteAllLessons();
+        exportDB.noteDao().deleteAllNotes();
+        if(dataType.equals("schedule") || dataType.equals("schedule_and_notes")){
+            List<Lesson> lessons = instance.lessonDao().getAllLessons();
+            exportDB.lessonDao().insertMany(lessons);
+        }
+        if(dataType.equals("notes") || dataType.equals("schedule_and_notes")){
+            List<Note> notes = instance.noteDao().getAllNotes();
+            exportDB.noteDao().insertMany(notes);
+        }
+        exportDB.close();
+        return context.getDatabasePath(EXPORT_DATABASE_NAME);
+    }
+
+    /**
+     * Этот метод заменяет файлы БД приложения импортированными из стороннего источника.
+     * @param dbFile архив с файлами БД
+     */
+    public void importDBFile(@NonNull Context context, File dbFile,
+                             @NonNull String dataType, String importPolicy){
+        AppDatabase importDB = createAppDatabase(context, IMPORT_DATABASE_NAME, dbFile);
+        if(dataType.equals("schedule") || dataType.equals("schedule_and_notes")){
+            if(importPolicy.equals("replace"))
+                instance.lessonDao().deleteAllLessons();
+            List<Lesson> lessons = importDB.lessonDao().getAllLessons();
+            instance.lessonDao().insertMany(lessons);
+        }
+        if(dataType.equals("notes") || dataType.equals("schedule_and_notes")){
+            if(importPolicy.equals("replace"))
+                instance.noteDao().deleteAllNotes();
+            List<Note> notes = importDB.noteDao().getAllNotes();
+            instance.noteDao().insertMany(notes);
+        }
+        importDB.close();
+        context.getDatabasePath(IMPORT_DATABASE_NAME).delete();
+    }
+
+    public static void deleteExportDB(@NonNull Context context){
+        File exportDBFile = context.getDatabasePath(EXPORT_DATABASE_NAME);
+        exportDBFile.delete();
+    }
+
+    /**
+     * Этот метод позволяет получить сконфигурированную базу данных приложения.
+     * @param context контекст приложения
+     * @param databaseName имя БД
+     * @return база данных Room
+     */
+    @NonNull
+    private static AppDatabase createAppDatabase(@NonNull Context context,
+                                                 @NonNull String databaseName,
+                                                 File file){
         Callback callback =  new RoomDatabase.Callback(){
+
             /**
              * Этот метод создает триггер при создании бд.
              * @param db создаваемая бд
@@ -60,28 +136,14 @@ public abstract class AppDatabase
             }
         };
         Builder<AppDatabase> builder = Room
-                .databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
+                .databaseBuilder(context, AppDatabase.class, databaseName)
+                .setJournalMode(JournalMode.TRUNCATE)
                 .addCallback(callback);
         for(Migration migration : DataBaseMigrations.getMigrations())
             builder.addMigrations(migration);
+        if(file != null && file.exists())
+            builder.createFromFile(file);
         return builder.build();
-    }
-
-    /**
-     * Этот метод позволяет получить архивированные файлы БД приложения для ее экспорта.
-     * @param context контекст приложения
-     * @return файл БД приложения
-     */
-    public File exportDBFile(@NonNull Context context, @NonNull String dataType){
-        return context.getDatabasePath(DATABASE_NAME);
-    }
-
-    /**
-     * Этот метод заменяет файлы БД приложения импортированными из стороннего источника.
-     * @param dbFile архив с файлами БД
-     */
-    public void importDBFile(File dbFile, String dataType, String importPolicy){
-        
     }
 
     public static final String UPDATE_DAY_TRIGGER_1 =

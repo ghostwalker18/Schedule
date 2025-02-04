@@ -42,7 +42,7 @@ public class ScheduleRepositoryUnitTest {
     public static void initRepo(){
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         //AppDatabase db = Mockito.mock(AppDatabase.class, Answers.CALLS_REAL_METHODS);
-        repository = new ScheduleRepository(appContext, null);
+        repository = new ScheduleRepository(appContext, null, null);
     }
 
     /**
