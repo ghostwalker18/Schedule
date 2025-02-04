@@ -14,10 +14,8 @@
 
 package com.ghostwalker18.schedule;
 
-import android.Manifest;
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.util.Log;
 import com.ghostwalker18.schedule.database.AppDatabase;
 import com.ghostwalker18.schedule.models.NotesRepository;
@@ -25,15 +23,14 @@ import com.ghostwalker18.schedule.models.ScheduleRepository;
 import com.ghostwalker18.schedule.network.NetworkService;
 import com.ghostwalker18.schedule.notifications.NotificationManagerWrapper;
 import com.ghostwalker18.schedule.notifications.ScheduleUpdateNotificationWorker;
+import com.ghostwalker18.schedule.utils.AndroidUtils;
 import com.google.android.material.color.DynamicColors;
 import com.google.firebase.FirebaseApp;
-
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.ActivityCompat;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
@@ -134,7 +131,8 @@ public class ScheduleApp
             isAppMetricaActivated = true;
         } catch(Exception e){/*Not required*/}
         //Change app settings in order to be same as system settings
-        checkNotificationsPermissions();
+        AndroidUtils.checkNotificationsPermissions(this, preferences);
+        AndroidUtils.clearPOICache(this);
     }
 
     /**
@@ -239,38 +237,5 @@ public class ScheduleApp
         else
             localeListCompat = LocaleListCompat.create(new Locale(localeCode));
         AppCompatDelegate.setApplicationLocales(localeListCompat);
-    }
-
-    /**
-     * Этот метод проверяет разрешения приложения
-     * и меняет настройки приложения в соответствии с результатом
-     */
-    private void checkNotificationsPermissions(){
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-        ) != PackageManager.PERMISSION_GRANTED) {
-            preferences.edit()
-                    .putBoolean("update_notifications", false)
-                    .putBoolean("schedule_notifications", false)
-                    .apply();
-            return;
-        }
-        if(!NotificationManagerWrapper.getInstance(this)
-                .isNotificationChannelEnabled(
-                        getString(R.string.notifications_notification_schedule_update_channel_id))
-        ){
-            preferences.edit()
-                    .putBoolean("schedule_notifications", false)
-                    .apply();
-        }
-        if(!NotificationManagerWrapper.getInstance(this)
-                .isNotificationChannelEnabled(
-                        getString(R.string.notifications_notification_app_update_channel_id))
-        ){
-            preferences.edit()
-                    .putBoolean("update_notifications", false)
-                    .apply();
-        }
     }
 }
