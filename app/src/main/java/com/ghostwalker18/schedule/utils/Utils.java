@@ -19,6 +19,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Calendar;
 import java.util.zip.ZipEntry;
@@ -34,6 +35,10 @@ import androidx.annotation.Nullable;
  * @since 4.0
  */
 public class Utils {
+
+   /**
+    * Это перечисление показывает доступность занятия для посещения - прошло, идет, не началось
+    */
    public enum LessonAvailability{
       ENDED, STARTED, NOT_STARTED
    }
@@ -123,7 +128,7 @@ public class Utils {
     * @param sourceFiles файлы для архивации
     * @param archive файл архива
     */
-   public static void zip(File[] sourceFiles, File archive){
+   public static void zip(@NonNull File[] sourceFiles, @NonNull File archive){
       int BUFFER = 4096;
       try(ZipOutputStream out = new ZipOutputStream(
               new BufferedOutputStream(
@@ -146,7 +151,7 @@ public class Utils {
                }
             }
          }
-      } catch (Exception ignores){/*Not required*/}
+      } catch (Exception ignores){/**/}
    }
 
    /**
@@ -154,7 +159,8 @@ public class Utils {
     * @param archive архив для распаковки
     * @param outputDirectory место для извлеченных файлов
     */
-   public static void unzip(File archive, @NonNull File outputDirectory){
+   public static void unzip(@NonNull File archive, @NonNull File outputDirectory)
+           throws IOException {
       if(!outputDirectory.exists())
          outputDirectory.mkdirs();
       try(ZipInputStream zin = new ZipInputStream(Files.newInputStream(archive.toPath()))
@@ -162,7 +168,8 @@ public class Utils {
          ZipEntry ze;
          while ((ze = zin.getNextEntry()) != null) {
                try(FileOutputStream fout = new FileOutputStream(
-                       outputDirectory.getName() + "/" + ze.getName())
+                       new File(outputDirectory, ze.getName())
+               )
                ){
                   for (int c = zin.read(); c != -1; c = zin.read()) {
                      fout.write(c);
@@ -170,6 +177,6 @@ public class Utils {
                   zin.closeEntry();
                }
          }
-      } catch (Exception ignored){/*Not required*/}
+      }
    }
 }

@@ -25,11 +25,17 @@ import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.database.AppDatabase;
 import com.ghostwalker18.schedule.utils.Utils;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
 /**
@@ -45,25 +51,7 @@ public class ImportActivity
    private Spinner importModeSpinner;
    private Button doOperationButton;
    /**
-    * Используется для выбора файла из устройства пользователя.
-    */
-   private final ActivityResultLauncher<String[]> documentPicker = registerForActivityResult(
-           new ActivityResultContracts.OpenDocument(),
-           fileName -> {
-              String importPolicy = importModeSpinner.getSelectedItem().toString();
-              String dataType = dataTypesSpinner.getSelectedItem().toString();
-              try{
-                 if(fileName != null)
-                    ScheduleApp.getInstance().getDatabase().importDBFile(this,
-                         new File(fileName.getEncodedPath()), dataType, importPolicy);
-              } catch (Exception e){
-                 Toast toast = Toast.makeText(this, R.string.import_db_error, Toast.LENGTH_SHORT);
-                 toast.show();
-              }
-           }
-   );
-   /**
-    * Используется для запуска share intent и последущего удаления временного файла.
+    * Используется после экспорта БД.
     */
    private final ActivityResultLauncher<Intent> shareDBFile = registerForActivityResult(
            new ActivityResultContracts.StartActivityForResult(),
@@ -74,11 +62,61 @@ public class ImportActivity
                  exportedFile.delete();
            }
    );
+   /**
+    * Используется для импорта БД.
+    */
+   private final ActivityResultLauncher<String[]> documentPicker = registerForActivityResult(
+           new ActivityResultContracts.OpenDocument(),
+           fileName -> new Thread(() -> {
+              String[] importPolicyValues = getResources().getStringArray(R.array.import_mode_values);
+              String importPolicy = importPolicyValues[importModeSpinner.getSelectedItemPosition()];
+              String[] dataTypeValues = getResources().getStringArray(R.array.data_types_values);
+              String dataType = dataTypeValues[dataTypesSpinner.getSelectedItemPosition()];
+              File databaseCache = new File(getCacheDir(), "database");
+              if (!databaseCache.exists())
+                 databaseCache.mkdir();
+              File archive = new File(databaseCache, "pcme_schedule.zip");
+              File importedFile = null;
+              if (fileName != null) {
+                 //First, copy file that we got to cache directory to get access to it
+                 try (InputStream origin = getContentResolver().openInputStream(fileName);
+                      BufferedInputStream in = new BufferedInputStream(origin, 4096);
+                      OutputStream out = Files.newOutputStream(archive.toPath())
+                 ) {
+                    byte[] data = new byte[4096];
+                    int count;
+                    while ((count = in.read(data, 0, 4096)) != -1)
+                       out.write(data, 0, count);
+
+                    Utils.unzip(archive, databaseCache);
+                    importedFile = new File(databaseCache, "export_database.db");
+                    ScheduleApp.getInstance().getDatabase().importDBFile(this,
+                            importedFile, dataType, importPolicy);
+                 } catch (Exception e) {
+                    runOnUiThread(()->{
+                       Toast toast = Toast.makeText(this, R.string.import_db_error,
+                               Toast.LENGTH_SHORT);
+                       toast.show();
+                    });
+                 } finally {
+                    archive.delete();
+                    if(importedFile != null)
+                     importedFile.delete();
+                 }
+              }
+           }).start()
+   );
 
    @Override
    protected void onCreate(@Nullable Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_import);
+      Toolbar myToolbar = findViewById(R.id.toolbar);
+      setSupportActionBar(myToolbar);
+      ActionBar actionBar = getSupportActionBar();
+      if (actionBar != null) {
+         actionBar.setDisplayHomeAsUpEnabled(true);
+      }
       doOperationButton = findViewById(R.id.do_operation);
       doOperationButton.setOnClickListener(v -> exportDB());
       operationTypeSpinner = findViewById(R.id.operation_type);
@@ -137,8 +175,6 @@ public class ImportActivity
     * Этот метод используется для импорта БД приложения.
     */
    private void importDB(){
-      new Thread(() -> {
-         documentPicker.launch(new String[]{"application/zip"});
-      }).start();
+      new Thread(() -> documentPicker.launch(new String[]{"application/zip"})).start();
    }
 }

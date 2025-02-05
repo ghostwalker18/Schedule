@@ -143,7 +143,13 @@
         <activity
             android:name=".views.ImportActivity"
             android:label="@string/import_activity"
-            android:exported="false"/>
+            android:exported="false"
+            android:parentActivityName=".views.SettingsActivity">
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".views.SettingsActivity"/>
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
