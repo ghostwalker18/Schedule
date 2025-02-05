@@ -106,17 +106,17 @@ public interface LessonDao {
     Calendar getLastKnownLessonDate(String group);
 
     /**
-     * Этот метод позволяет получить все содержимое расписания (например, для экспорта).
+     * Этот метод позволяет синхронно получить все содержимое расписания (например, для экспорта).
      * @return все содержимое tblSchedule
      */
     @Query("SELECT * FROM tblSchedule")
-    List<Lesson> getAllLessons();
+    List<Lesson> getAllLessonsSync();
 
     /**
-     * Этот метод позволяет удалить все содержимое tblSchedule
+     * Этот метод позволяет синхронно удалить все содержимое tblSchedule
      */
     @Query("DELETE FROM tblSchedule")
-    void deleteAllLessons();
+    int deleteAllLessonsSync();
 
     /**
      * Этот метод позволяет вставить элементы Lesson в БД.
@@ -124,6 +124,13 @@ public interface LessonDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     ListenableFuture<List<Long>> insertMany(List<Lesson> lessons);
+
+    /**
+     * Этот метод позволяет синхронно вставить элементы Lesson в БД.
+     * @param lessons занятия
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertManySync(List<Lesson> lessons);
 
     /**
      * Этот метод позволяет обновить элемент Lesson В БД.

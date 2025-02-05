@@ -14,7 +14,16 @@
 
 package com.ghostwalker18.schedule.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.util.Calendar;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -107,5 +116,60 @@ public class Utils {
    public static String getNameFromLink(@NonNull String link){
       String[] parts = link.split("/");
       return parts[parts.length - 1];
+   }
+
+   /**
+    * Этот метод создает ZIP-архив из указанных файлов.
+    * @param sourceFiles файлы для архивации
+    * @param archive файл архива
+    */
+   public static void zip(File[] sourceFiles, File archive){
+      int BUFFER = 4096;
+      try(ZipOutputStream out = new ZipOutputStream(
+              new BufferedOutputStream(
+                      Files.newOutputStream(archive.toPath()
+                      )
+              ))
+      ){
+         byte[] data = new byte[BUFFER];
+
+         for (File sourceFile : sourceFiles) {
+            try (FileInputStream fi = new FileInputStream(sourceFile);
+                 BufferedInputStream origin = new BufferedInputStream(fi, BUFFER)
+            ) {
+               ZipEntry entry = new ZipEntry(sourceFile.getName());
+               out.putNextEntry(entry);
+
+               int count;
+               while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                  out.write(data, 0, count);
+               }
+            }
+         }
+      } catch (Exception ignores){/*Not required*/}
+   }
+
+   /**
+    * Этот метод распаковывает указанный ZIP-архив.
+    * @param archive архив для распаковки
+    * @param outputDirectory место для извлеченных файлов
+    */
+   public static void unzip(File archive, @NonNull File outputDirectory){
+      if(!outputDirectory.exists())
+         outputDirectory.mkdirs();
+      try(ZipInputStream zin = new ZipInputStream(Files.newInputStream(archive.toPath()))
+      ){
+         ZipEntry ze;
+         while ((ze = zin.getNextEntry()) != null) {
+               try(FileOutputStream fout = new FileOutputStream(
+                       outputDirectory.getName() + "/" + ze.getName())
+               ){
+                  for (int c = zin.read(); c != -1; c = zin.read()) {
+                     fout.write(c);
+                  }
+                  zin.closeEntry();
+               }
+         }
+      } catch (Exception ignored){/*Not required*/}
    }
 }

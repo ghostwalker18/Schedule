@@ -19,7 +19,6 @@ import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.models.Note;
 import java.io.File;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -62,7 +61,6 @@ public abstract class AppDatabase
         return instance;
     }
 
-
     /**
      * Этот метод позволяет получить архивированные файлы БД приложения для ее экспорта.
      * @param context контекст приложения
@@ -70,15 +68,15 @@ public abstract class AppDatabase
      */
     public File exportDBFile(@NonNull Context context, @NonNull String dataType){
         AppDatabase exportDB = createAppDatabase(context, EXPORT_DATABASE_NAME, null);
-        exportDB.lessonDao().deleteAllLessons();
-        exportDB.noteDao().deleteAllNotes();
+        exportDB.lessonDao().deleteAllLessonsSync();
+        exportDB.noteDao().deleteAllNotesSync();
         if(dataType.equals("schedule") || dataType.equals("schedule_and_notes")){
-            List<Lesson> lessons = instance.lessonDao().getAllLessons();
-            exportDB.lessonDao().insertMany(lessons);
+            List<Lesson> lessons = instance.lessonDao().getAllLessonsSync();
+            exportDB.lessonDao().insertManySync(lessons);
         }
         if(dataType.equals("notes") || dataType.equals("schedule_and_notes")){
-            List<Note> notes = instance.noteDao().getAllNotes();
-            exportDB.noteDao().insertMany(notes);
+            List<Note> notes = instance.noteDao().getAllNotesSync();
+            exportDB.noteDao().insertManySync(notes);
         }
         exportDB.close();
         return context.getDatabasePath(EXPORT_DATABASE_NAME);
@@ -93,23 +91,28 @@ public abstract class AppDatabase
         AppDatabase importDB = createAppDatabase(context, IMPORT_DATABASE_NAME, dbFile);
         if(dataType.equals("schedule") || dataType.equals("schedule_and_notes")){
             if(importPolicy.equals("replace"))
-                instance.lessonDao().deleteAllLessons();
-            List<Lesson> lessons = importDB.lessonDao().getAllLessons();
-            instance.lessonDao().insertMany(lessons);
+                instance.lessonDao().deleteAllLessonsSync();
+            List<Lesson> lessons = importDB.lessonDao().getAllLessonsSync();
+            instance.lessonDao().insertManySync(lessons);
         }
         if(dataType.equals("notes") || dataType.equals("schedule_and_notes")){
             if(importPolicy.equals("replace"))
-                instance.noteDao().deleteAllNotes();
-            List<Note> notes = importDB.noteDao().getAllNotes();
-            instance.noteDao().insertMany(notes);
+                instance.noteDao().deleteAllNotesSync();
+            List<Note> notes = importDB.noteDao().getAllNotesSync();
+            instance.noteDao().insertManySync(notes);
         }
         importDB.close();
         context.getDatabasePath(IMPORT_DATABASE_NAME).delete();
     }
 
+    /**
+     * Этот метод используется чтобы удалить файл экспортной БД после завершения эскспорта.
+     * @param context контекст приложения
+     */
     public static void deleteExportDB(@NonNull Context context){
         File exportDBFile = context.getDatabasePath(EXPORT_DATABASE_NAME);
-        exportDBFile.delete();
+        if(exportDBFile != null && exportDBFile.exists())
+            exportDBFile.delete();
     }
 
     /**

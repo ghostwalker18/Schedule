@@ -24,11 +24,13 @@ import android.widget.Toast;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.database.AppDatabase;
+import com.ghostwalker18.schedule.utils.Utils;
 import java.io.File;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 /**
  * Этот класс используется для отображенияя экрана импорта и экспорта БД приложения.
@@ -65,7 +67,12 @@ public class ImportActivity
     */
    private final ActivityResultLauncher<Intent> shareDBFile = registerForActivityResult(
            new ActivityResultContracts.StartActivityForResult(),
-           result -> AppDatabase.deleteExportDB(this)
+           result -> {
+              AppDatabase.deleteExportDB(this);
+              File exportedFile = new File(getCacheDir(), "database/pcme_schedule.zip");
+              if(exportedFile.exists())
+                 exportedFile.delete();
+           }
    );
 
    @Override
@@ -101,18 +108,37 @@ public class ImportActivity
     * Этот метод используется для экспорта БД приложения.
     */
    private void exportDB(){
-      String dataType = dataTypesSpinner.getSelectedItem().toString();
-      File file = ScheduleApp.getInstance().getDatabase().exportDBFile(this, dataType);
-      Intent shareIntent = new Intent(Intent.ACTION_SEND);
-      shareIntent.putExtra(Intent.EXTRA_STREAM, file);
-      shareIntent.setType("application/octet-stream");
-      shareDBFile.launch(Intent.createChooser(shareIntent, null));
+      new Thread(() -> {
+         try{
+            String[] dataTypeValues = getResources().getStringArray(R.array.data_types_values);
+            String dataType = dataTypeValues[dataTypesSpinner.getSelectedItemPosition()];
+            File file = ScheduleApp.getInstance().getDatabase().exportDBFile(this, dataType);
+            File databaseCache = new File(getCacheDir(), "database");
+            if(!databaseCache.exists())
+               databaseCache.mkdir();
+            File exportedFile = new File(databaseCache, "pcme_schedule.zip");
+            if(exportedFile.exists()){
+               exportedFile.delete();
+               exportedFile.createNewFile();
+            }
+            Utils.zip(new File[]{file}, exportedFile);
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM,
+                    FileProvider.getUriForFile(this,
+                            "com.ghostwalker18.schedule.timefilesprovider",
+                            exportedFile));
+            shareIntent.setType("application/zip");
+            shareDBFile.launch(Intent.createChooser(shareIntent, null));
+         } catch (Exception ignored){/*Not required*/}
+      }).start();
    }
 
    /**
     * Этот метод используется для импорта БД приложения.
     */
    private void importDB(){
-      documentPicker.launch(new String[]{"application/octet-stream"});
+      new Thread(() -> {
+         documentPicker.launch(new String[]{"application/zip"});
+      }).start();
    }
 }

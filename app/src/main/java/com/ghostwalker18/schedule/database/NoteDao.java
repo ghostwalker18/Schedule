@@ -78,17 +78,17 @@ public interface NoteDao {
     LiveData<Note[]> getNotesByKeyword(String keyword, String group);
 
     /**
-     * Этот метод позволяет получить все содержимое заметок (например, для экспорта).
+     * Этот метод позволяет синхронно получить все содержимое заметок (например, для экспорта).
      * @return все содержимое tblNote
      */
     @Query("SELECT * FROM tblNote")
-    List<Note> getAllNotes();
+    List<Note> getAllNotesSync();
 
     /**
-     * Этот метод позволяет удалить все содержимое tblNote
+     * Этот метод позволяет синхронно удалить все содержимое tblNote
      */
     @Query("DELETE FROM tblNote")
-    void deleteAllNotes();
+    int deleteAllNotesSync();
 
     /**
      * Этот метод позволяет внести заметку в БД.
@@ -99,11 +99,11 @@ public interface NoteDao {
     ListenableFuture<Long> insert(Note note);
 
     /**
-     * Этот метод позволяет вставить элементы Note в БД.
+     * Этот метод позволяет синхронно вставить элементы Note в БД.
      * @param notes заметки
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    ListenableFuture<List<Long>> insertMany(List<Note> notes);
+    void insertManySync(List<Note> notes);
 
     /**
      * Этот метод позволяет обновить заметку из БД.
