@@ -57,7 +57,11 @@ public class DataBaseMigrations {
    public static final Migration MIGRATION_4_5 = new Migration(4, 5) {
       @Override
       public void migrate(@NonNull SupportSQLiteDatabase db) {
-
+         db.execSQL("UPDATE tblSchedule " +
+                 "SET lessonDate = " +
+                 "    SUBSTR(lessonDate, 7, 4) || '-' || " +
+                 "    SUBSTR(lessonDate, 4, 2) || '-' || " +
+                 "    SUBSTR(lessonDate, 1, 2)");
       }
    };
 
@@ -70,6 +74,7 @@ public class DataBaseMigrations {
       return  Arrays.asList(
               MIGRATION_1_2,
               MIGRATION_2_3,
-              MIGRATION_3_4);
+              MIGRATION_3_4,
+              MIGRATION_4_5);
    }
 }

@@ -37,7 +37,7 @@ public class DateConverters {
            "dd_MM_yyyy",
            new Locale("ru"));
    private static final SimpleDateFormat DATE_FORMAT_DB = new SimpleDateFormat(
-           "dd.MM.yyyy",
+           "yyyy-MM-dd",
            new Locale("ru"));
    private static final SimpleDateFormat DATE_FORMAT_FIRST_CORPUS = new SimpleDateFormat(
            "d MMMM yyyy",

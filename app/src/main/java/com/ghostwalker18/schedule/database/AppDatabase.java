@@ -34,7 +34,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  * @see LessonDao
  * @see NoteDao
  */
-@Database(entities = {Lesson.class, Note.class}, version = 4, exportSchema = false)
+@Database(entities = {Lesson.class, Note.class}, version = 5, exportSchema = false)
 public abstract class AppDatabase
         extends RoomDatabase {
     public abstract LessonDao lessonDao();
