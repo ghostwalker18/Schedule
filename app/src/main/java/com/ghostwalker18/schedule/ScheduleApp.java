@@ -113,7 +113,7 @@ public class ScheduleApp
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         scheduleRepository = new ScheduleRepository(this, database,
                 new NetworkService(this, ScheduleRepository.BASE_URI, preferences));
-        scheduleRepository.update();
+        //scheduleRepository.update();
         notesRepository = new NotesRepository(database);
         String theme = preferences.getString("theme", "");
         setTheme(theme);
@@ -125,10 +125,10 @@ public class ScheduleApp
             AppMetricaConfig config = AppMetricaConfig.newConfigBuilder(appMetricaApiKey).build();
             // Initializing the AppMetrica SDK.
             AppMetrica.activate(this, config);
+            isAppMetricaActivated = true;
             FirebaseApp.initializeApp(this);
             // Initializing the RuStore Push SDK.
             initPushes();
-            isAppMetricaActivated = true;
         } catch(Exception e){/*Not required*/}
         //Change app settings in order to be same as system settings
         AndroidUtils.checkNotificationsPermissions(this, preferences);

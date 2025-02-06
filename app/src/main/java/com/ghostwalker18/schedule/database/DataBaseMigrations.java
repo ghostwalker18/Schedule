@@ -54,6 +54,13 @@ public class DataBaseMigrations {
       }
    };
 
+   public static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+      @Override
+      public void migrate(@NonNull SupportSQLiteDatabase db) {
+
+      }
+   };
+
    /**
     * Этот метод возвращает список всех миграций БД приложения
     * @return миграции приложения между версиями БД

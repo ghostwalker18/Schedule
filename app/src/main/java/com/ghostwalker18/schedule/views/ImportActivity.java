@@ -37,6 +37,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
+import io.appmetrica.analytics.AppMetrica;
 
 /**
  * Этот класс используется для отображенияя экрана импорта и экспорта БД приложения.
@@ -82,7 +83,7 @@ public class ImportActivity
                  try (InputStream origin = getContentResolver().openInputStream(fileName);
                       BufferedInputStream in = new BufferedInputStream(origin, 4096);
                       OutputStream out = Files.newOutputStream(archive.toPath())
-                 ) {
+                 ){
                     byte[] data = new byte[4096];
                     int count;
                     while ((count = in.read(data, 0, 4096)) != -1)
@@ -92,8 +93,13 @@ public class ImportActivity
                     importedFile = new File(databaseCache, "export_database.db");
                     ScheduleApp.getInstance().getDatabase().importDBFile(this,
                             importedFile, dataType, importPolicy);
+                    runOnUiThread(() -> {
+                       Toast toast = Toast.makeText(this, R.string.import_db_success,
+                               Toast.LENGTH_SHORT);
+                       toast.show();
+                    });
                  } catch (Exception e) {
-                    runOnUiThread(()->{
+                    runOnUiThread(() -> {
                        Toast toast = Toast.makeText(this, R.string.import_db_error,
                                Toast.LENGTH_SHORT);
                        toast.show();
@@ -146,6 +152,7 @@ public class ImportActivity
     * Этот метод используется для экспорта БД приложения.
     */
    private void exportDB(){
+      AppMetrica.reportEvent("export_database");
       new Thread(() -> {
          try{
             String[] dataTypeValues = getResources().getStringArray(R.array.data_types_values);
@@ -175,6 +182,7 @@ public class ImportActivity
     * Этот метод используется для импорта БД приложения.
     */
    private void importDB(){
+      AppMetrica.reportEvent("import_database");
       new Thread(() -> documentPicker.launch(new String[]{"application/zip"})).start();
    }
 }

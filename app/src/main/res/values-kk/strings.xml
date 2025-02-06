@@ -79,5 +79,6 @@
     <string name="import_data">Деректерді импорттау</string>
     <string name="export_data">Деректерді экспорттау</string>
     <string name="import_file_dialog">Импортталатын файлды таңдаңыз</string>
+    <string name="import_db_success">Деректер сәтті импортталды</string>
     <string name="import_db_error">Деректерді импорттау мүмкін болмады. Деректер пішімін тексеріңіз</string>
 </resources>

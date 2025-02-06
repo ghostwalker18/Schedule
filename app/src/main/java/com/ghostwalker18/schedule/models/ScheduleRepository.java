@@ -158,7 +158,10 @@ public class ScheduleRepository{
                                 return UpdateResult.FAIL;
                             }
                         }
-                        return UpdateResult.SUCCESS;
+                        preferences.edit()
+                                .putInt("previous_update_result", UpdateResult.toInt(UpdateResult.SUCCESS))
+                                .apply();
+                    return UpdateResult.SUCCESS;
             }, updateExecutorService);
         }
     }

@@ -79,5 +79,6 @@
     <string name="import_data">Імпортувати дані</string>
     <string name="export_data">Експортувати дані</string>
     <string name="import_file_dialog">Виберіть файл для імпорту</string>
+    <string name="import_db_success">Дані успішно імпортовані</string>
     <string name="import_db_error">Не вдалося імпортувати дані. Перевірте формат даних</string>
 </resources>

@@ -79,5 +79,6 @@
     <string name="import_data">Import data</string>
     <string name="export_data">Export data</string>
     <string name="import_file_dialog">Select the file to import</string>
+    <string name="import_db_success">The data has been successfully imported</string>
     <string name="import_db_error">The data could not be imported. Check the data format</string>
 </resources>

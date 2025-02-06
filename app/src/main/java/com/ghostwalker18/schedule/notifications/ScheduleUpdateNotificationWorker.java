@@ -15,6 +15,8 @@
 package com.ghostwalker18.schedule.notifications;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
@@ -53,40 +55,40 @@ public final class ScheduleUpdateNotificationWorker
             ScheduleRepository.UpdateResult lastUpdateResult = repository.getUpdateResult();
             Calendar lastAvailableDate = repository.getLastKnownLessonDate(repository.getSavedGroup());
             repository.update();
-            ScheduleRepository.UpdateResult updateResult = repository.onUpdateCompleted().get();
-            if(lastUpdateResult != ScheduleRepository.UpdateResult.FAIL
-                    && updateResult == ScheduleRepository.UpdateResult.FAIL){
-                NotificationManagerWrapper.getInstance(getApplicationContext())
-                        .showNotification(getApplicationContext(), new AppNotification(
-                                        0,
-                                        getApplicationContext().getString(
-                                                R.string.notifications_notification_schedule_update_channel_name),
-                                        getApplicationContext().getString(
-                                                R.string.notifications_schedule_unavailable),
-                                        getApplicationContext().getString(
-                                                R.string.notifications_notification_schedule_update_channel_id),
-                                        getApplicationContext().getString(
-                                                R.string.notifications_notification_schedule_update_channel_name)
-                                )
-                        );
-                return Result.failure();
-            }
-            Calendar currentAvailableDate = repository.getLastKnownLessonDate(repository.getSavedGroup());
-            if(currentAvailableDate.after(lastAvailableDate)){
-                NotificationManagerWrapper.getInstance(getApplicationContext())
-                        .showNotification(getApplicationContext(), new AppNotification(
-                                        0,
-                                        getApplicationContext().getString(
-                                                R.string.notifications_notification_schedule_update_channel_name),
-                                        getApplicationContext().getString(
-                                                R.string.notifications_new_schedule_available),
-                                        getApplicationContext().getString(
-                                                R.string.notifications_notification_schedule_update_channel_id),
-                                        getApplicationContext().getString(
-                                                R.string.notifications_notification_schedule_update_channel_name)
-                                )
-                        );
-            }
+            repository.onUpdateCompleted().whenComplete((updateResult, e) -> {
+                if(lastUpdateResult != ScheduleRepository.UpdateResult.FAIL
+                        && updateResult == ScheduleRepository.UpdateResult.FAIL){
+                    NotificationManagerWrapper.getInstance(getApplicationContext())
+                            .showNotification(getApplicationContext(), new AppNotification(
+                                            0,
+                                            getApplicationContext().getString(
+                                                    R.string.notifications_notification_schedule_update_channel_name),
+                                            getApplicationContext().getString(
+                                                    R.string.notifications_schedule_unavailable),
+                                            getApplicationContext().getString(
+                                                    R.string.notifications_notification_schedule_update_channel_id),
+                                            getApplicationContext().getString(
+                                                    R.string.notifications_notification_schedule_update_channel_name)
+                                    )
+                            );
+                }
+                Calendar currentAvailableDate = repository.getLastKnownLessonDate(repository.getSavedGroup());
+                if(currentAvailableDate.after(lastAvailableDate)){
+                    NotificationManagerWrapper.getInstance(getApplicationContext())
+                            .showNotification(getApplicationContext(), new AppNotification(
+                                            0,
+                                            getApplicationContext().getString(
+                                                    R.string.notifications_notification_schedule_update_channel_name),
+                                            getApplicationContext().getString(
+                                                    R.string.notifications_new_schedule_available),
+                                            getApplicationContext().getString(
+                                                    R.string.notifications_notification_schedule_update_channel_id),
+                                            getApplicationContext().getString(
+                                                    R.string.notifications_notification_schedule_update_channel_name)
+                                    )
+                            );
+                }
+            });
             return Result.success();
         });
     }
