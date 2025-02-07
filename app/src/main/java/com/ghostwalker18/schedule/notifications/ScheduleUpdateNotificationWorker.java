@@ -14,10 +14,15 @@
 
 package com.ghostwalker18.schedule.notifications;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
+import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
+import com.ghostwalker18.schedule.views.MainActivity;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -73,6 +78,9 @@ public final class ScheduleUpdateNotificationWorker
                 Calendar currentAvailableDate = repository.getLastKnownLessonDate(
                         repository.getSavedGroup());
                 if(currentAvailableDate.after(lastAvailableDate)){
+                    Intent openScheduleIntent = new Intent(getApplicationContext(), MainActivity.class);
+                    openScheduleIntent.putExtra("date",
+                            DateConverters.toString(currentAvailableDate));
                     NotificationManagerWrapper.getInstance(getApplicationContext())
                             .showNotification(getApplicationContext(), new AppNotification(
                                             0,
@@ -84,7 +92,9 @@ public final class ScheduleUpdateNotificationWorker
                                                     R.string.notifications_notification_schedule_update_channel_id),
                                             getApplicationContext().getString(
                                                     R.string.notifications_notification_schedule_update_channel_name)
-                                    )
+                                    ),
+                                    PendingIntent.getActivity(getApplicationContext(), 0,
+                                            openScheduleIntent, PendingIntent.FLAG_IMMUTABLE)
                             );
                 }
             });

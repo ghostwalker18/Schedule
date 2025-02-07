@@ -17,6 +17,7 @@ package com.ghostwalker18.schedule.notifications;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
@@ -62,12 +63,15 @@ public final class NotificationManagerWrapper {
     * @param context контекст приложения
     * @param data сообщение
     */
-   public void showNotification(Context context, @NonNull AppNotification data) {
+   public void showNotification(Context context, @NonNull AppNotification data,
+                                @NonNull PendingIntent... intent) {
       NotificationCompat.Builder builder =
               new NotificationCompat.Builder(context, data.getChannelId())
                       .setSmallIcon(R.drawable.notification_icon)
                       .setContentTitle(data.getTitle())
                       .setContentText(data.getMessage());
+      if(intent.length == 1)
+         builder.setContentIntent(intent[0]);
       NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
       if (notificationManager.getNotificationChannel(data.getChannelId()) == null) {
          createNotificationChannel(data.getChannelId(), data.getChannelName(), null);

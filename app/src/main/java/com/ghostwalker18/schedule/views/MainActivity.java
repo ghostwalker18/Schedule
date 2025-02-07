@@ -15,10 +15,13 @@
 package com.ghostwalker18.schedule.views;
 
 import android.content.Intent;
+
+import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.system.DownloadDialog;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
+import com.ghostwalker18.schedule.viewmodels.ScheduleModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import androidx.annotation.NonNull;
@@ -31,11 +34,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Lifecycle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -53,6 +58,7 @@ public class MainActivity
         extends AppCompatActivity {
     private ViewPager2 pager;
     private DaysFragment daysFragment;
+    private ScheduleModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,12 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if(getIntent().getStringExtra("date") != null){
+            Calendar date = DateConverters.fromString(getIntent().getStringExtra("date"));
+            model = new ViewModelProvider(this).get(ScheduleModel.class);
+            model.goToDate(date);
+        }
+
         pager = findViewById(R.id.pager);
         pager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager(), getLifecycle()));
         TabLayout tabLayout = findViewById(R.id.tabs);
