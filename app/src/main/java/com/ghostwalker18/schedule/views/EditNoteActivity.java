@@ -64,6 +64,9 @@ public class EditNoteActivity
    private AutoCompleteTextView themeField;
    private EditText textField;
    private PreviewFragment preview;
+   /**
+    * Используется для того, что бы сделать фото.
+    */
    private final ActivityResultLauncher<Uri> takePhotoLauncher = registerForActivityResult(
            new ActivityResultContracts.TakePicture(),
            result -> {
@@ -72,10 +75,16 @@ public class EditNoteActivity
                       new String[]{photoUri.getEncodedPath()}, new String[]{"image/jpeg"}, null);
            }
    );
+   /**
+    * Используется для выбора фото из галереи.
+    */
    private final ActivityResultLauncher<String> galleryPickLauncher = registerForActivityResult(
            new ActivityResultContracts.GetContent(),
            uri -> model.addPhotoID(uri)
    );
+   /**
+    * Используется для получения разрешиения на для получения разрешения на доступ к камере.
+    */
    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(
            new ActivityResultContracts.RequestPermission(),
            granted -> {
@@ -149,9 +158,7 @@ public class EditNoteActivity
       preview = (PreviewFragment) getSupportFragmentManager().findFragmentById(R.id.preview);
       preview.setEditable(true);
       preview.setListener(uri -> model.removePhotoID(uri));
-      model.getPhotoIDs().observe(this, photoIDs -> {
-         preview.setImageIDs(photoIDs);
-      });
+      model.getPhotoIDs().observe(this, photoIDs -> preview.setImageIDs(photoIDs));
 
       findViewById(R.id.group_clear).setOnClickListener(v -> model.setGroup(""));
       findViewById(R.id.theme_clear).setOnClickListener(v -> model.setTheme(""));

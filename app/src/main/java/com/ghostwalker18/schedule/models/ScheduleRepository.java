@@ -153,13 +153,15 @@ public class ScheduleRepository{
                         for(CompletableFuture<UpdateResult> future : updateFutures){
                             if(future.getNow(UpdateResult.FAIL) == UpdateResult.FAIL){
                                 preferences.edit()
-                                        .putInt("previous_update_result", UpdateResult.toInt(UpdateResult.FAIL))
+                                        .putInt("previous_update_result",
+                                                UpdateResult.toInt(UpdateResult.FAIL))
                                         .apply();
                                 return UpdateResult.FAIL;
                             }
                         }
                         preferences.edit()
-                                .putInt("previous_update_result", UpdateResult.toInt(UpdateResult.SUCCESS))
+                                .putInt("previous_update_result",
+                                        UpdateResult.toInt(UpdateResult.SUCCESS))
                                 .apply();
                     return UpdateResult.SUCCESS;
             }, updateExecutorService);

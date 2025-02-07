@@ -47,6 +47,7 @@ import io.appmetrica.analytics.AppMetrica;
  */
 public class ImportActivity
         extends AppCompatActivity {
+   private static final String DATABASE_ARCHIVE = "pcme_schedule.zip";
    private Spinner operationTypeSpinner;
    private Spinner dataTypesSpinner;
    private Spinner importModeSpinner;
@@ -58,7 +59,7 @@ public class ImportActivity
            new ActivityResultContracts.StartActivityForResult(),
            result -> {
               AppDatabase.deleteExportDB(this);
-              File exportedFile = new File(getCacheDir(), "database/pcme_schedule.zip");
+              File exportedFile = new File(getCacheDir(), "database/" + DATABASE_ARCHIVE);
               if(exportedFile.exists())
                  exportedFile.delete();
            }
@@ -76,7 +77,7 @@ public class ImportActivity
               File databaseCache = new File(getCacheDir(), "database");
               if (!databaseCache.exists())
                  databaseCache.mkdir();
-              File archive = new File(databaseCache, "pcme_schedule.zip");
+              File archive = new File(databaseCache, DATABASE_ARCHIVE);
               File importedFile = null;
               if (fileName != null) {
                  //First, copy file that we got to cache directory to get access to it
@@ -152,7 +153,9 @@ public class ImportActivity
     * Этот метод используется для экспорта БД приложения.
     */
    private void exportDB(){
-      AppMetrica.reportEvent("export_database");
+      if(ScheduleApp.getInstance().isAppMetricaActivated())
+         AppMetrica.reportEvent("Экспортировали данные приложения");
+
       new Thread(() -> {
          try{
             String[] dataTypeValues = getResources().getStringArray(R.array.data_types_values);
@@ -161,7 +164,7 @@ public class ImportActivity
             File databaseCache = new File(getCacheDir(), "database");
             if(!databaseCache.exists())
                databaseCache.mkdir();
-            File exportedFile = new File(databaseCache, "pcme_schedule.zip");
+            File exportedFile = new File(databaseCache, DATABASE_ARCHIVE);
             if(exportedFile.exists()){
                exportedFile.delete();
                exportedFile.createNewFile();
@@ -182,7 +185,9 @@ public class ImportActivity
     * Этот метод используется для импорта БД приложения.
     */
    private void importDB(){
-      AppMetrica.reportEvent("import_database");
+      if(ScheduleApp.getInstance().isAppMetricaActivated())
+         AppMetrica.reportEvent("Импортировали данные приложения");
+
       new Thread(() -> documentPicker.launch(new String[]{"application/zip"})).start();
    }
 }

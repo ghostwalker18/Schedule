@@ -181,7 +181,7 @@ public class DaysFragment
       state.setGroup(savedGroup);
 
       ImageButton groupClear = view.findViewById(R.id.group_clear);
-      groupClear.setOnClickListener((v)->{
+      groupClear.setOnClickListener(v -> {
          state.setGroup(null);
          groupSearch.setText("");
       });
@@ -215,7 +215,7 @@ public class DaysFragment
       });
 
       ImageButton teacherClear = view.findViewById(R.id.clear_teacher);
-      teacherClear.setOnClickListener((v)->{
+      teacherClear.setOnClickListener(v -> {
          state.setTeacher(null);
          teacherSearch.setText("");
       });

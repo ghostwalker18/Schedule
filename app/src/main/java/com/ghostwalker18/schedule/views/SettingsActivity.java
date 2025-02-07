@@ -36,7 +36,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
-
 import android.content.SharedPreferences;
 import java.util.Objects;
 

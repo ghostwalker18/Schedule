@@ -18,7 +18,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;

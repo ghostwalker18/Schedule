@@ -25,12 +25,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.ghostwalker18.schedule.system.OnSwipeListener;
 import com.ghostwalker18.schedule.R;
 import java.util.ArrayList;
 import java.util.Locale;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

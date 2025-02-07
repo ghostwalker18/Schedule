@@ -15,8 +15,6 @@
 package com.ghostwalker18.schedule.notifications;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
@@ -72,7 +70,8 @@ public final class ScheduleUpdateNotificationWorker
                                     )
                             );
                 }
-                Calendar currentAvailableDate = repository.getLastKnownLessonDate(repository.getSavedGroup());
+                Calendar currentAvailableDate = repository.getLastKnownLessonDate(
+                        repository.getSavedGroup());
                 if(currentAvailableDate.after(lastAvailableDate)){
                     NotificationManagerWrapper.getInstance(getApplicationContext())
                             .showNotification(getApplicationContext(), new AppNotification(
