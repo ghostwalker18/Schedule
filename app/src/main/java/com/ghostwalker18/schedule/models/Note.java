@@ -57,6 +57,21 @@ public class Note {
     @ColumnInfo(name="notePhotoIDs")
     public ArrayList<Uri> photoIDs;
 
+    /**
+     * Этот метод возвращает копию заметки со своим ID и без приложенных фотографий.
+     * @param note заметка
+     * @return копия
+     */
+    @NonNull
+    public static Note copy(@NonNull Note note){
+        Note copiedNote = new Note();
+        copiedNote.date = note.date;
+        copiedNote.group = note.group;
+        copiedNote.theme = note.theme;
+        copiedNote.text = note.text;
+        return copiedNote;
+    }
+
     @Override
     public String toString(){
         String res = "";

@@ -19,6 +19,7 @@ import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.models.Note;
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -99,7 +100,10 @@ public abstract class AppDatabase
             if(importPolicy.equals("replace"))
                 instance.noteDao().deleteAllNotesSync();
             List<Note> notes = importDB.noteDao().getAllNotesSync();
-            instance.noteDao().insertManySync(notes);
+            instance.noteDao().insertManySync(notes
+                    .stream()
+                    .map(Note::copy)
+                    .collect(Collectors.toList()));
         }
         importDB.close();
         context.getDatabasePath(IMPORT_DATABASE_NAME).delete();

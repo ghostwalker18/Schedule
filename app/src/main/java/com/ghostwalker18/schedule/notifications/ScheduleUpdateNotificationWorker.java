@@ -17,7 +17,6 @@ package com.ghostwalker18.schedule.notifications;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.converters.DateConverters;
