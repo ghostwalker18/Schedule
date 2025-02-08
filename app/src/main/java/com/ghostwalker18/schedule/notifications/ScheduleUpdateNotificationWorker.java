@@ -87,7 +87,9 @@ public final class ScheduleUpdateNotificationWorker
                                             getApplicationContext().getString(
                                                     R.string.notifications_notification_schedule_update_channel_name),
                                             getApplicationContext().getString(
-                                                    R.string.notifications_new_schedule_available),
+                                                    R.string.notifications_new_schedule_available)
+                                                    + " " + DateConverters
+                                                    .convertForNotification(currentAvailableDate),
                                             getApplicationContext().getString(
                                                     R.string.notifications_notification_schedule_update_channel_id),
                                             getApplicationContext().getString(

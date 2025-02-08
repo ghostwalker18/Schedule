@@ -83,6 +83,6 @@
     <string name="notifications_notification_schedule_update_channel_descr">
         Кестедегі өзгерістер туралы хабарландырулар алыңыз
     </string>
-    <string name="notifications_new_schedule_available">Жаңа кесте орналастырылды</string>
+    <string name="notifications_new_schedule_available">Жаңа кесте орналастырылды:</string>
     <string name="notifications_schedule_unavailable">Ой! Кестені жаңарту мүмкін болмады…</string>
 </resources>

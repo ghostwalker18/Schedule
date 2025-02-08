@@ -87,6 +87,6 @@
     <string name="notifications_notification_schedule_update_channel_descr">
         Получайте уведомления об изменениях в расписании
     </string>
-    <string name="notifications_new_schedule_available">Выложено новое расписание</string>
+    <string name="notifications_new_schedule_available">Выложено новое расписание до</string>
     <string name="notifications_schedule_unavailable">Упс! Не получилось обновить расписание…</string>
 </resources>

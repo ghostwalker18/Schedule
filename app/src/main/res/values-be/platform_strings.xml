@@ -83,6 +83,6 @@
     <string name="notifications_notification_schedule_update_channel_descr">
         Атрымлівайце апавяшчэння аб зменах у раскладзе
     </string>
-    <string name="notifications_new_schedule_available">Выкладзены новы расклад</string>
+    <string name="notifications_new_schedule_available">Выкладзены новы расклад да</string>
     <string name="notifications_schedule_unavailable">Упс! Не атрымалася абнавіць расклад…</string>
 </resources>

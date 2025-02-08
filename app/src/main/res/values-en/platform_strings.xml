@@ -83,6 +83,6 @@
     <string name="notifications_notification_schedule_update_channel_descr">
         Receive notifications about schedule changes
     </string>
-    <string name="notifications_new_schedule_available">A new schedule has been posted</string>
+    <string name="notifications_new_schedule_available">A new schedule has been posted until</string>
     <string name="notifications_schedule_unavailable">Oops! Couldn\'t update the schedule…</string>
 </resources>

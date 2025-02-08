@@ -21,6 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.TypeConverter;
 
 /**
@@ -33,6 +36,10 @@ import androidx.room.TypeConverter;
  * @see Note
  */
 public class DateConverters {
+   public static final SimpleDateFormat DATE_FORMAT_NOTIFICATION = new SimpleDateFormat(
+           "dd.MM",
+           new Locale("ru")
+   );
    public static final SimpleDateFormat DATE_FORMAT_PHOTO = new SimpleDateFormat(
            "dd_MM_yyyy",
            new Locale("ru"));
@@ -52,6 +59,7 @@ public class DateConverters {
     * @param date  the entity attribute value to be converted
     * @return converted data
     */
+   @Nullable
    @TypeConverter
    public static String toString(Calendar date){
       return date == null ? null : DATE_FORMAT_DB.format(date.getTime());
@@ -89,11 +97,22 @@ public class DateConverters {
    }
 
    /**
+    * Этот метод преобразует Calendar в дату для уведомления
+    * @param date дата
+    * @return дата в формате XX.XX
+    */
+   @NonNull
+   public static String convertForNotification(@Nullable Calendar date){
+      return date == null ? "" : DATE_FORMAT_NOTIFICATION.format(date.getTime());
+   }
+
+   /**
     * Этот метод используется для преобразования строки в дату согласно заданному формату.
     * @param date строка даты
     * @param format формат даты
     * @return дата
     */
+   @Nullable
    private static synchronized Calendar stringToCal(String date, SimpleDateFormat format){
       if(date == null){
          return null;
