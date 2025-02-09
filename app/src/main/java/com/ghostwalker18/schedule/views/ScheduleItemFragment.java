@@ -319,7 +319,7 @@ public class ScheduleItemFragment
    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String s) {
       switch (s){
          case "scheduleStyle":
-            if(this.isOpened)
+            if(isOpened)
                toggleSchedule(getView());
             setUpMode();
             break;

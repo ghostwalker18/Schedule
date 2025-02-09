@@ -113,7 +113,7 @@ public class ScheduleApp
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         scheduleRepository = new ScheduleRepository(this, database,
                 new NetworkService(this, ScheduleRepository.BASE_URI, preferences));
-        //scheduleRepository.update();
+        scheduleRepository.update();
         notesRepository = new NotesRepository(database);
         String theme = preferences.getString("theme", "");
         setTheme(theme);
@@ -132,6 +132,7 @@ public class ScheduleApp
         } catch(Exception e){/*Not required*/}
         //Change app settings in order to be same as system settings
         AndroidUtils.checkNotificationsPermissions(this, preferences);
+        //Clearing ApachePOI cache files until this day
         AndroidUtils.clearPOICache(this);
     }
 
