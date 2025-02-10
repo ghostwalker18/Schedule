@@ -41,9 +41,6 @@ public class DownloadDialog
    private String downloadTitle;
    private final DialogInterface.OnClickListener listener = (dialogInterface, which) -> {
       if(which == Dialog.BUTTON_POSITIVE){
-         if(ScheduleApp.getInstance().isAppMetricaActivated())
-            AppMetrica.reportEvent("Скачали файлы расписания");
-
          new Thread(() -> {
             DownloadManager downloadManager = requireActivity()
                     .getSystemService(DownloadManager.class);
@@ -57,6 +54,9 @@ public class DownloadDialog
                                Utils.getNameFromLink(link));
                downloadManager.enqueue(request);
             }
+
+            if(ScheduleApp.getInstance().isAppMetricaActivated())
+               AppMetrica.reportEvent("Скачали файлы расписания");
          }).start();
       }
       else {

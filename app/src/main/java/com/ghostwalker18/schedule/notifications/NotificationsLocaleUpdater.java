@@ -18,6 +18,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import com.ghostwalker18.schedule.R;
+
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -32,7 +35,7 @@ public final class NotificationsLocaleUpdater
 
    @Override
    public void onReceive(Context context, @NonNull Intent intent) {
-      if(intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)){
+      if(Objects.equals(intent.getAction(), Intent.ACTION_LOCALE_CHANGED)){
          NotificationManagerWrapper.getInstance(context).createNotificationChannel(
                  context.getString(R.string.notifications_notification_app_update_channel_id),
                  context.getString(R.string.notifications_notification_app_update_channel_name),

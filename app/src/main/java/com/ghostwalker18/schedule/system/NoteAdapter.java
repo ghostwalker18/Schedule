@@ -36,6 +36,7 @@ public class NoteAdapter
       void onNoteSelected(Note note, int position);
       void onNoteUnselected(Note note, int position);
    }
+
    private final Note[] notes;
    private final OnNoteClickListener listener;
    private boolean isClickable = true;
@@ -70,6 +71,9 @@ public class NoteAdapter
       });
    }
 
+   /**
+    * Этот метод устанавливает способность элемента списка обрабатывать нажатия.
+    */
    public void setClickable(boolean clickable){
       isClickable = clickable;
    }

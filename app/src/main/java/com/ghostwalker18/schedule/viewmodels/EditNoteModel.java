@@ -23,6 +23,8 @@ import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -189,7 +191,7 @@ public class EditNoteModel
     *
     * @param date дата
     */
-   public void setDate(Calendar date) {
+   public void setDate(@NonNull Calendar date) {
       this.date.setValue(date);
    }
 

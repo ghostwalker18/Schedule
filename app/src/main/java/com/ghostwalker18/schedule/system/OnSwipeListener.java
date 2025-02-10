@@ -65,7 +65,7 @@ public class OnSwipeListener
       private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
       @Override
-      public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2,
+      public boolean onFling(MotionEvent e1, @NonNull MotionEvent e2,
                              float velocityX, float velocityY) {
          float distanceX = e2.getX() - e1.getX();
          float distanceY = e2.getY() - e1.getY();

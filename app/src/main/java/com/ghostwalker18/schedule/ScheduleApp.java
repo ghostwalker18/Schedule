@@ -68,39 +68,41 @@ public class ScheduleApp
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
         boolean enabled;
-        switch (key){
-            case "theme":
-                String theme = sharedPreferences.getString(key, "");
-                setTheme(theme);
-                break;
-            case "language":
-                String localeCode = sharedPreferences.getString(key, "en");
-                setLocale(localeCode);
-                break;
-            case "update_notifications":
-                enabled = sharedPreferences.getBoolean("update_notifications", false);
-                if(enabled){
-                    pushClient.subscribeToTopic("update_notifications");
-                }
-                else
-                    pushClient.unsubscribeFromTopic("update_notifications");
-                break;
-            case "schedule_notifications":
-                enabled = sharedPreferences.getBoolean("schedule_notifications", false);
-                if(enabled){
-                    Constraints constraints = new Constraints.Builder()
-                            .setRequiredNetworkType(NetworkType.UNMETERED)
-                            .build();
-                    PeriodicWorkRequest request = new PeriodicWorkRequest
-                            .Builder(ScheduleUpdateNotificationWorker.class, 30, TimeUnit.MINUTES)
-                            .addTag("update_schedule")
-                            .setConstraints(constraints)
-                            .build();
-                    WorkManager.getInstance(this).enqueue(request);
-                }
-                else{
-                    WorkManager.getInstance(this).cancelAllWorkByTag("update_schedule");
-                }
+        if(key != null){
+            switch (key){
+                case "theme":
+                    String theme = sharedPreferences.getString(key, "");
+                    setTheme(theme);
+                    break;
+                case "language":
+                    String localeCode = sharedPreferences.getString(key, "en");
+                    setLocale(localeCode);
+                    break;
+                case "update_notifications":
+                    enabled = sharedPreferences.getBoolean("update_notifications", false);
+                    if(enabled){
+                        pushClient.subscribeToTopic("update_notifications");
+                    }
+                    else
+                        pushClient.unsubscribeFromTopic("update_notifications");
+                    break;
+                case "schedule_notifications":
+                    enabled = sharedPreferences.getBoolean("schedule_notifications", false);
+                    if(enabled){
+                        Constraints constraints = new Constraints.Builder()
+                                .setRequiredNetworkType(NetworkType.UNMETERED)
+                                .build();
+                        PeriodicWorkRequest request = new PeriodicWorkRequest
+                                .Builder(ScheduleUpdateNotificationWorker.class, 30, TimeUnit.MINUTES)
+                                .addTag("update_schedule")
+                                .setConstraints(constraints)
+                                .build();
+                        WorkManager.getInstance(this).enqueue(request);
+                    }
+                    else{
+                        WorkManager.getInstance(this).cancelAllWorkByTag("update_schedule");
+                    }
+            }
         }
     }
 

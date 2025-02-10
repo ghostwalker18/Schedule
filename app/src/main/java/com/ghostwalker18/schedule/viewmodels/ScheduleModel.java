@@ -17,6 +17,8 @@ package com.ghostwalker18.schedule.viewmodels;
 import com.ghostwalker18.schedule.views.DaysFragment;
 import java.util.Calendar;
 import java.util.Date;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -59,7 +61,7 @@ public class ScheduleModel
     * Этот метод позваляет передвинуть состояние расписания к выбранной дате.
     * @param date дата для отображения расписания
     */
-   public void goToDate(Calendar date){
+   public void goToDate(@NonNull Calendar date){
       calendar.setValue(date);
    }
 

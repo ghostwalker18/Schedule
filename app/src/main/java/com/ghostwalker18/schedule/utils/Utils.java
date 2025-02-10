@@ -39,7 +39,7 @@ public class Utils {
    /**
     * Это перечисление показывает доступность занятия для посещения - прошло, идет, не началось
     */
-   public enum LessonAvailability{
+   public enum LessonAvailability {
       ENDED, STARTED, NOT_STARTED
    }
 

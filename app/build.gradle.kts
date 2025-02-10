@@ -3,7 +3,7 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    //id("io.appmetrica.analytics")
+    id("io.appmetrica.analytics")
     id("jacoco")
     id("com.google.gms.google-services")
 }
@@ -13,7 +13,7 @@ val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists())
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
-/*val appMetricaPropertiesFile = rootProject.file("/appMetrica.properties")
+val appMetricaPropertiesFile = rootProject.file("/appMetrica.properties")
 val appMetricaProperties = Properties()
 if (appMetricaPropertiesFile.exists()){
     appMetricaProperties.load(FileInputStream(appMetricaPropertiesFile))
@@ -22,7 +22,7 @@ if (appMetricaPropertiesFile.exists()){
         setPostApiKey(appMetricaProperties["apiKey"].toString())
         enableAnalytics = true
     }
-}*/
+}
 
 
 android {
@@ -83,7 +83,6 @@ dependencies {
     implementation("androidx.room:room-guava:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.preference:preference:1.2.1")
-    implementation("androidx.lifecycle:lifecycle-process:2.7.0")
     implementation("androidx.work:work-runtime:2.9.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.code.gson:gson:2.11.0")

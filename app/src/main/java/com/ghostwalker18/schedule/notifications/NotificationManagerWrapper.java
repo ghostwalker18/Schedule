@@ -93,7 +93,8 @@ public final class NotificationManagerWrapper {
       try {
          if (!TextUtils.isEmpty(channelId)) {
             NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
-            return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+            if(channel != null)
+               return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
          }
       } catch (Exception ignored){/*Not required*/}
       return false;

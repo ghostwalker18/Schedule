@@ -52,7 +52,8 @@ public class JsoupConverterFactory
       }
 
       @Override
-      public Document convert(ResponseBody value) throws IOException {
+      public Document convert(@NonNull ResponseBody value)
+              throws IOException {
          Parser parser = Parser.htmlParser();
          return Jsoup.parse(value.byteStream(), "UTF-8", baseUri, parser);
       }
