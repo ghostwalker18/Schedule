@@ -58,9 +58,12 @@ public class AndroidUtils {
    /**
     * Этот метод проверяет разрешения приложения
     * и меняет настройки приложения в соответствии с результатом
+    *
+    * @return
     */
-   public static void checkNotificationsPermissions(@NonNull Context context,
-                                                    @NonNull SharedPreferences preferences){
+   public static boolean checkNotificationsPermissions(@NonNull Context context,
+                                                       @NonNull SharedPreferences preferences){
+      boolean res = true;
       if (ActivityCompat.checkSelfPermission(
               context,
               Manifest.permission.POST_NOTIFICATIONS
@@ -69,7 +72,7 @@ public class AndroidUtils {
                  .putBoolean("update_notifications", false)
                  .putBoolean("schedule_notifications", false)
                  .apply();
-         return;
+          res = false;
       }
       if(!NotificationManagerWrapper.getInstance(context)
               .isNotificationChannelEnabled(
@@ -78,6 +81,7 @@ public class AndroidUtils {
          preferences.edit()
                  .putBoolean("schedule_notifications", false)
                  .apply();
+         res = false;
       }
       if(!NotificationManagerWrapper.getInstance(context)
               .isNotificationChannelEnabled(
@@ -87,5 +91,6 @@ public class AndroidUtils {
                  .putBoolean("update_notifications", false)
                  .apply();
       }
+       return res;
    }
 }

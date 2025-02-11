@@ -25,8 +25,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
+
 import com.ghostwalker18.schedule.models.Lesson;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
+import com.ghostwalker18.schedule.utils.AndroidUtils;
 import com.ghostwalker18.schedule.views.MainActivity;
 import com.ghostwalker18.schedule.views.WidgetSettingsActivity;
 import java.text.SimpleDateFormat;
@@ -47,7 +50,11 @@ public class ScheduleWidget
                                        int appWidgetId) {
 
         final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
-        repository.update();
+        SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if(!AndroidUtils.checkNotificationsPermissions(context, appPreferences)
+                || !appPreferences.getBoolean("schedule_notifications", false)){
+            repository.update();
+        }
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(),
                 R.layout.schedule_widget_wrapper);
