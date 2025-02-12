@@ -69,7 +69,8 @@ public final class NotificationManagerWrapper {
               new NotificationCompat.Builder(context, data.getChannelId())
                       .setSmallIcon(R.drawable.notification_icon)
                       .setContentTitle(data.getTitle())
-                      .setContentText(data.getMessage());
+                      .setContentText(data.getMessage())
+                      .setAutoCancel(true);
       if(intent.length == 1)
          builder.setContentIntent(intent[0]);
       NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
