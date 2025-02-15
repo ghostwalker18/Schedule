@@ -71,4 +71,14 @@
     <string name="network_settings">Network</string>
     <string name="option_enable_caching">Enable caching</string>
     <string name="option_download_for">Download schedule for</string>
+    <string name="data_transfer">Data transfer</string>
+    <string name="import_activity">Import/export data</string>
+    <string name="operation_type">Select the type of operation</string>
+    <string name="data_types">Select the data</string>
+    <string name="import_policy_type">Import mode</string>
+    <string name="import_data">Import data</string>
+    <string name="export_data">Export data</string>
+    <string name="import_file_dialog">Select the file to import</string>
+    <string name="import_db_success">The data has been successfully imported</string>
+    <string name="import_db_error">The data could not be imported. Check the data format</string>
 </resources>

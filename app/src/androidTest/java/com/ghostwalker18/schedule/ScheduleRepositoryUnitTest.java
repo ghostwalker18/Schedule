@@ -15,6 +15,8 @@
 package com.ghostwalker18.schedule;
 
 import android.content.Context;
+
+import com.ghostwalker18.schedule.models.ScheduleRepository;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Assert;
@@ -40,7 +42,7 @@ public class ScheduleRepositoryUnitTest {
     public static void initRepo(){
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         //AppDatabase db = Mockito.mock(AppDatabase.class, Answers.CALLS_REAL_METHODS);
-        repository = new ScheduleRepository(appContext, null);
+        repository = new ScheduleRepository(appContext, null, null);
     }
 
     /**

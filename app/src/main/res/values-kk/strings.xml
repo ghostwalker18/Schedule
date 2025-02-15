@@ -13,7 +13,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Кесте ПСҚТ</string>
+    <string name="app_name">Кесте ПСҚК</string>
     <string name="settings">Параметрлер</string>
     <string name="days_tab">Сабақ кестесі</string>
     <string name="times_tab">Қоңырау кестесі</string>
@@ -71,4 +71,14 @@
     <string name="network_settings">Желі</string>
     <string name="option_enable_caching">Кэштеуді қосыңыз</string>
     <string name="option_download_for">Кестені жүктеу</string>
+    <string name="data_transfer">Деректерді тасымалдау</string>
+    <string name="import_activity">Деректерді импорттау/экспорттау</string>
+    <string name="operation_type">Операция түрін таңдаңыз</string>
+    <string name="data_types">Деректерді таңдаңыз</string>
+    <string name="import_policy_type">Импорттау режимі</string>
+    <string name="import_data">Деректерді импорттау</string>
+    <string name="export_data">Деректерді экспорттау</string>
+    <string name="import_file_dialog">Импортталатын файлды таңдаңыз</string>
+    <string name="import_db_success">Деректер сәтті импортталды</string>
+    <string name="import_db_error">Деректерді импорттау мүмкін болмады. Деректер пішімін тексеріңіз</string>
 </resources>

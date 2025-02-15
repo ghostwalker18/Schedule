@@ -23,7 +23,7 @@
     <string name="not_mentioned">Көрсетілмеген</string>
     <string name="updated">Жаңартылды:</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">Топқа арналған ПСҚТ кестесі</string>
+    <string name="app_widget_description">Топқа арналған ПСҚК кестесі</string>
     <string name="schedule_missing">Сабақтар тізімі жоқ</string>
     <string name="tomorrow">Ертең</string>
     <string name="appearance">Сыртқы түрі</string>
@@ -68,4 +68,21 @@
     <string name="preview_image_clear_descr">Фотосуретті тазалау</string>
     <string name="photoview_back_descr">Фотосуретті бүктеңіз</string>
     <string name="photoview_share_descr">Фотосуретті бөлісу</string>
+    <string name="no_email_client_found">Пошта қолданбасы табылмады</string>
+    <string name="connect_to_developer">Әзірлеушімен байланысыңыз</string>
+    <string name="notifications">Хабарландырулар</string>
+    <string name="notifications_permission_reqired">Хабарландыруларды жіберу үшін рұқсат қажет</string>
+    <string name="notifications_channnel_enable_required">
+        Арнаны қосыңыз: %s қолданбаның жүйелік хабарландыру параметрлерінде
+    </string>
+    <string name="notifications_notification_app_update_channel_name">Қолданба жаңартулары</string>
+    <string name="notifications_notification_app_update_channel_descr">
+        Қолданбаның мобильді және жұмыс үстелі нұсқасы үшін жаңа жаңартулар туралы хабарландырулар алыңыз
+    </string>
+    <string name="notifications_notification_schedule_update_channel_name">Кесте</string>
+    <string name="notifications_notification_schedule_update_channel_descr">
+        Кестедегі өзгерістер туралы хабарландырулар алыңыз
+    </string>
+    <string name="notifications_new_schedule_available">Жаңа кесте орналастырылды:</string>
+    <string name="notifications_schedule_unavailable">Ой! Кестені жаңарту мүмкін болмады…</string>
 </resources>

@@ -14,6 +14,9 @@
 
 package com.ghostwalker18.schedule;
 
+import com.ghostwalker18.schedule.converters.IConverter;
+import com.ghostwalker18.schedule.converters.XMLStoLessonsConverter;
+
 import org.apache.commons.math3.util.Pair;
 import org.junit.Assert;
 import org.junit.BeforeClass;

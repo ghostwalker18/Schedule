@@ -24,11 +24,11 @@
             app:entries="@array/schedule_style_entries"
             app:defaultValue="in_fragment"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             app:key="addTeacherSearch"
             app:title="@string/option_add_teacher_search"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             app:key="doNotUpdateTimes"
             app:title="@string/option_do_not_update_times"
             app:defaultValue="true"/>
@@ -66,5 +66,17 @@
             app:entryValues="@array/language_values"
             app:entries="@array/language_entries"
             app:defaultValue="system"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/notifications">
+
+        <SwitchPreference
+            app:key="update_notifications"
+            app:title="@string/notifications_notification_app_update_channel_name"/>
+
+        <SwitchPreference
+            app:key="schedule_notifications"
+            app:title="@string/notifications_notification_schedule_update_channel_name"/>
     </PreferenceCategory>
 </PreferenceScreen>

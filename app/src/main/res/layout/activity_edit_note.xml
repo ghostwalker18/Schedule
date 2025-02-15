@@ -162,7 +162,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/preview"
-        android:name="com.ghostwalker18.schedule.PreviewFragment"
+        android:name="com.ghostwalker18.schedule.views.PreviewFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

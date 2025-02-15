@@ -65,4 +65,36 @@
         <item>first</item>
         <item>second</item>
     </string-array>
+
+    <string-array name="operation_type_entries">
+        <item>Экспорт</item>
+        <item>Импорт</item>
+    </string-array>
+
+    <string-array name="operation_type_values">
+        <item>export</item>
+        <item>import</item>
+    </string-array>
+
+    <string-array name="data_types_entries">
+        <item>Расписание</item>
+        <item>Заметки</item>
+        <item>Расписание и заметки</item>
+    </string-array>
+
+    <string-array name="data_types_values">
+        <item>schedule</item>
+        <item>notes</item>
+        <item>schedule_and_notes</item>
+    </string-array>
+
+    <string-array name="import_mode_entries">
+        <item>Замена</item>
+        <item>Слияние</item>
+    </string-array>
+
+    <string-array name="import_mode_values">
+        <item>replace</item>
+        <item>merge</item>
+    </string-array>
 </resources>

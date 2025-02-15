@@ -39,4 +39,20 @@
         <item>Першага корпуса</item>
         <item>Другога корпуса</item>
     </string-array>
+
+    <string-array name="operation_type_entries">
+        <item>Экспарт</item>
+        <item>Імпарт</item>
+    </string-array>
+
+    <string-array name="data_types_entries">
+        <item>Расклад</item>
+        <item>Нататкі</item>
+        <item>Расклад і нататкі</item>
+    </string-array>
+
+    <string-array name="import_mode_entries">
+        <item>Замена</item>
+        <item>Зліццё</item>
+    </string-array>
 </resources>

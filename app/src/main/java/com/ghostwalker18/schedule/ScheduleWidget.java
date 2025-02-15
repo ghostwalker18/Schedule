@@ -21,27 +21,40 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
+
+import com.ghostwalker18.schedule.models.Lesson;
+import com.ghostwalker18.schedule.models.ScheduleRepository;
+import com.ghostwalker18.schedule.utils.AndroidUtils;
+import com.ghostwalker18.schedule.views.MainActivity;
+import com.ghostwalker18.schedule.views.WidgetSettingsActivity;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Этот класс реализует функциональность виджета приложения по показу расписания на заданный день.
  *
  * @author Ипатов Никита
  * @since 2.2
+ * @see WidgetSettingsActivity
  */
 public class ScheduleWidget
         extends AppWidgetProvider {
-    static final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
     static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-        repository.update();
+    public static void updateAppWidget(@NonNull Context context, AppWidgetManager appWidgetManager,
+                                       int appWidgetId) {
 
+        final ScheduleRepository repository = ScheduleApp.getInstance().getScheduleRepository();
+        SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if(!AndroidUtils.checkNotificationsPermissions(context, appPreferences)
+                || !appPreferences.getBoolean("schedule_notifications", false)){
+            repository.update();
+        }
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(),
                 R.layout.schedule_widget_wrapper);
@@ -111,7 +124,7 @@ public class ScheduleWidget
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, @NonNull int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
@@ -119,7 +132,7 @@ public class ScheduleWidget
     }
 
     @Override
-    public void onDeleted(Context context, int[] appWidgetIds) {
+    public void onDeleted(Context context, @NonNull int[] appWidgetIds) {
         for(int id : appWidgetIds){
             context.deleteSharedPreferences("WIDGET_" + id);
         }
@@ -170,7 +183,7 @@ public class ScheduleWidget
         }
 
         @Override
-        public void onChanged(Lesson[] lessons) {
+        public void onChanged(@NonNull Lesson[] lessons) {
             Context context = ScheduleApp.getInstance().getApplicationContext();
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.schedule_widget_wrapper);

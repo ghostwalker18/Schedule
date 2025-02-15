@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="10dp"
-        tools:context="com.ghostwalker18.schedule.TimesFragment"
+        tools:context="com.ghostwalker18.schedule.views.TimesFragment"
         android:layout_gravity="fill_vertical"
         android:baselineAligned="false">
 
@@ -38,6 +38,7 @@
                 android:id="@+id/monday_times"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingRight="10dp"
                 android:adjustViewBounds="true"
                 android:visibility="gone"
                 android:contentDescription="@string/times_monday"/>
@@ -58,6 +59,7 @@
                 android:id="@+id/other_times"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
                 android:adjustViewBounds="true"
                 android:visibility="gone"
                 android:contentDescription="@string/times_other"/>

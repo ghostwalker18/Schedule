@@ -71,4 +71,22 @@
     <string name="preview_image_clear_descr">Очистить фото</string>
     <string name="photoview_back_descr">Свернуть фото</string>
     <string name="photoview_share_descr">Поделиться фото</string>
+    <string name="no_email_client_found">Почтовое приложение не найдено</string>
+    <string name="email_subject" translatable="false">Расписание ПАСТ (мобильное)</string>
+    <string name="connect_to_developer">Связаться с разработчиком</string>
+    <string name="notifications">Уведомления</string>
+    <string name="notifications_permission_reqired">Требуется разрешение, чтобы отправлять уведомления</string>
+    <string name="notifications_channnel_enable_required">
+        Пожалуйста, включите канал: %s в системных настройках уведомлений приложения
+    </string>
+    <string name="notifications_notification_app_update_channel_name">Обновления приложений</string>
+    <string name="notifications_notification_app_update_channel_descr">
+        Получайте уведомления о новых обновления для мобильной и десктопной версии приложения
+    </string>
+    <string name="notifications_notification_schedule_update_channel_name">Расписание</string>
+    <string name="notifications_notification_schedule_update_channel_descr">
+        Получайте уведомления об изменениях в расписании
+    </string>
+    <string name="notifications_new_schedule_available">Выложено новое расписание до</string>
+    <string name="notifications_schedule_unavailable">Упс! Не получилось обновить расписание…</string>
 </resources>

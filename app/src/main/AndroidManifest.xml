@@ -20,6 +20,7 @@
     <uses-feature android:name="android.hardware.camera.any"
         android:required="false"/>
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -44,8 +45,16 @@
         tools:targetApi="34"
         android:minSdkVersion="26">
 
+        <meta-data
+            android:name="ru.rustore.sdk.pushclient.default_notification_icon"
+            android:resource="@drawable/notification_icon" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/notification_icon" />
+
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:exported="true"
             android:label="@string/schedule"
             android:launchMode="singleTop"
@@ -62,29 +71,29 @@
         </activity>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".views.SettingsActivity"
             android:exported="false"
             android:label="@string/settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".views.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".views.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ShareAppActivity"
+            android:name=".views.ShareAppActivity"
             android:exported="false"
             android:label="@string/share_app"
-            android:parentActivityName=".SettingsActivity">
+            android:parentActivityName=".views.SettingsActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SettingsActivity"/>
+                android:value=".views.SettingsActivity"/>
         </activity>
 
         <activity
-            android:name=".WidgetSettingsActivity"
+            android:name=".views.WidgetSettingsActivity"
             android:exported="true">
 
             <intent-filter>
@@ -93,43 +102,54 @@
         </activity>
 
         <activity
-            android:name=".ScheduleItemActivity"
+            android:name=".views.ScheduleItemActivity"
             android:exported="false"
             android:label="@string/day_table"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".views.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".views.MainActivity" />
         </activity>
 
         <activity
-            android:name=".NotesActivity"
+            android:name=".views.NotesActivity"
             android:exported="false"
             android:label="@string/notes_activity"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".views.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".views.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".EditNoteActivity"
+            android:name=".views.EditNoteActivity"
             android:exported="false"
             android:label="@string/add_note"
             android:screenOrientation="portrait"
-            android:parentActivityName=".NotesActivity">
+            android:parentActivityName=".views.NotesActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".NotesActivity"/>
+                android:value=".views.NotesActivity"/>
         </activity>
 
         <activity
-            android:name=".PhotoViewActivity"
+            android:name=".views.PhotoViewActivity"
             android:exported="false"/>
+
+        <activity
+            android:name=".views.ImportActivity"
+            android:label="@string/import_activity"
+            android:exported="false"
+            android:parentActivityName=".views.SettingsActivity">
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".views.SettingsActivity"/>
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -155,6 +175,16 @@
                 android:resource="@xml/schedule_widget_info"/>
         </receiver>
 
+        <receiver
+            android:name=".notifications.NotificationsLocaleUpdater"
+            android:enabled="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
@@ -165,4 +195,11 @@
                 android:value="true"/>
         </service>
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO"/>
+            <data android:scheme="mailto" android:host="*" />
+        </intent>
+    </queries>
 </manifest>

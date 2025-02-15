@@ -38,6 +38,25 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/data_transfer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingVertical="10dp"
+                android:text="@string/data_transfer"/>
+        </LinearLayout>
+
         <Button
             android:id="@+id/share_app"
             android:layout_width="match_parent"
@@ -46,10 +65,11 @@
             android:text="@string/share_app"/>
 
         <TextView
+            android:id="@+id/copyright"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingVertical="10dp"
             android:textAlignment="center"
-            android:text="2024©"/>
+            android:text="2024© Ипатов Никита"/>
     </LinearLayout>
 </LinearLayout>

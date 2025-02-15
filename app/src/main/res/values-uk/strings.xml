@@ -71,4 +71,14 @@
     <string name="network_settings">Мережа</string>
     <string name="option_enable_caching">Увімкнути кешування</string>
     <string name="option_download_for">Завантажувати розклад для</string>
+    <string name="data_transfer">Перенесення даних</string>
+    <string name="import_activity">Імпорт/експорт даних</string>
+    <string name="operation_type">Виберіть тип операції</string>
+    <string name="data_types">Виберіть дані</string>
+    <string name="import_policy_type">Режим імпорту</string>
+    <string name="import_data">Імпортувати дані</string>
+    <string name="export_data">Експортувати дані</string>
+    <string name="import_file_dialog">Виберіть файл для імпорту</string>
+    <string name="import_db_success">Дані успішно імпортовані</string>
+    <string name="import_db_error">Не вдалося імпортувати дані. Перевірте формат даних</string>
 </resources>
