@@ -40,9 +40,9 @@ public abstract class AppDatabase
         extends RoomDatabase {
     public abstract LessonDao lessonDao();
     public abstract NoteDao noteDao();
-    private final static String APP_DATABASE_NAME = "database";
-    private final static String EXPORT_DATABASE_NAME = "export_database.db";
-    private final static String IMPORT_DATABASE_NAME = "import_database.db";
+    private static final String APP_DATABASE_NAME = "database";
+    private static final String EXPORT_DATABASE_NAME = "export_database.db";
+    private static final String IMPORT_DATABASE_NAME = "import_database.db";
     private static volatile AppDatabase instance;
 
     /**
