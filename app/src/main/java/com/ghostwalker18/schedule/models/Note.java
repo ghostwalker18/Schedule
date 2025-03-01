@@ -20,8 +20,8 @@ import com.ghostwalker18.schedule.converters.DateConverters;
 import com.ghostwalker18.schedule.converters.PhotoURIArrayConverters;
 import com.ghostwalker18.schedule.R;
 import com.ghostwalker18.schedule.ScheduleApp;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -55,7 +55,7 @@ public class Note {
     public String text;
     @TypeConverters({PhotoURIArrayConverters.class})
     @ColumnInfo(name="notePhotoIDs")
-    public ArrayList<Uri> photoIDs;
+    public List<Uri> photoIDs;
 
     /**
      * Этот метод возвращает копию заметки со своим ID и без приложенных фотографий.

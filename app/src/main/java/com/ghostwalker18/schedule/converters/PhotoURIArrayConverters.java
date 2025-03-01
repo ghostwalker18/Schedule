@@ -29,6 +29,8 @@ import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.Contract;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.TypeConverter;
@@ -51,7 +53,7 @@ public class PhotoURIArrayConverters {
     */
    @Nullable
    @TypeConverter
-   public static String toString(ArrayList<Uri> uris){
+   public static String toString(List<Uri> uris){
       try{
          Gson gson = new GsonBuilder()
                  .registerTypeAdapter(Uri.class, new UriJsonAdapter())
@@ -73,7 +75,7 @@ public class PhotoURIArrayConverters {
     */
    @Nullable
    @TypeConverter
-   public static ArrayList<Uri> fromString(String uriString){
+   public static List<Uri> fromString(String uriString){
       try{
          Gson gson  = new GsonBuilder()
                  .registerTypeAdapter(Uri.class, new UriJsonAdapter())

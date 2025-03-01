@@ -23,7 +23,7 @@ import com.ghostwalker18.schedule.ScheduleApp;
 import com.ghostwalker18.schedule.models.ScheduleRepository;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -49,7 +49,7 @@ public class EditNoteModel
    private LiveData<String[]> themes = new MutableLiveData<>();
    private final MutableLiveData<String> theme = new MutableLiveData<>("");
    private final MutableLiveData<String> text = new MutableLiveData<>("");
-   private final MutableLiveData<ArrayList<Uri>> photoIDs = new MutableLiveData<>(new ArrayList<>());
+   private final MutableLiveData<List<Uri>> photoIDs = new MutableLiveData<>(new ArrayList<>());
    private final MutableLiveData<Calendar> date = new MutableLiveData<>(Calendar.getInstance());
    private final MutableLiveData<String> group = new MutableLiveData<>(scheduleRepository.getSavedGroup());
    private boolean isEdited = false;
@@ -111,7 +111,7 @@ public class EditNoteModel
     * @param id идентификатор фотографии
     */
    public void addPhotoID(Uri id){
-      ArrayList<Uri> currentUris = photoIDs.getValue();
+      List<Uri> currentUris = photoIDs.getValue();
       currentUris.add(id);
       photoIDs.setValue(currentUris);
    }
@@ -121,7 +121,7 @@ public class EditNoteModel
     * @param id идентификатор фотографии
     */
    public void removePhotoID(Uri id){
-      ArrayList<Uri> currentUris = photoIDs.getValue();
+      List<Uri> currentUris = photoIDs.getValue();
       currentUris.remove(id);
       photoIDs.setValue(currentUris);
    }
@@ -130,7 +130,7 @@ public class EditNoteModel
     * Этот метод позволяет получить ID фотографий, прикрепленных к заметке.
     * @return идентификатор фотографии
     */
-   public LiveData<ArrayList<Uri>> getPhotoIDs(){
+   public LiveData<List<Uri>> getPhotoIDs(){
       return photoIDs;
    }
 
@@ -226,7 +226,6 @@ public class EditNoteModel
 
             notesRepository.saveNote(noteToSave);
          }
-
       }
    }
 }

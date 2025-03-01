@@ -204,7 +204,7 @@ public class XMLStoLessonsConverter
     * @param column номер столбца ячейки
     * @return содержимое ячейки в виде строки
     */
-   private static String getCellContentsAsString(RowCache cache, int row, int column){
+   private static String getCellContentsAsString(@NonNull RowCache cache, int row, int column){
       Cell cell = cache.getRow(row)
               .getCell(column);
       if(cell == null)
@@ -228,11 +228,13 @@ public class XMLStoLessonsConverter
     * @param group название группы
     * @return название группы
     */
-   private static String prepareGroup(String group){
+   @NonNull
+   private static String prepareGroup(@NonNull String group){
       return group
               .replaceAll("\\s+", "")
               .replaceAll(
-                      "([йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ])(\\d)", "$1-$2");
+                      "([йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ])(\\d)",
+                      "$1-$2");
    }
 
    /**
@@ -276,6 +278,7 @@ public class XMLStoLessonsConverter
     * @param subject название предмета
     * @return обработанное название предмета
     */
+   @NonNull
    private static String prepareSubject(String subject){
       return subject == null ? "" : subject.trim()
               .replaceAll("\\s+", " ");

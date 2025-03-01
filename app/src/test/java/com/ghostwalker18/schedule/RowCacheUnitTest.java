@@ -87,8 +87,8 @@ public class RowCacheUnitTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void incorrectOrderRowAccess(){
-        Row row = cache.getRow(32);
-        Row row2 = cache.getRow(0);
+        cache.getRow(32);
+        cache.getRow(0);
     }
 
     /**
@@ -96,7 +96,7 @@ public class RowCacheUnitTest {
      */
     @Test(expected = IndexOutOfBoundsException.class)
     public void incorrectRowNumberAccess(){
-        Row row = cache.getRow(-1);
+        cache.getRow(-1);
     }
 
     /**

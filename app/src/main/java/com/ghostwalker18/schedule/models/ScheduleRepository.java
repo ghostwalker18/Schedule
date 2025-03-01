@@ -109,8 +109,8 @@ public class ScheduleRepository{
      * Этот класс используетс для отображения статуса обновления репозитория.
      */
     public static class Status{
-        public String text;
-        public int progress;
+        public final String text;
+        public final int progress;
 
         public Status(String text, int progress){
             this.text = text;
